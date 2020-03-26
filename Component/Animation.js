@@ -34,16 +34,15 @@ const Animation =({animations, children,container, ...props})=>{
 
 Animation.propTypes = {
   animations: PropTypes.string,
-  children: PropTypes.array,
+  children: PropTypes.object,
   container: PropTypes.object
 }
 Animation.defaultProps ={
   animation:'zoomInDown',
   children:<Text>Hellllllllo</Text>,
   container:{
-    flex: 1, 
-    marginTop:responsiveHeight(6),
-    marginHorizontal:responsiveWidth(20),
+   width:'100%',
+   height:'100%'
   },
 }
 

@@ -8,7 +8,7 @@ import Icons  from 'react-native-vector-icons/MaterialIcons';
 import Iconss from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
 import * as RouteName from '../../Constants/RouteName';
-
+import Animation from './../../Component/Animation';
 
 const Home=({ navigation })=>{
     const {
@@ -24,6 +24,7 @@ const Home=({ navigation })=>{
         logoStyle1
       } = styles;
 return(
+//    <Animation> 
     <Container style={{width:'100%',height:'100%'}}>
         <Content >
            <View style={container}> 
@@ -73,6 +74,7 @@ return(
 
         </Content>
     </Container>
+    // </Animation>
 )
 
 }
