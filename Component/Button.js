@@ -1,11 +1,13 @@
+import PropTypes from "prop-types";
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {Text,StyleSheet} from 'react-native';
 import { Button } from 'native-base';
 import {responsiveHeight,responsiveWidth} from 'react-native-responsive-dimensions';
-const tyftButton=({style,children, ...props})=> {
+const tyftButton=({style,children,onPress, ...props})=> {
     return (
           <Button {...props}
           style={[styles.Buttons,style]}
+          onPress={onPress}
           >
            {children}
           </Button>
@@ -13,6 +15,19 @@ const tyftButton=({style,children, ...props})=> {
     );
   
 }
+
+tyftButton.propTypes = {
+  children: PropTypes.array,
+  onPress: PropTypes.func,
+  style: PropTypes.object
+}
+tyftButton.defaultProps ={
+    children:<Text>Hello</Text>,
+    onPress:()=>{},
+    style:{}
+}
+
+
 const styles=StyleSheet.create({
     Buttons:{
         width:responsiveWidth(40),
@@ -20,4 +35,6 @@ const styles=StyleSheet.create({
         justifyContent:'center'
     }
 })
+
+
 export default tyftButton;

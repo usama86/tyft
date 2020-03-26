@@ -4,6 +4,9 @@ import Input from './../../Component/Input';
 import { Container, Text,Content } from 'native-base';
 import {responsiveHeight,responsiveWidth,responsiveFontSize} from 'react-native-responsive-dimensions';
 const SignUp=()=>{
+   const changeInputHandler=()=>{
+    console.log('hi')
+    }
 return(
     <Container style={{width:'100%',height:'100%'}}>
        <Content style={styles.container}> 
@@ -11,7 +14,7 @@ return(
                 <Text style={styles.TextStyle}>Let's Create your Customer account</Text>
             </View>
             <View style={styles.InputMainView}>
-            <Input rounded placeholder='Name' style={styles.Input}/>
+            <Input rounded placeholder='Name' onChangeText={changeInputHandler} style={styles.Input}/>
             <Input rounded placeholder='Email Address' style={styles.Input}/>
             <Input rounded placeholder='Cell Phone' style={styles.Input}/>
             <Input rounded placeholder='Password' style={styles.Input}/>
