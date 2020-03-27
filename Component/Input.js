@@ -3,24 +3,26 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import { Item, Input } from 'native-base';
 import {responsiveHeight,responsiveWidth} from 'react-native-responsive-dimensions';
-const  TextBox =({rounded,regular,style,onChangeText,value,...props})=> {
-    
+const  tyftTextBox =({rounded,regular,style,onChangeText,value,...props})=> {
+    const {
+      InputDesign
+    } =styles;
     return (
-          <Item rounded={rounded} regular={regular}  style={[styles.Input,style]}>
+          <Item rounded={rounded} regular={regular}  style={[InputDesign,style]}>
             <Input {...props} onChangeText={onChangeText} value={value} />
           </Item>
 
     );
 }
 
-TextBox.propTypes = {
+tyftTextBox.propTypes = {
   onChangeText: PropTypes.func,
   regular: PropTypes.string,
   rounded: PropTypes.bool,
   style: PropTypes.object,
   value: PropTypes.string
 }
-TextBox.defaultProps ={
+tyftTextBox.defaultProps ={
     onChangeText: ()=>{},
     regular: '',
     rounded: 'rounded',
@@ -29,10 +31,10 @@ TextBox.defaultProps ={
 }
 
 const styles=StyleSheet.create({
-    Input:{
+    InputDesign:{
         width:responsiveWidth(80),
         height:responsiveHeight(6),
         backgroundColor:'white'
     }
 })
-export default TextBox;
+export default tyftTextBox;
