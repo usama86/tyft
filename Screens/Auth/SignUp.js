@@ -1,29 +1,29 @@
 import React from 'react';
 import {View,StyleSheet } from 'react-native';
 import Input from './../../Component/Input';
-import { Container, Text,Content } from 'native-base';
+import Text from './../../Component/Text';
 import {responsiveHeight,responsiveWidth,responsiveFontSize} from 'react-native-responsive-dimensions';
+import Container from './../../Component/Container';
 const SignUp=()=>{
-   const changeInputHandler=()=>{
-    console.log('hi')
+    const [name,SetName]=React.useState('');
+    const [check, SetCheck]=React.useState(false);
+   const changeInputHandler=(e)=>{
+       SetName(e);
     }
 return(
-    <Container style={{width:'100%',height:'100%'}}>
-       <Content style={styles.container}> 
+    <Container ContentStyle={styles.container}>
             <View style={styles.TextView}>
-                <Text style={styles.TextStyle}>Let's Create your Customer account</Text>
+                <Text bold value={"Let's Create your Customer account"}/>
             </View>
             <View style={styles.InputMainView}>
-            <Input rounded placeholder='Name' onChangeText={changeInputHandler} style={styles.Input}/>
+            <Input rounded placeholder='Name' onChangeText={changeInputHandler} value={name} style={styles.Input}/>
             <Input rounded placeholder='Email Address' style={styles.Input}/>
             <Input rounded placeholder='Cell Phone' style={styles.Input}/>
             <Input rounded placeholder='Password' style={styles.Input}/>
             <Input rounded placeholder='Re-enter Password' style={styles.Input}/>
             </View>
-        </Content>
     </Container>
 )
-
 }
 const styles=StyleSheet.create({
     container:{

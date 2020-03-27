@@ -10,10 +10,8 @@ import * as RouteName from './../Constants/RouteName';
 const Stack = createStackNavigator();
 const Routes=()=>{
           return(          
-            <Stack.Navigator initialRouteName="Home" screenOptions={{
-                headerShown: false
-              }}>
-                <Stack.Screen name={RouteName.HOME} component={HomeScreen}  options={{ title: 'Overview' }}/>
+            <Stack.Navigator initialRouteName="Home">
+                <Stack.Screen name={RouteName.HOME} component={HomeScreen}  options={{ title: 'Overview',headerShown:false }}/>
                 <Stack.Screen name={RouteName.SIGNUPSELECTION} component={SignUpSelection} />
                 <Stack.Screen name={RouteName.SIGNIN} component={SignIn} />
                 <Stack.Screen name={RouteName.SIGNUP} component={SignUp} />
