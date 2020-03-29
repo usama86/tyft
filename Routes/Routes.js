@@ -8,11 +8,12 @@ import SignUp from '../Screens/Auth/SignUpCustomer';
 import SignUpSupplier from './../Screens/Auth/SignUpSupplier';
 import AuthLoading from './../Screens/AuthLoading/AuthLoading';
 import * as RouteName from './../Constants/RouteName';
+console.disableYellowBox = true;
 
 const AppStack = createStackNavigator();
 const StackAuth = createStackNavigator();
 const Routes = () => {
-  AuthStack = () => (
+  const AuthStack = () => (
     <StackAuth.Navigator initialRouteName={RouteName.HOME}>
       <StackAuth.Screen
         name={RouteName.HOME}
