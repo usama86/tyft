@@ -28,6 +28,7 @@ return(
 
             <View style={styles.radioView}>
                {/* ADD PHOTO Component */}
+            
             </View>
     </Ui>
     

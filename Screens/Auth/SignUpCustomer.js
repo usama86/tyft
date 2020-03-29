@@ -66,7 +66,7 @@ const styles=StyleSheet.create({
         marginVertical:responsiveHeight(2),        
     },
     TextViewStyle:{
-        width: responsiveWidth(60)
+       // width: responsiveWidth(60)
     },
     Input:{
         marginTop:responsiveHeight(3)

@@ -31,15 +31,11 @@ const Home = ({navigation}) => {
     //    <Animation>
     <Container>
       <View style={container}>
-        <View>
-          <Image
-            style={logoStyle}
-            source={require('./../../images/TYFTLogo.png')}
-          />
-        </View>
-        <View>
-          <Text style={TextStyle} numberOfLines={1} value={'S I G N U P'} />
-        </View>
+        <Image
+          style={logoStyle}
+          source={require('./../../images/TYFTLogo.png')}
+        />
+        <Text style={TextStyle} numberOfLines={1} value={'S I G N U P'} />
       </View>
 
       <View style={ButtonViewStyle}>
@@ -78,7 +74,11 @@ const Home = ({navigation}) => {
               style={logoStyle1}
               source={require('./../../images/TYFTLogo.png')}
             />
-            <Text uppercase={false} style ={{marginLeft:responsiveWidth(5)}} value={'New Account'} />
+            <Text
+              uppercase={false}
+              style={{marginLeft: responsiveWidth(5)}}
+              value={'New Account'}
+            />
           </View>
           <Entypo name="chevron-thin-right" size={15} color="rgb(0, 0, 0)" />
         </Button>
@@ -104,9 +104,12 @@ const Home = ({navigation}) => {
 };
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    marginTop: responsiveHeight(10),
-    marginHorizontal: responsiveWidth(32),
+	marginTop: responsiveHeight(10),
+	width:'100%',
+	height:responsiveHeight(22),
+	justifyContent: 'center',
+	alignItems:'center'
+    // marginHorizontal: responsiveWidth(32),
   },
   logoStyle: {
     height: responsiveHeight(20),
@@ -146,9 +149,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-	paddingRight: responsiveWidth(5),
-	paddingLeft:responsiveWidth(4),
-	// paddingHorizontal:responsiveWidth(5),
+    paddingRight: responsiveWidth(5),
+    paddingLeft: responsiveWidth(4),
+    // paddingHorizontal:responsiveWidth(5),
     borderStyle: 'solid',
     borderWidth: 1,
     borderColor: 'rgb(0, 0, 0)',

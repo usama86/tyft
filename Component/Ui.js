@@ -29,7 +29,7 @@ const Ui = ({
 
       <View style={[styles.Content,ContentStyle]}>{children}</View>
 
-      <View style={[styles.footer,FooterStyle]}>
+ 
         <Button
           style={styles.buttonStyle2}
           onPress={onPressButton}>
@@ -46,19 +46,20 @@ const Ui = ({
 							color="white"
 						/> */}
         </Button>
-      </View>
     </Container>
   );
 };
 const styles = StyleSheet.create({
   container: {
-    width: responsiveWidth(90),
+    width: '90%',
     marginTop: responsiveHeight(7),
-    marginHorizontal: responsiveWidth(6),
+    alignSelf:'center',
+    justifyContent: 'center',
+    alignItems:'center'
   },
   TextView: {
-    width: responsiveWidth(90),
-    marginLeft:responsiveWidth(4)
+    width: '80%',
+    alignSelf:'center',
   },
   TextStyle: {
     fontSize: responsiveFontSize(3),
@@ -84,8 +85,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgb(193, 32, 38)',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '88%',
+    width: '90%',
     height: responsiveHeight(6),
+    
     // borderStyle: 'solid',
     // borderWidth: 1,
     // borderColor: 'rgb(0, 0, 0)'
