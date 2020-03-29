@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
 	TextStyle: {
         // color: 'rgb(0, 0, 0)'
         //set font stuff for default, font family etc
+        fontSize:responsiveFontSize(1.7)
     },
     boldStyle:{
         fontSize:responsiveFontSize(3),

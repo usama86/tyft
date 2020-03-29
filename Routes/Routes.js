@@ -3,7 +3,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './../Screens/Auth/Home';
 import SignUpSelection from './../Screens/Auth/SignUpSelection';
 import SignIn from './../Screens/Auth/SignIn';
-import SignUp from './../Screens/Auth/SignUp';
+import SignUp from '../Screens/Auth/SignUpCustomer';
+import SignUpSupplier from './../Screens/Auth/SignUpSupplier';
 import * as RouteName from './../Constants/RouteName';
 
 
@@ -15,6 +16,7 @@ const Routes=()=>{
                 <Stack.Screen name={RouteName.SIGNUPSELECTION} component={SignUpSelection} />
                 <Stack.Screen name={RouteName.SIGNIN} component={SignIn} />
                 <Stack.Screen name={RouteName.SIGNUP} component={SignUp} />
+                <Stack.Screen name={RouteName.SIGNUPSUPPLIER} component={SignUpSupplier} />
             </Stack.Navigator>
             
           )

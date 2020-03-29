@@ -45,7 +45,7 @@ const SignUpSelection = props => {
         underlayColor="#f7f7f5"
         style={styles.item}
         onPress={() => {
-          // navigation.navigate(Screens.SUPPLIER_COMPANY_DETAIL);
+          navigation.navigate(RouteName.SIGNUPSUPPLIER);
         }}>
         <View>
           <View style={styles.itemHeader}>
@@ -57,7 +57,7 @@ const SignUpSelection = props => {
                 size={33}
               />
             </View>
-            <Text style={styles.itemTitle}>{'As Vender'}</Text>
+            <Text style={styles.itemTitle}>{'As Supplier'}</Text>
           </View>
           <Text style={styles.itemText}>
             Create a part of GASLIO vender list and target the local audiendce

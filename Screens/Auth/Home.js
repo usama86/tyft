@@ -113,7 +113,6 @@ const styles = StyleSheet.create({
 		marginLeft: responsiveWidth(3)
 	},
 	TextStyle: {
-		color: 'rgb(0, 0, 0)',
 		marginHorizontal: responsiveWidth(10),
 		width: responsiveWidth(20)
 	},

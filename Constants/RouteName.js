@@ -3,3 +3,4 @@ export const LOGIN='Login';
 export const SIGNUPSELECTION='SignUpSelection';
 export const SIGNIN='SignIn';
 export const SIGNUP='SignUp';
+export const SIGNUPSUPPLIER ='SignUpSupplier';

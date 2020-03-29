@@ -28,8 +28,7 @@ tyftButton.defaultProps = {
 const styles = StyleSheet.create({
 	Buttons: {
 		width: responsiveWidth(40),
-		height: responsiveHeight(6),
-		justifyContent: 'center'
+		height: responsiveHeight(6),        
 	}
 });
 
