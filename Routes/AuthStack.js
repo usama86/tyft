@@ -6,6 +6,7 @@ import SignUp from './../Screens/Auth/SignUpCustomer';
 import SignUpSupplier from './../Screens/Auth/Supplier/SignUpSupplier';
 import TruckLogo from './../Screens/Auth/Supplier/TruckLogo';
 import TruckInfo from './../Screens/Auth/Supplier/TruckInfo';
+import BusinessHour from './../Screens/Auth/Supplier/BusinessHour';
 import * as RouteName from './../Constants/RouteName';
 import {createStackNavigator} from '@react-navigation/stack';
 const StackAuth = createStackNavigator();
@@ -28,6 +29,7 @@ const AuthStack = () => (
       />
       <StackAuth.Screen name={RouteName.TRUCKLOGO} component={TruckLogo} />
       <StackAuth.Screen name={RouteName.TRUCKINFO} component={TruckInfo} />
+      <StackAuth.Screen name={RouteName.BUSINESSHOUR} component={BusinessHour} />
     </StackAuth.Navigator>
   );
   export default AuthStack;

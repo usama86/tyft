@@ -9,7 +9,7 @@ import {
 import Checkbox from '../../../Component/Checkbox';
 import Ui from '../../../Component/Ui';
 import * as RouteName from './../../../Constants/RouteName';
-const TruckInfo = ({navigation}) => {
+const BusinessHour = ({navigation}) => {
   const [check, SetCheck] = React.useState(false);
   const [name, SetName] = React.useState('');
   const changeInputHandler = () => {
@@ -18,9 +18,9 @@ const TruckInfo = ({navigation}) => {
   return (
     <Ui
       TextViewStyle={styles.TextViewStyle}
-      TextValue={"Your food truck's info"}
+      TextValue={"Business Hours "}
       ButtonText={'Next'}
-      onPressButton={() => navigation.navigate(RouteName.BUSINESSHOUR)}>
+      onPressButton={() => {}}>
       <View style={styles.InputMainView}>
         <Input
           rounded
@@ -51,9 +51,11 @@ const styles = StyleSheet.create({
   },
   TextViewStyle: {
   //  width: responsiveWidth(60),
+  borderBottomWidth:1,
+  borderBottomColor:'grey',
   },
   radioView: {
     flexDirection: 'row',
   },
 });
-export default TruckInfo;
+export default BusinessHour;
