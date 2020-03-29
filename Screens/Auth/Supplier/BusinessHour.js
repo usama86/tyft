@@ -22,22 +22,18 @@ const BusinessHour = ({navigation}) => {
       ButtonText={'Next'}
       onPressButton={() => {}}>
       <View style={styles.InputMainView}>
-        <Input
-          rounded
-          placeholder="Truck Name"
-          onChangeText={e => SetName(e)}
-          value={name}
-          style={styles.Input}
-        />
-        <Input
-          rounded
-          placeholder="Business Description"
-          style={styles.Input}
-        />
-        <Input rounded placeholder="Contact" style={styles.Input} />
-        <Input rounded placeholder="Email" style={styles.Input} />
-        <Input rounded placeholder="City" style={styles.Input} />
-        <Input rounded placeholder="Website" style={styles.Input} />
+
+        <View style={styles.Time}>
+            
+        </View>
+
+      <View style={styles.TextView}>
+        <Text bold value={'Social Media Details'} style={styles.TextStyle} />
+      </View>
+
+        <Input rounded placeholder="Facebook" style={styles.Input} />
+        <Input rounded placeholder="Instagram" style={styles.Input} />
+        <Input rounded placeholder="Twitter" style={styles.Input} />
       </View>
     </Ui>
   );
@@ -54,8 +50,17 @@ const styles = StyleSheet.create({
   borderBottomWidth:1,
   borderBottomColor:'grey',
   },
+  TextView: {
+    width: '90%',
+    marginLeft:responsiveWidth(3),
+    borderBottomWidth:1,
+    borderBottomColor:'grey',
+  },
   radioView: {
     flexDirection: 'row',
   },
+  Time:{
+      height:responsiveHeight(20)
+  }
 });
 export default BusinessHour;

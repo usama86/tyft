@@ -61,10 +61,6 @@ const styles = StyleSheet.create({
     width: '80%',
     alignSelf:'center',
   },
-  TextStyle: {
-    fontSize: responsiveFontSize(3),
-    fontWeight: 'bold',
-  },
   TextStyle1: {
     color: 'white',
   },
