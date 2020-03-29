@@ -34,7 +34,8 @@ const styles=StyleSheet.create({
     InputDesign:{
         width:responsiveWidth(80),
         height:responsiveHeight(6),
-        backgroundColor:'white'
+        backgroundColor:'white',
+        paddingLeft:responsiveWidth(3)
     }
 })
 export default tyftTextBox;

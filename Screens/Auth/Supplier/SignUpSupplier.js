@@ -1,18 +1,22 @@
 import React from 'react';
 import {View,StyleSheet } from 'react-native';
-import Input from '../../Component/Input';
-import Text from '../../Component/Text';
-import {responsiveHeight,responsiveWidth,responsiveFontSize} from 'react-native-responsive-dimensions';
-import Checkbox from '../../Component/Checkbox';
-import Ui from '../../Component/Ui';
-const SignUpSupplier=()=>{
+import Input from '../../../Component/Input';
+import Text from '../../../Component/Text';
+import {responsiveHeight, responsiveWidth} from 'react-native-responsive-dimensions';
+import Checkbox from '../../../Component/Checkbox';
+import Ui from '../../../Component/Ui';
+import * as RouteName from './../../../Constants/RouteName';
+const SignUpSupplier=({navigation})=>{
     const [check,SetCheck]=React.useState(false);
     const [name,SetName]=React.useState('')
    const changeInputHandler=()=>{
     SetCheck(!check);
     }
 return(
-    <Ui TextValue={"Let's Create your Supplier account"} ButtonText={"Next"}>
+    <Ui TextValue={"Let's Create your Supplier account"} ButtonText={"Next"} 
+    onPressButton={()=>navigation.navigate(RouteName.TRUCKLOGO)}
+    TextViewStyle={styles.TextViewStyle}
+    >
          <View style={styles.InputMainView}>
                 <Input rounded placeholder='Name' onChangeText={(e)=>SetName(e)} value={name} style={styles.Input}/>
                 <Input rounded placeholder='Email Address' style={styles.Input}/>
@@ -30,8 +34,11 @@ return(
 }
 const styles=StyleSheet.create({
     InputMainView:{
-        marginVertical:responsiveHeight(5),
-        
+        marginVertical:responsiveHeight(2),
+        width: responsiveWidth(60)
+    },
+    TextViewStyle:{
+        width: responsiveWidth(60)
     },
     Input:{
         marginTop:responsiveHeight(3)

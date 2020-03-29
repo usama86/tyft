@@ -9,7 +9,6 @@ import {
 } from 'react-native-responsive-dimensions';
 import Container from './Container';
 import Button from './Button';
-import Entypo from 'react-native-vector-icons/Entypo';
 const Ui = ({
   TextValue,
   TextViewStyle,
@@ -20,6 +19,7 @@ const Ui = ({
   FooterStyle,
   ButtonText,
   TextSpace,
+  onPressButton
 }) => {
   return (
     <Container ContentStyle={[styles.container, ContainerStyle]}>
@@ -27,14 +27,12 @@ const Ui = ({
         <Text bold value={TextValue} style={TextStyle} />
       </View>
 
-      <View style={ContentStyle}>{children}</View>
+      <View style={[styles.Content,ContentStyle]}>{children}</View>
 
-      <View style={FooterStyle}>
+      <View style={[styles.footer,FooterStyle]}>
         <Button
           style={styles.buttonStyle2}
-          onPress={() => {
-            // navigation.navigate(RouteName.SIGNUPSELECTION);
-          }}>
+          onPress={onPressButton}>
           {/* <Image style={styles.logoStyle1} source={require('./../images/TYFTLogo.png')} /> */}
           <Text
             uppercase={false}
@@ -59,7 +57,8 @@ const styles = StyleSheet.create({
     marginHorizontal: responsiveWidth(6),
   },
   TextView: {
-    width: responsiveWidth(60),
+    width: responsiveWidth(90),
+    marginLeft:responsiveWidth(4)
   },
   TextStyle: {
     fontSize: responsiveFontSize(3),
@@ -69,7 +68,7 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   InputMainView: {
-    marginVertical: responsiveHeight(5),
+    marginVertical: responsiveHeight(2),
   },
   Input: {
     marginTop: responsiveHeight(3),
@@ -77,6 +76,9 @@ const styles = StyleSheet.create({
   radioView: {
     marginLeft: responsiveWidth(15),
     flexDirection: 'row',
+  },
+  Content:{
+    height:responsiveHeight(65)
   },
   buttonStyle2: {
     backgroundColor: 'rgb(193, 32, 38)',
@@ -94,5 +96,8 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     marginLeft: responsiveWidth(3),
   },
+  footer:{
+      marginTop:responsiveHeight(2)
+  }
 });
 export default Ui;
