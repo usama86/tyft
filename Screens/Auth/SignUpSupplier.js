@@ -7,14 +7,14 @@ import Checkbox from '../../Component/Checkbox';
 import Ui from '../../Component/Ui';
 const SignUpSupplier=()=>{
     const [check,SetCheck]=React.useState(false);
-
+    const [name,SetName]=React.useState('')
    const changeInputHandler=()=>{
     SetCheck(!check);
     }
 return(
     <Ui TextValue={"Let's Create your Supplier account"} ButtonText={"Next"}>
          <View style={styles.InputMainView}>
-                <Input rounded placeholder='Name' onChangeText={changeInputHandler} value={name} style={styles.Input}/>
+                <Input rounded placeholder='Name' onChangeText={(e)=>SetName(e)} value={name} style={styles.Input}/>
                 <Input rounded placeholder='Email Address' style={styles.Input}/>
                 <Input rounded placeholder='Cell Phone' style={styles.Input}/>
                 <Input rounded placeholder='Password' style={styles.Input}/>
