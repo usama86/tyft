@@ -19,7 +19,7 @@ const TruckLogo = ({navigation}) => {
   };
   const SendUri = (val)=>{
     setImg(val)
-    // console.log(val);
+    console.log(val);
   }
   return (
     <Ui
@@ -36,7 +36,7 @@ const TruckLogo = ({navigation}) => {
           style={{color: 'grey'}}
         />
       </View>
-      <ImagePicker SendUri={SendUri} />
+      <ImagePicker  SendUri={SendUri} style = {styles.ImageContainer} />
     </Ui>
   );
 };
@@ -57,5 +57,11 @@ const styles = StyleSheet.create({
   radioView: {
     flexDirection: 'row',
   },
+  ImageContainer:{
+    width:responsiveWidth(80),
+    height:responsiveHeight(20),
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
 });
 export default TruckLogo;

@@ -15,7 +15,7 @@ import {
   responsiveHeight,
 } from 'react-native-responsive-dimensions';
 import ImagePicker from 'react-native-image-picker';
-const ImagePickers = ({SendUri}) => {
+const ImagePickers = ({SendUri, style, text}) => {
   const [receivedImage, setReceivedImage] = React.useState(false);
   const [img, setImage] = React.useState('');
   const SelectImage = () => {
@@ -41,24 +41,34 @@ const ImagePickers = ({SendUri}) => {
     <TouchableHighlight
       underlayColor={'rgba(0,0,0,0.1)'}
       onPress={SelectImage}
-      style={styles.SelectedMainView}>
-        <Image source={{uri:img}} style={styles.SelectedImageStyle} />
-      </TouchableHighlight>
+      style={[styles.SelectedMainView, style]}>
+      <Image source={{uri: img}} style={styles.SelectedImageStyle} />
+    </TouchableHighlight>
   ) : (
-    <View style={styles.MainView}>
+    <View style={[styles.MainView, style]}>
       <TouchableHighlight
         underlayColor={'rgba(0,0,0,0.1)'}
-        onPress={SelectImage,SendUri}
+        onPress={SelectImage}
         style={styles.HighLight}>
         <Image source={require('./../images/add.png')} style={styles.Image} />
       </TouchableHighlight>
       <View style={styles.TextView}>
-        <Text value={'Add Logo Photo'} />
+        <Text value={text} />
       </View>
     </View>
   );
 };
 
+ImagePickers.propTypes = {
+  SendUri: PropTypes.func,
+  style: PropTypes.object,
+  text: PropTypes.string,
+};
+ImagePicker.defaultProps = {
+  SendUri: () => {},
+  style: {},
+  text: 'Add Logo Photo',
+};
 const styles = StyleSheet.create({
   MainView: {
     marginTop: responsiveHeight(14),
@@ -94,12 +104,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  SelectedImageStyle:{
-    width:'100%',
-    height:'100%',
-    borderRadius:20,
-    resizeMode:'contain'
-  }
+  SelectedImageStyle: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 20,
+    resizeMode: 'contain',
+  },
 });
 
 export default ImagePickers;
