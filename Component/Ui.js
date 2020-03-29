@@ -27,14 +27,14 @@ return(
 							// navigation.navigate(RouteName.SIGNUPSELECTION);
 						}}
 					>
-						<Image style={styles.logoStyle1} source={require('./../images/TYFTLogo.png')} />
+						{/* <Image style={styles.logoStyle1} source={require('./../images/TYFTLogo.png')} /> */}
 						<Text uppercase={false} style={[styles.TextStyle1,TextSpace]} value={ButtonText}/>
-						<Entypo
+						{/* <Entypo
 							//style={{ marginLeft: responsiveWidth(16) }}
 							name="chevron-thin-right"
 							size={15}
-							color="rgb(0, 0, 0)"
-						/>
+							color="white"
+						/> */}
 					</Button>
             </View>
     </Container>
@@ -54,8 +54,8 @@ const styles=StyleSheet.create({
         fontWeight:'bold'
     },
     TextStyle1:{ 
-        color: 'rgb(0, 0, 0)', 
-        paddingLeft:responsiveWidth(24),
+        color: 'white', 
+        paddingLeft:responsiveWidth(35),
         width:responsiveWidth(57) 
     },
     InputMainView:{
@@ -70,15 +70,14 @@ const styles=StyleSheet.create({
         flexDirection:'row'
     },
     buttonStyle2: {
-		backgroundColor: 'white',
-
+		backgroundColor: 'rgb(193, 32, 38)',
 		marginVertical: responsiveHeight(5),
 		width: responsiveWidth(80),
 		justifyContent: 'flex-start',
 		paddingLeft: 10,
-		borderStyle: 'solid',
-		borderWidth: 1,
-		borderColor: 'rgb(0, 0, 0)'
+		// borderStyle: 'solid',
+		// borderWidth: 1,
+		// borderColor: 'rgb(0, 0, 0)'
     },
     logoStyle1: {
 		height: responsiveHeight(4),

@@ -39,9 +39,9 @@ const Home = ({ navigation }) => {
 				<View style={ButtonViewStyle}>
 					<Button style={buttonStyle} rounded>
 						<Icon name="sc-facebook" size={30} color="white" />
-						<Text uppercase={false} value={'With Facebook'}/>
+						<Text uppercase={false} value={'With Facebook'} style={{ width: responsiveWidth(46) }}/>
 						<Entypo
-							style={{ marginLeft: responsiveWidth(16) }}
+							
 							name="chevron-thin-right"
 							size={15}
 							color="white"
@@ -50,9 +50,8 @@ const Home = ({ navigation }) => {
 
 					<Button style={buttonStyle1} rounded>
 						<Iconss name="google" size={25} color="white" />
-						<Text uppercase={false} style={{ marginLeft: responsiveWidth(1) }} value={'With Google'}/>
+						<Text uppercase={false} style={{ marginLeft: responsiveWidth(1),width:responsiveWidth(46) }} value={'With Google'}/>
 						<Entypo
-							style={{ marginLeft: responsiveWidth(20) }}
 							name="chevron-thin-right"
 							size={15}
 							color="white"
@@ -67,9 +66,9 @@ const Home = ({ navigation }) => {
 						}}
 					>
 						<Image style={logoStyle1} source={require('./../../images/TYFTLogo.png')} />
-						<Text uppercase={false} style={{ color: 'rgb(0, 0, 0)' }} value={'New Account'}/>
+						<Text uppercase={false} style={{ color: 'rgb(0, 0, 0)',width:responsiveWidth(46) }} value={'New Account'}/>
 						<Entypo
-							style={{ marginLeft: responsiveWidth(18) }}
+
 							name="chevron-thin-right"
 							size={15}
 							color="rgb(0, 0, 0)"

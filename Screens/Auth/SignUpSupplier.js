@@ -6,7 +6,7 @@ import {responsiveHeight,responsiveWidth,responsiveFontSize} from 'react-native-
 import Checkbox from '../../Component/Checkbox';
 import Ui from '../../Component/Ui';
 const SignUpSupplier=()=>{
-    const [check,SetCheck]=React.useState(true);
+    const [check,SetCheck]=React.useState(false);
 
    const changeInputHandler=()=>{
     SetCheck(!check);
