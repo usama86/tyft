@@ -13,7 +13,8 @@ const SignUp=()=>{
        SetName(e);
     }
 return(
-    <Ui TextValue={"Let's Create your Customer account"} ButtonText={"Get Started"} TextSpace={styles.TextSpace}>
+    <Ui TextValue={"Let's Create your Customer account"} ButtonText={"Get Started"} 
+    TextSpace={styles.TextSpace} TextViewStyle={styles.TextViewStyle}>
          <View style={styles.InputMainView}>
                 <Input rounded placeholder='Name' onChangeText={changeInputHandler} value={name} style={styles.Input}/>
                 <Input rounded placeholder='Email Address' style={styles.Input}/>
@@ -62,8 +63,10 @@ return(
 }
 const styles=StyleSheet.create({
     InputMainView:{
-        marginVertical:responsiveHeight(5),
-        
+        marginVertical:responsiveHeight(2),        
+    },
+    TextViewStyle:{
+        width: responsiveWidth(60)
     },
     Input:{
         marginTop:responsiveHeight(3)
