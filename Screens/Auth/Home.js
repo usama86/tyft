@@ -78,7 +78,7 @@ const Home = ({navigation}) => {
               style={logoStyle1}
               source={require('./../../images/TYFTLogo.png')}
             />
-            <Text uppercase={false} style ={{marginLeft:responsiveWidth(4)}} value={'New Account'} />
+            <Text uppercase={false} style ={{marginLeft:responsiveWidth(5)}} value={'New Account'} />
           </View>
           <Entypo name="chevron-thin-right" size={15} color="rgb(0, 0, 0)" />
         </Button>

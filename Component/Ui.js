@@ -82,8 +82,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgb(193, 32, 38)',
     justifyContent: 'center',
     alignItems: 'center',
-    width:'88%',
-    height:responsiveHeight(6)
+    width: '88%',
+    height: responsiveHeight(6),
     // borderStyle: 'solid',
     // borderWidth: 1,
     // borderColor: 'rgb(0, 0, 0)'
