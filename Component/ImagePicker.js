@@ -36,13 +36,20 @@ const ImagePickers = () => {
       }
     });
   };
-  return (
+  return receivedImage ? (
+    <TouchableHighlight
+      underlayColor={'rgba(0,0,0,0.1)'}
+      onPress={SelectImage}
+      style={styles.MainView}>
+        <Image source={{uri:img}} style={styles.SelectedImageStyle} />
+      </TouchableHighlight>
+  ) : (
     <View style={styles.MainView}>
-      <TouchableHighlight onPress={SelectImage} style={styles.HighLight}>
-        <Image
-          source={receivedImage ? {uri: img} : require('./../images/add.png')}
-          style={styles.Image}
-        />
+      <TouchableHighlight
+        underlayColor={'rgba(0,0,0,0.1)'}
+        onPress={SelectImage}
+        style={styles.HighLight}>
+        <Image source={require('./../images/add.png')} style={styles.Image} />
       </TouchableHighlight>
       <View style={styles.TextView}>
         <Text value={'Add Logo Photo'} />
@@ -59,6 +66,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignSelf: 'center',
     backgroundColor: '#C3CDCE',
+    borderWidth: 1,
+    borderColor: 'black',
   },
   HighLight: {
     borderTopLeftRadius: 20,
@@ -77,6 +86,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  SelectedImageStyle:{
+    width:'100%',
+    height:'100%',
+    borderRadius:20,
+    resizeMode:'contain'
+  }
 });
 
 export default ImagePickers;
