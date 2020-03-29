@@ -13,9 +13,14 @@ import ImagePicker from '../../../Component/ImagePicker';
 const TruckLogo = ({navigation}) => {
   const [check, SetCheck] = React.useState(false);
   const [name, SetName] = React.useState('');
+  const [img, setImg] = React.useState('')
   const changeInputHandler = () => {
     SetCheck(!check);
   };
+  const SendUri = (val)=>{
+    setImg(val)
+    // console.log(val);
+  }
   return (
     <Ui
       TextValue={"Your food's truck logo"}
@@ -31,7 +36,7 @@ const TruckLogo = ({navigation}) => {
           style={{color: 'grey'}}
         />
       </View>
-      <ImagePicker/>
+      <ImagePicker SendUri={SendUri} />
     </Ui>
   );
 };

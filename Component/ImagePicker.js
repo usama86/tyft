@@ -15,7 +15,7 @@ import {
   responsiveHeight,
 } from 'react-native-responsive-dimensions';
 import ImagePicker from 'react-native-image-picker';
-const ImagePickers = () => {
+const ImagePickers = ({SendUri}) => {
   const [receivedImage, setReceivedImage] = React.useState(false);
   const [img, setImage] = React.useState('');
   const SelectImage = () => {
@@ -33,6 +33,7 @@ const ImagePickers = () => {
         const img = response.uri;
         setImage(img);
         setReceivedImage(true);
+        SendUri(img);
       }
     });
   };
@@ -47,7 +48,7 @@ const ImagePickers = () => {
     <View style={styles.MainView}>
       <TouchableHighlight
         underlayColor={'rgba(0,0,0,0.1)'}
-        onPress={SelectImage}
+        onPress={SelectImage,SendUri}
         style={styles.HighLight}>
         <Image source={require('./../images/add.png')} style={styles.Image} />
       </TouchableHighlight>
