@@ -73,7 +73,7 @@ const styles=StyleSheet.create({
         flexDirection:'row'
     },
     TextSpace:{
-        paddingLeft:responsiveWidth(18)
+        // paddingLeft:responsiveWidth(18)
     }
 })
 export default SignUp;
