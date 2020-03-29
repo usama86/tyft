@@ -71,8 +71,8 @@ const styles = StyleSheet.create({
   },
   SelectedMainView: {
     marginTop: responsiveHeight(14),
-    // width: responsiveWidth(60),
-    // height: responsiveHeight(20),
+    width: responsiveWidth(60),
+    height: responsiveHeight(20),
     borderRadius: 20,
     alignSelf: 'center',
   },
