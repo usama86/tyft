@@ -40,7 +40,7 @@ const ImagePickers = () => {
     <TouchableHighlight
       underlayColor={'rgba(0,0,0,0.1)'}
       onPress={SelectImage}
-      style={styles.MainView}>
+      style={styles.SelectedMainView}>
         <Image source={{uri:img}} style={styles.SelectedImageStyle} />
       </TouchableHighlight>
   ) : (
@@ -68,6 +68,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#C3CDCE',
     borderWidth: 1,
     borderColor: 'black',
+  },
+  SelectedMainView: {
+    marginTop: responsiveHeight(14),
+    // width: responsiveWidth(60),
+    // height: responsiveHeight(20),
+    borderRadius: 20,
+    alignSelf: 'center',
   },
   HighLight: {
     borderTopLeftRadius: 20,
