@@ -9,7 +9,7 @@ import {
 import Checkbox from '../../../Component/Checkbox';
 import Ui from '../../../Component/Ui';
 import * as RouteName from './../../../Constants/RouteName';
-const BusinessHour = ({navigation}) => {
+const MenuSetting = ({navigation}) => {
   const [check, SetCheck] = React.useState(false);
   const [name, SetName] = React.useState('');
   const changeInputHandler = () => {
@@ -18,22 +18,19 @@ const BusinessHour = ({navigation}) => {
   return (
     <Ui
       TextViewStyle={styles.TextViewStyle}
-      TextValue={"Business Hours "}
+      TextValue={"Social Media Details"}
       ButtonText={'Next'}
-      onPressButton={() => {navigation.navigate(RouteName.SOCIALMEDIADETAILS)}}>
+      onPressButton={() => {navigation.navigate(RouteName.SERVINGCUSINE)}}>
       <View style={styles.InputMainView}>
 
-        <View style={styles.Time}>
-            
+        <View style={styles.Time}>        
+            <Input rounded placeholder="Facebook" style={styles.Input} />
+            <Input rounded placeholder="Instagram" style={styles.Input} />
+            <Input rounded placeholder="Twitter" style={styles.Input} />
         </View>
 
-      <View style={styles.TextView}>
-        <Text bold value={'Social Media Details'} style={styles.TextStyle} />
-      </View>
 
-        <Input rounded placeholder="Facebook" style={styles.Input} />
-        <Input rounded placeholder="Instagram" style={styles.Input} />
-        <Input rounded placeholder="Twitter" style={styles.Input} />
+
       </View>
     </Ui>
   );
@@ -63,4 +60,4 @@ const styles = StyleSheet.create({
       height:responsiveHeight(20)
   }
 });
-export default BusinessHour;
+export default MenuSetting;
