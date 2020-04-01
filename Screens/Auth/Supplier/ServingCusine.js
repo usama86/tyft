@@ -9,7 +9,7 @@ import {
 import Checkbox from '../../../Component/Checkbox';
 import Ui from '../../../Component/Ui';
 import * as RouteName from './../../../Constants/RouteName';
-const BusinessHour = ({navigation}) => {
+const ServingCusine = ({navigation}) => {
   const [check, SetCheck] = React.useState(false);
   const [name, SetName] = React.useState('');
   const changeInputHandler = () => {
@@ -18,22 +18,11 @@ const BusinessHour = ({navigation}) => {
   return (
     <Ui
       TextViewStyle={styles.TextViewStyle}
-      TextValue={"Business Hours "}
+      TextValue={"Serving Cusine"}
       ButtonText={'Next'}
-      onPressButton={() => {navigation.navigate(RouteName.SOCIALMEDIADETAILS)}}>
+      onPressButton={() => {navigation.navigate(RouteName.MENUSETTING)}}>
       <View style={styles.InputMainView}>
-
-        <View style={styles.Time}>
-            
-        </View>
-
-      <View style={styles.TextView}>
-        <Text bold value={'Social Media Details'} style={styles.TextStyle} />
-      </View>
-
-        <Input rounded placeholder="Facebook" style={styles.Input} />
-        <Input rounded placeholder="Instagram" style={styles.Input} />
-        <Input rounded placeholder="Twitter" style={styles.Input} />
+            {/* SHOW THREE BUTTONS IN SCROLL VIEW  */}
       </View>
     </Ui>
   );
@@ -42,25 +31,11 @@ const styles = StyleSheet.create({
   InputMainView: {
     marginVertical: responsiveHeight(2),
   },
-  Input: {
-    marginTop: responsiveHeight(3),
-  },
   TextViewStyle: {
-  //  width: responsiveWidth(60),
-  borderBottomWidth:1,
-  borderBottomColor:'grey',
-  },
-  TextView: {
-    width: '90%',
-    marginLeft:responsiveWidth(3),
+    //  width: responsiveWidth(60),
     borderBottomWidth:1,
     borderBottomColor:'grey',
   },
-  radioView: {
-    flexDirection: 'row',
-  },
-  Time:{
-      height:responsiveHeight(20)
-  }
+ 
 });
-export default BusinessHour;
+export default ServingCusine;
