@@ -18,7 +18,6 @@ const FindFoodTruck = ({navigation}) => {
           placeholder="Type something..."
         //   onChangeText={this.updateSearch}
           // value={search}
-          style={{borderWidth:0}}
           round
           lightTheme
           leftIconContainerStyle={{
