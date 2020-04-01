@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Image, StyleSheet} from 'react-native';
+import {View, Image, StyleSheet,TouchableOpacity} from 'react-native';
 import {
   responsiveHeight,
   responsiveWidth,
@@ -95,8 +95,10 @@ const Home = ({navigation}) => {
             value={'Log in'}
           />
         </View>
-
-        <Text style={Underline} value={'Sign In Later'} />
+          <TouchableOpacity onPress={()=>navigation.navigate(RouteName.SEARCHTRUCK)} >
+          <Text style={Underline} value={'Sign In Later'} />
+          </TouchableOpacity>
+    
       </View>
     </Container>
     // </Animation>

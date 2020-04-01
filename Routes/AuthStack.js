@@ -8,6 +8,8 @@ import TruckLogo from './../Screens/Auth/Supplier/TruckLogo';
 import TruckInfo from './../Screens/Auth/Supplier/TruckInfo';
 import BusinessHour from './../Screens/Auth/Supplier/BusinessHour';
 import ServingCusine from '../Screens/Auth/Supplier/ServingCusine';
+import SearchTruck from './../Screens/Auth/SearchTruck/SearchTruck';
+import FindFoodTruck from './../Screens/Auth/FindFoodTruck';
 import * as RouteName from './../Constants/RouteName';
 import {createStackNavigator} from '@react-navigation/stack';
 import MenuSetting from '../Screens/Auth/Supplier/MenuSetting';
@@ -39,6 +41,8 @@ const AuthStack = () => (
       <StackAuth.Screen name={RouteName.SOCIALMEDIADETAILS} component={SocialMedia}/>
       <StackAuth.Screen name={RouteName.MENUSETTING} component={MenuSetting} />
       <StackAuth.Screen name={RouteName.COVERPHOTO} component={CoverPhoto} />
+      <StackAuth.Screen name={RouteName.SEARCHTRUCK} component={SearchTruck} />
+    <StackAuth.Screen name={RouteName.FINDFOODTRUCK} component={FindFoodTruck}/>
       
     </StackAuth.Navigator>
   );
