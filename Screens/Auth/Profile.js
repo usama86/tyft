@@ -30,11 +30,11 @@ const Profile = ({navigation}) => {
         <Button style={styles.Button}>
           <Text style={styles.Btntext} value={'Info'} />
         </Button>
-        <Button style={styles.Button}>
-          <Text style={styles.Btntext} value={'Menu'} />
+        <Button style={[styles.Button,{backgroundColor:'white'}]}>
+          <Text style={[styles.Btntext,{color:'black'}]} value={'Menu'} />
         </Button>
-        <Button style={styles.Button}>
-          <Text style={styles.Btntext} value={'Reviews'} />
+        <Button style={[styles.Button,{backgroundColor:'white'}]}>
+          <Text style={[styles.Btntext,{color:'black'}]} value={'Reviews'} />
         </Button>
       </View>
 
@@ -58,7 +58,7 @@ const Profile = ({navigation}) => {
       </View>
       <View
         style={{
-          marginRight: responsiveWidth(1),
+          marginRight: responsiveWidth(3),
           alignSelf: 'flex-end',
           flexDirection: 'row',
           alignItems: 'center',
@@ -180,6 +180,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 25,
+    elevation:5
   },
   Btntext: {
     color: 'white',
