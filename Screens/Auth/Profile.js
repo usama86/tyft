@@ -34,7 +34,7 @@ const Profile = ({navigation}) => {
         <Button onPress={()=>navigation.navigate(RouteName.MENU)} style={[styles.Button,{backgroundColor:'white'}]}>
           <Text style={[styles.Btntext,{color:'black'}]} value={'Menu'} />
         </Button>
-        <Button onPress={()=>navigation.navigate(RouteName.MENU)}  style={[styles.Button,{backgroundColor:'white'}]}>
+        <Button onPress={()=>navigation.navigate(RouteName.CUSTOMERREVIEWS)}  style={[styles.Button,{backgroundColor:'white'}]}>
           <Text style={[styles.Btntext,{color:'black'}]} value={'Reviews'} />
         </Button>
       </View>

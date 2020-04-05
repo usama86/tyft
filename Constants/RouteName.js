@@ -16,3 +16,4 @@ export const FINDFOODTRUCK = 'FindFoodTruck';
 export const SERVINGCUSINETYPE = 'ServingCusineType';
 export const PROFILE = 'Profile';
 export const MENU = 'Menu';
+export const CUSTOMERREVIEWS = 'CustomerReviews';

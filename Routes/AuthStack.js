@@ -18,6 +18,7 @@ import SocialMedia from './../Screens/Auth/Supplier/SocialMediaDetails';
 import ServingCusinetype from './../Screens/Auth/ServingCusineType';
 import Profile from './../Screens/Auth/Profile';
 import Menu from './../Screens/Auth/Menu';
+import CustomerReviews from './../Screens/Auth/CustomerReviews';
 
 const StackAuth = createStackNavigator();
 const AuthStack = () => (
@@ -70,6 +71,11 @@ const AuthStack = () => (
       options={{title:'Back'}}
       name={RouteName.MENU}
       component={Menu}
+    />
+        <StackAuth.Screen
+      options={{title:'Customer Reviews'}}
+      name={RouteName.CUSTOMERREVIEWS}
+      component={CustomerReviews}
     />
   </StackAuth.Navigator>
 );
