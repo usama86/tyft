@@ -53,8 +53,10 @@ const AuthStack = () => (
     <StackAuth.Screen
       name={RouteName.FINDFOODTRUCK}
       component={FindFoodTruck}
+      options={{title:'Find Food Truck'}}
     />
     <StackAuth.Screen
+    options={{title:'Back'}}
       name={RouteName.SERVINGCUSINETYPE}
       component={ServingCusinetype}
     />
