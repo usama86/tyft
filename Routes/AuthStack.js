@@ -22,7 +22,8 @@ import CustomerReviews from './../Screens/Auth/CustomerReviews';
 
 const StackAuth = createStackNavigator();
 const AuthStack = () => (
-  <StackAuth.Navigator initialRouteName={RouteName.HOME}>
+  <StackAuth.Navigator
+    initialRouteName={RouteName.HOME}>
     <StackAuth.Screen
       name={RouteName.HOME}
       component={HomeScreen}
@@ -51,14 +52,18 @@ const AuthStack = () => (
     />
     <StackAuth.Screen name={RouteName.MENUSETTING} component={MenuSetting} />
     <StackAuth.Screen name={RouteName.COVERPHOTO} component={CoverPhoto} />
-    <StackAuth.Screen name={RouteName.SEARCHTRUCK}    options={{title:'Search Truck'}} component={SearchTruck} />
+    <StackAuth.Screen
+      name={RouteName.SEARCHTRUCK}
+      options={{title: 'Search Truck'}}
+      component={SearchTruck}
+    />
     <StackAuth.Screen
       name={RouteName.FINDFOODTRUCK}
       component={FindFoodTruck}
-      options={{title:'Find Food Truck'}}
+      options={{title: 'Find Food Truck'}}
     />
     <StackAuth.Screen
-    options={{title:'Back'}}
+      options={{title: 'Back'}}
       name={RouteName.SERVINGCUSINETYPE}
       component={ServingCusinetype}
     />
@@ -67,13 +72,13 @@ const AuthStack = () => (
       name={RouteName.PROFILE}
       component={Profile}
     />
-      <StackAuth.Screen
-      options={{title:'Back'}}
+    <StackAuth.Screen
+      options={{title: 'Back'}}
       name={RouteName.MENU}
       component={Menu}
     />
-        <StackAuth.Screen
-      options={{title:'Customer Reviews'}}
+    <StackAuth.Screen
+      options={{title: 'Customer Reviews'}}
       name={RouteName.CUSTOMERREVIEWS}
       component={CustomerReviews}
     />
