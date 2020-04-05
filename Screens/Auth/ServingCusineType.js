@@ -19,6 +19,7 @@ import {
   responsiveWidth,
   responsiveFontSize,
 } from 'react-native-responsive-dimensions';
+import * as RouteName from '../../Constants/RouteName';
 const FindFoodTruck = ({navigation}) => {
   const [Data, setData] = useState([
     {id: 0, name: 'Burgers', checked: false},
@@ -82,11 +83,14 @@ const FindFoodTruck = ({navigation}) => {
   return (
     <Container containerStyle={styles.ContainerStyles}>
       <View style={styles.HeadingContainer}>
-        <Text
-          style={{textTransform: 'uppercase'}}
-          bold
-          value={'Serving by Cuisine Type'}
-        />
+        <TouchableOpacity
+          onPress={() => navigation.navigate(RouteName.PROFILE)}>
+          <Text
+            style={{textTransform: 'uppercase'}}
+            bold
+            value={'Serving by Cuisine Type'}
+          />
+        </TouchableOpacity>
       </View>
 
       <FlatList

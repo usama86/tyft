@@ -16,36 +16,53 @@ import MenuSetting from '../Screens/Auth/Supplier/MenuSetting';
 import CoverPhoto from './../Screens/Auth/Supplier/CoverPhoto';
 import SocialMedia from './../Screens/Auth/Supplier/SocialMediaDetails';
 import ServingCusinetype from './../Screens/Auth/ServingCusineType';
+import Profile from './../Screens/Auth/Profile';
 
 const StackAuth = createStackNavigator();
 const AuthStack = () => (
-    <StackAuth.Navigator initialRouteName={RouteName.HOME}>
-      <StackAuth.Screen
-        name={RouteName.HOME}
-        component={HomeScreen}
-        options={{title: 'Overview', headerShown: false}}
-      />
-      <StackAuth.Screen
-        name={RouteName.SIGNUPSELECTION}
-        component={SignUpSelection}
-      />
-      <StackAuth.Screen name={RouteName.SIGNIN} component={SignIn} />
-      <StackAuth.Screen name={RouteName.SIGNUP} component={SignUp} />
-      <StackAuth.Screen
-        name={RouteName.SIGNUPSUPPLIER}
-        component={SignUpSupplier}
-      />
-      <StackAuth.Screen name={RouteName.TRUCKLOGO} component={TruckLogo} />
-      <StackAuth.Screen name={RouteName.TRUCKINFO} component={TruckInfo} />
-      <StackAuth.Screen name={RouteName.BUSINESSHOUR} component={BusinessHour} />
-      <StackAuth.Screen name={RouteName.SERVINGCUSINE} component={ServingCusine} />
-      <StackAuth.Screen name={RouteName.SOCIALMEDIADETAILS} component={SocialMedia}/>
-      <StackAuth.Screen name={RouteName.MENUSETTING} component={MenuSetting} />
-      <StackAuth.Screen name={RouteName.COVERPHOTO} component={CoverPhoto} />
-      <StackAuth.Screen name={RouteName.SEARCHTRUCK} component={SearchTruck} />
-    <StackAuth.Screen name={RouteName.FINDFOODTRUCK} component={FindFoodTruck}/>
-    <StackAuth.Screen name={RouteName.SERVINGCUSINETYPE} component={ServingCusinetype}/>
-      
-    </StackAuth.Navigator>
-  );
-  export default AuthStack;
+  <StackAuth.Navigator initialRouteName={RouteName.HOME}>
+    <StackAuth.Screen
+      name={RouteName.HOME}
+      component={HomeScreen}
+      options={{title: 'Overview', headerShown: false}}
+    />
+    <StackAuth.Screen
+      name={RouteName.SIGNUPSELECTION}
+      component={SignUpSelection}
+    />
+    <StackAuth.Screen name={RouteName.SIGNIN} component={SignIn} />
+    <StackAuth.Screen name={RouteName.SIGNUP} component={SignUp} />
+    <StackAuth.Screen
+      name={RouteName.SIGNUPSUPPLIER}
+      component={SignUpSupplier}
+    />
+    <StackAuth.Screen name={RouteName.TRUCKLOGO} component={TruckLogo} />
+    <StackAuth.Screen name={RouteName.TRUCKINFO} component={TruckInfo} />
+    <StackAuth.Screen name={RouteName.BUSINESSHOUR} component={BusinessHour} />
+    <StackAuth.Screen
+      name={RouteName.SERVINGCUSINE}
+      component={ServingCusine}
+    />
+    <StackAuth.Screen
+      name={RouteName.SOCIALMEDIADETAILS}
+      component={SocialMedia}
+    />
+    <StackAuth.Screen name={RouteName.MENUSETTING} component={MenuSetting} />
+    <StackAuth.Screen name={RouteName.COVERPHOTO} component={CoverPhoto} />
+    <StackAuth.Screen name={RouteName.SEARCHTRUCK} component={SearchTruck} />
+    <StackAuth.Screen
+      name={RouteName.FINDFOODTRUCK}
+      component={FindFoodTruck}
+    />
+    <StackAuth.Screen
+      name={RouteName.SERVINGCUSINETYPE}
+      component={ServingCusinetype}
+    />
+    <StackAuth.Screen
+      options={{headerShown: false}}
+      name={RouteName.PROFILE}
+      component={Profile}
+    />
+  </StackAuth.Navigator>
+);
+export default AuthStack;
