@@ -20,6 +20,7 @@ import {
   responsiveWidth,
   responsiveFontSize,
 } from 'react-native-responsive-dimensions';
+import * as RouteName from '../../Constants/RouteName';
 const Profile = ({navigation}) => {
   return (
     <Container>
@@ -30,10 +31,10 @@ const Profile = ({navigation}) => {
         <Button style={styles.Button}>
           <Text style={styles.Btntext} value={'Info'} />
         </Button>
-        <Button style={[styles.Button,{backgroundColor:'white'}]}>
+        <Button onPress={()=>navigation.navigate(RouteName.MENU)} style={[styles.Button,{backgroundColor:'white'}]}>
           <Text style={[styles.Btntext,{color:'black'}]} value={'Menu'} />
         </Button>
-        <Button style={[styles.Button,{backgroundColor:'white'}]}>
+        <Button onPress={()=>navigation.navigate(RouteName.MENU)}  style={[styles.Button,{backgroundColor:'white'}]}>
           <Text style={[styles.Btntext,{color:'black'}]} value={'Reviews'} />
         </Button>
       </View>

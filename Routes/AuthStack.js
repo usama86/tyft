@@ -17,6 +17,7 @@ import CoverPhoto from './../Screens/Auth/Supplier/CoverPhoto';
 import SocialMedia from './../Screens/Auth/Supplier/SocialMediaDetails';
 import ServingCusinetype from './../Screens/Auth/ServingCusineType';
 import Profile from './../Screens/Auth/Profile';
+import Menu from './../Screens/Auth/Menu';
 
 const StackAuth = createStackNavigator();
 const AuthStack = () => (
@@ -64,6 +65,11 @@ const AuthStack = () => (
       options={{headerShown: false}}
       name={RouteName.PROFILE}
       component={Profile}
+    />
+      <StackAuth.Screen
+      options={{title:'Back'}}
+      name={RouteName.MENU}
+      component={Menu}
     />
   </StackAuth.Navigator>
 );
