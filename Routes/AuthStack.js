@@ -15,6 +15,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import MenuSetting from '../Screens/Auth/Supplier/MenuSetting';
 import CoverPhoto from './../Screens/Auth/Supplier/CoverPhoto';
 import SocialMedia from './../Screens/Auth/Supplier/SocialMediaDetails';
+import ServingCusinetype from './../Screens/Auth/ServingCusineType';
 
 const StackAuth = createStackNavigator();
 const AuthStack = () => (
@@ -43,6 +44,7 @@ const AuthStack = () => (
       <StackAuth.Screen name={RouteName.COVERPHOTO} component={CoverPhoto} />
       <StackAuth.Screen name={RouteName.SEARCHTRUCK} component={SearchTruck} />
     <StackAuth.Screen name={RouteName.FINDFOODTRUCK} component={FindFoodTruck}/>
+    <StackAuth.Screen name={RouteName.SERVINGCUSINETYPE} component={ServingCusinetype}/>
       
     </StackAuth.Navigator>
   );

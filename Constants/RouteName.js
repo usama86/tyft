@@ -13,3 +13,4 @@ export const COVERPHOTO  ='CoverPhoto';
 export const SOCIALMEDIADETAILS ='SocialMediaDetails';
 export const SEARCHTRUCK = 'SearchTruck';
 export const FINDFOODTRUCK = 'FindFoodTruck';
+export const SERVINGCUSINETYPE='ServingCusineType'
