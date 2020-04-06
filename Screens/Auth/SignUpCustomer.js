@@ -73,6 +73,7 @@ const styles=StyleSheet.create({
     },
     radioView:{
         marginLeft:responsiveWidth(15),
+        marginTop:responsiveHeight(5),
         flexDirection:'row'
     },
     TextSpace:{

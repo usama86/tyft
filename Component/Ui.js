@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '90%',
     height: responsiveHeight(6),
+    borderRadius:8
     
     // borderStyle: 'solid',
     // borderWidth: 1,

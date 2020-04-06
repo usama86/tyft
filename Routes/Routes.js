@@ -8,7 +8,7 @@ const AppStack = createStackNavigator();
 console.disableYellowBox = true;
 const Routes = () => {
   return (
-    <NavigationContainer>
+    <NavigationContainer >
       <AppStack.Navigator
         screenOptions={{headerShown: false}}
         initialRouteName="AuthLoading">

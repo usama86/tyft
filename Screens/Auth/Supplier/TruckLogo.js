@@ -33,10 +33,10 @@ const TruckLogo = ({navigation}) => {
           value={
             'Upload a logo photo to help users quickly recognize your brand'
           }
-          style={{color: 'grey'}}
+          style={{color: 'grey', marginLeft:responsiveWidth(2.5)}}
         />
       </View>
-      <ImagePicker  SendUri={SendUri} style = {styles.ImageContainer} />
+      <ImagePicker text={'Upload your logo'}  SendUri={SendUri} style = {styles.ImageContainer} />
     </Ui>
   );
 };

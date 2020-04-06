@@ -40,7 +40,7 @@ const SignUpSupplier = ({navigation}) => {
           checked={check}
           onPress={changeInputHandler}
           TextVal={
-            'By signing up, I agree to TYFT Terms & Conditions and privacy policy'
+            'By signing up, I agree to'
           }
         />
       </View>
@@ -58,7 +58,8 @@ const styles = StyleSheet.create({
     marginTop: responsiveHeight(3),
   },
   radioView: {
-    flexDirection: 'row',
+    marginTop: responsiveHeight(3),
+    flexDirection: 'row'
   },
 });
 export default SignUpSupplier;

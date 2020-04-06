@@ -38,6 +38,7 @@ const FindFoodTruck = ({navigation}) => {
       subtitle2: '1620 US-70,Coleny KS 679311',
       subtitle3: '11:00 AM - 2:00 PM',
       status: 'OPEN',
+      rating: 5,
     },
     {
       id: 2,
@@ -46,6 +47,7 @@ const FindFoodTruck = ({navigation}) => {
       subtitle2: '1620 US-70,Coleny KS 679311',
       subtitle3: '11:00 AM - 2:00 PM',
       status: 'OPEN',
+      rating: 4,
     },
     {
       id: 3,
@@ -54,6 +56,7 @@ const FindFoodTruck = ({navigation}) => {
       subtitle2: '1620 US-70,Coleny KS 679311',
       subtitle3: '11:00 AM - 2:00 PM',
       status: 'OPEN',
+      rating: 2,
     },
     {
       id: 4,
@@ -62,6 +65,7 @@ const FindFoodTruck = ({navigation}) => {
       subtitle2: '1620 US-70,Coleny KS 679311',
       subtitle3: '11:00 AM - 2:00 PM',
       status: 'OPEN',
+      rating: 1,
     },
   ]);
   const PrintCard = (item, index) => (
@@ -97,14 +101,19 @@ const FindFoodTruck = ({navigation}) => {
             styles.flex,
             {justifyContent: 'space-between', height: responsiveHeight(5)},
           ]}>
-          <Text
+           <TouchableOpacity  onPress={()=>navigation.navigate(RouteName.SERVINGCUSINETYPE)}>
+           <Text
             value={item.status}
             style={{
               color: 'green',
               fontSize: responsiveFontSize(2),
               fontWeight: 'bold',
             }}
+          
           />
+             
+             </TouchableOpacity> 
+         
           {item.rating ? (
             <Rating
               startingValue={item.rating}
@@ -163,7 +172,7 @@ const FindFoodTruck = ({navigation}) => {
         <Button style={styles.button}>
           <Text style={styles.TextStyle} value={'BBQ'} />
         </Button>
-        <TouchableOpacity onPress={()=>navigation.navigate(RouteName.SERVINGCUSINETYPE)} >
+        <TouchableOpacity >
           <Image
             style={{width: responsiveWidth(8), height: responsiveHeight(4)}}
             source={require('../../images/filter.png')}

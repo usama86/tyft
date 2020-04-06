@@ -1,16 +1,26 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {TouchableWithoutFeedback, Text} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import {
   responsiveHeight,
   responsiveWidth,
 } from 'react-native-responsive-dimensions';
-const Animation = ({animations, children, container, ...props}) => {
+const Animation = ({animationsIn,animationOut, children, container,navigation, ...props}) => {
+  const [animate,SetAnimate]=React.useState(animationsIn);
+  
+  useEffect(()=>{
+  setTimeout(() => {
+  
+     navigation.navigate('Auth');
+    
+     }, 2000); // a
+  },[])
+
   return (
     <Animatable.View
       style={container}
-      animation={animations}
+      animation={animate}
       easing="ease-out"
       {...props}>
       {children}
@@ -19,12 +29,14 @@ const Animation = ({animations, children, container, ...props}) => {
 };
 
 Animation.propTypes = {
-  animations: PropTypes.string,
+  animationsIn: PropTypes.string,
+  animationOut: PropTypes.string,
   children: PropTypes.object,
   container: PropTypes.object,
 };
 Animation.defaultProps = {
-  animation: 'zoomInDown',
+  animationsIn: 'zoomInDown',
+  animationOut: '',
   children: <Text>Hellllllllo</Text>,
   container: {
     width: '100%',
