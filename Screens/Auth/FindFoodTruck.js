@@ -69,7 +69,7 @@ const FindFoodTruck = ({navigation}) => {
     },
   ]);
   const PrintCard = (item, index) => (
-    <TouchableOpacity activeOpacity={0.8} style={styles.MainView}>
+    <TouchableOpacity activeOpacity={0.8} style={styles.MainView} onPress={()=>navigation.navigate(RouteName.PROFILE)}>
       <View style={styles.LeftIcon}>
         <Image style={styles.image} source={require('../../images/BOBY.png')} />
       </View>
@@ -101,7 +101,7 @@ const FindFoodTruck = ({navigation}) => {
             styles.flex,
             {justifyContent: 'space-between', height: responsiveHeight(5)},
           ]}>
-           <TouchableOpacity  onPress={()=>navigation.navigate(RouteName.SERVINGCUSINETYPE)}>
+           <TouchableOpacity >
            <Text
             value={item.status}
             style={{

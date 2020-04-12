@@ -36,7 +36,7 @@ const CoverPhoto = ({navigation}) => {
           style={{color: 'grey'}}
         />
       </View>
-      <ImagePicker  SendUri={SendUri} style = {styles.ImageContainer} />
+      <ImagePicker text={'Add Cover Photo'}  SendUri={SendUri} style = {styles.ImageContainer} />
     </Ui>
   );
 };

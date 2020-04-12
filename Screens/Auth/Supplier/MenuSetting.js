@@ -91,9 +91,13 @@ const MenuSetting = ({navigation}) => {
   );
   return (
     <Ui
+    ContainerStyle={{marginTop:responsiveHeight(4)}}
       TextViewStyle={styles.TextViewStyle}
       TextValue={"Menu Setting"}
       ButtonText={'Next'}
+      TextShow={false}
+      buttonStyle={styles.buttonStyle}
+      
       onPressButton={() => {navigation.navigate(RouteName.COVERPHOTO)}}>
       <View style={styles.InputMainView}>
 
@@ -104,9 +108,7 @@ const MenuSetting = ({navigation}) => {
             <Input rounded placeholder="Price" style={styles.Input} />
         </View>
 
-      <View style={styles.TextView}>
-        <Text value={'Mexicans'} style={styles.TextStyle} />
-        
+      <View style={styles.TextView}>  
         <Button
           style={styles.buttonStyle2}
           onPress={()=>{}}>
@@ -119,7 +121,7 @@ const MenuSetting = ({navigation}) => {
           />
         </Button>
       </View>
-    <View style={{width:responsiveWidth(80),height:responsiveHeight(19) }}>
+    <View style={{width:'100%',height:responsiveHeight(32) }}>
       <FlatList
         data={Data}
         keyExtractor={(item) => item.id}
@@ -152,10 +154,10 @@ const styles = StyleSheet.create({
     width:'60%'
   },
   TextView: {
-    width: '90%',
+    width: '100%',
     flexDirection:'row',
     marginTop:responsiveHeight(5),
-    marginLeft:responsiveWidth(3),
+    //Left:responsiveWidth(3),
     borderBottomWidth:1,
     borderBottomColor:'grey',
   },
@@ -166,18 +168,23 @@ const styles = StyleSheet.create({
       height:responsiveHeight(30)
   },
   buttonStyle2: {
-    marginLeft:responsiveWidth(7),
+    marginLeft:responsiveWidth(1),
     marginBottom:responsiveHeight(1),
     backgroundColor: 'rgb(193, 32, 38)',
     justifyContent: 'center',
     alignItems: 'center',
     width: '28%',
     height: responsiveHeight(4),
-    borderRadius:8
+    borderRadius:8,
     
-    // borderStyle: 'solid',
-    // borderWidth: 1,
-    // borderColor: 'rgb(0, 0, 0)'
   },
+  buttonStyle:{
+    marginTop:responsiveHeight(9.8),
+    marginLeft:responsiveWidth(-2.5)
+  },
+  MainView:{
+    height:responsiveHeight(10)
+   // width:responsiveWidth(50)
+  }
 });
 export default MenuSetting;

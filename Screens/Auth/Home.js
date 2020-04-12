@@ -3,6 +3,7 @@ import {View, Image, StyleSheet,TouchableOpacity} from 'react-native';
 import {
   responsiveHeight,
   responsiveWidth,
+  responsiveFontSize,
 } from 'react-native-responsive-dimensions';
 import Text from './../../Component/Text';
 import Button from '../../Component/Button';
@@ -36,7 +37,7 @@ const Home = ({navigation}) => {
           style={logoStyle}
           source={require('./../../images/TYFTLogo.png')}
         />
-        <Text style={TextStyle} bold numberOfLines={1} value={'S I G N U P'} />
+        <Text style={TextStyle} numberOfLines={1} value={'S I G N U P'} />
       </View>
 
       <View style={ButtonViewStyle}>
@@ -127,7 +128,8 @@ const styles = StyleSheet.create({
   TextStyle: {
     width: responsiveWidth(40),
     color:'rgb(193, 32, 38)',
-    marginLeft:responsiveWidth(10)
+    fontSize:responsiveFontSize(2.4),
+    marginLeft:responsiveWidth(17)
   },
   TouchStyle:{
     marginRight:responsiveWidth(3)

@@ -43,14 +43,14 @@ const styles = StyleSheet.create({
   },
   flexView: {
     width: '100%',
-    height: responsiveHeight(10),
+    height: responsiveHeight(8),
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
   },
   button: {
     width: '25%',
-    height: responsiveHeight(7),
+    height: responsiveHeight(5),
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: theme.colors.primary,

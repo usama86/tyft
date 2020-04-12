@@ -19,19 +19,21 @@ const Ui = ({
   FooterStyle,
   ButtonText,
   TextSpace,
-  onPressButton
+  onPressButton,
+  TextShow,
+  buttonStyle
 }) => {
   return (
     <Container ContentStyle={[styles.container, ContainerStyle]}>
-      <View style={[styles.TextView, TextViewStyle]}>
+    {TextShow ?   <View style={[styles.TextView, TextViewStyle]}>
         <Text bold value={TextValue} style={TextStyle} />
-      </View>
+      </View>:null}
 
       <View style={[styles.Content,ContentStyle]}>{children}</View>
 
  
         <Button
-          style={styles.buttonStyle2}
+          style={[styles.buttonStyle2,buttonStyle]}
           onPress={onPressButton}>
           {/* <Image style={styles.logoStyle1} source={require('./../images/TYFTLogo.png')} /> */}
           <Text
@@ -99,4 +101,8 @@ const styles = StyleSheet.create({
       marginTop:responsiveHeight(2)
   }
 });
+
+Ui.defaultProps={
+  TextShow:true
+}
 export default Ui;

@@ -82,16 +82,20 @@ const ServingCusine = ({navigation}) => {
   return (
     <Ui
     ContentStyle={styles.HeadingContainer}
-      TextViewStyle={styles.TextViewStyle}
-      TextValue={"Serving Cusine"}
+      // TextViewStyle={styles.TextViewStyle}
+      // TextValue={"Serving Cusine"}
+      ContainerStyle={{marginTop:responsiveHeight(4)}}
+      TextShow={false}
       ButtonText={'Next'}
-      onPressButton={() => {navigation.navigate(RouteName.MENUSETTING)}}>
+      onPressButton={() => {navigation.navigate(RouteName.MENUSETTING)}}
+      buttonStyle={{marginLeft:responsiveWidth(-2.5),marginTop:responsiveHeight(0)}}
+      >
       <FlatList
         data={Data}
         numColumns={3}
         keyExtractor={(item) => item.id}
         contentContainerStyle={{
-          paddingVertical: responsiveHeight(2),
+          paddingVertical: responsiveHeight(0),
         }}
         renderItem={({item, index}) => PrintCard(item, index)}
       />
@@ -108,14 +112,14 @@ const styles = StyleSheet.create({
     borderBottomColor:'grey',
   },
   HeadingContainer: {
-    height: responsiveHeight(67),
+    height: responsiveHeight(75),
     marginLeft:responsiveWidth(-10),
     marginBottom:responsiveHeight(4),
     justifyContent: 'center',
     alignItems: 'center',
   },
   MainView: {
-    marginTop: responsiveHeight(2),
+    marginTop: responsiveHeight(2.2),
     width: responsiveWidth(25),
     height: responsiveHeight(6),
     borderRadius: 25,

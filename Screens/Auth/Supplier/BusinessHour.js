@@ -28,7 +28,6 @@ function BusinessHour(props) {
     <SafeAreaView style={styles.container}> 
       <ScrollView>
         <View style={styles.formContainer}>
-          <HeaderLabel value={'Delivery Settings'}/>
           <View style={styles.tableHeader}>
             <Text style={styles.dayColumnView}>Day</Text>
             <Text style={styles.timeColumnView}>Time</Text>
@@ -160,7 +159,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgb(193, 32, 38)',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '90%',
+    width: '100%',
     height: responsiveHeight(6),
     borderRadius:8
     
