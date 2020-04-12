@@ -80,7 +80,7 @@ const AppTab = () => (
       activeTintColor: theme.default.colors.primary,
       inactiveTintColor: 'gray',
     }}>
-    <Tabs.Screen name={'NearMe'} children={NearMeStack} />
+    <Tabs.Screen options={{title:'Near Me'}} name={'NearMe'} children={NearMeStack} />
     <Tabs.Screen name={'Search'} children={SearchStack} />
   </Tabs.Navigator>
 );
