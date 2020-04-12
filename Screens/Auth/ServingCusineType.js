@@ -83,25 +83,42 @@ const FindFoodTruck = ({navigation}) => {
   return (
     <Container containerStyle={styles.ContainerStyles}>
       <View style={styles.HeadingContainer}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate(RouteName.PROFILE)}>
+        <TouchableOpacity>
           <Text
             style={{textTransform: 'uppercase'}}
             bold
             value={'Serving by Cuisine Type'}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> 
+      </View>
+      <View style={{height:responsiveHeight(76)}}>
+        <FlatList
+          data={Data}
+          numColumns={3}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={{
+            paddingVertical: responsiveHeight(2),
+          }}
+          renderItem={({item, index}) => PrintCard(item, index)}
+        />
       </View>
 
-      <FlatList
-        data={Data}
-        numColumns={3}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={{
-          paddingVertical: responsiveHeight(2),
-        }}
-        renderItem={({item, index}) => PrintCard(item, index)}
-      />
+      <Button
+          style={styles.buttonStyle2}
+          onPress={()=>{navigation.navigate(RouteName.PROFILE)}}>
+          {/* <Image style={styles.logoStyle1} source={require('./../images/TYFTLogo.png')} /> */}
+          <Text
+            uppercase={false}
+            style={{color:'white'}}
+            value={"Next"}
+          />
+          {/* <Entypo
+							//style={{ marginLeft: responsiveWidth(16) }}
+							name="chevron-thin-right"
+							size={15}
+							color="white"
+						/> */}
+        </Button>
     </Container>
   );
 };
@@ -124,6 +141,19 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginLeft: '6.25%',
     backgroundColor: '#fff',
+  },
+  buttonStyle2: {
+    backgroundColor: 'rgb(193, 32, 38)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '90%',
+    height: responsiveHeight(6),
+    borderRadius:8,
+    marginLeft:responsiveWidth(4)
+    
+    // borderStyle: 'solid',
+    // borderWidth: 1,
+    // borderColor: 'rgb(0, 0, 0)'
   },
 });
 

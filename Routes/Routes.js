@@ -22,7 +22,7 @@ const Routes = () => {
     </Drawer.Navigator>
   );
   return (
-    <NavigationContainer>
+    <NavigationContainer >
       <AppStack.Navigator
         screenOptions={{headerShown: false}}
         initialRouteName="AuthLoading">

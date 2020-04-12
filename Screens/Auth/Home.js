@@ -26,6 +26,7 @@ const Home = ({navigation}) => {
     FooterText,
     Underline,
     logoStyle1,
+    TouchStyle
   } = styles;
   return (
     //    <Animation>
@@ -35,7 +36,7 @@ const Home = ({navigation}) => {
           style={logoStyle}
           source={require('./../../images/TYFTLogo.png')}
         />
-        <Text style={TextStyle} numberOfLines={1} value={'S I G N U P'} />
+        <Text style={TextStyle} bold numberOfLines={1} value={'S I G N U P'} />
       </View>
 
       <View style={ButtonViewStyle}>
@@ -95,7 +96,7 @@ const Home = ({navigation}) => {
             value={'Log in'}
           />
         </View>
-          <TouchableOpacity onPress={()=>navigation.navigate(RouteName.SEARCHTRUCK)} >
+          <TouchableOpacity onPress={()=>navigation.navigate(RouteName.SEARCHTRUCK)} style={TouchStyle} >
           <Text style={Underline} value={'Sign In Later'} />
           </TouchableOpacity>
     
@@ -124,8 +125,12 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   TextStyle: {
-    marginHorizontal: responsiveWidth(10),
-    width: responsiveWidth(20),
+    width: responsiveWidth(40),
+    color:'rgb(193, 32, 38)',
+    marginLeft:responsiveWidth(10)
+  },
+  TouchStyle:{
+    marginRight:responsiveWidth(3)
   },
   buttonStyle: {
     backgroundColor: '#3b589c',
@@ -164,7 +169,7 @@ const styles = StyleSheet.create({
   },
   FooterText: {
     alignItems: 'center',
-    marginTop: responsiveHeight(2),
+    marginTop: responsiveHeight(6),
   },
   Underline: {
     textDecorationLine: 'underline',

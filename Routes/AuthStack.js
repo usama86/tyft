@@ -1,4 +1,6 @@
 import React from 'react';
+ import Text from './../Component/Text';
+import {TouchableOpacity} from 'react-native';
 import HomeScreen from './../Screens/Auth/Home';
 import SignUpSelection from './../Screens/Auth/SignUpSelection';
 import SignIn from './../Screens/Auth/SignIn';
@@ -23,6 +25,15 @@ import CustomerReviews from './../Screens/Auth/CustomerReviews';
 const StackAuth = createStackNavigator();
 const AuthStack = () => (
   <StackAuth.Navigator
+  //   screenOptions={{headerLeft:()=>
+  //   (
+  //    <TouchableOpacity> 
+  //       <Text value={'Back'} bold />
+  //     </TouchableOpacity>
+  //   )
+  // }}
+    headerBackTitle= "Back"
+    headerTitle="Back"
     initialRouteName={RouteName.HOME}>
     <StackAuth.Screen
       name={RouteName.HOME}

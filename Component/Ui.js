@@ -80,7 +80,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '90%',
     height: responsiveHeight(6),
+<<<<<<< HEAD
 
+=======
+    borderRadius:8
+    
+>>>>>>> f9f3037097c90352ff4a5b414050177494016cd2
     // borderStyle: 'solid',
     // borderWidth: 1,
     // borderColor: 'rgb(0, 0, 0)'

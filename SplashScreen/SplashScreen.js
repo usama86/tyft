@@ -12,11 +12,10 @@ import {
 } from 'react-native-responsive-dimensions';
 import * as Animatable from 'react-native-animatable';
 import Animation from './../Component/Animation';
-const SplashScreen = () => {
-  const [animations, setAnimation] = React.useState('zoomInDown');
+const SplashScreen = ({navigation}) => {
 
   return (
-    <Animation container={styles.container} animations={animations}>
+    <Animation container={styles.container} navigation={navigation} animationsIn={'zoomInDown'} animationOut={'zoomOutDown'}>
       <Image
         style={styles.logoStyle}
         source={require('./../images/MainLogo.png')}
@@ -26,15 +25,19 @@ const SplashScreen = () => {
 };
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems:'center',
-    backgroundColor:'white'
+    height:'100%',
+    width:'100%',
+    // flex: 1,
+    // justifyContent: 'center',
+     alignItems:'center',
+
+    // backgroundColor:'white'
   },
   logoStyle: {
     height: responsiveHeight(80),
     width: responsiveWidth(60),
     resizeMode: 'contain',
+
   },
   TextStyle: {
     color: 'rgb(0, 0, 0)',
