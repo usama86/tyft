@@ -17,3 +17,5 @@ export const SERVINGCUSINETYPE = 'ServingCusineType';
 export const PROFILE = 'Profile';
 export const MENU = 'Menu';
 export const CUSTOMERREVIEWS = 'CustomerReviews';
+export const VEGGIEWISPER = 'VeggieWisper';
+export const MENUSETTINGDRAWER = 'MenuSettingDrawer'

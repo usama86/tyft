@@ -90,7 +90,7 @@ const Home = ({navigation}) => {
           <Text
             style={Underline}
             onPress={() => {
-              navigation.navigate(RouteName.SIGNIN);
+              navigation.navigate('App');
             }}
             value={'Log in'}
           />

@@ -19,7 +19,7 @@ const Ui = ({
   FooterStyle,
   ButtonText,
   TextSpace,
-  onPressButton
+  onPressButton,
 }) => {
   return (
     <Container ContentStyle={[styles.container, ContainerStyle]}>
@@ -27,25 +27,22 @@ const Ui = ({
         <Text bold value={TextValue} style={TextStyle} />
       </View>
 
-      <View style={[styles.Content,ContentStyle]}>{children}</View>
+      <View style={[styles.Content, ContentStyle]}>{children}</View>
 
- 
-        <Button
-          style={styles.buttonStyle2}
-          onPress={onPressButton}>
-          {/* <Image style={styles.logoStyle1} source={require('./../images/TYFTLogo.png')} /> */}
-          <Text
-            uppercase={false}
-            style={[styles.TextStyle1, TextSpace]}
-            value={ButtonText}
-          />
-          {/* <Entypo
+      <Button style={styles.buttonStyle2} onPress={onPressButton}>
+        {/* <Image style={styles.logoStyle1} source={require('./../images/TYFTLogo.png')} /> */}
+        <Text
+          uppercase={false}
+          style={[styles.TextStyle1, TextSpace]}
+          value={ButtonText}
+        />
+        {/* <Entypo
 							//style={{ marginLeft: responsiveWidth(16) }}
 							name="chevron-thin-right"
 							size={15}
 							color="white"
 						/> */}
-        </Button>
+      </Button>
     </Container>
   );
 };
@@ -53,13 +50,13 @@ const styles = StyleSheet.create({
   container: {
     width: '90%',
     marginTop: responsiveHeight(7),
-    alignSelf:'center',
+    alignSelf: 'center',
     justifyContent: 'center',
-    alignItems:'center'
+    alignItems: 'center',
   },
   TextView: {
     width: '80%',
-    alignSelf:'center',
+    alignSelf: 'center',
   },
   TextStyle1: {
     color: 'white',
@@ -74,8 +71,8 @@ const styles = StyleSheet.create({
     marginLeft: responsiveWidth(15),
     flexDirection: 'row',
   },
-  Content:{
-    height:responsiveHeight(65)
+  Content: {
+    height: responsiveHeight(65),
   },
   buttonStyle2: {
     backgroundColor: 'rgb(193, 32, 38)',
@@ -83,7 +80,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '90%',
     height: responsiveHeight(6),
-    
+
     // borderStyle: 'solid',
     // borderWidth: 1,
     // borderColor: 'rgb(0, 0, 0)'
@@ -94,8 +91,8 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     marginLeft: responsiveWidth(3),
   },
-  footer:{
-      marginTop:responsiveHeight(2)
-  }
+  footer: {
+    marginTop: responsiveHeight(2),
+  },
 });
 export default Ui;
