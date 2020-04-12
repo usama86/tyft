@@ -5,6 +5,8 @@ import {
   View,
   Image,
   FlatList,
+  SafeAreaView,
+  ScrollView,
 } from 'react-native';
 import Container from '../../Component/Container';
 import Button from '../../Component/Button';
@@ -20,6 +22,7 @@ import {
   responsiveFontSize,
 } from 'react-native-responsive-dimensions';
 import * as RouteName from '../../Constants/RouteName';
+import Header from '../../Component/Header';
 const FindFoodTruck = ({navigation}) => {
   const [Data, setData] = useState([
     {id: 0, name: 'Burgers', checked: false},
@@ -59,7 +62,7 @@ const FindFoodTruck = ({navigation}) => {
     {id: 2, name: 'Mexican', checked: false},
     {id: 3, name: 'Fries', checked: false},
   ]);
-  const Checked = (index) => {
+  const Checked = index => {
     let newArr = [...Data];
     newArr[index].checked = !newArr[index].checked;
     setData(newArr);
@@ -81,45 +84,29 @@ const FindFoodTruck = ({navigation}) => {
     </TouchableOpacity>
   );
   return (
-    <Container containerStyle={styles.ContainerStyles}>
-      <View style={styles.HeadingContainer}>
-        <TouchableOpacity>
-          <Text
-            style={{textTransform: 'uppercase'}}
-            bold
-            value={'Serving by Cuisine Type'}
-          />
-        </TouchableOpacity> 
-      </View>
-      <View style={{height:responsiveHeight(76)}}>
+    <SafeAreaView style={styles.parent}>
+      <Header onPress={() => navigation.goBack()}>
+        {'Serving By Cuisine Type'}
+      </Header>
+      <ScrollView>
         <FlatList
           data={Data}
           numColumns={3}
-          keyExtractor={(item) => item.id}
+          keyExtractor={item => item.id}
           contentContainerStyle={{
             paddingVertical: responsiveHeight(2),
           }}
           renderItem={({item, index}) => PrintCard(item, index)}
         />
-      </View>
-
-      <Button
+        <Button
           style={styles.buttonStyle2}
-          onPress={()=>{navigation.navigate(RouteName.PROFILE)}}>
-          {/* <Image style={styles.logoStyle1} source={require('./../images/TYFTLogo.png')} /> */}
-          <Text
-            uppercase={false}
-            style={{color:'white'}}
-            value={"Next"}
-          />
-          {/* <Entypo
-							//style={{ marginLeft: responsiveWidth(16) }}
-							name="chevron-thin-right"
-							size={15}
-							color="white"
-						/> */}
+          onPress={() => {
+            navigation.navigate(RouteName.PROFILE);
+          }}>
+          <Text uppercase={false} style={{color: 'white'}} value={'Next'} />
         </Button>
-    </Container>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -148,12 +135,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '90%',
     height: responsiveHeight(6),
-    borderRadius:8,
-    marginLeft:responsiveWidth(4)
-    
+    borderRadius: 8,
+    marginLeft: responsiveWidth(4),
+
     // borderStyle: 'solid',
     // borderWidth: 1,
     // borderColor: 'rgb(0, 0, 0)'
+  },
+  parent: {
+    flex: 1,
+    backgroundColor: '#fff',
   },
 });
 

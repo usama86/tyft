@@ -9,10 +9,12 @@ import MenuSettingDrawer from './../Screens/Auth/MenuSettingDrawer';
 import * as RouteName from './../Constants/RouteName';
 import AuthStack from './AuthStack';
 import CustomDrawer from './CustomDrawer';
+
 const AppStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 console.disableYellowBox = true;
 const Routes = () => {
+
   const AppDrawer = () => (
     <Drawer.Navigator
       drawerContent={()=><CustomDrawer/>}

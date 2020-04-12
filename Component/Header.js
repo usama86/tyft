@@ -53,15 +53,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
+    elevation:5
   },
   text: {
     color: 'black',
     fontSize: responsiveFontSize(2.2),
+    fontWeight:'bold'
   },
   homeIcon: {
     position: 'absolute',
     left: '4%',
     top: responsiveHeight(2),
+    elevation:5
   },
 });
 

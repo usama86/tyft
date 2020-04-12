@@ -5,6 +5,7 @@ import {
   View,
   Image,
   FlatList,
+  SafeAreaView,
 } from 'react-native';
 import Container from '../../Component/Container';
 import Button from '../../Component/Button';
@@ -20,6 +21,7 @@ import {
   responsiveFontSize,
 } from 'react-native-responsive-dimensions';
 import * as RouteName from '../../Constants/RouteName';
+import Header from '../../Component/Header';
 const FindFoodTruck = ({navigation}) => {
   const [Data, setData] = useState([
     {
@@ -69,12 +71,18 @@ const FindFoodTruck = ({navigation}) => {
     },
   ]);
   const PrintCard = (item, index) => (
-    <TouchableOpacity activeOpacity={0.8} style={styles.MainView} onPress={()=>navigation.navigate(RouteName.PROFILE)}>
+    <TouchableOpacity
+      activeOpacity={0.8}
+      style={styles.MainView}
+      onPress={() => navigation.navigate(RouteName.PROFILE)}>
       <View style={styles.LeftIcon}>
-        <Image style={styles.image} source={require('../../images/BOBY.png')} />
+        <Image style={styles.image} source={require('../../images/art.jpg')} />
       </View>
       <View style={styles.RightContent}>
-        <Text bold value={item.Title} />
+        <Text
+          style={{fontSize: responsiveFontSize(2), fontWeight: 'bold'}}
+          value={item.Title}
+        />
         <Text value={item.subtitle1} />
         <View style={styles.flex}>
           <Entypo
@@ -101,19 +109,17 @@ const FindFoodTruck = ({navigation}) => {
             styles.flex,
             {justifyContent: 'space-between', height: responsiveHeight(5)},
           ]}>
-           <TouchableOpacity >
-           <Text
-            value={item.status}
-            style={{
-              color: 'green',
-              fontSize: responsiveFontSize(2),
-              fontWeight: 'bold',
-            }}
-          
-          />
-             
-             </TouchableOpacity> 
-         
+          <TouchableOpacity>
+            <Text
+              value={item.status}
+              style={{
+                color: 'green',
+                fontSize: responsiveFontSize(2),
+                fontWeight: 'bold',
+              }}
+            />
+          </TouchableOpacity>
+
           {item.rating ? (
             <Rating
               startingValue={item.rating}
@@ -125,7 +131,8 @@ const FindFoodTruck = ({navigation}) => {
     </TouchableOpacity>
   );
   return (
-    <Container containerStyle={styles.ContainerStyles}>
+    <SafeAreaView style={styles.parent}>
+      <Header onPress={() => navigation.goBack()}>{'Find Food Truck'}</Header>
       <View style={styles.seacrhbarContainter}>
         <SearchBar
           placeholder="Type something..."
@@ -172,7 +179,8 @@ const FindFoodTruck = ({navigation}) => {
         <Button style={styles.button}>
           <Text style={styles.TextStyle} value={'BBQ'} />
         </Button>
-        <TouchableOpacity >
+        <TouchableOpacity
+          onPress={() => navigation.navigate(RouteName.SERVINGCUSINETYPE)}>
           <Image
             style={{width: responsiveWidth(8), height: responsiveHeight(4)}}
             source={require('../../images/filter.png')}
@@ -181,10 +189,10 @@ const FindFoodTruck = ({navigation}) => {
       </View>
       <FlatList
         data={Data}
-        keyExtractor={(item) => item.id}
+        keyExtractor={item => item.id}
         renderItem={({item, index}) => PrintCard(item, index)}
       />
-    </Container>
+    </SafeAreaView>
   );
 };
 
@@ -218,7 +226,7 @@ const styles = StyleSheet.create({
   MainView: {
     width: '96%',
     alignSelf: 'flex-end',
-    paddingVertical: responsiveHeight(2),
+    paddingVertical: responsiveHeight(0.5),
     borderBottomWidth: 0.7,
     borderBottomColor: '#212121',
     flexDirection: 'row',
@@ -227,9 +235,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   LeftIcon: {
-    width: responsiveHeight(13),
-    height: responsiveHeight(13),
-    borderRadius: responsiveHeight(13),
+    width: responsiveHeight(12),
+    height: responsiveHeight(12),
+    borderRadius: responsiveHeight(12),
   },
   RightContent: {
     width: '70%',
@@ -237,11 +245,16 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
-    resizeMode: 'contain',
+    borderRadius: responsiveHeight(100),
+    // resizeMode: 'contain',
   },
   flex: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  parent: {
+    flex: 1,
+    backgroundColor: '#fff',
   },
 });
 
