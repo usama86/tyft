@@ -27,28 +27,38 @@ const SearchTruck = ({navigation}) => {
       <View
         style={{
           marginVertical: responsiveHeight(1),
-          paddingHorizontal: responsiveWidth(5),
+          paddingHorizontal: responsiveWidth(2),
+          flexDirection: 'row',
+          justifyContent: 'space-around',
         }}>
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-          <Button style={styles.button}>
-            <Text style={styles.TextStyle} value={'Burger'} />
-          </Button>
-          <Button style={styles.button}>
-            <Text style={styles.TextStyle} value={'Pizza'} />
-          </Button>
-          <Button style={styles.button}>
-            <Text style={styles.TextStyle} value={'BBQ'} />
-          </Button>
-          <Button style={styles.button}>
-            <Text style={styles.TextStyle} value={'Burger'} />
-          </Button>
-          <Button style={styles.button}>
-            <Text style={styles.TextStyle} value={'Pizza'} />
-          </Button>
-          <Button style={styles.button}>
-            <Text style={styles.TextStyle} value={'BBQ'} />
-          </Button>
-        </ScrollView>
+        <View style={{width: '80%'}}>
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+            <Button style={styles.button}>
+              <Text style={styles.TextStyle} value={'Burger'} />
+            </Button>
+            <Button style={styles.button}>
+              <Text style={styles.TextStyle} value={'Pizza'} />
+            </Button>
+            <Button style={styles.button}>
+              <Text style={styles.TextStyle} value={'BBQ'} />
+            </Button>
+            <Button style={styles.button}>
+              <Text style={styles.TextStyle} value={'Burger'} />
+            </Button>
+            <Button style={styles.button}>
+              <Text style={styles.TextStyle} value={'Pizza'} />
+            </Button>
+            <Button style={styles.button}>
+              <Text style={styles.TextStyle} value={'BBQ'} />
+            </Button>
+          </ScrollView>
+        </View>
+        <TouchableOpacity>
+          <Image
+            style={{width: responsiveWidth(8), height: responsiveHeight(4)}}
+            source={require('../../../images/filter.png')}
+          />
+        </TouchableOpacity>
       </View>
       <Map />
     </SafeAreaView>

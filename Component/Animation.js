@@ -1,22 +1,20 @@
 import PropTypes from 'prop-types';
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import {TouchableWithoutFeedback, Text} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import {
   responsiveHeight,
   responsiveWidth,
 } from 'react-native-responsive-dimensions';
-const Animation = ({animationsIn,animationOut, children, container,navigation, ...props}) => {
-  const [animate,SetAnimate]=React.useState(animationsIn);
-  
-  useEffect(()=>{
-  setTimeout(() => {
-  
-     navigation.navigate('Auth');
-    
-     }, 2000); // a
-  },[])
-
+const Animation = ({
+  animationsIn,
+  animationOut,
+  children,
+  container,
+  navigation,
+  ...props
+}) => {
+  const [animate, SetAnimate] = React.useState(animationsIn);
   return (
     <Animatable.View
       style={container}
@@ -41,7 +39,7 @@ Animation.defaultProps = {
   container: {
     width: '100%',
     height: '100%',
-    backgroundColor:'#fff'
+    backgroundColor: '#fff',
   },
 };
 

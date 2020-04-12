@@ -6,6 +6,7 @@ import {
   Image,
   FlatList,
   SafeAreaView,
+  ScrollView,
 } from 'react-native';
 import Container from '../../Component/Container';
 import Button from '../../Component/Button';
@@ -169,7 +170,44 @@ const FindFoodTruck = ({navigation}) => {
           }}
         />
       </View>
-      <View style={styles.flexView}>
+      <View
+        style={{
+          marginVertical: responsiveHeight(1),
+          paddingHorizontal: responsiveWidth(2),
+          flexDirection: 'row',
+          justifyContent: 'space-around',
+        }}>
+        <View style={{width: '80%'}}>
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+            <Button style={styles.button}>
+              <Text style={styles.TextStyle} value={'Burger'} />
+            </Button>
+            <Button style={styles.button}>
+              <Text style={styles.TextStyle} value={'Pizza'} />
+            </Button>
+            <Button style={styles.button}>
+              <Text style={styles.TextStyle} value={'BBQ'} />
+            </Button>
+            <Button style={styles.button}>
+              <Text style={styles.TextStyle} value={'Burger'} />
+            </Button>
+            <Button style={styles.button}>
+              <Text style={styles.TextStyle} value={'Pizza'} />
+            </Button>
+            <Button style={styles.button}>
+              <Text style={styles.TextStyle} value={'BBQ'} />
+            </Button>
+          </ScrollView>
+        </View>
+        <TouchableOpacity
+          onPress={() => navigation.navigate(RouteName.SERVINGCUSINETYPE)}>
+          <Image
+            style={{width: responsiveWidth(8), height: responsiveHeight(4)}}
+            source={require('../../images/filter.png')}
+          />
+        </TouchableOpacity>
+      </View>
+      {/* <View style={styles.flexView}>
         <Button style={styles.button}>
           <Text style={styles.TextStyle} value={'Burger'} />
         </Button>
@@ -186,7 +224,7 @@ const FindFoodTruck = ({navigation}) => {
             source={require('../../images/filter.png')}
           />
         </TouchableOpacity>
-      </View>
+      </View> */}
       <FlatList
         data={Data}
         keyExtractor={item => item.id}
@@ -205,12 +243,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   button: {
-    width: '25%',
-    height: responsiveHeight(7),
+    width: responsiveWidth(25),
+    height: responsiveHeight(5),
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: theme.colors.primary,
     borderRadius: 8,
+    marginLeft: responsiveWidth(5),
+  },
+  TextStyle: {
+    color: 'white',
   },
   TextStyle: {
     color: 'white',

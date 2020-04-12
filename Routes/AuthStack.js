@@ -24,6 +24,7 @@ import CustomerReviews from './../Screens/Auth/CustomerReviews';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import FA from 'react-native-vector-icons/FontAwesome';
 import * as theme from '../Screens/theme' 
+import Favourite from '../Screens/Auth/Favourites'
 const Tabs = createBottomTabNavigator();
 const StackAuth = createStackNavigator();
 const StackNearMe = createStackNavigator();
@@ -61,17 +62,25 @@ const SearchStack = () => (
     />
   </StackSearch.Navigator>
 );
+const FavouriteStack = ()=>(
+  <StackFavourite.Navigator screenOptions={{headerShown:false}} >
+    <StackFavourite.Screen name={'Favourite'} component={Favourite} />
+  </StackFavourite.Navigator>
+)
 const AppTab = () => (
   <Tabs.Navigator
     screenOptions={({route}) => ({
       tabBarIcon: ({focused, color, size}) => {
         let iconName;
-
         if (route.name === 'NearMe') {
           iconName = 'map-marker';
           return <FA name={iconName} color={color} size={size} />;
         } else if (route.name === 'Search') {
           iconName = 'search';
+          return <FA name={iconName} color={color} size={size} />;
+        }
+        else if (route.name === 'FavouriteStack') {
+          iconName = 'heart';
           return <FA name={iconName} color={color} size={size} />;
         }
       },
@@ -82,6 +91,7 @@ const AppTab = () => (
     }}>
     <Tabs.Screen options={{title:'Near Me'}} name={'NearMe'} children={NearMeStack} />
     <Tabs.Screen name={'Search'} children={SearchStack} />
+    <Tabs.Screen options={{title:'Favourite'}} name={'FavouriteStack'} children={FavouriteStack} />
   </Tabs.Navigator>
 );
 const AuthStack = () => (
