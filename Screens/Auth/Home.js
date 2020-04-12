@@ -92,8 +92,8 @@ const Home = ({navigation}) => {
           <Text
             style={Underline}
             onPress={() => {
-              navigation.navigate('App');
-            }}
+              navigation.navigate(RouteName.VEGGIEWISPER);
+            }} 
             value={'Log in'}
           />
         </View>
