@@ -97,7 +97,7 @@ const Home = ({navigation}) => {
             value={'Log in'}
           />
         </View>
-          <TouchableOpacity onPress={()=>navigation.navigate(RouteName.SEARCHTRUCK)} style={TouchStyle} >
+          <TouchableOpacity onPress={()=>navigation.navigate(RouteName.TABS)} style={TouchStyle} >
           <Text style={Underline} value={'Sign In Later'} />
           </TouchableOpacity>
     

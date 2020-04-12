@@ -1,5 +1,5 @@
 import React from 'react';
- import Text from './../Component/Text';
+import Text from './../Component/Text';
 import {TouchableOpacity} from 'react-native';
 import HomeScreen from './../Screens/Auth/Home';
 import SignUpSelection from './../Screens/Auth/SignUpSelection';
@@ -21,18 +21,72 @@ import ServingCusinetype from './../Screens/Auth/ServingCusineType';
 import Profile from './../Screens/Auth/Profile';
 import Menu from './../Screens/Auth/Menu';
 import CustomerReviews from './../Screens/Auth/CustomerReviews';
-
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import FA from 'react-native-vector-icons/FontAwesome';
+import * as theme from '../Screens/theme' 
+const Tabs = createBottomTabNavigator();
 const StackAuth = createStackNavigator();
+const StackNearMe = createStackNavigator();
+const StackSearch = createStackNavigator();
+const StackFavourite = createStackNavigator();
+
+const NearMeStack = () => (
+  <StackNearMe.Navigator screenOptions={{headerShown: false}}>
+    <StackNearMe.Screen
+      name={RouteName.SEARCHTRUCK}
+      options={{title: 'Search Truck'}}
+      component={SearchTruck}
+    />
+  </StackNearMe.Navigator>
+);
+const SearchStack = () => (
+  <StackSearch.Navigator screenOptions={{headerShown: false}}>
+    <StackSearch.Screen
+      name={RouteName.FINDFOODTRUCK}
+      component={FindFoodTruck}
+    />
+    <StackSearch.Screen
+      name={RouteName.SERVINGCUSINETYPE}
+      component={ServingCusinetype}
+    />
+    <StackSearch.Screen
+      options={{headerShown: false}}
+      name={RouteName.PROFILE}
+      component={Profile}
+    />
+    <StackSearch.Screen name={RouteName.MENU} component={Menu} />
+    <StackSearch.Screen
+      name={RouteName.CUSTOMERREVIEWS}
+      component={CustomerReviews}
+    />
+  </StackSearch.Navigator>
+);
+const AppTab = () => (
+  <Tabs.Navigator
+    screenOptions={({route}) => ({
+      tabBarIcon: ({focused, color, size}) => {
+        let iconName;
+
+        if (route.name === 'NearMe') {
+          iconName = 'map-marker';
+          return <FA name={iconName} color={color} size={size} />;
+        } else if (route.name === 'Search') {
+          iconName = 'search';
+          return <FA name={iconName} color={color} size={size} />;
+        }
+      },
+    })}
+    tabBarOptions={{
+      activeTintColor: theme.default.colors.primary,
+      inactiveTintColor: 'gray',
+    }}>
+    <Tabs.Screen name={'NearMe'} children={NearMeStack} />
+    <Tabs.Screen name={'Search'} children={SearchStack} />
+  </Tabs.Navigator>
+);
 const AuthStack = () => (
   <StackAuth.Navigator
-  //   screenOptions={{headerLeft:()=>
-  //   (
-  //    <TouchableOpacity> 
-  //       <Text value={'Back'} bold />
-  //     </TouchableOpacity>
-  //   )
-  // }}
-    headerBackTitle= "Back"
+    headerBackTitle="Back"
     headerTitle="Back"
     initialRouteName={RouteName.HOME}>
     <StackAuth.Screen
@@ -64,34 +118,9 @@ const AuthStack = () => (
     <StackAuth.Screen name={RouteName.MENUSETTING} component={MenuSetting} />
     <StackAuth.Screen name={RouteName.COVERPHOTO} component={CoverPhoto} />
     <StackAuth.Screen
-      name={RouteName.SEARCHTRUCK}
-      options={{title: 'Search Truck'}}
-      component={SearchTruck}
-    />
-    <StackAuth.Screen
-      name={RouteName.FINDFOODTRUCK}
-      component={FindFoodTruck}
-      options={{title: 'Find Food Truck'}}
-    />
-    <StackAuth.Screen
-      options={{title: 'Back'}}
-      name={RouteName.SERVINGCUSINETYPE}
-      component={ServingCusinetype}
-    />
-    <StackAuth.Screen
       options={{headerShown: false}}
-      name={RouteName.PROFILE}
-      component={Profile}
-    />
-    <StackAuth.Screen
-      options={{title: 'Back'}}
-      name={RouteName.MENU}
-      component={Menu}
-    />
-    <StackAuth.Screen
-      options={{title: 'Customer Reviews'}}
-      name={RouteName.CUSTOMERREVIEWS}
-      component={CustomerReviews}
+      name={RouteName.TABS}
+      children={AppTab}
     />
   </StackAuth.Navigator>
 );

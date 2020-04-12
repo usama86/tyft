@@ -6,6 +6,7 @@ import {
   Image,
   FlatList,
   TextInput,
+  SafeAreaView,
 } from 'react-native';
 import Container from '../../Component/Container';
 import Button from '../../Component/Button';
@@ -21,8 +22,9 @@ import {
   responsiveFontSize,
 } from 'react-native-responsive-dimensions';
 import * as RouteName from '../../Constants/RouteName';
+import Header from '../../Component/Header';
 const Menu = ({navigation}) => {
-  const [menuItem, setMenuItem] = useState('Mexican');
+  const [menuItem, setMenuItem] = useState();
   const [Data, setData] = useState([
     {
       id: 0,
@@ -90,30 +92,32 @@ const Menu = ({navigation}) => {
         />
       </View>
       <View style={styles.Right}>
-        <Text value={'$ '+item.price} />
+        <Text value={'$ ' + item.price} />
       </View>
     </TouchableOpacity>
   );
   return (
-    <Container containerStyle={styles.ContainerStyles}>
+    <SafeAreaView style={styles.parent}>
+      <Header onPress={()=>navigation.goBack()} >{'Menu'}</Header>
       <View style={styles.HeadingContainer}>
-        <Text style={{textTransform: 'uppercase'}} bold value={'Menu'} />
+        {/* <Text style={{textTransform: 'uppercase'}} bold value={'Menu'} /> */}
         <TextInput
+        placeholder={'Search'}
           value={menuItem}
-          onChangeText={(val) => setMenuItem(val)}
+          onChangeText={val => setMenuItem(val)}
           style={styles.input}
         />
       </View>
 
       <FlatList
         data={Data}
-        keyExtractor={(item) => item.id}
+        keyExtractor={item => item.id}
         contentContainerStyle={{
           paddingVertical: responsiveHeight(2),
         }}
         renderItem={({item, index}) => PrintCard(item, index)}
       />
-    </Container>
+    </SafeAreaView>
   );
 };
 
@@ -148,6 +152,10 @@ const styles = StyleSheet.create({
   },
   Right: {
     width: '15%',
+  },
+  parent: {
+    flex: 1,
+    backgroundColor: '#fff',
   },
 });
 

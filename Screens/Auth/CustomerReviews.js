@@ -6,6 +6,7 @@ import {
   Image,
   FlatList,
   TextInput,
+  SafeAreaView,
 } from 'react-native';
 import Container from '../../Component/Container';
 import Button from '../../Component/Button';
@@ -21,6 +22,7 @@ import {
   responsiveFontSize,
 } from 'react-native-responsive-dimensions';
 import * as RouteName from '../../Constants/RouteName';
+import Header from '../../Component/Header';
 const CustomerReviews = ({navigation}) => {
   const [menuItem, setMenuItem] = useState('Mexican');
   const [Data, setData] = useState([
@@ -88,8 +90,8 @@ const CustomerReviews = ({navigation}) => {
           startingValue={item.rating}
           imageSize={responsiveFontSize(2.8)}
         />
-        <Text  style={{color:'#A6A6A6'}} value={item.Name} />
-        <Text style={{color:'#A6A6A6'}} value={item.time} />
+        <Text style={{color: '#A6A6A6'}} value={item.Name} />
+        <Text style={{color: '#A6A6A6'}} value={item.time} />
       </View>
       <View style={styles.BottomView}>
         <Text value={item.review} />
@@ -97,16 +99,17 @@ const CustomerReviews = ({navigation}) => {
     </TouchableOpacity>
   );
   return (
-    <Container containerStyle={styles.ContainerStyles}>
+    <SafeAreaView style={styles.parent}>
+      <Header onPress={() => navigation.goBack()}>{'Customer Reviews'}</Header>
       <FlatList
         data={Data}
-        keyExtractor={(item) => item.id}
+        keyExtractor={item => item.id}
         contentContainerStyle={{
           paddingVertical: responsiveHeight(2),
         }}
         renderItem={({item, index}) => PrintCard(item, index)}
       />
-    </Container>
+    </SafeAreaView>
   );
 };
 
@@ -120,15 +123,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   TopView: {
-      width:'100%',
+    width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems:'center'
+    alignItems: 'center',
   },
-  BottomView:{
-      marginTop:responsiveHeight(2),
-      width:'100%',
-  }
+  BottomView: {
+    marginTop: responsiveHeight(2),
+    width: '100%',
+  },
+  parent: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
 });
 
 export default CustomerReviews;
