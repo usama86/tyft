@@ -69,29 +69,6 @@ const SignUp = () => {
         <Text value={'Spanish'} style={{marginLeft: responsiveWidth(2)}} />
       </View>
     </Ui>
-<<<<<<< HEAD
-  );
-};
-const styles = StyleSheet.create({
-  InputMainView: {
-    marginVertical: responsiveHeight(2),
-  },
-  TextViewStyle: {
-    // width: responsiveWidth(60)
-  },
-  Input: {
-    marginTop: responsiveHeight(3),
-  },
-  radioView: {
-    marginLeft: responsiveWidth(15),
-    flexDirection: 'row',
-  },
-  TextSpace: {
-    // paddingLeft:responsiveWidth(18)
-  },
-});
-export default SignUp;
-=======
     
 )
 }
@@ -115,4 +92,3 @@ const styles=StyleSheet.create({
     }
 })
 export default SignUp;
->>>>>>> f9f3037097c90352ff4a5b414050177494016cd2
