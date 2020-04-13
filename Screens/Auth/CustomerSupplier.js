@@ -7,14 +7,12 @@ import {
   FlatList,
   ImageBackground
 } from 'react-native';
-import Container from '../../Component/Container';
-import Button from '../../Component/Button';
+import Container from './../../Component/Container';
 import Text from '../../Component/Text';
-import theme from '../theme';
+import Button from '../../Component/Button';
+import theme from './../theme';
 import {SearchBar, Rating} from 'react-native-elements';
-import Icon from 'react-native-vector-icons/EvilIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Entypo from 'react-native-vector-icons/Entypo';
 import Foundation from 'react-native-vector-icons/Foundation';
 import {Switch} from 'react-native-switch';
 import {
@@ -24,8 +22,8 @@ import {
 } from 'react-native-responsive-dimensions';
 import * as RouteName from '../../Constants/RouteName';
 import Header from '../../Component/Header';
-const VeggieWisper = ({navigation}) => {
-  const [ToggleSwitch, setToggleSwitch] = useState(false);
+const CustomerSupplier = ({navigation}) => {
+  const [ToggleSwitch, setToggleSwitch] = useState(false); 
   return (
     <Container>
       <View style={styles.HeaderContainer}>
@@ -40,7 +38,7 @@ const VeggieWisper = ({navigation}) => {
           <Text style={styles.Btntext} value={'Info'} />
         </Button>
         <Button
-          onPress={() => navigation.navigate(RouteName.MENUSETTINGDRAWER)}
+          onPress={() => navigation.navigate(RouteName.MENU)}
           style={[styles.Button, {backgroundColor: 'white'}]}>
           <Text style={[styles.Btntext, {color: 'black'}]} value={'Menu'} />
         </Button>
@@ -225,4 +223,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default VeggieWisper;
+export default CustomerSupplier;

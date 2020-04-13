@@ -35,7 +35,7 @@ const Header = ({isHome, style, children, onPress}) => {
     </View>
   );
 };
-
+ 
 Header.propTypes = {
   children: PropTypes.array,
   onPress: PropTypes.func,

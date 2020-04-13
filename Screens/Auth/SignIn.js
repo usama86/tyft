@@ -6,11 +6,16 @@ import {
   ActivityIndicator,
   Platform,
 } from 'react-native';
-
+import {
+  responsiveHeight,
+  responsiveWidth,
+  responsiveFontSize,
+} from 'react-native-responsive-dimensions';
 import { Input, Text, Overlay } from 'react-native-elements';
 import theme from './../theme';
 import RoundButton from '../../Component/Button';
-//import Divider from './../components/core/Divider';
+import Divider from './../../Component/Divider';
+import Texts from './../../Component/Text';
 // import * as Screens from './../constants/screens';
 // import * as userActions from './../redux/actions/userActions';
 // import { connect } from 'react-redux';
@@ -47,7 +52,7 @@ const SignIn = props => {
     return (
       <View style={styles.contentContainerStyle}>
         <Text style={styles.signInHeader}>{'Sign in'}</Text>
-        {/* <Divider /> */}
+        <Divider />
         <Input
           value={email}
           inputContainerStyle={{
@@ -63,7 +68,7 @@ const SignIn = props => {
           returnKeyType={'next'}
           errorMessage={emailErrorMessage}
         />
-        {/* <Divider /> */}
+        <Divider />
         <Input
           secureTextEntry={true}
           value={password}
@@ -74,11 +79,19 @@ const SignIn = props => {
           returnKeyType={'done'}
           errorMessage={passwordErrorMessage}
         />
-        {/* <Divider /> */}
+        <Divider />
         <View style={{ paddingLeft: 10, paddingRight: 10 }}>
-          <RoundButton title="Login" onPress={handleSignIn} loading={loading} />
+        <RoundButton
+          style={styles.buttonStyle2}
+          onPress={()=>{props.navigation.navigate('App')}}>
+          <Texts
+            uppercase={false}
+            style={styles.TextStyle1}
+            value={"Next"}
+          />
+      </RoundButton>
         </View>
-        {/* <Divider /> */}
+        <Divider />
         <Text
           style={styles.forgotPasswordText}
           onPress={() => {
@@ -86,8 +99,8 @@ const SignIn = props => {
           }}>
           Don't remember your password?
         </Text>
-        {/* <Divider /> */}
-        {signInUserError && (
+        <Divider />
+        {false && (
           <Overlay
             isVisible
             width="auto"
@@ -150,7 +163,19 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor: '#E8E6E6',
   },
-
+  buttonStyle2: {
+    backgroundColor: 'rgb(193, 32, 38)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: responsiveHeight(6),
+    // borderStyle: 'solid',
+    // borderWidth: 1,
+    // borderColor: 'rgb(0, 0, 0)'
+  },
+  TextStyle1: {
+    color: 'white',
+  },
   forgotPasswordText: {
     marginTop: 10,
     marginLeft: 10,

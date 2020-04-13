@@ -27,7 +27,7 @@ const CoverPhoto = ({navigation}) => {
       TextViewStyle={styles.UiText}
       ContentStyle={styles.ContentStyle}
       ButtonText={'Complete Registration'}
-      onPressButton={() => navigation.navigate(RouteName.TRUCKINFO)}>
+      onPressButton={() => navigation.navigate(RouteName.HOME)}>
       <View style={styles.InputMainView}>
         <Text
           value={

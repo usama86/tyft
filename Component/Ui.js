@@ -8,6 +8,7 @@ import {
   responsiveFontSize,
 } from 'react-native-responsive-dimensions';
 import Container from './Container';
+import Header from './Header'
 import Button from './Button';
 const Ui = ({
   TextValue,
@@ -21,13 +22,19 @@ const Ui = ({
   TextSpace,
   onPressButton,
   TextShow,
-  buttonStyle
+  buttonStyle,
+  // HeaderValue
 }) => {
   return (
     <Container ContentStyle={[styles.container, ContainerStyle]}>
     {TextShow ?   <View style={[styles.TextView, TextViewStyle]}>
         <Text bold value={TextValue} style={TextStyle} />
       </View>:null}
+      {/* {HeaderValue ?    <Header onPress={()=>navigation.goBack()} >
+          {HeaderValue}
+      </Header>  */}
+      
+    {/* :null} */}
 
       <View style={[styles.Content, ContentStyle]}>{children}</View>
 

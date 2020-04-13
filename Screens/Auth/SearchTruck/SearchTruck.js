@@ -19,6 +19,7 @@ import {
   responsiveHeight,
   responsiveWidth,
 } from 'react-native-responsive-dimensions';
+import SettingIcon from 'react-native-vector-icons/Entypo';
 const SearchTruck = ({navigation}) => {
   return (
     // <Container containerStyle={styles.ContainerStyles}>
@@ -27,7 +28,7 @@ const SearchTruck = ({navigation}) => {
       <View
         style={{
           marginVertical: responsiveHeight(1),
-          paddingHorizontal: responsiveWidth(2),
+          marginLeft:responsiveWidth(-7),
           flexDirection: 'row',
           justifyContent: 'space-around',
         }}>
@@ -53,12 +54,13 @@ const SearchTruck = ({navigation}) => {
             </Button>
           </ScrollView>
         </View>
-        <TouchableOpacity>
-          <Image
-            style={{width: responsiveWidth(8), height: responsiveHeight(4)}}
-            source={require('../../../images/filter.png')}
+
+          <SettingIcon
+            name={'sound-mix'}
+            size={40}
+            onPress={()=>{navigation.navigate(RouteName.SERVINGCUSINE)}}
+            //style={{marginTop:responsiveHeight(1.3),transform: [{ scaleY: 2 }]}}
           />
-        </TouchableOpacity>
       </View>
       <Map />
     </SafeAreaView>
@@ -78,7 +80,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   button: {
-    width: responsiveWidth(25),
+    width: responsiveWidth(23),
     height: responsiveHeight(5),
     justifyContent: 'center',
     alignItems: 'center',

@@ -23,6 +23,7 @@ import {
 } from 'react-native-responsive-dimensions';
 import * as RouteName from '../../Constants/RouteName';
 import Header from '../../Component/Header';
+import SettingIcon from 'react-native-vector-icons/Entypo';
 const FindFoodTruck = ({navigation}) => {
   const [Data, setData] = useState([
     {
@@ -75,7 +76,7 @@ const FindFoodTruck = ({navigation}) => {
     <TouchableOpacity
       activeOpacity={0.8}
       style={styles.MainView}
-      onPress={() => navigation.navigate(RouteName.PROFILE)}>
+      onPress={() => navigation.navigate(RouteName.CUSTOMERSUPPLIER)}>
       <View style={styles.LeftIcon}>
         <Image style={styles.image} source={require('../../images/art.jpg')} />
       </View>
@@ -173,7 +174,7 @@ const FindFoodTruck = ({navigation}) => {
       <View
         style={{
           marginVertical: responsiveHeight(1),
-          paddingHorizontal: responsiveWidth(2),
+          marginLeft:responsiveWidth(-7),
           flexDirection: 'row',
           justifyContent: 'space-around',
         }}>
@@ -201,9 +202,10 @@ const FindFoodTruck = ({navigation}) => {
         </View>
         <TouchableOpacity
           onPress={() => navigation.navigate(RouteName.SERVINGCUSINETYPE)}>
-          <Image
-            style={{width: responsiveWidth(8), height: responsiveHeight(4)}}
-            source={require('../../images/filter.png')}
+           <SettingIcon
+            name={'sound-mix'}
+            size={40}
+            //style={{marginTop:responsiveHeight(1.3),transform: [{ scaleY: 2 }]}}
           />
         </TouchableOpacity>
       </View>
@@ -243,7 +245,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   button: {
-    width: responsiveWidth(25),
+    width: responsiveWidth(23),
     height: responsiveHeight(5),
     justifyContent: 'center',
     alignItems: 'center',

@@ -61,7 +61,7 @@ const FindFoodTruck = ({navigation}) => {
     {id: 1, name: 'Pizza', checked: false},
     {id: 2, name: 'Mexican', checked: false},
     {id: 3, name: 'Fries', checked: false},
-  ]);
+  ]); 
   const Checked = index => {
     let newArr = [...Data];
     newArr[index].checked = !newArr[index].checked;
@@ -98,13 +98,13 @@ const FindFoodTruck = ({navigation}) => {
           }}
           renderItem={({item, index}) => PrintCard(item, index)}
         />
-        <Button
+        {/* <Button
           style={styles.buttonStyle2}
           onPress={() => {
             navigation.navigate(RouteName.PROFILE);
           }}>
           <Text uppercase={false} style={{color: 'white'}} value={'Next'} />
-        </Button>
+        </Button> */}
       </ScrollView>
     </SafeAreaView>
   );

@@ -8,8 +8,15 @@ import {
 } from 'react-native';
 import { Text, Icon } from 'react-native-elements';
 import theme from './../theme';
-import * as RouteName from '../../Constants/RouteName';
 
+import RoundButton from './../../Component/Button';
+import Texts from './../../Component/Text';
+import * as RouteName from '../../Constants/RouteName';
+import {
+  responsiveHeight,
+  responsiveWidth,
+  responsiveFontSize,
+} from 'react-native-responsive-dimensions';
 const SignUpSelection = props => {
   const { navigation } = props;
 
@@ -65,6 +72,15 @@ const SignUpSelection = props => {
           </Text>
         </View>
       </TouchableHighlight>
+      <RoundButton
+          style={styles.buttonStyle2}
+          onPress={()=>{navigation.goBack()}}>
+          <Texts
+            uppercase={false}
+            style={styles.TextStyle1}
+            value={"Back to login"}
+          />
+      </RoundButton>
     </SafeAreaView>
   );
 };
@@ -121,6 +137,21 @@ const styles = StyleSheet.create({
   },
   backButton: {
     backgroundColor: theme.colors.secondary,
+  },
+  buttonStyle2: {
+    backgroundColor: 'rgb(193, 32, 38)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '73%',
+    marginTop:responsiveHeight(22),
+    marginLeft:responsiveWidth(14),
+    height: responsiveHeight(6),
+    // borderStyle: 'solid',
+    // borderWidth: 1,
+    // borderColor: 'rgb(0, 0, 0)'
+  },
+  TextStyle1: {
+    color: 'white',
   },
 });
 

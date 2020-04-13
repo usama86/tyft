@@ -17,6 +17,17 @@ export const SERVINGCUSINETYPE = 'ServingCusineType';
 export const PROFILE = 'Profile';
 export const MENU = 'Menu';
 export const CUSTOMERREVIEWS = 'CustomerReviews';
+export const CUSTOMERSUPPLIER = 'CustomerSupplier';
+
+//Drawer Constant
 export const VEGGIEWISPER = 'VeggieWisper';
 export const MENUSETTINGDRAWER = 'MenuSettingDrawer';
+export const SCHEDULED = 'ScheduleD';
+export const CUSTOMERREVIEWD = 'CustomerReviewD';
+export const ITEMCATEGORYD = 'ItemCategoryD';
+export const PROFILED = 'ProfileD';
+
+
+
+
 export const TABS = 'Tabs';

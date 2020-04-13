@@ -92,7 +92,7 @@ const Home = ({navigation}) => {
           <Text
             style={Underline}
             onPress={() => {
-              navigation.navigate(RouteName.VEGGIEWISPER);
+              navigation.navigate(RouteName.SIGNIN);
             }} 
             value={'Log in'}
           />
