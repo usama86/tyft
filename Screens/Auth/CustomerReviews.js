@@ -100,7 +100,7 @@ const CustomerReviews = ({navigation}) => {
   );
   return (
     <SafeAreaView style={styles.parent}>
-      <Header onPress={() => navigation.goBack()}>{'Customer Reviews'}</Header>
+      <Header  onPress={() => navigation.goBack()}>{'Customer Reviews'}</Header>
       <FlatList
         data={Data}
         keyExtractor={item => item.id}

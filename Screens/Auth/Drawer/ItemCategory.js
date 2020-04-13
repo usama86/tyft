@@ -90,7 +90,7 @@ const ItemCategory = ({navigation}) => {
   );
   return (
     <SafeAreaView style={styles.parent}>
-      <Header onPress={()=>navigation.goBack()} >{'Menu'}</Header>
+      <Header isHome onPress={()=>navigation.openDrawer()} >{'Menu'}</Header>
       <View style={styles.HeadingContainer}>
         {/* <Text style={{textTransform: 'uppercase'}} bold value={'Menu'} /> */}
         <TextInput

@@ -96,7 +96,7 @@ const CustomerReview = ({navigation}) => {
   return (
     <SafeAreaView style={styles.parent}>
       <View>
-          <Header onPress={()=>navigation.goBack()} >
+          <Header isHome onPress={()=>navigation.openDrawer()} >
             {'Customer Review'}
           </Header>
       </View>

@@ -4,7 +4,7 @@ import Header from '../../../Component/Header';
 const UserProfile=({navigation})=>{
         return(
             <View>
-                <Header onPress={()=>navigation.goBack()} >{'Profile'}</Header>
+                <Header isHome onPress={()=>navigation.openDrawer()} >{'Profile'}</Header>
                 <Text>Profile</Text>
             </View>
         )

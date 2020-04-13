@@ -26,7 +26,7 @@ function Schedule(props) {
   const [setting, setSetting] = useState(week);
   return (
     <SafeAreaView style={styles.container}> 
-     <Header onPress={()=>navigation.goBack()} >
+     <Header isHome onPress={()=>navigation.openDrawer()} >
          {'Schedule'}
      </Header>
       <ScrollView>

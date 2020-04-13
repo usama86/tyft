@@ -5,7 +5,8 @@ import {
   View,
   Image,
   FlatList,
-  ImageBackground
+  ImageBackground,
+  ScrollView,
 } from 'react-native';
 import Container from '../../../Component/Container';
 import Text from '../../../Component/Text';
@@ -14,6 +15,7 @@ import {SearchBar, Rating} from 'react-native-elements';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Foundation from 'react-native-vector-icons/Foundation';
 import {Switch} from 'react-native-switch';
+import Button from '../../../Component/Button';
 import {
   responsiveHeight,
   responsiveWidth,
@@ -22,31 +24,36 @@ import {
 import * as RouteName from '../../../Constants/RouteName';
 import Header from '../../../Component/Header';
 const VeggieWisper = ({navigation}) => {
-  const [ToggleSwitch, setToggleSwitch] = useState(false); 
+  const [ToggleSwitch, setToggleSwitch] = useState(false);
+  const [button, setButton] = useState([1, 2, 3, 4, 5, 6, 7, 8]);
   return (
     <Container>
       <View style={styles.HeaderContainer}>
-   <ImageBackground style={styles.image} source={require('../../../images/art.jpg')} >
-     <Header isHome onPress={()=>navigation.openDrawer()} >
-         {'Home'}
-     </Header>
-   </ImageBackground>
+        <ImageBackground
+          style={styles.image}
+          source={require('../../../images/art.jpg')}>
+          <Header isHome onPress={() => navigation.openDrawer()}>
+            {'Home'}
+          </Header>
+        </ImageBackground>
       </View>
-      {/* <View style={styles.TabView}>
-        <Button style={styles.Button}>
-          <Text style={styles.Btntext} value={'Info'} />
+      <View style={styles.TabView}>
+        {button.map((item, index) => (
+          <>
+            {index < 2 ? (
+              <Button style={styles.Button}>
+                <Text style={styles.Btntext} value={'Info'} />
+              </Button>
+            ) : null}
+          </>
+        ))}
+        <Button style={[styles.Button, {backgroundColor: '#fff',width:responsiveWidth(20)}]}>
+          <Text
+            style={[styles.Btntext, {color: '#000',fontWeight:'bold',fontSize:responsiveFontSize(2)}]}
+            value={'+ ' + (button.length - 2)}
+          />
         </Button>
-        <Button
-          onPress={() => navigation.navigate(RouteName.MENUSETTINGDRAWER)}
-          style={[styles.Button, {backgroundColor: 'white'}]}>
-          <Text style={[styles.Btntext, {color: 'black'}]} value={'Menu'} />
-        </Button>
-        <Button
-          onPress={() => navigation.navigate(RouteName.CUSTOMERREVIEWS)}
-          style={[styles.Button, {backgroundColor: 'white'}]}>
-          <Text style={[styles.Btntext, {color: 'black'}]} value={'Reviews'} />
-        </Button>
-      </View> */}
+      </View>
 
       <View style={styles.flexView}>
         <Text bold style={{color: 'blue'}} value={'The Veggie Whisper'} />
@@ -187,7 +194,7 @@ const styles = StyleSheet.create({
     top: responsiveHeight(21),
   },
   Button: {
-    width: '30%',
+    width: responsiveWidth(30),
     backgroundColor: theme.colors.primary,
     justifyContent: 'center',
     alignItems: 'center',

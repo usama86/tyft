@@ -95,7 +95,7 @@ const MenuSetting = ({navigation}) => {
   );
   return ( 
     <View style={{width:'100%',height:'100%'}}>
-      <Header  onPress={()=>navigation.goBack()} >
+      <Header isHome onPress={()=>navigation.openDrawer()} >
             {'Menu Setting'}
           </Header>
     <Ui
