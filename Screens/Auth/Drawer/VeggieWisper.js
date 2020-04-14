@@ -16,6 +16,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Foundation from 'react-native-vector-icons/Foundation';
 import {Switch} from 'react-native-switch';
 import Button from '../../../Component/Button';
+import CountButton from '../../../Component/CountButton';
 import {
   responsiveHeight,
   responsiveWidth,
@@ -37,23 +38,7 @@ const VeggieWisper = ({navigation}) => {
           </Header>
         </ImageBackground>
       </View>
-      <View style={styles.TabView}>
-        {button.map((item, index) => (
-          <>
-            {index < 2 ? (
-              <Button style={styles.Button}>
-                <Text style={styles.Btntext} value={'Info'} />
-              </Button>
-            ) : null}
-          </>
-        ))}
-        <Button style={[styles.Button, {backgroundColor: '#fff',width:responsiveWidth(20)}]}>
-          <Text
-            style={[styles.Btntext, {color: '#000',fontWeight:'bold',fontSize:responsiveFontSize(2)}]}
-            value={'+ ' + (button.length - 2)}
-          />
-        </Button>
-      </View>
+      <CountButton/>
 
       <View style={styles.flexView}>
         <Text bold style={{color: 'blue'}} value={'The Veggie Whisper'} />

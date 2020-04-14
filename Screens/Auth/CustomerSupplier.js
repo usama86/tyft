@@ -28,8 +28,8 @@ const CustomerSupplier = ({navigation}) => {
     <Container>
       <View style={styles.HeaderContainer}>
    <ImageBackground style={styles.image} source={require('../../images/art.jpg')} >
-     <Header isHome onPress={()=>navigation.openDrawer()} >
-         {'Home'}
+     <Header onPress={()=>navigation.goBack()} >
+         {'The Veggie Whisper'}
      </Header>
    </ImageBackground>
       </View>
@@ -127,7 +127,7 @@ const CustomerSupplier = ({navigation}) => {
         <Text
           style={{
             fontSize: responsiveFontSize(1.8),
-            color: '#212121',
+            color: '#212121'
           }}
           value={'http://wwww.theveggiewhisperrers.com'}
         />
