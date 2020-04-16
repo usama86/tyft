@@ -70,7 +70,7 @@ const CustomDrawer = ({navigation}) => {
             onPress={() => navigation.navigate(Screens.PROFILED)}
           />
           <ListItem
-            style={{marginTop:responsiveHeight(30)}}
+            style={{marginTop:responsiveHeight(15)}}
             title={'Contact Us'}
             leftAvatar={<ProfileIcon name={'info'} size={25}/>}
             onPress={() => navigation.navigate('ContactUs')}

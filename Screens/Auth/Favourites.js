@@ -24,6 +24,7 @@ import {
 import * as RouteName from '../../Constants/RouteName';
 import Header from '../../Component/Header';
 import SettingIcon from 'react-native-vector-icons/Entypo';
+import CountButton from '../../Component/CountButton';
 const Favorite = ({navigation}) => {
   const [Data, setData] = useState([
    
@@ -59,8 +60,11 @@ const Favorite = ({navigation}) => {
           style={{fontSize: responsiveFontSize(2), fontWeight: 'bold'}}
           value={item.Title}
         />
-        <Text value={item.subtitle1} />
-        <View style={styles.flex}>
+        <CountButton 
+          buttonProp={{width:responsiveWidth(17),height:responsiveHeight(3)}}
+          tabProp={{marginTop:responsiveHeight(-18),left:responsiveWidth(-2)}}
+        />
+        <View style={[styles.flex,{marginTop:responsiveHeight(5)}]}>
           <Entypo
             name={'location-pin'}
             color={'#212121'}

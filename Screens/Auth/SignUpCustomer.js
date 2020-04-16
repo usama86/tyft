@@ -9,7 +9,8 @@ import {
 } from 'react-native-responsive-dimensions';
 import Radio from '../../Component/Radio';
 import Ui from '../../Component/Ui';
-const SignUp = () => {
+import Header from '../../Component/Header';
+const SignUp = ({navigation}) => {
   const [name, SetName] = React.useState('');
   const [radio, setRadio] = React.useState(true);
   const [radio1, setRadio1] = React.useState(false);
@@ -17,6 +18,9 @@ const SignUp = () => {
     SetName(e);
   };
   return (
+    <View style={{height:'100%',width:'100%'}}>
+    <Header  onPress={() => navigation.goBack()}>{'Sign Up'}</Header>
+    
     <Ui
       TextValue={"Let's Create your Customer account"}
       ButtonText={'Get Started'}
@@ -69,6 +73,7 @@ const SignUp = () => {
         <Text value={'Spanish'} style={{marginLeft: responsiveWidth(2)}} />
       </View>
     </Ui>
+    </View>
     
 )
 }

@@ -12,6 +12,7 @@ import Checkbox from '../../../Component/Checkbox';
 import Select from '../../../Component/Select';
 import Ui from '../../../Component/Ui';
 import * as RouteName from './../../../Constants/RouteName';
+import Header from '../../../Component/Header';
 const Data=[
   {
     id: 0,
@@ -90,6 +91,8 @@ const MenuSetting = ({navigation}) => {
     </TouchableOpacity>
   );
   return (
+    <View style={{height:'100%',width:'100%'}}>
+    <Header  onPress={() => navigation.goBack()}>{'Menu'}</Header>
     <Ui
     ContainerStyle={{marginTop:responsiveHeight(4)}}
       TextViewStyle={styles.TextViewStyle}
@@ -134,6 +137,7 @@ const MenuSetting = ({navigation}) => {
 
       </View>
     </Ui>
+    </View>
   );
 };
 const styles = StyleSheet.create({

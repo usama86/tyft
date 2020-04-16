@@ -10,6 +10,7 @@ import {
   responsiveFontSize,
 } from 'react-native-responsive-dimensions';
 import * as Screens from './../../../Constants/RouteName';
+import Header from '../../../Component/Header';
 
 const week = [
   { day: 'Monday', working: true, opening: '8:00 AM', closing: '5:00 PM' },
@@ -25,6 +26,8 @@ function BusinessHour(props) {
   const { navigation } = props;
   const [setting, setSetting] = useState(week);
   return (
+    <View style={{height:'100%',width:'100%'}}>
+    <Header  onPress={() => props.navigation.goBack()}>{'Business Hour'}</Header>
     <SafeAreaView style={styles.container}> 
       <ScrollView>
         <View style={styles.formContainer}>
@@ -69,7 +72,7 @@ function BusinessHour(props) {
         <View style={styles.fillView} />
         <RoundButton
           style={styles.buttonStyle2}
-          onPress={()=> navigation.navigate(Screens.SERVINGCUSINE)}>
+          onPress={()=> navigation.navigate(Screens.SOCIALMEDIADETAILS)} rounded>
           {/* <Image style={styles.logoStyle1} source={require('./../images/TYFTLogo.png')} /> */}
           <Text
             uppercase={false}
@@ -80,12 +83,13 @@ function BusinessHour(props) {
 							//style={{ marginLeft: responsiveWidth(16) }}
 							name="chevron-thin-right"
 							size={15}
-							color="white"
+							color="white"s
 						/> */}
         </RoundButton>
         <View style={styles.fillView} />
       </View>
     </SafeAreaView>
+    </View>
   );
 }
 

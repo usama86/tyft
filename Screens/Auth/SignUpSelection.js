@@ -17,11 +17,16 @@ import {
   responsiveWidth,
   responsiveFontSize,
 } from 'react-native-responsive-dimensions';
+import Header from '../../Component/Header';
 const SignUpSelection = props => {
   const { navigation } = props;
 
   return (
+    <View style={{height:'100%',width:'100%'}}>
+      <Header  onPress={() => navigation.goBack()}>{'Sign Up'}</Header>
+ 
     <SafeAreaView style={styles.container}>
+      
       <Text style={styles.signUpHeader}>{'SIGN UP'}</Text>
       <TouchableHighlight
         activeOpacity={1}
@@ -74,7 +79,7 @@ const SignUpSelection = props => {
       </TouchableHighlight>
       <RoundButton
           style={styles.buttonStyle2}
-          onPress={()=>{navigation.goBack()}}>
+          onPress={()=>{navigation.goBack()}} rounded>
           <Texts
             uppercase={false}
             style={styles.TextStyle1}
@@ -82,6 +87,7 @@ const SignUpSelection = props => {
           />
       </RoundButton>
     </SafeAreaView>
+    </View>
   );
 };
 

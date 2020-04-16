@@ -9,6 +9,7 @@ import {
 import Checkbox from '../../../Component/Checkbox';
 import Ui from '../../../Component/Ui';
 import * as RouteName from './../../../Constants/RouteName';
+import Header from '../../../Component/Header';
 const TruckInfo = ({navigation}) => {
   const [check, SetCheck] = React.useState(false);
   const [name, SetName] = React.useState('');
@@ -16,6 +17,8 @@ const TruckInfo = ({navigation}) => {
     SetCheck(!check);
   };
   return (
+    <View style={{height:'100%',width:'100%'}}>
+    <Header  onPress={() => navigation.goBack()}>{'Truck Info'}</Header>
     <Ui
       TextViewStyle={styles.TextViewStyle}
       TextValue={"Your food truck's info"}
@@ -40,6 +43,7 @@ const TruckInfo = ({navigation}) => {
         <Input rounded placeholder="Website" style={styles.Input} />
       </View>
     </Ui>
+    </View>
   );
 };
 const styles = StyleSheet.create({

@@ -16,6 +16,7 @@ import Ui from '../../../Component/Ui';
 import theme from './../../theme';
 
 import * as RouteName from './../../../Constants/RouteName';
+import Header from '../../../Component/Header';
 const ServingCusine = ({navigation}) => {
 
   const [Data, setData] = React.useState([
@@ -80,11 +81,13 @@ const ServingCusine = ({navigation}) => {
 
 
   return (
+    <View style={{height:'100%',width:'100%'}}>
+    <Header  onPress={() => navigation.goBack()}>{'Serving Cusine'}</Header>
     <Ui
     ContentStyle={styles.HeadingContainer}
       // TextViewStyle={styles.TextViewStyle}
       // TextValue={"Serving Cusine"}
-      ContainerStyle={{marginTop:responsiveHeight(4)}}
+      ContainerStyle={{marginTop:responsiveHeight(2)}}
       TextShow={false}
       ButtonText={'Next'}
       onPressButton={() => {navigation.navigate(RouteName.MENUSETTING)}}
@@ -100,6 +103,7 @@ const ServingCusine = ({navigation}) => {
         renderItem={({item, index}) => PrintCard(item, index)}
       />
     </Ui>
+    </View>
   );
 };
 const styles = StyleSheet.create({

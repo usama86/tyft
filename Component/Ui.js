@@ -41,7 +41,8 @@ const Ui = ({
  
         <Button
           style={[styles.buttonStyle2,buttonStyle]}
-          onPress={onPressButton}>
+          onPress={onPressButton} rounded>
+            
           {/* <Image style={styles.logoStyle1} source={require('./../images/TYFTLogo.png')} /> */}
           <Text
             uppercase={false}

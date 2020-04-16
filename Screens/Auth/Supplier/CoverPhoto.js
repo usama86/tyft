@@ -10,6 +10,7 @@ import Checkbox from '../../../Component/Checkbox';
 import Ui from '../../../Component/Ui';
 import * as RouteName from './../../../Constants/RouteName';
 import ImagePicker from '../../../Component/ImagePicker';
+import Header from '../../../Component/Header';
 const CoverPhoto = ({navigation}) => {
   const [check, SetCheck] = React.useState(false);
   const [name, SetName] = React.useState('');
@@ -22,6 +23,8 @@ const CoverPhoto = ({navigation}) => {
     console.log(val);
   }
   return (
+    <View style={{height:'100%',width:'100%'}}>
+    <Header  onPress={() => navigation.goBack()}>{'Truck Cover'}</Header>
     <Ui
       TextValue={"Upload the best angle of your food truck here"}
       TextViewStyle={styles.UiText}
@@ -38,6 +41,7 @@ const CoverPhoto = ({navigation}) => {
       </View>
       <ImagePicker text={'Add Cover Photo'}  SendUri={SendUri} style = {styles.ImageContainer} />
     </Ui>
+    </View>
   );
 };
 const styles = StyleSheet.create({

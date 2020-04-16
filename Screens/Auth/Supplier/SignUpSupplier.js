@@ -9,6 +9,7 @@ import {
 import Checkbox from '../../../Component/Checkbox';
 import Ui from '../../../Component/Ui';
 import * as RouteName from './../../../Constants/RouteName';
+import Header from '../../../Component/Header';
 const SignUpSupplier = ({navigation}) => {
   const [check, SetCheck] = React.useState(false);
   const [name, SetName] = React.useState('');
@@ -16,6 +17,8 @@ const SignUpSupplier = ({navigation}) => {
     SetCheck(!check);
   };
   return (
+    <View style={{height:'100%',width:'100%'}}>
+    <Header  onPress={() => navigation.goBack()}>{'Sign Up'}</Header>
     <Ui
       TextValue={"Let's Create your Supplier account"}
       ButtonText={'Next'}
@@ -45,6 +48,7 @@ const SignUpSupplier = ({navigation}) => {
         />
       </View>
     </Ui>
+    </View>
   );
 };
 const styles = StyleSheet.create({

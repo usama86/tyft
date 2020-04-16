@@ -10,6 +10,8 @@ import Checkbox from '../../../Component/Checkbox';
 import Ui from '../../../Component/Ui';
 import * as RouteName from './../../../Constants/RouteName';
 import ImagePicker from '../../../Component/ImagePicker';
+import Header from '../../../Component/Header';
+
 const TruckLogo = ({navigation}) => {
   const [check, SetCheck] = React.useState(false);
   const [name, SetName] = React.useState('');
@@ -22,6 +24,8 @@ const TruckLogo = ({navigation}) => {
     console.log(val);
   }
   return (
+    <View style={{height:'100%',width:'100%'}}>
+    <Header  onPress={() => navigation.goBack()}>{'Truck Logo'}</Header>
     <Ui
       TextValue={"Your food's truck logo"}
       TextViewStyle={styles.UiText}
@@ -38,6 +42,7 @@ const TruckLogo = ({navigation}) => {
       </View>
       <ImagePicker text={'Upload your logo'}  SendUri={SendUri} style = {styles.ImageContainer} />
     </Ui>
+    </View>
   );
 };
 const styles = StyleSheet.create({

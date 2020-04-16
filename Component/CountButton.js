@@ -12,19 +12,19 @@ import {
     responsiveFontSize,
 } from 'react-native-responsive-dimensions';
 import theme from './../Screens/theme';
-const CountButton =({button})=>{
+const CountButton =({button,tabProp,buttonProp})=>{
     return(
-        <View style={styles.TabView}>
+        <View style={[styles.TabView,tabProp]}>
         {button.map((item, index) => (
           <>
             {index < 2 ? (
-              <Button style={styles.Button}>
+              <Button style={[styles.Button,buttonProp]}>
                 <Text style={styles.Btntext} value={'Mexican'} />
               </Button>
             ) : null}
           </>
         ))}
-        <Button style={[styles.Button, {backgroundColor: theme.colors.primary,width:responsiveWidth(20)}]}>
+        <Button style={[styles.Button, {backgroundColor: theme.colors.primary,width:responsiveWidth(20)},buttonProp]}>
           <Text
             style={[styles.Btntext, {color: 'white',fontWeight:'bold',fontSize:responsiveFontSize(2)}]}
             value={'+ ' + (button.length - 2)}

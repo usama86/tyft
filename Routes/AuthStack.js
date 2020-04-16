@@ -27,7 +27,7 @@ import * as theme from '../Screens/theme'
 import Favourite from '../Screens/Auth/Favourites'
 import CustomerSupplier from './../Screens/Auth/CustomerSupplier';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
-
+import Account from './../Screens/Auth/Account';
 const Tabs = createBottomTabNavigator();
 const StackAuth = createStackNavigator();
 const StackNearMe = createStackNavigator();
@@ -94,6 +94,12 @@ const FavouriteStack = ()=>(
     />
   </StackFavourite.Navigator>
 )
+const AccountStack = () =>(
+  <StackFavourite.Navigator screenOptions={{headerShown:false}} >
+  <StackFavourite.Screen name={'Account'} component={Account} />
+ 
+  </StackFavourite.Navigator>
+)
 const AppTab = () => (
   <Tabs.Navigator
     screenOptions={({route}) => ({
@@ -110,6 +116,10 @@ const AppTab = () => (
           iconName = 'heart';
           return <FA name={iconName} color={color} size={size} />;
         }
+        else if (route.name === 'AccountStack') {
+          iconName = 'user-circle';
+          return <FA name={iconName} color={color} size={size} />;
+        }
       },
     })}
     tabBarOptions={{
@@ -119,6 +129,7 @@ const AppTab = () => (
     <Tabs.Screen options={{title:'Near Me'}} name={'NearMe'} children={NearMeStack} />
     <Tabs.Screen name={'Search'} children={SearchStack} />
     <Tabs.Screen options={{title:'Favourite'}} name={'FavouriteStack'} children={FavouriteStack} />
+    <Tabs.Screen options={{title:'Account'}} name={'AccountStack'} children={AccountStack} />
   </Tabs.Navigator>
 );
 const AuthStack = () => (
@@ -129,109 +140,47 @@ const AuthStack = () => (
     <StackAuth.Screen
       name={RouteName.HOME}
       component={HomeScreen}
-      options={{title: 'Overview', headerShown: false}}
+      options={{ headerShown: false}}
     />
     <StackAuth.Screen
       name={RouteName.SIGNUPSELECTION}
       component={SignUpSelection}
-      options={{
-        title: 'SIGN UP',
-
-        headerTitleStyle: {
-          fontWeight: 'bold',
-          marginLeft:responsiveWidth(20)
-        },
-      }}
+      options={{ headerShown: false}}
     />
     <StackAuth.Screen name={RouteName.SIGNIN} component={SignIn} />
     <StackAuth.Screen name={RouteName.SIGNUP} component={SignUp}
-    options={{
-      title: 'SIGN UP',
-
-      headerTitleStyle: {
-        fontWeight: 'bold',
-        marginLeft:responsiveWidth(20)
-      },
-    }}
+   options={{ headerShown: false}}
     />
     <StackAuth.Screen
       name={RouteName.SIGNUPSUPPLIER}
       component={SignUpSupplier}
-      options={{
-        title: 'SIGN UP',
-
-        headerTitleStyle: {
-          fontWeight: 'bold',
-          marginLeft:responsiveWidth(20)
-        },
-      }}
+      options={{ headerShown: false}}
     />
     <StackAuth.Screen name={RouteName.TRUCKLOGO} component={TruckLogo} 
-      options={{
-        title: 'Truck Logo',
-
-        headerTitleStyle: {
-          fontWeight: 'bold',
-          marginLeft:responsiveWidth(20)
-        },
-      }}
+     options={{ headerShown: false}}
     />
     <StackAuth.Screen name={RouteName.TRUCKINFO} component={TruckInfo}
-    options={{
-      title: "Truck's info",
-
-      headerTitleStyle: {
-        fontWeight: 'bold',
-        marginLeft:responsiveWidth(20)
-      },
-    }}
+    options={{ headerShown: false}}
     />
     <StackAuth.Screen name={RouteName.BUSINESSHOUR} component={BusinessHour}
-    options={{
-      title: 'Business Hour',
-
-      headerTitleStyle: {
-        fontWeight: 'bold',
-        marginLeft:responsiveWidth(20)
-      },
-    }}
+   options={{ headerShown: false}}
     />
     <StackAuth.Screen
       name={RouteName.SERVINGCUSINE}
       component={ServingCusine}
-      options={{
-        title: 'Serving Cusine',
-
-        headerTitleStyle: {
-          fontWeight: 'bold',
-          marginLeft:responsiveWidth(20)
-        },
-      }}
+      options={{ headerShown: false}}
     />
     <StackAuth.Screen
       name={RouteName.SOCIALMEDIADETAILS}
       component={SocialMedia}
+      options={{ headerShown: false}}
       
     />
     <StackAuth.Screen name={RouteName.MENUSETTING} component={MenuSetting}
-    options={{
-      title: 'Menu Setting',
-
-      headerTitleStyle: {
-        fontWeight: 'bold',
-        marginLeft:responsiveWidth(20)
-      },
-    }}
+   options={{ headerShown: false}}
     />
     <StackAuth.Screen name={RouteName.COVERPHOTO} component={CoverPhoto} 
-    options={{
-      title: 'Cover Photo',
-
-      headerTitleStyle: {
-        fontWeight: 'bold',
-        marginLeft:responsiveWidth(20)
-      },
-    }}
+    options={{ headerShown: false}}
     />
     <StackAuth.Screen
       options={{headerShown: false}}

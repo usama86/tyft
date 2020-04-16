@@ -57,7 +57,8 @@ const SearchTruck = ({navigation}) => {
 
           <SettingIcon
             name={'sound-mix'}
-            size={40}
+            size={38}
+            color={'grey'}
             onPress={()=>{navigation.navigate(RouteName.SERVINGCUSINE)}}
             //style={{marginTop:responsiveHeight(1.3),transform: [{ scaleY: 2 }]}}
           />
