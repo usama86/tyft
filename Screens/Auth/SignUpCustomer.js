@@ -46,7 +46,7 @@ const SignUp = ({navigation}) => {
       setEmailError(false);
       setEmailErrorText(null);
     } else if (!EmailRegix.test(val)) {
-      setEmail(null);
+      setEmail(val);
       setEmailError(true);
       setEmailErrorText('Please Enter Valid Email');
     }
@@ -63,7 +63,7 @@ const SignUp = ({navigation}) => {
       setPasswordErrorText(null);
     } else if (!PasswordRegix.test(val)) {
       setPassword(val);
-      setPasswordError(false);
+      setPasswordError(true);
       setPasswordErrorText(
         'Password must be atleast 8 digits long and include atleast one numeric digit',
       );
@@ -110,7 +110,7 @@ const SignUp = ({navigation}) => {
       setisLoading(true);
       const data = {
         email: email,
-        hashedPassword: password,
+        password: password,
         profileName: name,
         phoneNumber: phone,
         userType: 'Customer',
