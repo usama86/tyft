@@ -28,7 +28,7 @@ const VeggieWisper = ({navigation}) => {
   const [ToggleSwitch, setToggleSwitch] = useState(false);
   const [button, setButton] = useState([1, 2, 3, 4, 5, 6, 7, 8]);
   return (
-    <Container>
+    <Container >
       <View style={styles.HeaderContainer}>
         <ImageBackground
           style={styles.image}
