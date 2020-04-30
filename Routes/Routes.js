@@ -47,7 +47,6 @@ const AppDrawer = () => {
       overlayColor={'rgba(0,0,0,0)'}
       drawerContent={props => {
         setProgress(props.progress);
-        console.log('Progress', props.progress);
         return <CustomDrawer navigation={props.navigation} />;
       }}
       drawerContentOptions={{activeBackgroundColor:'#fff'}}

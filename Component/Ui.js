@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, ActivityIndicator} from 'react-native';
 import Text from './Text';
 import {Image} from 'react-native';
 import {
@@ -8,9 +8,10 @@ import {
   responsiveFontSize,
 } from 'react-native-responsive-dimensions';
 import Container from './Container';
-import Header from './Header'
+import Header from './Header';
 import Button from './Button';
 const Ui = ({
+  isLoading,
   TextValue,
   TextViewStyle,
   TextStyle,
@@ -27,22 +28,27 @@ const Ui = ({
 }) => {
   return (
     <Container ContentStyle={[styles.container, ContainerStyle]}>
-    {TextShow ?   <View style={[styles.TextView, TextViewStyle]}>
-        <Text bold value={TextValue} style={TextStyle} />
-      </View>:null}
+      {TextShow ? (
+        <View style={[styles.TextView, TextViewStyle]}>
+          <Text bold value={TextValue} style={TextStyle} />
+        </View>
+      ) : null}
       {/* {HeaderValue ?    <Header onPress={()=>navigation.goBack()} >
           {HeaderValue}
       </Header>  */}
-      
-    {/* :null} */}
+
+      {/* :null} */}
 
       <View style={[styles.Content, ContentStyle]}>{children}</View>
-
- 
+      {isLoading ? (
+        <View style={[styles.buttonStyle2, buttonStyle, {borderRadius: 33}]}>
+          <ActivityIndicator color={'#fff'} size={'large'} />
+        </View>
+      ) : (
         <Button
-          style={[styles.buttonStyle2,buttonStyle]}
-          onPress={onPressButton} rounded>
-            
+          style={[styles.buttonStyle2, buttonStyle]}
+          onPress={onPressButton}
+          rounded>
           {/* <Image style={styles.logoStyle1} source={require('./../images/TYFTLogo.png')} /> */}
           <Text
             uppercase={false}
@@ -50,12 +56,13 @@ const Ui = ({
             value={ButtonText}
           />
           {/* <Entypo
-							//style={{ marginLeft: responsiveWidth(16) }}
-							name="chevron-thin-right"
-							size={15}
-							color="white"
-						/> */}
-      </Button>
+         //style={{ marginLeft: responsiveWidth(16) }}
+         name="chevron-thin-right"
+         size={15}
+         color="white"
+       /> */}
+        </Button>
+      )}
     </Container>
   );
 };
@@ -108,7 +115,8 @@ const styles = StyleSheet.create({
   },
 });
 
-Ui.defaultProps={
-  TextShow:true
-}
+Ui.defaultProps = {
+  TextShow: true,
+  isLoading: false,
+};
 export default Ui;

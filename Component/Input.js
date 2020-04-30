@@ -40,7 +40,7 @@ const styles=StyleSheet.create({
     },
     Inputs:{
       fontSize:responsiveFontSize(1.8),
-      color:'red'
+      color:'#000'
     }
     
 })
