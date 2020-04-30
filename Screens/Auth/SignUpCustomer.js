@@ -109,12 +109,14 @@ const SignUp = ({navigation}) => {
     ) {
       setisLoading(true);
       const data = {
+    data:{
         email: email,
         password: password,
         profileName: name,
         phoneNumber: phone,
         userType: 'Customer',
-        Language: languge,
+        Language: languge
+    }
       };
       axios
         .post(url + '/api/users/signup', data)
