@@ -8,14 +8,24 @@
 import React,{useEffect} from 'react';
 import {StatusBar, View} from 'react-native';
 import SplashScreen from '../../SplashScreen/SplashScreen';
-
+import AsyncStorage from '@react-native-community/async-storage';
 const AuthLoading = ({navigation}) => {
-  useEffect(()=>{
+  useEffect(async()=>{
     StatusBar.setBarStyle('dark-content');
     StatusBar.setBackgroundColor('#fff')
-    setTimeout(() => {
-      navigation.navigate('Auth')
-    }, 2000);
+    let token = await AsyncStorage.getItem('token');
+    await console.log('Got Token', token);
+    if(token){
+      setTimeout(() => {
+        navigation.navigate('App')
+      }, 2000);
+    }
+    else if(token===null){
+      setTimeout(() => {
+        navigation.navigate('Auth')
+      }, 2000);
+    }
+
   },[])
   return <SplashScreen navigation={navigation} />;
 };

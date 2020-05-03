@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
-import { Text, CheckBox, Icon } from 'react-native-elements';
+import React, {useState} from 'react';
+import {View, StyleSheet, ScrollView, SafeAreaView} from 'react-native';
+import {Text, CheckBox, Icon} from 'react-native-elements';
 import HeaderLabel from './../../../Component/Text';
 import RoundButton from './../../../Component/Button';
 // import theme from '../../theme';
@@ -11,84 +11,108 @@ import {
 } from 'react-native-responsive-dimensions';
 import * as Screens from './../../../Constants/RouteName';
 import Header from '../../../Component/Header';
-
+import {Snackbar} from 'react-native-paper';
 const week = [
-  { day: 'Monday', working: true, opening: '8:00 AM', closing: '5:00 PM' },
-  { day: 'Tuesday', working: true, opening: '8:00 AM', closing: '5:00 PM' },
-  { day: 'Wednesday', working: true, opening: '8:00 AM', closing: '5:00 PM' },
-  { day: 'Thursday', working: true, opening: '8:00 AM', closing: '5:00 PM' },
-  { day: 'Friday', working: true, opening: '8:00 AM', closing: '5:00 PM' },
-  { day: 'Saturday', working: false, opening: '8:00 AM', closing: '5:00 PM' },
-  { day: 'Sunday', working: false, opening: '8:00 AM', closing: '5:00 PM' },
+  {day: 'Monday', working: false, opening: '8:00 AM', closing: '5:00 PM'},
+  {day: 'Tuesday', working: false, opening: '8:00 AM', closing: '5:00 PM'},
+  {day: 'Wednesday', working: false, opening: '8:00 AM', closing: '5:00 PM'},
+  {day: 'Thursday', working: false, opening: '8:00 AM', closing: '5:00 PM'},
+  {day: 'Friday', working: false, opening: '8:00 AM', closing: '5:00 PM'},
+  {day: 'Saturday', working: false, opening: '8:00 AM', closing: '5:00 PM'},
+  {day: 'Sunday', working: false, opening: '8:00 AM', closing: '5:00 PM'},
 ];
 
-function BusinessHour(props) {
-  const { navigation } = props;
+function BusinessHour({navigation,route}) {
   const [setting, setSetting] = useState(week);
+  const [visible, setVisible] = useState(false);
+  const Navigate = () => {
+    let Schedule = setting.filter(item => item.working);
+    if (Schedule.length === 0) {
+      setVisible(true);
+    } else if (Schedule.length > 0) {
+      navigation.navigate(Screens.SOCIALMEDIADETAILS, {
+        Schedule: Schedule,
+        Name: route.params.Name,
+        Email: route.params.Email,
+        Phone: route.params.Phone,
+        Password: route.params.Password,
+        TruckLogo: route.params.TruckLogo,
+        TruckName: route.params.TruckName,
+        BusinessDescription: route.params.BusinessDescription,
+        TruckContact: route.params.TruckContact,
+        TruckEmail: route.params.TruckEmail,
+        City: route.params.City,
+        Website: route.params.Website,
+      });
+    }
+  };
   return (
-    <View style={{height:'100%',width:'100%'}}>
-    <Header  onPress={() => props.navigation.goBack()}>{'Business Hour'}</Header>
-    <SafeAreaView style={styles.container}> 
-      <ScrollView>
-        <View style={styles.formContainer}>
-          <View style={styles.tableHeader}>
-            <Text style={styles.dayColumnView}>Day</Text>
-            <Text style={styles.timeColumnView}>Time</Text>
-          </View>
-          {setting.map(item => (
-            <View key={item.day} style={styles.item}>
-              <View style={styles.dayColumnView}>
-                <CheckBox
-                  title={item.day}
-                  size={14}
-                  textStyle={styles.checkboxTextStyle}
-                  checked={item.working}
-                  checkedColor="black"
-                  onPress={() => {
-                    item.working = !item.working;
-                    setSetting([...setting]);
-                  }}
-                  containerStyle={styles.checkbox}
-                />
-              </View>
-              <View style={styles.timeColumnView}>
-                <View style={styles.underlineView}>
-                  <Text>{item.opening}</Text>
-                </View>
-
-                <Icon name="clockcircleo" type="antdesign" size={15} />
-                <Text>-</Text>
-                <View style={styles.underlineView}>
-                  <Text>{item.closing}</Text>
-                </View>
-
-                <Icon name="clockcircleo" type="antdesign" size={15} />
-              </View>
+    <View style={{height: '100%', width: '100%'}}>
+      <Header onPress={() => navigation.goBack()}>{'Business Hour'}</Header>
+      <SafeAreaView style={styles.container}>
+        <ScrollView>
+          <View style={styles.formContainer}>
+            <View style={styles.tableHeader}>
+              <Text style={styles.dayColumnView}>Day</Text>
+              <Text style={styles.timeColumnView}>Time</Text>
             </View>
-          ))}
-        </View>
-      </ScrollView>
-      <View style={styles.buttons}>
-        <View style={styles.fillView} />
-        <RoundButton
-          style={styles.buttonStyle2}
-          onPress={()=> navigation.navigate(Screens.SOCIALMEDIADETAILS)} rounded>
-          {/* <Image style={styles.logoStyle1} source={require('./../images/TYFTLogo.png')} /> */}
-          <Text
-            uppercase={false}
-            style={styles.TextStyle1}>
+            {setting.map((item, index) => (
+              <View key={item.day} style={styles.item}>
+                <View style={styles.dayColumnView}>
+                  <CheckBox
+                    title={item.day}
+                    size={14}
+                    textStyle={styles.checkboxTextStyle}
+                    checked={item.working}
+                    checkedColor="black"
+                    onPress={() => {
+                      let newArr = [...setting];
+                      newArr[index].working = !item.working;
+                      setSetting(newArr);
+                    }}
+                    containerStyle={styles.checkbox}
+                  />
+                </View>
+                <View style={styles.timeColumnView}>
+                  <View style={styles.underlineView}>
+                    <Text>{item.opening}</Text>
+                  </View>
+
+                  <Icon name="clockcircleo" type="antdesign" size={15} />
+                  <Text>-</Text>
+                  <View style={styles.underlineView}>
+                    <Text>{item.closing}</Text>
+                  </View>
+
+                  <Icon name="clockcircleo" type="antdesign" size={15} />
+                </View>
+              </View>
+            ))}
+          </View>
+        </ScrollView>
+        <View style={styles.buttons}>
+          <View style={styles.fillView} />
+          <RoundButton style={styles.buttonStyle2} onPress={Navigate} rounded>
+            {/* <Image style={styles.logoStyle1} source={require('./../images/TYFTLogo.png')} /> */}
+            <Text uppercase={false} style={styles.TextStyle1}>
               Next
-          </Text>
-          {/* <Entypo
+            </Text>
+            {/* <Entypo
 							//style={{ marginLeft: responsiveWidth(16) }}
 							name="chevron-thin-right"
 							size={15}
 							color="white"s
 						/> */}
-        </RoundButton>
-        <View style={styles.fillView} />
-      </View>
-    </SafeAreaView>
+          </RoundButton>
+          <View style={styles.fillView} />
+        </View>
+        <Snackbar
+          visible={visible}
+          onDismiss={() => setVisible(false)}
+          duration={2000}>
+          Please Select Schedule
+        </Snackbar>
+      </SafeAreaView>
     </View>
   );
 }
@@ -165,13 +189,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     height: responsiveHeight(6),
-    borderRadius:8
-    
+    borderRadius: 8,
+
     // borderStyle: 'solid',
     // borderWidth: 1,
     // borderColor: 'rgb(0, 0, 0)'
   },
-  TextStyle1:{
-    color:'white'
-  }
+  TextStyle1: {
+    color: 'white',
+  },
 });

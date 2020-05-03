@@ -6,9 +6,9 @@ import {
   responsiveHeight,
   responsiveWidth,
 } from 'react-native-responsive-dimensions';
-const Select =({itemList,value,onChange,placeholder,style})=> { 
+const Select =({itemList,value,onChange,placeholder,style,containerStyle})=> { 
     return (
-            <Item picker style={styles.itemStyle}>
+            <Item picker style={[styles.itemStyle,containerStyle]}>
               <Picker
                 mode="dropdown"
                 iosIcon={<Icon name="arrow-down" />}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import {View, StyleSheet} from 'react-native';
 import Input from '../../../Component/Input';
 import Text from '../../../Component/Text';
@@ -12,16 +12,19 @@ import * as RouteName from './../../../Constants/RouteName';
 import ImagePicker from '../../../Component/ImagePicker';
 import Header from '../../../Component/Header';
 
-const TruckLogo = ({navigation}) => {
+const TruckLogo = ({navigation,route}) => {
   const [check, SetCheck] = React.useState(false);
   const [name, SetName] = React.useState('');
-  const [img, setImg] = React.useState('')
+  const [TruckLogo, setImg] = React.useState(null)
   const changeInputHandler = () => {
     SetCheck(!check);
   };
+  // useEffect(()=>{
+  // console.log('params',route.params)
+  // },[])
   const SendUri = (val)=>{
     setImg(val)
-    console.log(val);
+    // console.log(val);
   }
   return (
     <View style={{height:'100%',width:'100%'}}>
@@ -31,7 +34,14 @@ const TruckLogo = ({navigation}) => {
       TextViewStyle={styles.UiText}
       ContentStyle={styles.ContentStyle}
       ButtonText={'Next'}
-      onPressButton={() => navigation.navigate(RouteName.TRUCKINFO)}>
+      onPressButton={() => navigation.navigate(RouteName.TRUCKINFO,{
+        Name: route.params.Name,
+        Email: route.params.Email,
+        Phone: route.params.Phone,
+        Password: route.params.Password,
+        TruckLogo:TruckLogo
+
+      })}>
       <View style={styles.InputMainView}>
         <Text
           value={

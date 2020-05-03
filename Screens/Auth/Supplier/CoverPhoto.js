@@ -11,36 +11,81 @@ import Ui from '../../../Component/Ui';
 import * as RouteName from './../../../Constants/RouteName';
 import ImagePicker from '../../../Component/ImagePicker';
 import Header from '../../../Component/Header';
-const CoverPhoto = ({navigation}) => {
-  const [check, SetCheck] = React.useState(false);
-  const [name, SetName] = React.useState('');
-  const [img, setImg] = React.useState('')
-  const changeInputHandler = () => {
-    SetCheck(!check);
+import url from '../Constants/constants';
+import axios from 'axios';
+const CoverPhoto = ({navigation, route}) => {
+  const [img, setImg] = React.useState(null);
+  const [isLoading, setisLoading] = React.useState(false);
+  const SendUri = val => {
+    setImg(val);
   };
-  const SendUri = (val)=>{
-    setImg(val)
-    console.log(val);
-  }
-  return (
-    <View style={{height:'100%',width:'100%'}}>
-    <Header  onPress={() => navigation.goBack()}>{'Truck Cover'}</Header>
-    <Ui
-      TextValue={"Upload the best angle of your food truck here"}
-      TextViewStyle={styles.UiText}
-      ContentStyle={styles.ContentStyle}
-      ButtonText={'Complete Registration'}
-      onPressButton={() => navigation.navigate(RouteName.HOME)}>
-      <View style={styles.InputMainView}>
-        <Text
-          value={
-            'Upload a logo photo to help users quickly recognize your brand'
+  const Navigate = () => {
+    if (img) {
+      let data = {
+        email: route.params.Email,
+        password: route.params.Password,
+        profileName: route.params.Name,
+        profilePhoto: null, //img
+        coverPhoto: img, //img
+        phoneNumber: route.params.Phone,
+        userType: 'Supplier',
+        truckLogo: route.params.TruckLogo,
+        truckName: route.params.TruckName,
+        businessDesc: route.params.BusinessDescription,
+        truckContact: route.params.TruckContact,
+        truckEmail: route.params.TruckEmail,
+        truckCity: route.params.City,
+        truckWebsite: route.params.Website,
+        schedule: route.params.Schedule,
+        facebook: route.params.FacebookID,
+        instagram: route.params.InstagramID,
+        twitter: route.params.TwitterID,
+        selectedServingCusines: route.params.ServingCusine,
+        Menu: route.params.Menu,
+      };
+      axios
+        .post(url + '/api/users/signup', {data: data})
+        .then(async Response => {
+          let Code = Response.data.code;
+          console.log('Response', Code);
+          if (Code === 'ABT0000') {
+            setisLoading(false);
+            console.log('Customer Added');
+            navigation.navigate(RouteName.HOME);
+          } else {
+            console.log('NOT ADDEED');
+            setisLoading(false);
           }
-          style={{color: 'grey'}}
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+  };
+  return (
+    <View style={{height: '100%', width: '100%'}}>
+      <Header onPress={() => navigation.goBack()}>{'Truck Cover'}</Header>
+      <Ui
+        isLoading={isLoading}
+        TextValue={'Upload the best angle of your food truck here'}
+        TextViewStyle={styles.UiText}
+        ContentStyle={styles.ContentStyle}
+        ButtonText={'Complete Registration'}
+        onPressButton={Navigate}>
+        <View style={styles.InputMainView}>
+          <Text
+            value={
+              'Upload a logo photo to help users quickly recognize your brand'
+            }
+            style={{color: 'grey'}}
+          />
+        </View>
+        <ImagePicker
+          text={'Add Cover Photo'}
+          SendUri={SendUri}
+          style={styles.ImageContainer}
         />
-      </View>
-      <ImagePicker text={'Add Cover Photo'}  SendUri={SendUri} style = {styles.ImageContainer} />
-    </Ui>
+      </Ui>
     </View>
   );
 };
@@ -61,11 +106,11 @@ const styles = StyleSheet.create({
   radioView: {
     flexDirection: 'row',
   },
-  ImageContainer:{
-    width:responsiveWidth(80),
-    height:responsiveHeight(20),
+  ImageContainer: {
+    width: responsiveWidth(80),
+    height: responsiveHeight(20),
     justifyContent: 'center',
     alignItems: 'center',
-  }
+  },
 });
 export default CoverPhoto;

@@ -14,6 +14,7 @@ import url from './Constants/constants';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 import ErrorView from '../../Component/ErrorField';
+import * as Route from '../../Constants/RouteName';
 const SignUp = ({navigation}) => {
   const [name, SetName] = React.useState(null);
   const [nameError, SetNameError] = React.useState(false);
@@ -109,23 +110,22 @@ const SignUp = ({navigation}) => {
     ) {
       setisLoading(true);
       const data = {
-    data:{
         email: email,
         password: password,
         profileName: name,
         phoneNumber: phone,
         userType: 'Customer',
-        Language: languge
-    }
+        Language: languge,
       };
       axios
-        .post(url + '/api/users/signup', data)
+        .post(url + '/api/users/signup', {data: data})
         .then(async Response => {
           console.log('Response', Response.data.code);
           let Code = Response.data.code;
           if (Code === 'ABT0000') {
             setisLoading(false);
             console.log('Customer Added');
+            navigation.navigate(Route.SIGNIN);
           } else {
             console.log('NOT ADDEED');
             setisLoading(false);

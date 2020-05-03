@@ -8,7 +8,6 @@ import {
   responsiveFontSize,
 } from 'react-native-responsive-dimensions';
 import Container from './Container';
-import Header from './Header';
 import Button from './Button';
 const Ui = ({
   isLoading,
@@ -33,12 +32,6 @@ const Ui = ({
           <Text bold value={TextValue} style={TextStyle} />
         </View>
       ) : null}
-      {/* {HeaderValue ?    <Header onPress={()=>navigation.goBack()} >
-          {HeaderValue}
-      </Header>  */}
-
-      {/* :null} */}
-
       <View style={[styles.Content, ContentStyle]}>{children}</View>
       {isLoading ? (
         <View style={[styles.buttonStyle2, buttonStyle, {borderRadius: 33}]}>
@@ -49,18 +42,11 @@ const Ui = ({
           style={[styles.buttonStyle2, buttonStyle]}
           onPress={onPressButton}
           rounded>
-          {/* <Image style={styles.logoStyle1} source={require('./../images/TYFTLogo.png')} /> */}
           <Text
             uppercase={false}
             style={[styles.TextStyle1, TextSpace]}
             value={ButtonText}
           />
-          {/* <Entypo
-         //style={{ marginLeft: responsiveWidth(16) }}
-         name="chevron-thin-right"
-         size={15}
-         color="white"
-       /> */}
         </Button>
       )}
     </Container>

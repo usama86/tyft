@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   StyleSheet,
   ScrollView,
@@ -11,96 +11,118 @@ import {
   responsiveWidth,
   responsiveFontSize,
 } from 'react-native-responsive-dimensions';
-import { Input, Text, Overlay } from 'react-native-elements';
+import {Input, Text, Overlay} from 'react-native-elements';
 import theme from './../theme';
 import RoundButton from '../../Component/Button';
 import Divider from './../../Component/Divider';
 import Texts from './../../Component/Text';
-// import * as Screens from './../constants/screens';
-// import * as userActions from './../redux/actions/userActions';
-// import { connect } from 'react-redux';
-
-const SignIn = props => {
-  // const { navigation, user, dispatch, signInUserError } = props;
-  const [signInUserError,setsignInUserError]=[{name:'Wrong'}]
+import url from './Constants/constants';
+import axios from 'axios';
+import AsyncStorage from '@react-native-community/async-storage';
+import ErrorView from '../../Component/ErrorField';
+import {CommonActions} from '@react-navigation/native';
+import * as RouteName from '../../Constants/RouteName';
+const SignIn = ({navigation}) => {
   const [email, setEmail] = React.useState(null);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState(null);
-
   const [password, setPassword] = React.useState(null);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState(null);
-
   const [loading, setLoading] = React.useState(false);
-
   const handleSignIn = () => {
-    if (email == null || email === '') {
-      setEmailErrorMessage('Enter a valid email address');
-      return;
-    } else if (password == null || password === '') {
-      setPasswordErrorMessage('Enter a correct password');
-      return;
+    if (!email) {
+      setEmailErrorMessage('Email must not be empty');
     }
-    setLoading(true);
-    // dispatch(userActions.signInUser(email, password));
+    if (!password) {
+      setPasswordErrorMessage('Password must not be empty');
+    } else if (email && password) {
+      setLoading(true);
+      let credentials = {
+        email: email,
+        password: password,
+      };
+      axios
+        .post(url + '/api/users/login', credentials)
+        .then(async Response => {
+          let token = Response.data.token;
+          if (token) {
+            await AsyncStorage.setItem('token' + '', token);
+            await setLoading(false);
+
+          //  await navigation.dispatch(
+          //     CommonActions.reset({
+          //       index: 0,
+          //       routes: [
+          //         { name: RouteName.VEGGIEWISPER },
+          //       ],
+          //     })
+          //   );
+               await navigation.navigate('App');
+          } else {
+            setPasswordErrorMessage('Your Email or Password is incorrect');
+            setLoading(false);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
   };
-  if (loading) {
-    return (
-      <View style={styles.loading}>
-        <ActivityIndicator size="large" />
+
+  return (
+    <View style={styles.contentContainerStyle}>
+      <Text style={styles.signInHeader}>{'Sign in'}</Text>
+      <Divider />
+      <Input
+        value={email}
+        inputContainerStyle={{
+          borderBottomWidth: 0,
+        }}
+        placeholder="Email"
+        inputStyle={styles.inputStyle}
+        onChangeText={text => {
+          setEmail(text);
+          setEmailErrorMessage(null);
+        }}
+        keyboardType={'email-address'}
+        returnKeyType={'next'}
+        errorMessage={emailErrorMessage}
+      />
+      <Divider />
+      <Input
+        secureTextEntry={true}
+        value={password}
+        placeholder="Password"
+        inputContainerStyle={{borderBottomWidth: 0}}
+        inputStyle={styles.inputStyle}
+        onChangeText={text => {
+          setPassword(text);
+          setPasswordErrorMessage(null);
+        }}
+        returnKeyType={'done'}
+        errorMessage={passwordErrorMessage}
+      />
+      <Divider />
+      <View style={{paddingLeft: 10, paddingRight: 10}}>
+        {loading ? (
+          <View style={styles.buttonStyle2}>
+            <ActivityIndicator color={'#fff'} size={'large'} />
+          </View>
+        ) : (
+          <RoundButton style={styles.buttonStyle2} onPress={handleSignIn}>
+            <Texts uppercase={false} style={styles.TextStyle1} value={'Next'} />
+          </RoundButton>
+        )}
       </View>
-    );
-  } else {
-    return (
-      <View style={styles.contentContainerStyle}>
-        <Text style={styles.signInHeader}>{'Sign in'}</Text>
-        <Divider />
-        <Input
-          value={email}
-          inputContainerStyle={{
-            borderBottomWidth: 0,
-          }}
-          placeholder="Email"
-          inputStyle={styles.inputStyle}
-          onChangeText={text => {
-            setEmail(text);
-            setEmailErrorMessage(null);
-          }}
-          keyboardType={'email-address'}
-          returnKeyType={'next'}
-          errorMessage={emailErrorMessage}
-        />
-        <Divider />
-        <Input
-          secureTextEntry={true}
-          value={password}
-          placeholder="Password"
-          inputContainerStyle={{ borderBottomWidth: 0 }}
-          inputStyle={styles.inputStyle}
-          onChangeText={text => setPassword(text)}
-          returnKeyType={'done'}
-          errorMessage={passwordErrorMessage}
-        />
-        <Divider />
-        <View style={{ paddingLeft: 10, paddingRight: 10 }}>
-        <RoundButton
-          style={styles.buttonStyle2}
-          onPress={()=>{props.navigation.navigate('App')}}>
-          <Texts
-            uppercase={false}
-            style={styles.TextStyle1}
-            value={"Next"}
-          />
-      </RoundButton>
-        </View>
-        <Divider />
-        <Text
-          style={styles.forgotPasswordText}
-          onPress={() => {
-            // navigation.navigate(Screens.FORGOT_PASSWORD)}
-          }}>
-          Don't remember your password?
-        </Text>
-        <Divider />
-        {false && (
+      <Divider />
+      <Text
+        style={styles.forgotPasswordText}
+        onPress={() => {
+          // navigation.navigate(Screens.FORGOT_PASSWORD)}
+        }}>
+        Don't remember your password?
+      </Text>
+      <Divider />
+      {/* {false && (
           <Overlay
             isVisible
             width="auto"
@@ -110,10 +132,9 @@ const SignIn = props => {
             }}>
             <Text>{signInUserError.message}</Text>
           </Overlay>
-        )}
-      </View>
-    );
-  }
+        )} */}
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -195,5 +216,5 @@ const styles = StyleSheet.create({
 //   };
 // }
 
-export default(SignIn);
+export default SignIn;
 // connect(mapStateToProps)
