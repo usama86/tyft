@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
-import { Text, CheckBox, Icon } from 'react-native-elements';
+import React, {useState, useEffect} from 'react';
+import {View, StyleSheet, ScrollView, SafeAreaView} from 'react-native';
+import {Text, CheckBox, Icon} from 'react-native-elements';
 import HeaderLabel from './../../../Component/Text';
 import RoundButton from './../../../Component/Button';
 // import theme from '../../theme';
@@ -11,24 +11,34 @@ import {
 } from 'react-native-responsive-dimensions';
 import * as Screens from './../../../Constants/RouteName';
 import Header from '../../../Component/Header';
-const week = [
-  { day: 'Monday', working: true, opening: '8:00 AM', closing: '5:00 PM' },
-  { day: 'Tuesday', working: true, opening: '8:00 AM', closing: '5:00 PM' },
-  { day: 'Wednesday', working: true, opening: '8:00 AM', closing: '5:00 PM' },
-  { day: 'Thursday', working: true, opening: '8:00 AM', closing: '5:00 PM' },
-  { day: 'Friday', working: true, opening: '8:00 AM', closing: '5:00 PM' },
-  { day: 'Saturday', working: false, opening: '8:00 AM', closing: '5:00 PM' },
-  { day: 'Sunday', working: false, opening: '8:00 AM', closing: '5:00 PM' },
-];
 
-function Schedule(props) {
-  const { navigation } = props;
-  const [setting, setSetting] = useState(week);
+function Schedule({navigation, route}) {
+  const [setting, setSetting] = useState([
+    {day: 'Monday', working: false, opening: '8:00 AM', closing: '5:00 PM'},
+    {day: 'Tuesday', working: false, opening: '8:00 AM', closing: '5:00 PM'},
+    {day: 'Wednesday', working: false, opening: '8:00 AM', closing: '5:00 PM'},
+    {day: 'Thursday', working: false, opening: '8:00 AM', closing: '5:00 PM'},
+    {day: 'Friday', working: false, opening: '8:00 AM', closing: '5:00 PM'},
+    {day: 'Saturday', working: false, opening: '8:00 AM', closing: '5:00 PM'},
+    {day: 'Sunday', working: false, opening: '8:00 AM', closing: '5:00 PM'},
+  ]);
+  useEffect(() => {
+    let updatedArray = [...setting];
+    for (let i = 0; i < updatedArray.length; i++) {
+      let open = route.params.schedule.find(
+        item => item.day === updatedArray[i],
+      );
+      updatedArray[i].working = open !== undefined ? true : false;
+      setSetting(updatedArray);
+    }
+    console.log('in Update', setting);
+    console.log('in SCHEDULE', route.params.schedule);
+  }, []);
   return (
-    <SafeAreaView style={styles.container}> 
-     <Header isHome onPress={()=>navigation.openDrawer()} >
-         {'Schedule'}
-     </Header>
+    <SafeAreaView style={styles.container}>
+      <Header isHome onPress={() => navigation.openDrawer()}>
+        {'Schedule'}
+      </Header>
       <ScrollView>
         <View style={styles.formContainer}>
           <View style={styles.tableHeader}>
@@ -72,12 +82,10 @@ function Schedule(props) {
         <View style={styles.fillView} />
         <RoundButton
           style={styles.buttonStyle2}
-          onPress={()=> navigation.navigate(Screens.SERVINGCUSINE)}>
+          onPress={() => navigation.navigate(Screens.SERVINGCUSINE)}>
           {/* <Image style={styles.logoStyle1} source={require('./../images/TYFTLogo.png')} /> */}
-          <Text
-            uppercase={false}
-            style={styles.TextStyle1}>
-              Done
+          <Text uppercase={false} style={styles.TextStyle1}>
+            Done
           </Text>
           {/* <Entypo
 							//style={{ marginLeft: responsiveWidth(16) }}
@@ -164,13 +172,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     height: responsiveHeight(6),
-    borderRadius:8
-    
+    borderRadius: 8,
+
     // borderStyle: 'solid',
     // borderWidth: 1,
     // borderColor: 'rgb(0, 0, 0)'
   },
-  TextStyle1:{
-    color:'white'
-  }
+  TextStyle1: {
+    color: 'white',
+  },
 });

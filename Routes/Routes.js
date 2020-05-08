@@ -36,14 +36,14 @@ const Routes = () => {
 const AppDrawer = () => {
   const [progress, setProgress] = React.useState(new Animated.Value(0.0));
   const scale = Animated.interpolate(progress, {
-    inputRange: [0, 0.8],
-    outputRange: [1, 0.95],
+    inputRange: [0, 1],
+    outputRange: [1, 1],
   });
   const screenStyles = {transform: [{scale}]};
   return (
     <Animated.View
       style={[
-        {flex: 1, overflow: 'hidden', backgroundColor: '#000'},
+        {flex: 1, overflow: 'hidden'},
         screenStyles,
       ]}>
       <Drawer.Navigator

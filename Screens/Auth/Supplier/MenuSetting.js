@@ -29,7 +29,7 @@ const MenuSetting = ({navigation, route}) => {
     {label: 'Thai', value: 'Thai'},
   ]);
   const [Data, setData] = React.useState([]);
-  const [SelectedValue, setSelectedValue] = React.useState(null);
+  const [SelectedValue, setSelectedValue] = React.useState('Italian Food');
   const [showModal, setShowModal] = React.useState(false);
   const [category, setCategory] = React.useState(null);
   const [name, setName] = React.useState({
@@ -52,6 +52,7 @@ const MenuSetting = ({navigation, route}) => {
       setCategory(null);
     } else if (e) {
       setCategory(e);
+      console.log('Category is here',category)
     }
   };
   const Navigate = () => {
@@ -98,7 +99,6 @@ const MenuSetting = ({navigation, route}) => {
       setPrice({value: null, Error: true, ErrorText: 'Price is required.'});
     } else if (name.value && description.value && price.value) {
       newArray.push({
-        id: ++newId,
         name: name.value,
         price: price.value,
         description: description.value,
@@ -111,6 +111,7 @@ const MenuSetting = ({navigation, route}) => {
     let newArr = [...Categories];
     if (category) {
       newArr.unshift({label: category, value: category});
+      setSelectedValue(category);
     }
     setCategories(newArr);
     setShowModal(false);

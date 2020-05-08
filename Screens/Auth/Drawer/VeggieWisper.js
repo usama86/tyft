@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
@@ -24,11 +24,36 @@ import {
 } from 'react-native-responsive-dimensions';
 import * as RouteName from '../../../Constants/RouteName';
 import Header from '../../../Component/Header';
-const VeggieWisper = ({navigation}) => {
+import AsyncStorage from '@react-native-community/async-storage';
+import url from './../Constants/constants';
+import axios from 'axios';
+const VeggieWisper = ({navigation, route}) => {
   const [ToggleSwitch, setToggleSwitch] = useState(false);
   const [button, setButton] = useState([1, 2, 3, 4, 5, 6, 7, 8]);
+  const [userInfo, setUserInfo] = useState([]);
+  const [TruckInfo, setTruckInfo] = useState({});
+  useEffect(() => {
+    getUserDetails();
+  }, []);
+  const getUserDetails = async () => {
+    let userId = await AsyncStorage.getItem('userID');
+    axios
+      .post(url + '/api/supplier/getsupplier', {id: userId})
+      .then(async Response => {
+        if (Response.data.code !== 'ABT0001') {
+          let res = Response.data;
+          let newArr = [{...res.Supplier[0], TruckInfo: res.TruckInfo}];
+          setUserInfo(newArr);
+          setTruckInfo(res.TruckInfo[0]);
+          console.log('in veggie wispers', res.TruckInfo[0]);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
   return (
-    <Container >
+    <Container>
       <View style={styles.HeaderContainer}>
         <ImageBackground
           style={styles.image}
@@ -38,13 +63,17 @@ const VeggieWisper = ({navigation}) => {
           </Header>
         </ImageBackground>
       </View>
-      <CountButton/>
+      <CountButton button={TruckInfo.selectedServingCusines} />
 
       <View style={styles.flexView}>
-        <Text bold style={{color: 'blue'}} value={'The Veggie Whisper'} />
+        <Text bold style={{color: 'blue'}} value={TruckInfo.truckName} />
       </View>
       <View style={[styles.flexView, {marginTop: 0}]}>
-        <Rating startingValue={3.5} imageSize={responsiveFontSize(2.8)} />
+        <Rating
+          readonly
+          startingValue={TruckInfo.rating}
+          imageSize={responsiveFontSize(2.8)}
+        />
         <View
           style={{
             flexDirection: 'row',
@@ -52,15 +81,18 @@ const VeggieWisper = ({navigation}) => {
             justifyContent: 'space-between',
           }}>
           <Text
-            style={{
-              color: 'green',
-              fontWeight: 'bold',
-              fontSize: responsiveFontSize(2),
-            }}
-            value={'OPEN'}
+            style={[
+              {
+                color: 'green',
+                fontWeight: 'bold',
+                fontSize: responsiveFontSize(2),
+              },
+              TruckInfo.status === 'Close' ? {color: 'red'} : null,
+            ]}
+            value={TruckInfo.status}
           />
           <Switch
-            value={ToggleSwitch}
+            value={TruckInfo.status === 'Close' ? false : true}
             onValueChange={val => setToggleSwitch(val)}
             activeText={'On'}
             inActiveText={'Off'}
@@ -76,8 +108,8 @@ const VeggieWisper = ({navigation}) => {
               justifyContent: 'center',
             }} // style for inner animated circle for what you (may) be rendering inside the circle
             outerCircleStyle={{}} // style for outer animated circle
-            switchLeftPx={2.2} // denominator for logic when sliding to TRUE position. Higher number = more space from RIGHT of the circle to END of the slider
-            switchRightPx={2.2} // denominator for logic when sliding to FALSE position. Higher number = more space from LEFT of the circle to BEGINNING of the slider
+            switchLeftPx={2} // denominator for logic when sliding to TRUE position. Higher number = more space from RIGHT of the circle to END of the slider
+            switchRightPx={2} // denominator for logic when sliding to FALSE position. Higher number = more space from LEFT of the circle to BEGINNING of the slider
           />
         </View>
       </View>
@@ -87,11 +119,7 @@ const VeggieWisper = ({navigation}) => {
           paddingVertical: responsiveHeight(5),
           marginLeft: responsiveWidth(3),
         }}>
-        <Text
-          value={
-            'quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum'
-          }
-        />
+        <Text value={TruckInfo.businessDesc} />
       </View>
       <View style={styles.iconView}>
         <AntDesign
@@ -105,7 +133,7 @@ const VeggieWisper = ({navigation}) => {
             fontSize: responsiveFontSize(1.8),
             color: '#212121',
           }}
-          value={'contact@theveggiewhisperrers.com'}
+          value={TruckInfo.truckEmail}
         />
       </View>
       <View style={styles.iconView}>
@@ -120,7 +148,7 @@ const VeggieWisper = ({navigation}) => {
             fontSize: responsiveFontSize(1.8),
             color: '#212121',
           }}
-          value={'http://wwww.theveggiewhisperrers.com'}
+          value={TruckInfo.truckWebsite}
         />
       </View>
       <View style={styles.iconView}>
@@ -135,7 +163,7 @@ const VeggieWisper = ({navigation}) => {
             fontSize: responsiveFontSize(1.8),
             color: '#212121',
           }}
-          value={'(303) 500-7921'}
+          value={TruckInfo.truckContact}
         />
       </View>
       <View style={styles.SocialIcons}>

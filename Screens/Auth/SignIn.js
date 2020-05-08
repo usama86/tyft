@@ -22,6 +22,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import ErrorView from '../../Component/ErrorField';
 import {CommonActions} from '@react-navigation/native';
 import * as RouteName from '../../Constants/RouteName';
+import decode from 'jwt-decode';
 const SignIn = ({navigation}) => {
   const [email, setEmail] = React.useState(null);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState(null);
@@ -45,18 +46,25 @@ const SignIn = ({navigation}) => {
         .then(async Response => {
           let token = Response.data.token;
           if (token) {
-            await AsyncStorage.setItem('token' + '', token);
+            let usertoken = await decode(token);
+            console.log('TOKEN', usertoken);
+            await AsyncStorage.setItem('userID' + '', usertoken.userId);
+            await AsyncStorage.setItem('userType' + '', usertoken.userType);
             await setLoading(false);
-
-          //  await navigation.dispatch(
-          //     CommonActions.reset({
-          //       index: 0,
-          //       routes: [
-          //         { name: RouteName.VEGGIEWISPER },
-          //       ],
-          //     })
-          //   );
-               await navigation.navigate('App');
+            if (usertoken.userType === 'Supplier') {
+              navigation.navigate('App');
+            } else if (usertoken.userType === 'Customer') {
+              navigation.navigate('Auth', {screen: 'Tabs'});
+            }
+            //  await navigation.dispatch(
+            //     CommonActions.reset({
+            //       index: 0,
+            //       routes: [
+            //         { name: RouteName.VEGGIEWISPER },
+            //       ],
+            //     })
+            //   );
+            await navigation.navigate('App');
           } else {
             setPasswordErrorMessage('Your Email or Password is incorrect');
             setLoading(false);

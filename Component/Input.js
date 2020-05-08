@@ -14,6 +14,7 @@ const tyftTextBox = ({
   onChangeText,
   value,
   secured,
+  lower,
   ...props
 }) => {
   const {InputDesign, Inputs} = styles;
@@ -23,8 +24,9 @@ const tyftTextBox = ({
         secureTextEntry={secured ? true : false}
         {...props}
         onChangeText={onChangeText}
-        style={Inputs}
+        style={Inputs,lower?{textTransform:'lowercase'}:null}
         value={value}
+        
       />
     </Item>
   );

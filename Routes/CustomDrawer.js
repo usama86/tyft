@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, SafeAreaView} from 'react-native';
 import {Text, Avatar, Icon, ListItem} from 'react-native-elements';
 import * as Screens from './../Constants/RouteName';
@@ -9,10 +9,38 @@ import {
   responsiveHeight,
 } from 'react-native-responsive-dimensions';
 import AsyncStorage from '@react-native-community/async-storage';
-const CustomDrawer = ({navigation}) => {
+import url from '../Screens/Auth/Constants/constants';
+import axios from 'axios';
+const CustomDrawer = ({navigation, route}) => {
   const Logout = async () => {
     await AsyncStorage.clear();
     navigation.replace('Auth', {screen: Screens.SIGNIN});
+  };
+  const [userInfo, setUserInfo] = useState([]);
+  const [name,setName] = useState(null);
+  const [email,setEmail]=useState(null);
+  const [phone,setPhone]=useState(null);
+  useEffect(() => {
+    getUserDetails();
+  }, []);
+  const getUserDetails = async () => {
+    let userId = await AsyncStorage.getItem('userID');
+    axios
+      .post(url + '/api/supplier/getsupplier', {id: userId})
+      .then(async Response => {
+        if (Response.data.code !== 'ABT0001') {
+          let res = Response.data;
+          let newArr = [{...res.Supplier[0], TruckInfo: res.TruckInfo}];
+          setUserInfo(newArr);
+          setName(res.Supplier[0].profileName);
+          setPhone(res.Supplier[0].phoneNumber);
+          setEmail(res.Supplier[0].email);
+          // console.log('UPDATED', newArr);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -21,9 +49,9 @@ const CustomDrawer = ({navigation}) => {
           <View style={styles.rowView}>
             <Avatar rounded title={'Good Company'} size="large" />
             <View style={{marginLeft: 20}}>
-              <Text style={styles.whiteText}>Usama</Text>
-              <Text style={styles.whiteText}>Usama45@gmail.com</Text>
-              <Text style={styles.whiteText}>+923455549302</Text>
+              <Text style={styles.whiteText}>{name}</Text>
+              <Text style={styles.whiteText}>{email}</Text>
+              <Text style={styles.whiteText}>{phone}</Text>
             </View>
           </View>
         </View>
@@ -37,7 +65,7 @@ const CustomDrawer = ({navigation}) => {
           <ListItem
             title={'Schedule'}
             leftAvatar={<SignoutIcon name={'history'} size={25} />}
-            onPress={() => navigation.navigate(Screens.SCHEDULED)}
+            onPress={() => navigation.navigate(Screens.SCHEDULED,{schedule:userInfo[0].TruckInfo[0].schedule})}
           />
           <ListItem
             title={'Customer Reviews'}

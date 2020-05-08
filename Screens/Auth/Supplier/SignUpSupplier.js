@@ -54,7 +54,7 @@ const SignUpSupplier = ({navigation}) => {
     }
   };
   const changePassword = e => {
-    console.log(e)
+    console.log(e);
     let PasswordRegix = /^(?=.*\d).{8,100}$/;
     if (PasswordRegix.test(e)) {
       setPassword({
@@ -75,7 +75,7 @@ const SignUpSupplier = ({navigation}) => {
         passwordErrorText:
           'Password must be atleast 8 digits long and include atleast one numeric digit',
       });
-      console.log(password.pass)
+      console.log(password.pass);
     }
   };
   const Navigate = () => {
@@ -136,7 +136,7 @@ const SignUpSupplier = ({navigation}) => {
       phone.phone &&
       password.password &&
       !password.passwordError &&
-       confirmpass.confirmpass &&
+      confirmpass.confirmpass &&
       check
     ) {
       navigation.navigate(RouteName.TRUCKLOGO, {
@@ -170,6 +170,7 @@ const SignUpSupplier = ({navigation}) => {
           <Input
             rounded
             value={email.email}
+            lower
             onChangeText={e => changeEmail(e)}
             placeholder="Email Address"
             style={styles.Input}
@@ -183,6 +184,7 @@ const SignUpSupplier = ({navigation}) => {
             onChangeText={e =>
               setPhone({phone: e, phoneError: false, phoneErrorText: null})
             }
+            keyboardType={'number-pad'}
             placeholder="Cell Phone"
             style={styles.Input}
           />

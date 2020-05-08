@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Alert} from 'react-native';
 import Input from '../../../Component/Input';
 import Text from '../../../Component/Text';
 import {
@@ -25,11 +25,10 @@ const CoverPhoto = ({navigation, route}) => {
         email: route.params.Email,
         password: route.params.Password,
         profileName: route.params.Name,
-        profilePhoto: null, //img
-        coverPhoto: img, //img
+        // Image: route.params.TruckLogo,
+        // Image: img, //img
         phoneNumber: route.params.Phone,
         userType: 'Supplier',
-        truckLogo: route.params.TruckLogo,
         truckName: route.params.TruckName,
         businessDesc: route.params.BusinessDescription,
         truckContact: route.params.TruckContact,
@@ -44,7 +43,15 @@ const CoverPhoto = ({navigation, route}) => {
         Menu: route.params.Menu,
       };
       axios
-        .post(url + '/api/users/signup', {data: data})
+        .post(
+          url + '/api/users/signup',
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          },
+          {data},
+        )
         .then(async Response => {
           let Code = Response.data.code;
           console.log('Response', Code);
@@ -60,6 +67,9 @@ const CoverPhoto = ({navigation, route}) => {
         .catch(error => {
           console.log(error);
         });
+    }
+    else{
+      Alert.alert('Please Select Cover Photo First')
     }
   };
   return (
