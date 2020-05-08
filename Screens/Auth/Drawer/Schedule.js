@@ -26,13 +26,11 @@ function Schedule({navigation, route}) {
     let updatedArray = [...setting];
     for (let i = 0; i < updatedArray.length; i++) {
       let open = route.params.schedule.find(
-        item => item.day === updatedArray[i],
+        item => item.day === updatedArray[i].day,
       );
       updatedArray[i].working = open !== undefined ? true : false;
-      setSetting(updatedArray);
     }
-    console.log('in Update', setting);
-    console.log('in SCHEDULE', route.params.schedule);
+    setSetting(updatedArray);
   }, []);
   return (
     <SafeAreaView style={styles.container}>
@@ -83,16 +81,9 @@ function Schedule({navigation, route}) {
         <RoundButton
           style={styles.buttonStyle2}
           onPress={() => navigation.navigate(Screens.SERVINGCUSINE)}>
-          {/* <Image style={styles.logoStyle1} source={require('./../images/TYFTLogo.png')} /> */}
           <Text uppercase={false} style={styles.TextStyle1}>
             Done
           </Text>
-          {/* <Entypo
-							//style={{ marginLeft: responsiveWidth(16) }}
-							name="chevron-thin-right"
-							size={15}
-							color="white"
-						/> */}
         </RoundButton>
         <View style={styles.fillView} />
       </View>

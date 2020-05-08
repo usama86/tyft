@@ -46,6 +46,28 @@ const VeggieWisper = ({navigation, route}) => {
           setUserInfo(newArr);
           setTruckInfo(res.TruckInfo[0]);
           console.log('in veggie wispers', res.TruckInfo[0]);
+        }else{
+          console.log('no')
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+  const updateStatus = async(val,truckID) => {
+    let Status = null;
+    if (val) {
+      Status = 'Open';
+    } else if (!val) {
+      Status = 'Close';
+    }
+    axios
+      .post(url + '/api/supplier/updatestatus', {_id: truckID, status: Status})
+      .then(async Response => {
+        if (Response.data.code === 'ABT0000') {
+          let newObj = {...TruckInfo};
+          newObj.status = Status;
+          setTruckInfo(newObj)
         }
       })
       .catch(error => {
@@ -93,7 +115,7 @@ const VeggieWisper = ({navigation, route}) => {
           />
           <Switch
             value={TruckInfo.status === 'Close' ? false : true}
-            onValueChange={val => setToggleSwitch(val)}
+            onValueChange={val => updateStatus(val,TruckInfo._id)}
             activeText={'On'}
             inActiveText={'Off'}
             circleSize={30}
