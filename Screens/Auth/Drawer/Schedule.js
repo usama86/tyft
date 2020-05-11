@@ -1,5 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {View, StyleSheet, ScrollView, SafeAreaView} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  SafeAreaView,
+  Image,
+  ActivityIndicator,
+} from 'react-native';
 import {Text, CheckBox, Icon} from 'react-native-elements';
 import HeaderLabel from './../../../Component/Text';
 import RoundButton from './../../../Component/Button';
@@ -11,7 +18,10 @@ import {
 } from 'react-native-responsive-dimensions';
 import * as Screens from './../../../Constants/RouteName';
 import Header from '../../../Component/Header';
-
+import AsyncStorage from '@react-native-community/async-storage';
+import url from './../Constants/constants';
+import axios from 'axios';
+import Modal from '../../../Component/Modal';
 function Schedule({navigation, route}) {
   const [setting, setSetting] = useState([
     {day: 'Monday', working: false, opening: '8:00 AM', closing: '5:00 PM'},
@@ -22,6 +32,32 @@ function Schedule({navigation, route}) {
     {day: 'Saturday', working: false, opening: '8:00 AM', closing: '5:00 PM'},
     {day: 'Sunday', working: false, opening: '8:00 AM', closing: '5:00 PM'},
   ]);
+  const [showModal, setShowModal] = useState(false);
+  const [indicator, setIndicator] = useState(false);
+  const updateSchedule = async () => {
+    setIndicator(true);
+    let TruckID = await AsyncStorage.getItem('TruckID');
+    let activeSchedule = setting.filter(item => item.working);
+    axios
+      .post(url + '/api/supplier/updateSchedule', {
+        _id: TruckID,
+        schedule: activeSchedule,
+      })
+      .then(async Response => {
+        const ERROR = Response.data.code;
+        if (ERROR === 'ABT0000') {
+          setIndicator(false);
+          setShowModal(true);
+          setTimeout(() => {
+            setShowModal(false);
+            navigation.goBack();
+          }, 500);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
   useEffect(() => {
     let updatedArray = [...setting];
     for (let i = 0; i < updatedArray.length; i++) {
@@ -77,16 +113,27 @@ function Schedule({navigation, route}) {
         </View>
       </ScrollView>
       <View style={styles.buttons}>
-        <View style={styles.fillView} />
-        <RoundButton
-          style={styles.buttonStyle2}
-          onPress={() => navigation.navigate(Screens.SERVINGCUSINE)}>
-          <Text uppercase={false} style={styles.TextStyle1}>
-            Done
-          </Text>
-        </RoundButton>
-        <View style={styles.fillView} />
+        {indicator ? (
+          <View style={styles.buttonStyle2}>
+            <ActivityIndicator color={'#fff'} size={'large'} />
+          </View>
+        ) : (
+          <RoundButton style={styles.buttonStyle2} onPress={updateSchedule}>
+            <Text uppercase={false} style={styles.TextStyle1}>
+              Done
+            </Text>
+          </RoundButton>
+        )}
       </View>
+      <Modal ModalContainer={styles.modalView} showModal={showModal}>
+        <View style={styles.IconView}>
+          <Image
+            style={{width: '100%', height: '100%', resizeMode: 'contain'}}
+            source={require('../../../images/button.png')}
+          />
+        </View>
+        <Text style={styles.UpdatedText}>{'Updated'}</Text>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -171,5 +218,22 @@ const styles = StyleSheet.create({
   },
   TextStyle1: {
     color: 'white',
+  },
+  IconView: {
+    width: '90%',
+    alignSelf: 'center',
+    height: responsiveHeight(20),
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: responsiveHeight(2),
+  },
+  UpdatedText: {
+    fontWeight: 'bold',
+    fontSize: responsiveFontSize(2.5),
+    color: '#1AB975',
+    textAlign: 'center',
+  },
+  modalView: {
+    paddingVertical: responsiveHeight(3),
   },
 });

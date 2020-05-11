@@ -21,6 +21,7 @@ const CoverPhoto = ({navigation, route}) => {
   };
   const Navigate = () => {
     if (img) {
+      setisLoading(true);
       let data = {
         email: route.params.Email,
         password: route.params.Password,

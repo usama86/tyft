@@ -17,9 +17,9 @@ const CustomDrawer = ({navigation, route}) => {
     navigation.replace('Auth', {screen: Screens.SIGNIN});
   };
   const [userInfo, setUserInfo] = useState([]);
-  const [name,setName] = useState(null);
-  const [email,setEmail]=useState(null);
-  const [phone,setPhone]=useState(null);
+  const [name, setName] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [phone, setPhone] = useState(null);
   useEffect(() => {
     getUserDetails();
   }, []);
@@ -35,7 +35,6 @@ const CustomDrawer = ({navigation, route}) => {
           setName(res.Supplier[0].profileName);
           setPhone(res.Supplier[0].phoneNumber);
           setEmail(res.Supplier[0].email);
-          // console.log('UPDATED', newArr);
         }
       })
       .catch(error => {
@@ -65,7 +64,11 @@ const CustomDrawer = ({navigation, route}) => {
           <ListItem
             title={'Schedule'}
             leftAvatar={<SignoutIcon name={'history'} size={25} />}
-            onPress={() => navigation.navigate(Screens.SCHEDULED,{schedule:userInfo[0].TruckInfo[0].schedule})}
+            onPress={() =>
+              navigation.navigate(Screens.SCHEDULED, {
+                schedule: userInfo[0].TruckInfo[0].schedule,
+              })
+            }
           />
           <ListItem
             title={'Customer Reviews'}

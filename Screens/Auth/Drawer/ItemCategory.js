@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
@@ -7,6 +7,7 @@ import {
   FlatList,
   TextInput,
   SafeAreaView,
+  ActivityIndicator,
 } from 'react-native';
 import Text from '../../../Component/Text';
 import {
@@ -14,59 +15,37 @@ import {
   responsiveWidth,
   responsiveFontSize,
 } from 'react-native-responsive-dimensions';
-import Header from '../../../Component/Header'
+import Header from '../../../Component/Header';
+import AsyncStorage from '@react-native-community/async-storage';
+import url from './../Constants/constants';
+import axios from 'axios';
 const ItemCategory = ({navigation}) => {
   const [menuItem, setMenuItem] = useState();
-  const [Data, setData] = useState([
-    {
-      id: 0,
-      name: 'Veggie',
-      price: '9.00',
-      description: 'black beans,corn,pics,spinich,sour cream',
-    },
-    {
-      id: 1,
-      name: 'Veggie',
-      price: '9.00',
-      description: 'black beans,corn,pics,spinich,sour cream',
-    },
-    {
-      id: 2,
-      name: 'Veggie',
-      price: '9.00',
-      description: 'black beans,corn,pics,spinich,sour cream',
-    },
-    {
-      id: 3,
-      name: 'Veggie',
-      price: '9.00',
-      description: 'black beans,corn,pics,spinich,sour cream',
-    },
-    {
-      id: 4,
-      name: 'Veggie',
-      price: '9.00',
-      description: 'black beans,corn,pics,spinich,sour cream',
-    },
-    {
-      id: 5,
-      name: 'Veggie',
-      price: '9.00',
-      description: 'black beans,corn,pics,spinich,sour cream',
-    },
-    {
-      id: 6,
-      name: 'Veggie',
-      price: '9.00',
-      description: 'black beans,corn,pics,spinich,sour cream',
-    },
-    {
-      id: 7,
-      name: 'Veggie',
-      price: '9.00',
-      description: 'black beans,corn,pics,spinich,sour cream',
-    },
-  ]);
+  const [indicator, setIndicator] = useState(false);
+  const [Data, setData] = useState([]);
+  useEffect(() => {
+    getMenuOfSupplier();
+  }, []);
+  const getMenuOfSupplier = async () => {
+    setIndicator(true);
+    let MenuID = await AsyncStorage.getItem('MenuID');
+    axios
+      .post(url + '/api/menu/getmenu', {
+        _id: MenuID,
+      })
+      .then(async Response => {
+        const ERROR = Response.data.code;
+        if (ERROR === 'ABT0000') {
+          setIndicator(false);
+          setData(Response.data.MenuData);
+        } else {
+          setIndicator(false);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
   const PrintCard = (item, index) => (
     <TouchableOpacity activeOpacity={0.8} style={styles.MainView}>
       <View style={styles.Left}>
@@ -90,27 +69,33 @@ const ItemCategory = ({navigation}) => {
   );
   return (
     <SafeAreaView style={styles.parent}>
-      <Header isHome onPress={()=>navigation.openDrawer()} >{'Menu'}</Header>
+      <Header isHome onPress={() => navigation.openDrawer()}>
+        {'Menu'}
+      </Header>
       <View style={styles.HeadingContainer}>
         {/* <Text style={{textTransform: 'uppercase'}} bold value={'Menu'} /> */}
         <TextInput
-        placeholder={'Mexican'}
+          placeholder={'Mexican'}
           value={menuItem}
-          editable={false} selectTextOnFocus={false}
+          editable={false}
+          selectTextOnFocus={false}
           //onChangeText={val => setMenuItem(val)}
           style={styles.input}
-          
         />
       </View>
 
-      <FlatList
-        data={Data}
-        keyExtractor={item => item.id}
-        contentContainerStyle={{
-          paddingVertical: responsiveHeight(2),
-        }}
-        renderItem={({item, index}) => PrintCard(item, index)}
-      />
+      {indicator ? (
+        <ActivityIndicator color={'#000'} size={'large'} />
+      ) : (
+        <FlatList
+          data={Data}
+          keyExtractor={item => item.id}
+          contentContainerStyle={{
+            paddingVertical: responsiveHeight(2),
+          }}
+          renderItem={({item, index}) => PrintCard(item, index)}
+        />
+      )}
     </SafeAreaView>
   );
 };
