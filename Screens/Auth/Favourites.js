@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
@@ -7,6 +7,7 @@ import {
   FlatList,
   SafeAreaView,
   ScrollView,
+  ActivityIndicator
 } from 'react-native';
 import Container from '../../Component/Container';
 import Button from '../../Component/Button';
@@ -25,6 +26,10 @@ import * as RouteName from '../../Constants/RouteName';
 import Header from '../../Component/Header';
 import SettingIcon from 'react-native-vector-icons/Entypo';
 import CountButton from '../../Component/CountButton';
+import url from './Constants/constants';
+import axios from 'axios';
+import AsyncStorage from '@react-native-community/async-storage';
+import moment from 'moment';
 const Favorite = ({navigation}) => {
   const [Data, setData] = useState([
    
@@ -47,6 +52,35 @@ const Favorite = ({navigation}) => {
       rating: 1,
     },
   ]);
+  const [day, setDay] = useState(null);
+  const [isLoading, setisLoading] = useState(true);
+  const getFavouriteRestaurants = async () => {
+    let UserID = await AsyncStorage.getItem('userID');
+    console.log(UserID)
+    axios
+      .post(url + '/api/supplier/getfavoritetruck',{_id:UserID})
+      .then(async Response => {
+        let ERROR = Response.data.code;
+        let Favourites = Response.data.TruckInfo;
+        console.log('FAVVV',Favourites)
+        if (ERROR !== 'ABT0001') {
+          let currentDate = moment();
+          let day = currentDate.format('dddd');
+          setDay(day);
+          setData(Favourites);
+          setisLoading(false);
+        } else {
+          setisLoading(false);
+        }
+      })
+      .catch(error => {
+        setisLoading(false);
+        console.log(error);
+      });
+  };
+  useEffect(() => {
+    getFavouriteRestaurants();
+  }, []);
   const PrintCard = (item, index) => (
     <TouchableOpacity
       activeOpacity={0.8}
@@ -183,28 +217,9 @@ const Favorite = ({navigation}) => {
            <SettingIcon
             name={'sound-mix'}
             size={40}
-            //style={{marginTop:responsiveHeight(1.3),transform: [{ scaleY: 2 }]}}
           />
         </TouchableOpacity>
       </View>
-      {/* <View style={styles.flexView}>
-        <Button style={styles.button}>
-          <Text style={styles.TextStyle} value={'Burger'} />
-        </Button>
-        <Button style={styles.button}>
-          <Text style={styles.TextStyle} value={'Pizza'} />
-        </Button>
-        <Button style={styles.button}>
-          <Text style={styles.TextStyle} value={'BBQ'} />
-        </Button>
-        <TouchableOpacity
-          onPress={() => navigation.navigate(RouteName.SERVINGCUSINETYPE)}>
-          <Image
-            style={{width: responsiveWidth(8), height: responsiveHeight(4)}}
-            source={require('../../images/filter.png')}
-          />
-        </TouchableOpacity>
-      </View> */}
       <FlatList
         data={Data}
         keyExtractor={item => item.id}
