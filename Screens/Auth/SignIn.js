@@ -60,11 +60,11 @@ const SignIn = ({navigation}) => {
             //     CommonActions.reset({
             //       index: 0,
             //       routes: [
-            //         { name: RouteName.VEGGIEWISPER },
+            //         { name: RouteName.VEGGIEWISPER },hn btata jao ma dekh ra hu though cLL Pa HU EK MIN BAS EK MIN BAS
             //       ],
             //     })
             //   );
-            await navigation.navigate('App');
+            // await navigation.navigate('App');
           } else {
             setPasswordErrorMessage('Your Email or Password is incorrect');
             setLoading(false);

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
@@ -25,6 +25,9 @@ import * as RouteName from '../../Constants/RouteName';
 import Header from '../../Component/Header';
 import SettingIcon from 'react-native-vector-icons/Entypo';
 import CountButton from '../../Component/CountButton';
+import url from './Constants/constants';
+import axios from 'axios';
+import AsyncStorage from '@react-native-community/async-storage';
 const FindFoodTruck = ({navigation}) => {
   const [Data, setData] = useState([
     {
@@ -73,6 +76,25 @@ const FindFoodTruck = ({navigation}) => {
       rating: 1,
     },
   ]);
+const getAllTrucks = ()=>{
+  axios
+  .get(url + '/api/supplier/getalltruck')
+  .then(async Response => {
+    let ERROR= Response.data.code;
+    let Trucks = Response.data.TruckInfo;
+    if(ERROR!=='ABT0001'){
+      setData(Trucks)
+      console.log('trucks',Response.data.TruckInfo)
+    }
+ 
+  })
+  .catch(error => {
+    console.log(error);
+  });
+}
+  useEffect(()=>{
+  getAllTrucks();
+  },[])
   const PrintCard = (item, index) => (
     <TouchableOpacity
       activeOpacity={0.8}
@@ -84,7 +106,7 @@ const FindFoodTruck = ({navigation}) => {
       <View style={styles.RightContent}>
         <Text
           style={{fontSize: responsiveFontSize(2), fontWeight: 'bold'}}
-          value={item.Title}
+          value={item.truckName}
         />
         <CountButton 
         buttonProp={{width:responsiveWidth(17),height:responsiveHeight(3)}}
@@ -97,7 +119,7 @@ const FindFoodTruck = ({navigation}) => {
             color={'#212121'}
             size={responsiveFontSize(2.3)}
           />
-          <Text value={item.subtitle2} />
+          <Text value={item.truckCity} />
         </View>
         <View style={styles.flex}>
           <AntDesign
