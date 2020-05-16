@@ -23,7 +23,7 @@ import {
 } from 'react-native-responsive-dimensions';
 import * as RouteName from '../../Constants/RouteName';
 import Header from '../../Component/Header';
-const Menu = ({navigation}) => {
+const Menu = ({navigation,route}) => {
   const [menuItem, setMenuItem] = useState();
   const [Data, setData] = useState([
     {
@@ -110,7 +110,7 @@ const Menu = ({navigation}) => {
       </View>
 
       <FlatList
-        data={Data}
+        data={route.params.Menu}
         keyExtractor={item => item.id}
         contentContainerStyle={{
           paddingVertical: responsiveHeight(2),

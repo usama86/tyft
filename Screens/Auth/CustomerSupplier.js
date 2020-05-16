@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
   View,
   Image,
   FlatList,
-  ImageBackground
+  ImageBackground,
 } from 'react-native';
 import Container from './../../Component/Container';
 import Text from '../../Component/Text';
@@ -22,38 +22,49 @@ import {
 } from 'react-native-responsive-dimensions';
 import * as RouteName from '../../Constants/RouteName';
 import Header from '../../Component/Header';
-const CustomerSupplier = ({navigation}) => {
-  const [ToggleSwitch, setToggleSwitch] = useState(false); 
+const CustomerSupplier = ({navigation, route}) => {
+  const [ToggleSwitch, setToggleSwitch] = useState(false);
+  useEffect(()=>{
+      console.log('Params=>',route.params.TruckInfo)
+  },[])
   return (
     <Container>
       <View style={styles.HeaderContainer}>
-   <ImageBackground style={styles.image} source={require('../../images/art.jpg')} >
-     <Header onPress={()=>navigation.goBack()} >
-         {'The Veggie Whisper'}
-     </Header>
-   </ImageBackground>
+        <ImageBackground
+          style={styles.image}
+          source={require('../../images/art.jpg')}>
+          <Header onPress={() => navigation.goBack()}>
+            {route.params.TruckInfo.truckName}
+          </Header>
+        </ImageBackground>
       </View>
       <View style={styles.TabView}>
         <Button style={styles.Button}>
           <Text style={styles.Btntext} value={'Info'} />
         </Button>
         <Button
-          onPress={() => navigation.navigate(RouteName.MENU)}
+          onPress={() => navigation.navigate(RouteName.MENU,{Menu:route.params.TruckInfo.Menu})}
           style={[styles.Button, {backgroundColor: 'white'}]}>
           <Text style={[styles.Btntext, {color: 'black'}]} value={'Menu'} />
         </Button>
         <Button
-          onPress={() => navigation.navigate(RouteName.CUSTOMERREVIEWS)}
+          onPress={() => navigation.navigate(RouteName.CUSTOMERREVIEWS,{Menu:route.params.TruckInfo.Menu})}
           style={[styles.Button, {backgroundColor: 'white'}]}>
           <Text style={[styles.Btntext, {color: 'black'}]} value={'Reviews'} />
         </Button>
       </View>
 
       <View style={styles.flexView}>
-        <Text bold style={{color: 'blue'}} value={'The Veggie Whisper'} />
+        <Text bold style={{color: 'blue'}} value={route.params.TruckInfo.truckName} />
       </View>
       <View style={[styles.flexView, {marginTop: 0}]}>
-        <Rating startingValue={3.5} imageSize={responsiveFontSize(2.8)} />
+        {route.params.TruckInfo.rating ? (
+          <Rating
+            readonly
+            startingValue={route.params.TruckInfo.rating}
+            imageSize={responsiveFontSize(2.8)}
+          />
+        ) : null}
         <View
           style={{
             flexDirection: 'row',
@@ -68,26 +79,6 @@ const CustomerSupplier = ({navigation}) => {
             }}
             value={'OPEN'}
           />
-          <Switch
-            value={ToggleSwitch}
-            onValueChange={val => setToggleSwitch(val)}
-            activeText={'On'}
-            inActiveText={'Off'}
-            circleSize={30}
-            barHeight={responsiveHeight(3.2)}
-            circleBorderWidth={0}
-            backgroundActive={'green'}
-            backgroundInactive={'rgb(200,200,200)'}
-            circleActiveColor={'white'}
-            circleInActiveColor={'white'}
-            innerCircleStyle={{
-              alignItems: 'center',
-              justifyContent: 'center',
-            }} // style for inner animated circle for what you (may) be rendering inside the circle
-            outerCircleStyle={{}} // style for outer animated circle
-            switchLeftPx={2.2} // denominator for logic when sliding to TRUE position. Higher number = more space from RIGHT of the circle to END of the slider
-            switchRightPx={2.2} // denominator for logic when sliding to FALSE position. Higher number = more space from LEFT of the circle to BEGINNING of the slider
-          />
         </View>
       </View>
       <View
@@ -97,9 +88,7 @@ const CustomerSupplier = ({navigation}) => {
           marginLeft: responsiveWidth(3),
         }}>
         <Text
-          value={
-            'quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum'
-          }
+        value={route.params.TruckInfo.businessDesc}
         />
       </View>
       <View style={styles.iconView}>
@@ -114,7 +103,7 @@ const CustomerSupplier = ({navigation}) => {
             fontSize: responsiveFontSize(1.8),
             color: '#212121',
           }}
-          value={'contact@theveggiewhisperrers.com'}
+          value={route.params.TruckInfo.truckEmail}
         />
       </View>
       <View style={styles.iconView}>
@@ -127,9 +116,9 @@ const CustomerSupplier = ({navigation}) => {
         <Text
           style={{
             fontSize: responsiveFontSize(1.8),
-            color: '#212121'
+            color: '#212121',
           }}
-          value={'http://wwww.theveggiewhisperrers.com'}
+          value={route.params.TruckInfo.truckWebsite}
         />
       </View>
       <View style={styles.iconView}>
@@ -144,7 +133,7 @@ const CustomerSupplier = ({navigation}) => {
             fontSize: responsiveFontSize(1.8),
             color: '#212121',
           }}
-          value={'(303) 500-7921'}
+          value={route.params.TruckInfo.truckContact}
         />
       </View>
       <View style={styles.SocialIcons}>

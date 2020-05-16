@@ -19,17 +19,17 @@ const CoverPhoto = ({navigation, route}) => {
   const SendUri = val => {
     setImg(val);
   };
-  const Navigate = () => {
+  const Navigate = async() => {
     if (img) {
       setisLoading(true);
-      const data = new FormData();
-      data.append('file', img)
-      data.append('upload_preset', 'tyftBackend')
+      const dataa = new FormData();
+      dataa.append('file', img)
+      dataa.append('upload_preset', 'tyftBackend')
       const res = await fetch(
         'https://api.cloudinary.com/v1_1/hmrzthc6f/images/uploads',
         {
           method:'POST',
-          body: data
+          body: dataa
         }
       )
       let data = {

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
@@ -7,6 +7,7 @@ import {
   FlatList,
   SafeAreaView,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import Container from '../../Component/Container';
 import Button from '../../Component/Button';
@@ -25,92 +26,96 @@ import * as RouteName from '../../Constants/RouteName';
 import Header from '../../Component/Header';
 import SettingIcon from 'react-native-vector-icons/Entypo';
 import CountButton from '../../Component/CountButton';
+import url from './Constants/constants';
+import axios from 'axios';
+import AsyncStorage from '@react-native-community/async-storage';
+import moment from 'moment';
 const FindFoodTruck = ({navigation}) => {
-  const [Data, setData] = useState([
-    {
-      id: 0,
-      Title: 'Taco Truck',
-      subtitle1: 'American,Soul Food,Indian',
-      subtitle2: '1620 US-70,Coleny KS 679311',
-      subtitle3: '11:00 AM - 2:00 PM',
-      status: 'OPEN',
-      rating: 3.5,
-    },
-    {
-      id: 1,
-      Title: 'Taco Truck',
-      subtitle1: 'American,Soul Food,Indian',
-      subtitle2: '1620 US-70,Coleny KS 679311',
-      subtitle3: '11:00 AM - 2:00 PM',
-      status: 'OPEN',
-      rating: 5,
-    },
-    {
-      id: 2,
-      Title: 'Taco Truck',
-      subtitle1: 'American,Soul Food,Indian',
-      subtitle2: '1620 US-70,Coleny KS 679311',
-      subtitle3: '11:00 AM - 2:00 PM',
-      status: 'OPEN',
-      rating: 4,
-    },
-    {
-      id: 3,
-      Title: 'Taco Truck',
-      subtitle1: 'American,Soul Food,Indian',
-      subtitle2: '1620 US-70,Coleny KS 679311',
-      subtitle3: '11:00 AM - 2:00 PM',
-      status: 'OPEN',
-      rating: 2,
-    },
-    {
-      id: 4,
-      Title: 'Taco Truck',
-      subtitle1: 'American,Soul Food,Indian',
-      subtitle2: '1620 US-70,Coleny KS 679311',
-      subtitle3: '11:00 AM - 2:00 PM',
-      status: 'OPEN',
-      rating: 1,
-    },
-  ]);
+  const [Data, setData] = useState([]);
+  const [day, setDay] = useState(null);
+  const [isLoading, setisLoading] = useState(true);
+  const getAllTrucks = () => {
+    axios
+      .get(url + '/api/supplier/getalltruck')
+      .then(async Response => {
+        let ERROR = Response.data.code;
+        let Trucks = Response.data.TruckInfo;
+        if (ERROR !== 'ABT0001') {
+          let currentDate = moment();
+          let day = currentDate.format('dddd');
+          setDay(day);
+          setData(Trucks);
+          setisLoading(false);
+        } else {
+          setisLoading(false);
+        }
+      })
+      .catch(error => {
+        setisLoading(false);
+        console.log(error);
+      });
+  };
+  useEffect(() => {
+    getAllTrucks();
+  }, []);
   const PrintCard = (item, index) => (
     <TouchableOpacity
       activeOpacity={0.8}
       style={styles.MainView}
-      onPress={() => navigation.navigate(RouteName.CUSTOMERSUPPLIER)}>
+      onPress={() => navigation.navigate(RouteName.CUSTOMERSUPPLIER,{TruckInfo:item})}>
       <View style={styles.LeftIcon}>
         <Image style={styles.image} source={require('../../images/art.jpg')} />
       </View>
       <View style={styles.RightContent}>
         <Text
           style={{fontSize: responsiveFontSize(2), fontWeight: 'bold'}}
-          value={item.Title}
+          value={item.truckName}
         />
-        <CountButton 
-        buttonProp={{width:responsiveWidth(17),height:responsiveHeight(3)}}
-        tabProp={{marginTop:responsiveHeight(-18),left:responsiveWidth(-2)}}
+        <CountButton
+          button={item.selectedServingCusines}
+          buttonProp={{
+            width: '30%',
+            marginRight: responsiveWidth(2),
+            right: responsiveWidth(1),
+          }}
+          tabProp={{
+            marginTop: responsiveHeight(-17.5),
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+          }}
         />
-     
-        <View style={[styles.flex,{marginTop:responsiveHeight(5)}]}>
+        <View style={[styles.flex, {marginTop: responsiveHeight(5)}]}>
           <Entypo
             name={'location-pin'}
             color={'#212121'}
             size={responsiveFontSize(2.3)}
           />
-          <Text value={item.subtitle2} />
+          <Text value={item.truckCity} />
         </View>
-        <View style={styles.flex}>
-          <AntDesign
-            style={{marginLeft: responsiveWidth(1)}}
-            name={'clockcircleo'}
-            color={'#212121'}
-            size={responsiveFontSize(1.8)}
-          />
-          <Text
-            style={{marginLeft: responsiveWidth(1)}}
-            value={item.subtitle3}
-          />
-        </View>
+        {item.schedule
+          ? item.schedule.map(item2 =>
+              item2.day === day ? (
+                <View style={styles.flex}>
+                  <AntDesign
+                    style={{marginLeft: responsiveWidth(1)}}
+                    name={'clockcircleo'}
+                    color={'#212121'}
+                    size={responsiveFontSize(1.8)}
+                  />
+                  <Text
+                    style={{marginLeft: responsiveWidth(1)}}
+                    value={item2.opening}
+                  />
+
+                  <Text
+                    style={{marginLeft: responsiveWidth(1)}}
+                    value={item2.closing}
+                  />
+                </View>
+              ) : null,
+            )
+          : null}
+
         <View
           style={[
             styles.flex,
@@ -126,9 +131,9 @@ const FindFoodTruck = ({navigation}) => {
               }}
             />
           </TouchableOpacity>
-
           {item.rating ? (
             <Rating
+              readonly={true}
               startingValue={item.rating}
               imageSize={responsiveFontSize(2.8)}
             />
@@ -143,8 +148,6 @@ const FindFoodTruck = ({navigation}) => {
       <View style={styles.seacrhbarContainter}>
         <SearchBar
           placeholder="Type something..."
-          //   onChangeText={this.updateSearch}
-          // value={search}
           round
           lightTheme
           leftIconContainerStyle={{
@@ -179,7 +182,7 @@ const FindFoodTruck = ({navigation}) => {
       <View
         style={{
           marginVertical: responsiveHeight(1),
-          marginLeft:responsiveWidth(-7),
+          marginLeft: responsiveWidth(-7),
           flexDirection: 'row',
           justifyContent: 'space-around',
         }}>
@@ -207,36 +210,22 @@ const FindFoodTruck = ({navigation}) => {
         </View>
         <TouchableOpacity
           onPress={() => navigation.navigate(RouteName.SERVINGCUSINETYPE)}>
-           <SettingIcon
-            name={'sound-mix'}
-            size={40}
-            //style={{marginTop:responsiveHeight(1.3),transform: [{ scaleY: 2 }]}}
-          />
+          <SettingIcon name={'sound-mix'} size={40} />
         </TouchableOpacity>
       </View>
-      {/* <View style={styles.flexView}>
-        <Button style={styles.button}>
-          <Text style={styles.TextStyle} value={'Burger'} />
-        </Button>
-        <Button style={styles.button}>
-          <Text style={styles.TextStyle} value={'Pizza'} />
-        </Button>
-        <Button style={styles.button}>
-          <Text style={styles.TextStyle} value={'BBQ'} />
-        </Button>
-        <TouchableOpacity
-          onPress={() => navigation.navigate(RouteName.SERVINGCUSINETYPE)}>
-          <Image
-            style={{width: responsiveWidth(8), height: responsiveHeight(4)}}
-            source={require('../../images/filter.png')}
-          />
-        </TouchableOpacity>
-      </View> */}
-      <FlatList
-        data={Data}
-        keyExtractor={item => item.id}
-        renderItem={({item, index}) => PrintCard(item, index)}
-      />
+      {isLoading ? (
+        <ActivityIndicator
+          color={'#000'}
+          size={'large'}
+          style={styles.ActivityView}
+        />
+      ) : (
+        <FlatList
+          data={Data}
+          keyExtractor={item => item.id}
+          renderItem={({item, index}) => PrintCard(item, index)}
+        />
+      )}
     </SafeAreaView>
   );
 };
@@ -290,7 +279,6 @@ const styles = StyleSheet.create({
   },
   RightContent: {
     width: '70%',
-    
   },
   image: {
     width: '100%',
@@ -305,6 +293,13 @@ const styles = StyleSheet.create({
   parent: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  ActivityView: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
 });
 

@@ -118,9 +118,11 @@ const SignUp = ({navigation}) => {
         Language: languge,
       };
       axios
-        .post(url + '/api/users/signup', {data: data})
+        .post(url + '/api/users/signup', {
+          data,
+        })
         .then(async Response => {
-          console.log('Response', Response.data.code);
+          console.log('Responsessss', Response.data.code);
           let Code = Response.data.code;
           if (Code === 'ABT0000') {
             setisLoading(false);
@@ -161,6 +163,7 @@ const SignUp = ({navigation}) => {
           />
           {nameError ? <ErrorView>{nameErrorText}</ErrorView> : null}
           <Input
+            lower
             rounded
             placeholder="Email Address"
             onChangeText={val => changeEmail(val)}
@@ -182,6 +185,7 @@ const SignUp = ({navigation}) => {
           {phoneError ? <ErrorView>{phoneErrorText}</ErrorView> : null}
           <Input
             rounded
+            secured
             placeholder="Password"
             onChangeText={val => changePassword(val)}
             value={password}
@@ -190,6 +194,7 @@ const SignUp = ({navigation}) => {
           {passwordError ? <ErrorView>{passwordErrorText}</ErrorView> : null}
           <Input
             rounded
+            secured
             placeholder="Re-enter Password"
             onChangeText={val => {
               setConfirmPassword(val);
