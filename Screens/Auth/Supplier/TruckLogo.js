@@ -48,7 +48,7 @@ const TruckLogo = ({navigation,route}) => {
       body: data
     }).then(res => res.json()).
       then(data => {
-        console.log(data)
+        console.log(data)  
       }).catch(err => {
           console.log(err);
       })

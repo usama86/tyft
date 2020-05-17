@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
@@ -7,6 +7,7 @@ import {
   FlatList,
   SafeAreaView,
   ScrollView,
+  ActivityIndicator
 } from 'react-native';
 import Container from '../../Component/Container';
 import Button from '../../Component/Button';
@@ -23,51 +24,45 @@ import {
 } from 'react-native-responsive-dimensions';
 import * as RouteName from '../../Constants/RouteName';
 import Header from '../../Component/Header';
+import url from './Constants/constants';
+import axios from 'axios';
 const FindFoodTruck = ({navigation}) => {
-  const [Data, setData] = useState([
-    {id: 0, name: 'Burgers', checked: false},
-    {id: 1, name: 'Pizza', checked: false},
-    {id: 2, name: 'Mexican', checked: false},
-    {id: 3, name: 'Fries', checked: false},
-    {id: 0, name: 'Burgers', checked: false},
-    {id: 1, name: 'Pizza', checked: false},
-    {id: 2, name: 'Mexican', checked: false},
-    {id: 3, name: 'Fries', checked: false},
-    {id: 0, name: 'Burgers', checked: false},
-    {id: 1, name: 'Pizza', checked: false},
-    {id: 2, name: 'Mexican', checked: false},
-    {id: 3, name: 'Fries', checked: false},
-    {id: 0, name: 'Burgers', checked: false},
-    {id: 1, name: 'Pizza', checked: false},
-    {id: 2, name: 'Mexican', checked: false},
-    {id: 3, name: 'Fries', checked: false},
-    {id: 0, name: 'Burgers', checked: false},
-    {id: 1, name: 'Pizza', checked: false},
-    {id: 2, name: 'Mexican', checked: false},
-    {id: 3, name: 'Fries', checked: false},
-    {id: 0, name: 'Burgers', checked: false},
-    {id: 1, name: 'Pizza', checked: false},
-    {id: 2, name: 'Mexican', checked: false},
-    {id: 3, name: 'Fries', checked: false},
-    {id: 0, name: 'Burgers', checked: false},
-    {id: 1, name: 'Pizza', checked: false},
-    {id: 2, name: 'Mexican', checked: false},
-    {id: 3, name: 'Fries', checked: false},
-    {id: 0, name: 'Burgers', checked: false},
-    {id: 1, name: 'Pizza', checked: false},
-    {id: 2, name: 'Mexican', checked: false},
-    {id: 3, name: 'Fries', checked: false},
-    {id: 0, name: 'Burgers', checked: false},
-    {id: 1, name: 'Pizza', checked: false},
-    {id: 2, name: 'Mexican', checked: false},
-    {id: 3, name: 'Fries', checked: false},
-  ]); 
+  
+  const [indicator, setIndicator] = useState(true);
+
+  useEffect(() => {
+    getCusine();
+  }, []);
+
+  const [Data, setData] = useState([]);
+  const getCusine = async () => {
+    axios
+      .get(url + '/api/servingcusine/getcusines') 
+      .then(async Response => {
+        if (Response) {
+          console.log(Response);
+          let res = Response.data[0].cusine;
+          setData(res);
+          // let newArr = [{...res.Supplier[0], TruckInfo: res.TruckInfo}];
+          // setUserInfo(newArr);
+          // setTruckInfo(res.TruckInfo[0]);
+          setIndicator(false);
+          // await AsyncStorage.setItem('TruckID'+'',res.TruckInfo[0]._id);
+          // await AsyncStorage.setItem('MenuID'+'',res.TruckInfo[0].MenuID);
+        } else {
+          setIndicator(false);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }; 
   const Checked = index => {
     let newArr = [...Data];
     newArr[index].checked = !newArr[index].checked;
     setData(newArr);
-  };
-  const PrintCard = (item, index) => (
+  }; 
+  const PrintCard = (item, index) => ( 
     <TouchableOpacity
       onPress={() => Checked(index)}
       activeOpacity={0.8}
@@ -76,10 +71,10 @@ const FindFoodTruck = ({navigation}) => {
         item.checked
           ? {backgroundColor: theme.colors.primary, borderWidth: 0}
           : null,
-      ]}>
+      ]}> 
       <Text
         style={[item.checked ? {color: 'white'} : null]}
-        value={item.name}
+        value={item.cusineName}
       />
     </TouchableOpacity>
   );
@@ -88,24 +83,25 @@ const FindFoodTruck = ({navigation}) => {
       <Header onPress={() => navigation.goBack()}>
         {'Serving By Cuisine Type'}
       </Header>
+   { indicator ?  
+        <ActivityIndicator
+        size={'large'}
+        color={'#000'}
+        style={styles.indicator}
+      />
+   :
       <ScrollView>
-        <FlatList
-          data={Data}
-          numColumns={3}
-          keyExtractor={item => item.id}
-          contentContainerStyle={{
-            paddingVertical: responsiveHeight(2),
-          }}
-          renderItem={({item, index}) => PrintCard(item, index)}
-        />
-        {/* <Button
-          style={styles.buttonStyle2}
-          onPress={() => {
-            navigation.navigate(RouteName.PROFILE);
-          }}>
-          <Text uppercase={false} style={{color: 'white'}} value={'Next'} />
-        </Button> */}
-      </ScrollView>
+      <FlatList
+        data={Data}
+        numColumns={3}
+        keyExtractor={item => item.id}
+        contentContainerStyle={{
+          paddingVertical: responsiveHeight(2),
+        }}
+        renderItem={({item, index}) => PrintCard(item, index)}
+      />
+    </ScrollView>
+    }  
     </SafeAreaView>
   );
 };

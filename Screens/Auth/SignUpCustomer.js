@@ -37,20 +37,24 @@ const SignUp = ({navigation}) => {
   ] = React.useState(null);
   const [languge, setLanguage] = React.useState('English');
   const changeEmail = val => {
-    let EmailRegix = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (EmailRegix.test(val)) {
-      setEmail(val);
-      setEmailError(false);
-      setEmailErrorText(null);
-    } else if (val === '') {
-      setEmail(val);
-      setEmailError(false);
-      setEmailErrorText(null);
-    } else if (!EmailRegix.test(val)) {
-      setEmail(val);
-      setEmailError(true);
-      setEmailErrorText('Please Enter Valid Email');
-    }
+    // let EmailRegix = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    // if (EmailRegix.test(val)) {
+    //   setEmail(val);
+    //   setEmailError(false);
+    //   setEmailErrorText(null);
+    // } else if (val === '') {
+    //   setEmail(val);
+    //   setEmailError(false); 
+    //   setEmailErrorText(null);
+    // } else if (!EmailRegix.test(val)) {
+    //   setEmail(val);
+    //   setEmailError(true);
+    //   setEmailErrorText('Please Enter Valid Email');
+    // }
+    setEmail(val);
+    setEmailError(false);
+    setEmailErrorText(null); 
+    
   };
   const changePassword = val => {
     let PasswordRegix = /^(?=.*\d).{8,100}$/;
