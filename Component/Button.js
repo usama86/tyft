@@ -12,9 +12,6 @@ const tyftButton = ({style, children,rounded, onPress, ...props}) => {
     <TouchableOpacity activeOpacity={0.8} style={[Buttons, style,rounded ?roundedstyle:null]} onPress={onPress} {...props}>
       {children}
     </TouchableOpacity>
-    // <Button {...props} style={[Buttons, style]} onPress={onPress}>
-    //   {children}
-    // </Button>
   );
 };
 
