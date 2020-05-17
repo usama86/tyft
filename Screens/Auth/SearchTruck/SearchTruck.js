@@ -43,7 +43,7 @@ const SearchTruck = ({navigation}) => {
           let res = await Response.data[0].cusine;
           setTimeout(() => {
           setButtonData(res);
-        }, 500);
+        }, 2000);
           console.log(buttonData) 
           setIndicator(false);
 
@@ -78,9 +78,11 @@ const SearchTruck = ({navigation}) => {
             
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             {buttonData ? buttonData.map(data=>{
+              return(
                      <Button style={styles.button}>
                        <Text style={styles.TextStyle} value={data.cusineName} />
                      </Button>
+              )
             }):null}
             </ScrollView> 
           </View>
