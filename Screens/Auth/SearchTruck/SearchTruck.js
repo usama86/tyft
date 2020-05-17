@@ -41,12 +41,9 @@ const SearchTruck = ({navigation}) => {
         if (Response) {
           console.log(Response);
           let res = await Response.data[0].cusine;
-          setTimeout(() => {
-          setButtonData(res);
-        }, 2000);
-          console.log(buttonData) 
+         await setButtonData(res);
+          console.log('Button',res)
           setIndicator(false);
-
         } else {
           setIndicator(false);
         }
@@ -75,15 +72,12 @@ const SearchTruck = ({navigation}) => {
             justifyContent: 'space-around',
           }}>
           <View style={{width: '80%'}}>
-            
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            {buttonData ? buttonData.map(data=>{
-              return(
+            {buttonData ? buttonData.map(data=>
                      <Button style={styles.button}>
                        <Text style={styles.TextStyle} value={data.cusineName} />
                      </Button>
-              )
-            }):null}
+            ):null}
             </ScrollView> 
           </View>
 
