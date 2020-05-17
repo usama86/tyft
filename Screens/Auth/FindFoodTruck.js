@@ -30,10 +30,16 @@ import url from './Constants/constants';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 import moment from 'moment';
+import {miniSearch} from 'minisearch';
 const FindFoodTruck = ({navigation}) => {
   const [Data, setData] = useState([]);
   const [day, setDay] = useState(null);
   const [isLoading, setisLoading] = useState(true);
+
+  const onChangeSearch=(val)=>{
+    console.log(val)
+  }
+
   const getAllTrucks = () => {
     axios
       .get(url + '/api/supplier/getalltruck')
@@ -45,6 +51,8 @@ const FindFoodTruck = ({navigation}) => {
           let day = currentDate.format('dddd');
           setDay(day);
           setData(Trucks);
+
+          miniSearch.addAll(Trucks)
           setisLoading(false);
         } else {
           setisLoading(false);
@@ -150,6 +158,7 @@ const FindFoodTruck = ({navigation}) => {
           placeholder="Type something..."
           round
           lightTheme
+          onChangeText={onChangeSearch}
           leftIconContainerStyle={{
             borderRadius: 20,
             height: 30,

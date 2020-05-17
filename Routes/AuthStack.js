@@ -41,6 +41,10 @@ const NearMeStack = () => (
       options={{title: 'Search Truck'}}
       component={SearchTruck}
     />
+     <StackSearch.Screen
+      name={RouteName.SERVINGCUSINETYPE}
+      component={ServingCusinetype}
+    />
   </StackNearMe.Navigator>
 );
 const SearchStack = () => (

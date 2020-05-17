@@ -39,6 +39,8 @@ target 'tyft' do
 
   pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
 
+  pod 'react-native-image-base64', :path => '../node_modules/react-native-image-base64'
+
   target 'tyftTests' do
     inherit! :search_paths
     # Pods for testing

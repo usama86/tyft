@@ -1,5 +1,5 @@
 import React,{useEffect} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Alert} from 'react-native';
 import Input from '../../../Component/Input';
 import Text from '../../../Component/Text';
 import {
@@ -11,6 +11,7 @@ import Ui from '../../../Component/Ui';
 import * as RouteName from './../../../Constants/RouteName';
 import ImagePicker from '../../../Component/ImagePicker';
 import Header from '../../../Component/Header';
+import ImgToBase64 from 'react-native-image-base64';
 
 const TruckLogo = ({navigation,route}) => {
   const [check, SetCheck] = React.useState(false);
@@ -22,8 +23,47 @@ const TruckLogo = ({navigation,route}) => {
   // useEffect(()=>{
   // console.log('params',route.params)
   // },[])
-  const SendUri = (val)=>{
+  const SendUri = async (val)=>{
+    
     setImg(val)
+    console.log(val);
+    try
+    {  
+    let newFile = {
+      uri : 'file://' + val.uri,
+      type: `test/${val.type}`,
+      name: `test.${val.fileName}`
+}
+    console.log(newFile);
+    const data = new FormData()
+    data.append('file', newFile)
+    data.append('upload_preset', 'tyftBackend')
+    data.append("cloud_name", "hmrzthc6f")
+    fetch("https://api.cloudinary.com/v1_1/hmrzthc6f/image/upload", {
+      method: "post",
+      // headers: {
+      //   //         'Accept': 'application/json',
+      //   //         'Content-Type': 'multipart/form-data',
+      //   //     },
+      body: data
+    }).then(res => res.json()).
+      then(data => {
+        console.log(data)  
+      }).catch(err => {
+          console.log(err);
+      })
+ 
+
+
+    }
+    catch(e)
+    {
+      console.log("error => ", e)
+    }
+   
+    
+    
+    
     // console.log(val);
   }
   return (
