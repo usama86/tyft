@@ -11,8 +11,8 @@ import Ui from '../../../Component/Ui';
 import * as RouteName from './../../../Constants/RouteName';
 import ImagePicker from '../../../Component/ImagePicker';
 import Header from '../../../Component/Header';
-import ImgToBase64 from 'react-native-image-base64';
-
+// import ImgToBase64 from 'react-native-image-base64';
+import RNFetchBlob from 'rn-fetch-blob';  
 const TruckLogo = ({navigation,route}) => {
   const [check, SetCheck] = React.useState(false);
   const [name, SetName] = React.useState('');
@@ -29,31 +29,66 @@ const TruckLogo = ({navigation,route}) => {
     console.log(val);
     try
     {  
-    let newFile = {
-      uri : 'file://' + val.uri,
-      type: `test/${val.type}`,
-      name: `test.${val.fileName}`
-}
-    console.log(newFile);
-    const data = new FormData()
-    data.append('file', newFile)
-    data.append('upload_preset', 'tyftBackend')
-    data.append("cloud_name", "hmrzthc6f")
-    fetch("https://api.cloudinary.com/v1_1/hmrzthc6f/image/upload", {
-      method: "post",
-      // headers: {
-      //   //         'Accept': 'application/json',
-      //   //         'Content-Type': 'multipart/form-data',
-      //   //     },
-      body: data
-    }).then(res => res.json()).
-      then(data => {
-        console.log(data)  
-      }).catch(err => {
-          console.log(err);
-      })
- 
+//     let newFile = {
+//       uri : RNFetchBlob.wrap(val.uri),
+//       type: `test/${val.type}`,
+//       name: `test.${val.fileName}`
+// }
+//     console.log(newFile);
+//     const data = new FormData()
+//     data.append('file', newFile)
+//     data.append('upload_preset', 'tyftBackend')
+//     data.append("cloud_name", "hmrzthc6f")
+//     fetch("https://api.cloudinary.com/v1_1/hmrzthc6f/image/upload", {
+//       method: "post",
+//       // headers: {
+//       //   //         'Accept': 'application/json',
+//       //   //         'Content-Type': 'multipart/form-data',
+//       //   //     },
+//       body: data
+//     }).then(res => res.json()).
+//       then(data => {
+//         console.log(data)  
+//       }).catch(err => {
+//           console.log(err);
+      // })
+      
 
+    const data = new FormData()
+    data.append('file', RNFetchBlob.wrap(val.uri))
+    data.append('upload_preset', 'tyftBackend')
+    // data.append("cloud_name", "hmrzthc6f")
+    let response = await fetch('https://api.cloudinary.com/v1_1/hmrzthc6f/image/upload', {
+    method: 'post',
+    headers:{
+      'Content-Type': 'multipart/form-data',
+    },
+		body: data
+  });
+  console.log(response);
+      // let ret = await fetch(
+      //   'https://api.cloudinary.com/v1_1/hmrzthc6f/image/upload',
+      //   'POST',
+       
+      //   {
+      //     'Content-Type': 'multipart/form-data',
+      //   },
+      //   data
+      //   // [
+      //   //   {
+      //   //     name: 'file',
+      //   //     filename: Date.now() + 'tyft',
+      //   //     type: val.type,
+      //   //     data: RNFetchBlob.wrap(val.uri),
+      //   //     upload_preset:'tyftBackend'
+      //   //   },
+      //   //   {
+      //   //     upload_preset: String('tyftBackend')
+      //   //   },
+      //   // ],
+      // );
+      //   console.log(JSON.stringify(ret));
+  //    Alert.alert(JSON.stringify(ret))
 
     }
     catch(e)

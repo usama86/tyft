@@ -56,11 +56,11 @@ const CoverPhoto = ({navigation, route}) => {
       axios
         .post(
           url + '/api/users/signup',
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          },
+          // {
+          //   headers: {
+          //     'Content-Type': 'multipart/form-data',
+          //   },
+          // }, 
           {data},
         )
         .then(async Response => {

@@ -188,6 +188,7 @@ android {
 }
 
 dependencies {
+    implementation project(':rn-fetch-blob')
     implementation project(':react-native-image-base64')
     implementation project(':react-native-splash-screen')
     implementation project(':react-native-vector-icons')
