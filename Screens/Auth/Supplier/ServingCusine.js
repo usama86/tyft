@@ -18,53 +18,49 @@ import theme from './../../theme';
 import * as RouteName from './../../../Constants/RouteName';
 import Header from '../../../Component/Header';
 import {Snackbar} from 'react-native-paper';
+import axios from 'axios';
 const ServingCusine = ({navigation,route}) => {
   const [isLoading, setisLoading] = useState(false);
-  const [Data, setData] = React.useState([
-    {id: 0, name: 'Burgers', checked: false},
-    {id: 1, name: 'Pizza', checked: false},
-    {id: 2, name: 'Mexican', checked: false},
-    {id: 3, name: 'Fries', checked: false},
-    {id: 0, name: 'Burgers', checked: false},
-    {id: 1, name: 'Pizza', checked: false},
-    {id: 2, name: 'Mexican', checked: false},
-    {id: 3, name: 'Fries', checked: false},
-    {id: 0, name: 'Burgers', checked: false},
-    {id: 1, name: 'Pizza', checked: false},
-    {id: 2, name: 'Mexican', checked: false},
-    {id: 3, name: 'Fries', checked: false},
-    {id: 0, name: 'Burgers', checked: false},
-    {id: 1, name: 'Pizza', checked: false},
-    {id: 2, name: 'Mexican', checked: false},
-    {id: 3, name: 'Fries', checked: false},
-    {id: 0, name: 'Burgers', checked: false},
-    {id: 1, name: 'Pizza', checked: false},
-    {id: 2, name: 'Mexican', checked: false},
-    {id: 3, name: 'Fries', checked: false},
-    {id: 0, name: 'Burgers', checked: false},
-    {id: 1, name: 'Pizza', checked: false},
-    {id: 2, name: 'Mexican', checked: false},
-    {id: 3, name: 'Fries', checked: false},
-    {id: 0, name: 'Burgers', checked: false},
-    {id: 1, name: 'Pizza', checked: false},
-    {id: 2, name: 'Mexican', checked: false},
-    {id: 3, name: 'Fries', checked: false},
-    {id: 0, name: 'Burgers', checked: false},
-    {id: 1, name: 'Pizza', checked: false},
-    {id: 2, name: 'Mexican', checked: false},
-    {id: 3, name: 'Fries', checked: false},
-    {id: 0, name: 'Burgers', checked: false},
-    {id: 1, name: 'Pizza', checked: false},
-    {id: 2, name: 'Mexican', checked: false},
-    {id: 3, name: 'Fries', checked: false},
-  ]);
+  
+
   const [visible, setVisible] = React.useState(false);
+  
+  const [Data,setData] = React.useState([]);
+  
+   
+  const [indicator, setIndicator] = useState(true);
+
+  React.useEffect(() => {
+    getCusine();
+  }, []);
+  const getCusine = async () => {
+    axios
+      .get(url + '/api/servingcusine/getcusines') 
+      .then(async Response => {
+        if (Response) {
+          console.log(Response);
+          let res = Response.data[0].cusine;
+          setData(res);
+          // let newArr = [{...res.Supplier[0], TruckInfo: res.TruckInfo}];
+          // setUserInfo(newArr);
+          // setTruckInfo(res.TruckInfo[0]);
+          setIndicator(false);
+          // await AsyncStorage.setItem('TruckID'+'',res.TruckInfo[0]._id);
+          // await AsyncStorage.setItem('MenuID'+'',res.TruckInfo[0].MenuID);
+        } else {
+          setIndicator(false);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }; 
   const Checked = (index) => {
     let newArr = [...Data];
     newArr[index].checked = !newArr[index].checked;
     setData(newArr);
   };
-  const PrintCard = (item, index) => (
+  const PrintCard = (item, index) => ( 
     <TouchableOpacity
       onPress={() => Checked(index)}
       activeOpacity={0.8}
@@ -73,10 +69,10 @@ const ServingCusine = ({navigation,route}) => {
         item.checked
           ? {backgroundColor: theme.colors.primary, borderWidth: 0}
           : null,
-      ]}>
+      ]}> 
       <Text
         style={[item.checked ? {color: 'white'} : null]}
-        value={item.name}
+        value={item.cusineName}
       />
     </TouchableOpacity>
   );
@@ -89,6 +85,7 @@ const Navigate = ()=>{
   setisLoading(false)
   }
   else if (newArray.length>0){
+    console.log(newArray);
     setisLoading(false)
       navigation.navigate(RouteName.MENUSETTING,{
         Schedule: route.params.Schedule,

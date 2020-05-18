@@ -16,7 +16,7 @@ const CountButton = ({button, tabProp, buttonProp, buttonText}) => {
         <>
           {index < 2 ? (
             <Button style={[styles.Button, buttonProp]}>
-              <Text style={styles.Btntext} value={item.name} />
+              <Text style={styles.Btntext} value={item.cusineName} />
             </Button>
           ) : null}
         </>

@@ -41,6 +41,8 @@ target 'tyft' do
 
   pod 'react-native-image-base64', :path => '../node_modules/react-native-image-base64'
 
+  pod 'rn-fetch-blob', :path => '../node_modules/rn-fetch-blob'
+
   target 'tyftTests' do
     inherit! :search_paths
     # Pods for testing

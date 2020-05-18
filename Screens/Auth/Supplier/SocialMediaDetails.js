@@ -88,7 +88,7 @@ const MenuSetting = ({navigation, route}) => {
     <View style={{height: '100%', width: '100%'}}>
       <Header onPress={() => navigation.goBack()}>{'Social Media'}</Header>
       <Ui
-        TextViewStyle={styles.TextViewStyle}
+        TextViewStyle={styles.TextViewStyle} 
         TextValue={'Social Media Details'}
         ButtonText={'Next'}
         onPressButton={Navigate}>

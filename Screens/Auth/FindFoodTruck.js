@@ -30,15 +30,41 @@ import url from './Constants/constants';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 import moment from 'moment';
-import {miniSearch} from 'minisearch';
+import FuzzySearch from 'fuzzy-search'; // Or: var FuzzySearch = require('fuzzy-search');
 const FindFoodTruck = ({navigation}) => {
   const [Data, setData] = useState([]);
   const [day, setDay] = useState(null);
   const [isLoading, setisLoading] = useState(true);
-
+  const [searchVal,setSearchVal] = useState('');
+  const [isMsg, setIsMsg] = useState(false)
   const onChangeSearch=(val)=>{
-    console.log(val)
-  }
+      
+        setSearchVal(val);
+
+          if(val == '')
+          {
+            getAllTrucks();
+            setIsMsg(false);
+          }
+          else{
+            const searcher = new FuzzySearch(Data, [ 'truckName'], {
+              caseSensitive: false,
+            });
+            const result = searcher.search(val);
+            console.log(result);
+            setData(result); 
+            if(result.length == 0 || result === undefined)
+            {
+              setIsMsg(true);
+            }
+            else{
+              setIsMsg(false);
+            }
+          }
+
+      
+    
+  } 
 
   const getAllTrucks = () => {
     axios
@@ -52,7 +78,7 @@ const FindFoodTruck = ({navigation}) => {
           setDay(day);
           setData(Trucks);
 
-          miniSearch.addAll(Trucks)
+ 
           setisLoading(false);
         } else {
           setisLoading(false);
@@ -157,6 +183,7 @@ const FindFoodTruck = ({navigation}) => {
         <SearchBar
           placeholder="Type something..."
           round
+          value={searchVal}
           lightTheme
           onChangeText={onChangeSearch}
           leftIconContainerStyle={{
@@ -228,13 +255,13 @@ const FindFoodTruck = ({navigation}) => {
           size={'large'}
           style={styles.ActivityView}
         />
-      ) : (
-        <FlatList
-          data={Data}
-          keyExtractor={item => item.id}
-          renderItem={({item, index}) => PrintCard(item, index)}
-        />
-      )}
+      ) : isMsg ?  (
+        <Text value={'No Truck Found'} bold style={{marginTop:responsiveHeight(25),marginLeft:responsiveWidth(25)}} /> 
+      ) : <FlatList
+      data={Data}
+      keyExtractor={item => item.id}
+      renderItem={({item, index}) => PrintCard(item, index)}
+    />}
     </SafeAreaView>
   );
 };
