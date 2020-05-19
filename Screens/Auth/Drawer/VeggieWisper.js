@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect,useRef} from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
@@ -15,9 +15,13 @@ import theme from '../../theme';
 import {SearchBar, Rating} from 'react-native-elements';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Foundation from 'react-native-vector-icons/Foundation';
+import Entypo from 'react-native-vector-icons/Entypo';
 import {Switch} from 'react-native-switch';
 import Button from '../../../Component/Button';
 import CountButton from '../../../Component/CountButton';
+import Modal from '../../../Component/Modal';
+import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import Geolocation from '@react-native-community/geolocation';
 import {
   responsiveHeight,
   responsiveWidth,
@@ -28,15 +32,69 @@ import Header from '../../../Component/Header';
 import AsyncStorage from '@react-native-community/async-storage';
 import url from './../Constants/constants';
 import axios from 'axios';
+// import Button from '../../../Component/Button'
 const VeggieWisper = ({navigation, route}) => {
   const [ToggleSwitch, setToggleSwitch] = useState(false);
   const [button, setButton] = useState([1, 2, 3, 4, 5, 6, 7, 8]);
   const [userInfo, setUserInfo] = useState([]);
   const [TruckInfo, setTruckInfo] = useState({});
   const [indicator, setIndicator] = useState(true);
+  const [visibleModal, setVisibleModal] = useState(false);
+  const [markerLat, setMarkerLat] = React.useState(30.3753);
+  const [markerLong, setMarkerLong] = React.useState(69.3451);
+  const [mapReady, setMapReady] = React.useState(true);
+  const [Lat,setLat] = React.useState(0.00);
+  const [Long,setLong] =React.useState(0.00);
+  const mapView = useRef();
+  const initialRegion = {
+    latitude: 30.3753,
+    longitude: 69.3451,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.17323,
+  };
+  const LATITUDE_DELTA = 0.015;
+  const LONGITUDE_DELTA = 0.0121;
   useEffect(() => {
     getUserDetails();
   }, []);
+  const getCurrentLocation = () => {
+    Geolocation.getCurrentPosition(
+      async position => {
+        const region = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          latitudeDelta: LATITUDE_DELTA,
+          longitudeDelta: LONGITUDE_DELTA,
+        };
+        setMarkerLat(parseFloat(position.coords.latitude));
+        setMarkerLong(parseFloat(position.coords.longitude));
+        await setRegionInMap(region);
+
+        console.log('CURRENT LOCATION IN GETLOCATION', region);
+      },
+      error => console.log('this is ERROR', error),
+      {
+        enableHighAccuracy: false,
+        timeout: 20000,
+        maximumAge: 2000,
+      },
+    );
+  };
+  const onMarkerDragEnd = e => {
+    console.log('dragEnd', e.nativeEvent.coordinate);
+    setLat(e.nativeEvent.coordinate.latitude);
+    setLong(e.nativeEvent.coordinate.longitude)
+  };
+
+  const setRegionInMap = region => {
+    if (mapReady) {
+      console.log('map is ready',region)
+      setTimeout(() => mapView.current.animateToRegion(region), 30);
+    }
+    else{
+      console.log('NOOO')
+    }
+  };
   const getUserDetails = async () => {
     let userId = await AsyncStorage.getItem('userID');
     axios
@@ -48,8 +106,8 @@ const VeggieWisper = ({navigation, route}) => {
           setUserInfo(newArr);
           setTruckInfo(res.TruckInfo[0]);
           setIndicator(false);
-          await AsyncStorage.setItem('TruckID'+'',res.TruckInfo[0]._id);
-          await AsyncStorage.setItem('MenuID'+'',res.TruckInfo[0].MenuID);
+          await AsyncStorage.setItem('TruckID' + '', res.TruckInfo[0]._id);
+          await AsyncStorage.setItem('MenuID' + '', res.TruckInfo[0].MenuID);
         } else {
           setIndicator(false);
         }
@@ -57,6 +115,9 @@ const VeggieWisper = ({navigation, route}) => {
       .catch(error => {
         console.log(error);
       });
+  };
+  const openMap = (val, truckID) => {
+    updateStatus(val, truckID);
   };
   const updateStatus = async (val, truckID) => {
     let Status = null;
@@ -72,6 +133,10 @@ const VeggieWisper = ({navigation, route}) => {
           let newObj = {...TruckInfo};
           newObj.status = Status;
           setTruckInfo(newObj);
+          if (val) {
+            setVisibleModal(true);
+            getCurrentLocation();
+          }
         }
       })
       .catch(error => {
@@ -98,7 +163,7 @@ const VeggieWisper = ({navigation, route}) => {
             </Header>
           </ImageBackground>
         </View>
-        <CountButton button={TruckInfo.selectedServingCusines} /> 
+        <CountButton button={TruckInfo.selectedServingCusines} />
 
         <View style={styles.flexView}>
           <Text bold style={{color: 'blue'}} value={TruckInfo.truckName} />
@@ -128,7 +193,7 @@ const VeggieWisper = ({navigation, route}) => {
             />
             <Switch
               value={TruckInfo.status === 'Close' ? false : true}
-              onValueChange={val => updateStatus(val, TruckInfo._id)}
+              onValueChange={val => openMap(val, TruckInfo._id)}
               activeText={'On'}
               inActiveText={'Off'}
               circleSize={30}
@@ -218,6 +283,54 @@ const VeggieWisper = ({navigation, route}) => {
             size={responsiveFontSize(2.5)}
           />
         </View>
+        <Modal showModal={visibleModal}>
+          <View style={styles.crossView}>
+            <TouchableOpacity onPress={() => setVisibleModal(false)}>
+              <Entypo
+                name={'circle-with-cross'}
+                color={'#212121'}
+                size={responsiveFontSize(3.5)}
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.mapcon}>
+            <MapView
+              showsBuildings={true}
+              showsTraffic={true}
+              initialRegion={initialRegion}
+              onMapReady={() => {
+                setMapReady(true)
+              }}
+              loadingBackgroundColor={'#5465'}
+              loadingEnabled={true}
+              loadingIndicatorColor={'#000'}
+              zoomEnabled={true}
+              provider={PROVIDER_GOOGLE} // remove if not using Google Maps
+              style={styles.map}
+              showsUserLocation={true}
+              followUserLocation={true}
+              // onRegionChange={this.onRegionChange}
+              // onRegionChangeComplete={this.onRegionChangeComplete}
+              ref={mapView}>
+              <Marker
+                coordinate={{
+                  latitude: markerLat,
+                  longitude: markerLong,
+                }}
+                 onDragEnd={e =>onMarkerDragEnd(e)}
+                draggable
+              />
+            </MapView>
+          </View>
+          <View style={styles.InstructionView} >
+              <Text style={styles.InstructionText} value={'Please Drag the Marker to Select Your Current Location.'}/>
+          </View>
+          <View style={styles.ButtonView} >
+           <Button style={styles.Button} >
+             <Text style={{color:'#fff'}} value={'Save'} />
+           </Button>
+          </View>
+        </Modal>
       </Container>
     );
   }
@@ -276,12 +389,41 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  indicator:{
-    position:'absolute',
-    top:0,
-    left:0,
-    right:0,
-    bottom:0
+  indicator: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  crossView: {
+    width: '100%',
+    height: responsiveHeight(5),
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    paddingHorizontal: responsiveWidth(2),
+  },
+  mapcon: {
+    ...StyleSheet.absoluteFillObject,
+    position: 'relative',
+    height: responsiveHeight(60),
+    width: '100%',
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  InstructionView:{
+    width:'100%',paddingVertical:responsiveHeight(2)
+  },
+  InstructionText:{
+    color:'#000',
+    textAlign:'center'
+  },
+  ButtonView:{
+    height:responsiveHeight(10),
+    width:'100%',
+    justifyContent: 'center',
+    alignItems: 'center',
   }
 });
 

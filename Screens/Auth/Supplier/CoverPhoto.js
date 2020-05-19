@@ -61,7 +61,7 @@ const CoverPhoto = ({navigation, route}) => {
           //     'Content-Type': 'multipart/form-data',
           //   },
           // }, 
-          {data},
+          data,
         )
         .then(async Response => {
           let Code = Response.data.code;
