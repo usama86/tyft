@@ -4,12 +4,15 @@ import {Text, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Button} from 'native-base';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import AsyncStorage from '@react-native-community/async-storage';
+
 import {
   responsiveHeight,
   responsiveWidth,
   responsiveFontSize,
 } from 'react-native-responsive-dimensions';
-const Header = ({isHome, style, children, onPress}) => {
+const Header = ({isHome, style, children, onPress,logout,navigation,Logout}) => {
+ 
   return (
     <View>
       <View style={[styles.default, style]}>
@@ -32,6 +35,19 @@ const Header = ({isHome, style, children, onPress}) => {
           />
         </TouchableOpacity>
       )}
+
+      {
+        logout?
+        <TouchableOpacity onPress={Logout} style={styles.switch}>
+        <AntDesign
+          name={'poweroff'}
+          size={responsiveFontSize(3.2)}
+          color={'black'}
+        />
+      </TouchableOpacity>
+      :
+      null
+      }
     </View>
   );
 };
@@ -66,6 +82,12 @@ const styles = StyleSheet.create({
     top: responsiveHeight(2),
     elevation:5
   },
+  switch:{
+    position: 'absolute',
+    right: '7%',
+    top: responsiveHeight(1.8),
+    elevation:5
+  }
 });
 
 export default Header;

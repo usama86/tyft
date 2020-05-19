@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Text} from 'react-native';
 import {Item, Input} from 'native-base';
 import {
   responsiveHeight,
@@ -15,20 +15,34 @@ const tyftTextBox = ({
   value,
   secured,
   lower,
+  errorText,
   ...props
 }) => {
   const {InputDesign, Inputs} = styles;
   return (
-    <Item rounded={rounded} regular={regular} style={[InputDesign, style]}>
-      <Input
-        secureTextEntry={secured ? true : false}
-        {...props}
-        onChangeText={onChangeText}
-        style={Inputs,lower?{textTransform:'lowercase'}:null}
-        value={value}
-        
-      />
-    </Item>
+    <>
+      <Item rounded={rounded} regular={regular} style={[InputDesign, style]}>
+        <Input
+          secureTextEntry={secured ? true : false}
+          {...props}
+          onChangeText={onChangeText}
+          style={(Inputs, lower ? {textTransform: 'lowercase'} : null)}
+          value={value}
+        />
+      </Item>
+      {errorText ? (
+        <Text
+          style={{
+            top: responsiveHeight(1),
+            color: 'red',
+            fontSize: responsiveFontSize(1.5),
+            alignSelf: 'center',
+            width: '82%',
+          }}>
+          {errorText}
+        </Text>
+      ) : null}
+    </>
   );
 };
 

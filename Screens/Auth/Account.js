@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {View, StyleSheet, Image} from 'react-native';
+import {View, StyleSheet, Image,Alert} from 'react-native';
 import Input from '../../Component/Input';
 import Text from '../../Component/Text';
 import {
@@ -15,27 +15,76 @@ import AsyncStorage from '@react-native-community/async-storage';
 import theme from '../theme';
 import * as Route from '../../Constants/RouteName';
 const Account = ({navigation}) => {
-  const [name, SetName] = React.useState('');
-  const [radio, setRadio] = React.useState(true);
-  const [radio1, setRadio1] = React.useState(false);
+  const [name, SetName] = React.useState({value: null, errorText: null});
+  const [email, setEmail] = React.useState({value: null, errorText: null});
+  const [phone, setPhone] = React.useState({value: null, errorText: null});
+  const [password, setPassword] = React.useState({
+    value: null,
+    errorText: null,
+  });
+  const [confirmPassword, setConfirmPassword] = React.useState({
+    value: null,
+    errorText: null,
+  });
   const [LoggedIn, setLoggedin] = React.useState(false);
-  const changeInputHandler = e => {
-    SetName(e);
+  const [Language, setLanguage] = React.useState('English');
+  const Logout = async () => {
+    await AsyncStorage.clear();
+    navigation.navigate('Auth', {screen: Route.SIGNIN});
   };
-  const checkUserStatus = async ()=>{
+  const checkUserStatus = async () => {
     let userType = await AsyncStorage.getItem('userType');
     if (userType !== null) {
       setLoggedin(true);
     } else {
       setLoggedin(false);
     }
-  }
+  };
+  // const updateUser = ()=>{
+  //   axios
+  //   .post(url + '/api/users/signup', {
+  //     email: email,
+  //     password: password,
+  //     profileName: name,
+  //     phoneNumber: phone,
+  //     userType: 'Customer',
+  //     Language: languge,
+  //   })
+  //   .then(async Response => {
+  //     console.log('Responsessss', Response.data.code);
+  //     let Code = Response.data.code;
+  //     if (Code === 'ABT0000') {
+  //       setisLoading(false);
+  //       console.log('Customer Added');
+  //       navigation.navigate(Route.SIGNIN);
+  //     } else {
+  //       console.log('NOT ADDEED');
+  //       setisLoading(false);
+  //     }
+  //   })
+  //   .catch(error => {
+  //     console.log(error);
+  //   });
+  // }
   useEffect(() => {
-   checkUserStatus()
+    checkUserStatus();
   }, []);
   return (
     <View style={{height: '100%', width: '100%'}}>
-      <Header onPress={() => navigation.goBack()}>{'Account'}</Header>
+      {LoggedIn ? (
+        <Header
+          logout
+          Logout={Logout}
+          navigation={navigation}
+          onPress={() => navigation.goBack()}>
+          {'Account'}
+        </Header>
+      ) : (
+        <Header navigation={navigation} onPress={() => navigation.goBack()}>
+          {'Account'}
+        </Header>
+      )}
+
       {LoggedIn ? (
         <Ui
           TextValue={'Your Customer Account'}
@@ -46,15 +95,40 @@ const Account = ({navigation}) => {
             <Input
               rounded
               placeholder="Name"
-              onChangeText={changeInputHandler}
-              value={name}
+              onChangeText={e => SetName({value: e, errorText: null})}
+              value={name.value}
               style={styles.Input}
+              errorText={name.errorText ? name.errorText : null}
             />
-            <Input rounded placeholder="Email Address" style={styles.Input} />
-            <Input rounded placeholder="Cell Phone" style={styles.Input} />
-            <Input rounded placeholder="Password" style={styles.Input} />
             <Input
               rounded
+              placeholder="Email Address"
+              value={email.value}
+              onChangeText={e => setEmail({value: e, errorText: null})}
+              errorText={email.errorText ? email.errorText : null}
+              style={styles.Input}
+            />
+            <Input
+              rounded
+              placeholder="Cell Phone"
+              onChangeText={e => setPhone({value: e, errorText: null})}
+              value={phone.value}
+              errorText={email.errorText ? email.errorText : null}
+              style={styles.Input}
+            />
+            <Input
+              rounded
+              placeholder="Password"
+              onChangeText={e => setPassword({value: e, errorText: null})}
+              value={password.value}
+              errorText={password.errorText ? password.errorText : null}
+              style={styles.Input}
+            />
+            <Input
+              rounded
+              value={confirmPassword.value}
+              onChangeText={e => setConfirmPassword({value: e, errorText: null})}
+              errorText={confirmPassword.errorText ? confirmPassword.errorText : null}
               placeholder="Re-enter Password"
               style={styles.Input}
             />
@@ -62,31 +136,17 @@ const Account = ({navigation}) => {
 
           <View style={styles.radioView}>
             <Radio
-              selected={radio}
+              selected={'English' ? true : false}
               onPress={e => {
-                if (radio !== radio1) {
-                  var x = radio;
-                  var y = radio1;
-                  setRadio1(x);
-                  setRadio(y);
-                } else {
-                  setRadio(!radio);
-                }
+                setLanguage('English');
               }}
             />
             <Text value={'English'} style={{marginLeft: responsiveWidth(2)}} />
 
             <Radio
-              selected={radio1}
+              selected={Language === 'Spanish' ? true : false}
               onPress={() => {
-                if (radio !== radio1) {
-                  var x = radio;
-                  var y = radio1;
-                  setRadio1(x);
-                  setRadio(y);
-                } else {
-                  setRadio1(!radio1);
-                }
+                setLanguage('Spanish');
               }}
               style={{marginLeft: responsiveWidth(8)}}
             />
@@ -101,7 +161,11 @@ const Account = ({navigation}) => {
             source={require('../../images/2.jpg')}
           />
           <View style={{marginTop: responsiveHeight(10)}}>
-            <Button onPress={()=>{navigation.navigate(Route.SIGNIN)}} style={styles.button}>
+            <Button
+              onPress={() => {
+                navigation.navigate(Route.SIGNIN);
+              }}
+              style={styles.button}>
               <Text style={{color: '#fff'}} value={'Login'} />
             </Button>
           </View>

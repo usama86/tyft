@@ -113,17 +113,22 @@ const SignUp = ({navigation}) => {
       !confirmPasswordError
     ) {
       setisLoading(true);
-      const data = {
-        email: email,
-        password: password,
-        profileName: name,
-        phoneNumber: phone,
-        userType: 'Customer',
-        Language: languge,
-      };
+      // const data = {
+      //   email: email,
+      //   password: password,
+      //   profileName: name,
+      //   phoneNumber: phone,
+      //   userType: 'Customer',
+      //   Language: languge,
+      // };
       axios
         .post(url + '/api/users/signup', {
-          data,
+          email: email,
+          password: password,
+          profileName: name,
+          phoneNumber: phone,
+          userType: 'Customer',
+          Language: languge,
         })
         .then(async Response => {
           console.log('Responsessss', Response.data.code);

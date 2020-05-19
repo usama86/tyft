@@ -86,7 +86,7 @@ const SignIn = ({navigation}) => {
           borderBottomWidth: 0,
         }}
         placeholder="Email"
-        inputStyle={styles.inputStyle}
+        inputStyle={[styles.inputStyle,{textTransform:'lowercase'}]}
         onChangeText={text => {
           setEmail(text);
           setEmailErrorMessage(null);
