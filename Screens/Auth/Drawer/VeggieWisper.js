@@ -284,7 +284,7 @@ const VeggieWisper = ({navigation, route}) => {
           />
         </View>
         <Modal showModal={visibleModal}>
-          <View style={styles.crossView}>
+          {/* <View style={styles.crossView}>
             <TouchableOpacity onPress={() => setVisibleModal(false)}>
               <Entypo
                 name={'circle-with-cross'}
@@ -292,7 +292,7 @@ const VeggieWisper = ({navigation, route}) => {
                 size={responsiveFontSize(3.5)}
               />
             </TouchableOpacity>
-          </View>
+          </View> */}
           <View style={styles.mapcon}>
             <MapView
               showsBuildings={true}
