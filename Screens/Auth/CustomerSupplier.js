@@ -22,11 +22,17 @@ import {
 } from 'react-native-responsive-dimensions';
 import * as RouteName from '../../Constants/RouteName';
 import Header from '../../Component/Header';
+import Entypo from 'react-native-vector-icons/Entypo';
 const CustomerSupplier = ({navigation, route}) => {
   const [ToggleSwitch, setToggleSwitch] = useState(false);
+  const [favoriteSwitch,setFavoriteSwitch] = useState(false);
   useEffect(()=>{
       console.log('Params=>',route.params.TruckInfo)
-  },[])
+  },[]);
+  const setFavorite=()=>{
+    setFavoriteSwitch(!favoriteSwitch);
+    
+  }
   return (
     <Container>
       <View style={styles.HeaderContainer}>
@@ -54,8 +60,26 @@ const CustomerSupplier = ({navigation, route}) => {
         </Button>
       </View>
 
-      <View style={styles.flexView}>
-        <Text bold style={{color: 'blue'}} value={route.params.TruckInfo.truckName} />
+      <View style={styles.flexView1}>
+        <Text bold style={{color: 'blue'}} value={route.params.TruckInfo.truckName} /> 
+
+      {favoriteSwitch 
+        ?  
+        <Entypo 
+          style={{marginLeft: responsiveWidth(4),marginTop:responsiveHeight(0.7),color:'#B40E33'}}
+          name={'heart'}
+          // color={'#212121'}sadsd
+          size={responsiveFontSize(3)}
+          onPress={setFavorite}
+        /> 
+        :
+        <Entypo 
+          style={{marginLeft: responsiveWidth(4),marginTop:responsiveHeight(0.7),color:'#B40E33'}}
+          name={'heart-outlined'}
+          // color={'#212121'}sadsd
+          size={responsiveFontSize(3)}
+          onPress={setFavorite}
+      />} 
       </View>
       <View style={[styles.flexView, {marginTop: 0}]}>
         {route.params.TruckInfo.rating ? (
@@ -64,12 +88,20 @@ const CustomerSupplier = ({navigation, route}) => {
             startingValue={route.params.TruckInfo.rating}
             imageSize={responsiveFontSize(2.8)}
           />
-        ) : null}
-        <View
+        ) : 
+        <Rating
+            readonly
+            startingValue={0}
+            imageSize={responsiveFontSize(2.8)}
+          />
+        }
+      </View>
+      <View
           style={{
             flexDirection: 'row',
             width: '30%',
             justifyContent: 'space-between',
+            marginLeft:responsiveWidth(3)
           }}>
           <Text
             style={{
@@ -80,7 +112,6 @@ const CustomerSupplier = ({navigation, route}) => {
             value={'OPEN'}
           />
         </View>
-      </View>
       <View
         style={{
           width: '85%',
@@ -193,6 +224,14 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  flexView1: {
+    marginTop: responsiveHeight(5),
+    width: '95%',
+    alignSelf: 'center',
+    flexDirection: 'row',
+    // justifyContent: 'space-between',
     alignItems: 'center',
   },
   iconView: {

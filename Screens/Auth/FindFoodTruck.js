@@ -9,7 +9,6 @@ import {
   ScrollView,
   ActivityIndicator,
 } from 'react-native';
-import Container from '../../Component/Container';
 import Button from '../../Component/Button';
 import Text from '../../Component/Text';
 import theme from '../theme';
@@ -28,7 +27,6 @@ import SettingIcon from 'react-native-vector-icons/Entypo';
 import CountButton from '../../Component/CountButton';
 import url from './Constants/constants';
 import axios from 'axios';
-import AsyncStorage from '@react-native-community/async-storage';
 import moment from 'moment';
 import FuzzySearch from 'fuzzy-search'; // Or: var FuzzySearch = require('fuzzy-search');
 const FindFoodTruck = ({navigation}) => {
