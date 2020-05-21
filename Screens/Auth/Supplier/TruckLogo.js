@@ -28,7 +28,27 @@ const TruckLogo = ({navigation,route}) => {
     setImg(val)
     console.log(val);
     try
-    {  
+    {
+      
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "multipart/form-data");
+      myHeaders.append("Accept", "application/json");
+
+      var formdata = new FormData();
+      formdata.append("file", RNFetchBlob.wrap(val.uri), "/path/to/file");
+      formdata.append("upload_preset", "tyftBackend");
+
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: formdata,
+        redirect: 'follow'
+      };
+
+      fetch("https://api.cloudinary.com/v1_1/hmrzthc6f/image/upload", requestOptions)
+        .then(response => response.text())
+        .then(result => console.log(result))
+        .catch(error => console.log('error', error));
 //     let newFile = {
 //       uri : RNFetchBlob.wrap(val.uri),
 //       type: `test/${val.type}`,
@@ -54,18 +74,18 @@ const TruckLogo = ({navigation,route}) => {
       // })
       
 
-    const data = new FormData()
-    data.append('file', RNFetchBlob.wrap(val.uri))
-    data.append('upload_preset', 'tyftBackend')
-    // data.append("cloud_name", "hmrzthc6f")
-    let response = await fetch('https://api.cloudinary.com/v1_1/hmrzthc6f/image/upload', {
-    method: 'post',
-    headers:{
-      'Content-Type': 'multipart/form-data',
-    },
-		body: data
-  });
-  console.log(response);
+  //   const data = new FormData()
+  //   data.append('file', RNFetchBlob.wrap(val.uri))
+  //   data.append('upload_preset', 'tyftBackend')
+  //   // data.append("cloud_name", "hmrzthc6f")
+  //   let response = await fetch('https://api.cloudinary.com/v1_1/hmrzthc6f/image/upload', {
+  //   method: 'post',
+  //   headers:{
+  //     'Content-Type': 'multipart/form-data',
+  //   },
+	// 	body: data
+  // });
+  // console.log(response);
       // let ret = await fetch(
       //   'https://api.cloudinary.com/v1_1/hmrzthc6f/image/upload',
       //   'POST',
@@ -89,6 +109,8 @@ const TruckLogo = ({navigation,route}) => {
       // );
       //   console.log(JSON.stringify(ret));
   //    Alert.alert(JSON.stringify(ret))
+
+
 
     }
     catch(e)
