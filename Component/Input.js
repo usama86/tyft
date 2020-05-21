@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {StyleSheet, Text} from 'react-native';
+import {StyleSheet, Text,View} from 'react-native';
 import {Item, Input} from 'native-base';
 import {
   responsiveHeight,
@@ -30,6 +30,7 @@ const tyftTextBox = ({
           value={value}
         />
       </Item>
+      <View style={{width:responsiveWidth(80)}} >
       {errorText ? (
         <Text
           style={{
@@ -37,11 +38,13 @@ const tyftTextBox = ({
             color: 'red',
             fontSize: responsiveFontSize(1.5),
             alignSelf: 'center',
-            width: '82%',
+            width: '92%',
           }}>
           {errorText}
         </Text>
       ) : null}
+      </View>
+     
     </>
   );
 };

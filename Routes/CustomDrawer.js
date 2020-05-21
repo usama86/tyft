@@ -91,10 +91,9 @@ const CustomDrawer = ({navigation, route}) => {
           <ListItem
             title={'Profile'}
             leftAvatar={<ProfileIcon name={'user'} size={25} />}
-            onPress={() => navigation.navigate(Screens.PROFILED)}
+            onPress={() => navigation.navigate(Screens.PROFILED,{UserData:userInfo})}
           />
           <ListItem
-            style={{marginTop: responsiveHeight(15)}}
             title={'Contact Us'}
             leftAvatar={<ProfileIcon name={'info'} size={25} />}
             onPress={() => navigation.navigate('ContactUs')}

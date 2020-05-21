@@ -68,6 +68,8 @@ const VeggieWisper = ({navigation, route}) => {
         };
         setMarkerLat(parseFloat(position.coords.latitude));
         setMarkerLong(parseFloat(position.coords.longitude));
+        setLat(parseFloat(position.coords.latitude));
+        setLong(parseFloat(position.coords.longitude))
         await setRegionInMap(region);
 
         console.log('CURRENT LOCATION IN GETLOCATION', region);

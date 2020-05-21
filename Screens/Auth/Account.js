@@ -108,6 +108,30 @@ const Account = ({navigation}) => {
   useEffect(() => {
     checkUserStatus();
   }, []);
+  const changeEmail = e => {
+    let EmailRegix = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (EmailRegix.test(e)) {
+      setEmail({value: e, errorText: null});
+    } else if (e == '') {
+      setEmail({value: e, errorText: null});
+    } else if (!EmailRegix.test(e)) {
+      setEmail({value: e, errorText: 'Please Enter Valid Email'});
+    }
+  };
+  const changePassword = e => {
+    let PasswordRegix = /^(?=.*\d).{8,100}$/;
+    if (PasswordRegix.test(e)) {
+      setPassword({value: e, errorText: null});
+    } else if (e === '') {
+      setPassword({value: e, errorText: null});
+    } else if (!PasswordRegix.test(e)) {
+      setPassword({
+        value: e,
+        errorText:
+          'Password must be atleast 8 digits long and include atleast one numeric digit',
+      });
+    }
+  };
   return (
     <View style={{height: '100%', width: '100%'}}>
       {LoggedIn ? (
@@ -144,14 +168,16 @@ const Account = ({navigation}) => {
             <Input
               rounded
               placeholder="Email Address"
+              keyboardType={'email-address'}
               value={email.value}
-              onChangeText={e => setEmail({value: e, errorText: null})}
+              onChangeText={e => changeEmail(e)}
               errorText={email.errorText ? email.errorText : null}
               style={styles.Input}
             />
             <Input
               rounded
               placeholder="Cell Phone"
+              keyboardType={'phone-pad'}
               onChangeText={e => setPhone({value: e, errorText: null})}
               value={phone.value}
               errorText={phone.errorText ? phone.errorText : null}
@@ -160,7 +186,7 @@ const Account = ({navigation}) => {
             <Input
               rounded
               placeholder="Password"
-              onChangeText={e => setPassword({value: e, errorText: null})}
+              onChangeText={e => changePassword(e)}
               value={password.value}
               errorText={password.errorText ? password.errorText : null}
               style={styles.Input}

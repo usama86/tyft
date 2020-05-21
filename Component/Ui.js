@@ -99,6 +99,7 @@ const styles = StyleSheet.create({
   footer: {
     marginTop: responsiveHeight(2),
   },
+
 });
 
 Ui.defaultProps = {
