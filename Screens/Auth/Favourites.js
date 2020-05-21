@@ -64,6 +64,7 @@ const Favorite = ({navigation}) => {
         let Favourites = Response.data.TruckInfo;
         console.log('FAVVV',Favourites)
         if (ERROR !== 'ABT0001') {
+          console.log('FAVV',Favourites)
           let currentDate = moment();
           let day = currentDate.format('dddd');
           setDay(day);

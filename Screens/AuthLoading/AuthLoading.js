@@ -14,35 +14,35 @@ const AuthLoading = ({navigation}) => {
     if (userType === 'Supplier') {
       console.log('in supplier');
       setTimeout(() => {
-        // navigation.navigate('App');
-        navigation.dispatch(
-          CommonActions.reset({
-            index: 0,
-            routes: [{name: 'App'}],
-          }),
-        );
+        navigation.navigate('App');
+        // navigation.dispatch(
+        //   CommonActions.reset({
+        //     index: 0,
+        //     routes: [{name: 'App'}],
+        //   }),
+        // );
       }, 2000);
     } else if (userType === 'Customer') {
       console.log('in Customer');
       setTimeout(() => {
-        // navigation.navigate('Auth', {screen: 'Tabs'});
-        navigation.dispatch(
-          CommonActions.reset({
-            index: 0,
-            routes: [{name: 'Tabs'}],
-          }),
-        );
+        navigation.navigate('Auth', {screen: 'Tabs'});
+        // navigation.dispatch(
+        //   CommonActions.reset({
+        //     index: 0,
+        //     routes: [{name: 'Tabs'}],
+        //   }),
+        // );
       }, 2000);
     } else if (userType === null) {
       console.log('No Token');
       setTimeout(() => {
-        // navigation.navigate('Auth');
-        navigation.dispatch(
-          CommonActions.reset({
-            index: 0,
-            routes: [{name: 'Auth'}],
-          }),
-        );
+        navigation.navigate('Auth');
+        // navigation.dispatch(
+        //   CommonActions.reset({
+        //     index: 0,
+        //     routes: [{name: 'Auth'}],
+        //   }),
+        // );
       }, 2000);
     }
   };

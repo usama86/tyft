@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
@@ -23,16 +23,33 @@ import {
 import * as RouteName from '../../Constants/RouteName';
 import Header from '../../Component/Header';
 import Entypo from 'react-native-vector-icons/Entypo';
+import AsyncStorage from '@react-native-community/async-storage';
+import url from './Constants/constants';
+import axios from 'axios';
 const CustomerSupplier = ({navigation, route}) => {
   const [ToggleSwitch, setToggleSwitch] = useState(false);
-  const [favoriteSwitch,setFavoriteSwitch] = useState(false);
-  useEffect(()=>{
-      console.log('Params=>',route.params.TruckInfo)
-  },[]);
-  const setFavorite=()=>{
-    setFavoriteSwitch(!favoriteSwitch);
-    
-  }
+  const [favoriteSwitch, setFavoriteSwitch] = useState(false);
+  useEffect(() => {
+    console.log('Params=>', route.params.TruckInfo);
+  }, []);
+  const setFavorite = async val => {
+    let TruckId = await AsyncStorage.getItem('TruckID');
+    let userID = await AsyncStorage.getItem('userID');
+    axios
+      .post(url + '/api/supplier/setfavorite', {
+        UserID: userID,
+        TruckID: TruckId,
+        selected: val,
+      })
+      .then(async Response => {
+        if (Response.data.code !== 'ABT0001') {
+          setFavoriteSwitch(!favoriteSwitch);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
   return (
     <Container>
       <View style={styles.HeaderContainer}>
@@ -49,37 +66,57 @@ const CustomerSupplier = ({navigation, route}) => {
           <Text style={styles.Btntext} value={'Info'} />
         </Button>
         <Button
-          onPress={() => navigation.navigate(RouteName.MENU,{Menu:route.params.TruckInfo.Menu})}
+          onPress={() =>
+            navigation.navigate(RouteName.MENU, {
+              Menu: route.params.TruckInfo.Menu,
+            })
+          }
           style={[styles.Button, {backgroundColor: 'white'}]}>
           <Text style={[styles.Btntext, {color: 'black'}]} value={'Menu'} />
         </Button>
         <Button
-          onPress={() => navigation.navigate(RouteName.CUSTOMERREVIEWS,{Menu:route.params.TruckInfo.Menu})}
+          onPress={() =>
+            navigation.navigate(RouteName.CUSTOMERREVIEWS, {
+              Menu: route.params.TruckInfo.Menu,
+            })
+          }
           style={[styles.Button, {backgroundColor: 'white'}]}>
           <Text style={[styles.Btntext, {color: 'black'}]} value={'Reviews'} />
         </Button>
       </View>
 
       <View style={styles.flexView1}>
-        <Text bold style={{color: 'blue'}} value={route.params.TruckInfo.truckName} /> 
+        <Text
+          bold
+          style={{color: 'blue'}}
+          value={route.params.TruckInfo.truckName}
+        />
 
-      {favoriteSwitch 
-        ?  
-        <Entypo 
-          style={{marginLeft: responsiveWidth(4),marginTop:responsiveHeight(0.7),color:'#B40E33'}}
-          name={'heart'}
-          // color={'#212121'}sadsd
-          size={responsiveFontSize(3)}
-          onPress={setFavorite}
-        /> 
-        :
-        <Entypo 
-          style={{marginLeft: responsiveWidth(4),marginTop:responsiveHeight(0.7),color:'#B40E33'}}
-          name={'heart-outlined'}
-          // color={'#212121'}sadsd
-          size={responsiveFontSize(3)}
-          onPress={setFavorite}
-      />} 
+        {favoriteSwitch ? (
+          <Entypo
+            style={{
+              marginLeft: responsiveWidth(4),
+              marginTop: responsiveHeight(0.7),
+              color: '#B40E33',
+            }}
+            name={'heart'}
+            // color={'#212121'}sadsd
+            size={responsiveFontSize(3)}
+            onPress={setFavorite(false)}
+          />
+        ) : (
+          <Entypo
+            style={{
+              marginLeft: responsiveWidth(4),
+              marginTop: responsiveHeight(0.7),
+              color: '#B40E33',
+            }}
+            name={'heart-outlined'}
+            // color={'#212121'}sadsd
+            size={responsiveFontSize(3)}
+            onPress={setFavorite(true)}
+          />
+        )}
       </View>
       <View style={[styles.flexView, {marginTop: 0}]}>
         {route.params.TruckInfo.rating ? (
@@ -88,39 +125,37 @@ const CustomerSupplier = ({navigation, route}) => {
             startingValue={route.params.TruckInfo.rating}
             imageSize={responsiveFontSize(2.8)}
           />
-        ) : 
-        <Rating
+        ) : (
+          <Rating
             readonly
             startingValue={0}
             imageSize={responsiveFontSize(2.8)}
           />
-        }
+        )}
       </View>
       <View
+        style={{
+          flexDirection: 'row',
+          width: '30%',
+          justifyContent: 'space-between',
+          marginLeft: responsiveWidth(3),
+        }}>
+        <Text
           style={{
-            flexDirection: 'row',
-            width: '30%',
-            justifyContent: 'space-between',
-            marginLeft:responsiveWidth(3)
-          }}>
-          <Text
-            style={{
-              color: 'green',
-              fontWeight: 'bold',
-              fontSize: responsiveFontSize(2),
-            }}
-            value={'OPEN'}
-          />
-        </View>
+            color: 'green',
+            fontWeight: 'bold',
+            fontSize: responsiveFontSize(2),
+          }}
+          value={'OPEN'}
+        />
+      </View>
       <View
         style={{
           width: '85%',
           paddingVertical: responsiveHeight(5),
           marginLeft: responsiveWidth(3),
         }}>
-        <Text
-        value={route.params.TruckInfo.businessDesc}
-        />
+        <Text value={route.params.TruckInfo.businessDesc} />
       </View>
       <View style={styles.iconView}>
         <AntDesign

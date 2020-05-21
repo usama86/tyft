@@ -57,6 +57,20 @@ const VeggieWisper = ({navigation, route}) => {
   useEffect(() => {
     getUserDetails();
   }, []);
+  const setLocation = async()=>{
+    let TruckId = await AsyncStorage.getItem('TruckID');
+    axios
+      .post(url + '/api/supplier/setlocation', {TruckID: TruckId,longitude:Long,latitude:Lat})
+      .then(async Response => {
+        if (Response.data.code !== 'ABT0001') {
+            console.log('LAT LONG UDATED')
+            setVisibleModal(false);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
   const getCurrentLocation = () => {
     Geolocation.getCurrentPosition(
       async position => {
@@ -71,7 +85,6 @@ const VeggieWisper = ({navigation, route}) => {
         setLat(parseFloat(position.coords.latitude));
         setLong(parseFloat(position.coords.longitude))
         await setRegionInMap(region);
-
         console.log('CURRENT LOCATION IN GETLOCATION', region);
       },
       error => console.log('this is ERROR', error),
@@ -328,7 +341,7 @@ const VeggieWisper = ({navigation, route}) => {
               <Text style={styles.InstructionText} value={'Please Drag the Marker to Select Your Current Location.'}/>
           </View>
           <View style={styles.ButtonView} >
-           <Button style={styles.Button} >
+           <Button onPress={setLocation} style={styles.Button} >
              <Text style={{color:'#fff'}} value={'Save'} />
            </Button>
           </View>

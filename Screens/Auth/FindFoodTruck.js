@@ -63,10 +63,10 @@ const FindFoodTruck = ({navigation}) => {
         let Trucks = Response.data.TruckInfo;
         if (ERROR !== 'ABT0001') {
           let currentDate = moment();
+          let filtered = Trucks.filter(item=>item.status === 'Open')
           let day = currentDate.format('dddd');
           setDay(day);
-          setData(Trucks);
-
+          setData(filtered);
           setisLoading(false);
         } else {
           setisLoading(false);

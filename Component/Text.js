@@ -20,7 +20,7 @@ tyftText.propTypes = {
 	style: PropTypes.object
 };
 tyftText.defaultProps = {
-	value: 'Default text',
+	value: null,
 	style: {}
 };
 //
