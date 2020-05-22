@@ -254,13 +254,22 @@ const FindFoodTruck = ({navigation}) => {
             marginLeft: responsiveWidth(25),
           }}
         />
-      ) : (
+      ) : Data.length>0 ? (
         <FlatList
           data={Data}
           keyExtractor={item => item.id}
           renderItem={({item, index}) => PrintCard(item, index)}
         />
-      )}
+      ) : 
+      <Text
+      value={'No Truck Found'}
+      bold
+      style={{
+        marginTop: responsiveHeight(25),
+        marginLeft: responsiveWidth(25),
+      }}
+    />  
+      }
     </SafeAreaView>
   );
 };

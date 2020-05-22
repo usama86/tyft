@@ -30,30 +30,55 @@ import url from './Constants/constants';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 import moment from 'moment';
+import FuzzySearch from 'fuzzy-search'; 
 const Favorite = ({navigation}) => {
   const [Data, setData] = useState([
    
-    {
-      id: 3,
-      Title: 'Taco Truck',
-      subtitle1: 'American,Soul Food,Indian',
-      subtitle2: '1620 US-70,Coleny KS 679311',
-      subtitle3: '11:00 AM - 2:00 PM',
-      status: 'OPEN',
-      rating: 2,
-    },
-    {
-      id: 4,
-      Title: 'Taco Truck',
-      subtitle1: 'American,Soul Food,Indian',
-      subtitle2: '1620 US-70,Coleny KS 679311',
-      subtitle3: '11:00 AM - 2:00 PM',
-      status: 'OPEN',
-      rating: 1,
-    },
+    // {
+    //   id: 3,
+    //   Title: 'Taco Truck',
+    //   subtitle1: 'American,Soul Food,Indian',
+    //   subtitle2: '1620 US-70,Coleny KS 679311',
+    //   subtitle3: '11:00 AM - 2:00 PM',
+    //   status: 'OPEN',
+    //   rating: 2,
+    // },
+    // {
+    //   id: 4,
+    //   Title: 'Taco Truck',
+    //   subtitle1: 'American,Soul Food,Indian',
+    //   subtitle2: '1620 US-70,Coleny KS 679311',
+    //   subtitle3: '11:00 AM - 2:00 PM',
+    //   status: 'OPEN',
+    //   rating: 1,
+    // },
   ]);
   const [day, setDay] = useState(null);
   const [isLoading, setisLoading] = useState(true);
+  const [isMsg, setIsMsg] = useState(false);
+  const [searchVal, setSearchVal] = useState('');
+
+  const onChangeSearch = val => {
+    setSearchVal(val);
+    if (val == '') {
+      getFavouriteRestaurants();
+      setIsMsg(false);
+    } else {
+      const searcher = new FuzzySearch(Data, ['truckName'], {
+        caseSensitive: false,
+      });
+      const result = searcher.search(val);
+      // console.log(result);
+      setData(result);
+      if (result.length == 0 || result === undefined) {
+        setIsMsg(true);
+      } else {
+        setIsMsg(false);
+      }
+    }
+  };
+
+
   const getFavouriteRestaurants = async () => {
     let UserID = await AsyncStorage.getItem('userID');
     console.log(UserID)
@@ -61,7 +86,7 @@ const Favorite = ({navigation}) => {
       .post(url + '/api/supplier/getfavoritetruck',{_id:UserID})
       .then(async Response => {
         let ERROR = Response.data.code;
-        let Favourites = Response.data.TruckInfo;
+        let Favourites = Response.data.records;
         console.log('FAVVV',Favourites)
         if (ERROR !== 'ABT0001') {
           console.log('FAVV',Favourites)
@@ -86,16 +111,19 @@ const Favorite = ({navigation}) => {
     <TouchableOpacity
       activeOpacity={0.8}
       style={styles.MainView}
-      onPress={() => navigation.navigate(RouteName.CUSTOMERSUPPLIER)}>
+      onPress={() =>
+        navigation.navigate(RouteName.CUSTOMERSUPPLIER, {TruckInfo: item})
+      }>
       <View style={styles.LeftIcon}>
         <Image style={styles.image} source={require('../../images/art.jpg')} />
       </View>
       <View style={styles.RightContent}>
         <Text
           style={{fontSize: responsiveFontSize(2), fontWeight: 'bold'}}
-          value={item.Title}
+          value={item.truckName}
         />
         <CountButton 
+          button={item.selectedServingCusines}
           buttonProp={{width:responsiveWidth(17),height:responsiveHeight(3)}}
           tabProp={{marginTop:responsiveHeight(-18),left:responsiveWidth(-2)}}
         />
@@ -105,20 +133,31 @@ const Favorite = ({navigation}) => {
             color={'#212121'}
             size={responsiveFontSize(2.3)}
           />
-          <Text value={item.subtitle2} />
+          <Text value={item.truckCity} />
         </View>
-        <View style={styles.flex}>
-          <AntDesign
-            style={{marginLeft: responsiveWidth(1)}}
-            name={'clockcircleo'}
-            color={'#212121'}
-            size={responsiveFontSize(1.8)}
-          />
-          <Text
-            style={{marginLeft: responsiveWidth(1)}}
-            value={item.subtitle3}
-          />
-        </View>
+        {item.schedule
+          ? item.schedule.map(item2 =>
+              item2.day === day ? (
+                <View style={styles.flex}>
+                  <AntDesign
+                    style={{marginLeft: responsiveWidth(1)}}
+                    name={'clockcircleo'}
+                    color={'#212121'}
+                    size={responsiveFontSize(1.8)}
+                  />
+                  <Text
+                    style={{marginLeft: responsiveWidth(1)}}
+                    value={item2.opening}
+                  />
+
+                  <Text
+                    style={{marginLeft: responsiveWidth(1)}}
+                    value={item2.closing}
+                  />
+                </View>
+              ) : null,
+            )
+          : null}
         <View
           style={[
             styles.flex,
@@ -151,8 +190,9 @@ const Favorite = ({navigation}) => {
       <View style={styles.seacrhbarContainter}>
         <SearchBar
           placeholder="Type something..."
-          //   onChangeText={this.updateSearch}
-          // value={search}
+          onChangeText={onChangeSearch}
+          value={searchVal}
+          
           round
           lightTheme
           leftIconContainerStyle={{
@@ -221,11 +261,37 @@ const Favorite = ({navigation}) => {
           />
         </TouchableOpacity>
       </View>
-      <FlatList
-        data={Data}
-        keyExtractor={item => item.id}
-        renderItem={({item, index}) => PrintCard(item, index)}
-      />
+      {isLoading ? (
+        <ActivityIndicator
+          color={'#000'}
+          size={'large'}
+          style={styles.ActivityView}
+        />
+      ) : isMsg ? (
+        <Text
+          value={'No Truck Found'}
+          bold
+          style={{
+            marginTop: responsiveHeight(25),
+            marginLeft: responsiveWidth(25),
+          }}
+        />
+      ) : Data.length>0 ? (
+        <FlatList
+          data={Data}
+          keyExtractor={item => item.id}
+          renderItem={({item, index}) => PrintCard(item, index)}
+        />
+      ) : 
+      <Text
+      value={'No Truck Found'}
+      bold
+      style={{
+        marginTop: responsiveHeight(25),
+        marginLeft: responsiveWidth(25),
+      }}
+    />  
+      }
     </SafeAreaView>
   );
 };

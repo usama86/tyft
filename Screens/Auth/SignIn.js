@@ -50,6 +50,7 @@ const SignIn = ({navigation}) => {
             console.log('TOKEN', usertoken);
             await AsyncStorage.setItem('userID' + '', usertoken.userId);
             await AsyncStorage.setItem('userType' + '', usertoken.userType);
+            await AsyncStorage.setItem('userName' + '', usertoken.userName);
             await setLoading(false);
             if (usertoken.userType === 'Supplier') {
               navigation.navigate('App');

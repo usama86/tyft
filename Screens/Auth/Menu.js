@@ -8,73 +8,75 @@ import {
   TextInput,
   SafeAreaView,
 } from 'react-native';
-import Container from '../../Component/Container';
-import Button from '../../Component/Button';
 import Text from '../../Component/Text';
-import theme from '../theme';
-import {SearchBar, Rating} from 'react-native-elements';
-import Icon from 'react-native-vector-icons/EvilIcons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import Entypo from 'react-native-vector-icons/Entypo';
 import {
   responsiveHeight,
   responsiveWidth,
   responsiveFontSize,
 } from 'react-native-responsive-dimensions';
-import * as RouteName from '../../Constants/RouteName';
 import Header from '../../Component/Header';
+import axios from 'axios';
+import FuzzySearch from 'fuzzy-search';
 const Menu = ({navigation,route}) => {
   const [menuItem, setMenuItem] = useState();
+  const [isMsg, setIsMsg] = useState(false);
+  const [isLoading, setisLoading] =useState(true);
   const [Data, setData] = useState([
-    {
-      id: 0,
-      name: 'Veggie',
-      price: '9.00',
-      description: 'black beans,corn,pics,spinich,sour cream',
-    },
-    {
-      id: 1,
-      name: 'Veggie',
-      price: '9.00',
-      description: 'black beans,corn,pics,spinich,sour cream',
-    },
-    {
-      id: 2,
-      name: 'Veggie',
-      price: '9.00',
-      description: 'black beans,corn,pics,spinich,sour cream',
-    },
-    {
-      id: 3,
-      name: 'Veggie',
-      price: '9.00',
-      description: 'black beans,corn,pics,spinich,sour cream',
-    },
-    {
-      id: 4,
-      name: 'Veggie',
-      price: '9.00',
-      description: 'black beans,corn,pics,spinich,sour cream',
-    },
-    {
-      id: 5,
-      name: 'Veggie',
-      price: '9.00',
-      description: 'black beans,corn,pics,spinich,sour cream',
-    },
-    {
-      id: 6,
-      name: 'Veggie',
-      price: '9.00',
-      description: 'black beans,corn,pics,spinich,sour cream',
-    },
-    {
-      id: 7,
-      name: 'Veggie',
-      price: '9.00',
-      description: 'black beans,corn,pics,spinich,sour cream',
-    },
+    // {
+    //   id: 0,
+    //   name: 'Veggie',
+    //   price: '9.00',
+    //   description: 'black beans,corn,pics,spinich,sour cream',
+    // },
+   
   ]);
+  React.useEffect(()=>{
+    getMenu();
+  },[]);
+  
+  const onChangeSearch = val => {
+    setMenuItem(val);
+    if (val == '') {
+      getMenu();
+      setIsMsg(false);
+    } else {
+      const searcher = new FuzzySearch(Data, ['name'], {
+        caseSensitive: false,
+      });
+      const result = searcher.search(val);
+      console.log(result);
+      setData(result);
+      if (result.length == 0 || result === undefined) {
+        setIsMsg(true);
+      } else {
+        setIsMsg(false);
+      }
+    }
+  };
+  
+  const getMenu=()=>{
+    
+    axios
+    .post(url + '/api/menu/getmenu',{_id:route.params.Menu})
+    .then(async Response => {
+      let ERROR = Response.data.code;
+      let MenuData = Response.data.MenuData;
+      console.log('FAVVV',MenuData)
+      if (ERROR !== 'ABT0001') {
+
+        setData(MenuData);
+        setisLoading(false);
+      } else {
+        setisLoading(false);
+      }
+    })
+    .catch(error => {
+      setisLoading(false);
+      console.log(error);
+    });
+  }
+
+
   const PrintCard = (item, index) => (
     <TouchableOpacity activeOpacity={0.8} style={styles.MainView}>
       <View style={styles.Left}>
@@ -104,19 +106,40 @@ const Menu = ({navigation,route}) => {
         <TextInput
         placeholder={'Search'}
           value={menuItem}
-          onChangeText={val => setMenuItem(val)}
+          onChangeText={onChangeSearch}
           style={styles.input}
         />
       </View>
-
-      <FlatList
-        data={route.params.Menu}
-        keyExtractor={item => item.id}
-        contentContainerStyle={{
-          paddingVertical: responsiveHeight(2),
-        }}
-        renderItem={({item, index}) => PrintCard(item, index)}
+    {isLoading ? 
+    <Text 
+    value={"No Menu To Show"}
+    bold
+    style={{
+      marginTop: responsiveHeight(25),
+      marginLeft: responsiveWidth(25),
+    }}
+    />
+    : isMsg ? (
+      <Text 
+      value={"No Menu Found"}
+      bold
+      style={{
+        marginTop: responsiveHeight(25),
+        marginLeft: responsiveWidth(25),
+      }}
       />
+      ):(
+      <FlatList
+      data={Data}
+      keyExtractor={item => item.id}
+      contentContainerStyle={{
+        paddingVertical: responsiveHeight(2),
+      }}
+      renderItem={({item, index}) => PrintCard(item, index)}
+      /> 
+      )
+    }
+    
     </SafeAreaView>
   );
 };

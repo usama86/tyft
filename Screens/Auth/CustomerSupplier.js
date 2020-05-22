@@ -31,14 +31,30 @@ const CustomerSupplier = ({navigation, route}) => {
   const [favoriteSwitch, setFavoriteSwitch] = useState(false);
   useEffect(() => {
     console.log('Params=>', route.params.TruckInfo);
+    getFavorite();
   }, []);
+  const getFavorite=async()=>{
+    let userID = await AsyncStorage.getItem('userID');
+    axios
+      .post(url + '/api/supplier/getfavorite', {
+        _id: userID,
+      })
+      .then(async Response => {
+        if (Response.data.code === 'ABT0000') {
+          setFavoriteSwitch(true);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
   const setFavorite = async val => {
-    let TruckId = await AsyncStorage.getItem('TruckID');
     let userID = await AsyncStorage.getItem('userID');
     axios
       .post(url + '/api/supplier/setfavorite', {
         UserID: userID,
-        TruckID: TruckId,
+        TruckID: route.params.TruckInfo._id,
         selected: val,
       })
       .then(async Response => {
@@ -66,10 +82,12 @@ const CustomerSupplier = ({navigation, route}) => {
           <Text style={styles.Btntext} value={'Info'} />
         </Button>
         <Button
-          onPress={() =>
+          onPress={() =>{
+            // console.log(route.params.TruckInfo.MenuID);
             navigation.navigate(RouteName.MENU, {
-              Menu: route.params.TruckInfo.Menu,
+              Menu: route.params.TruckInfo.MenuID,
             })
+          }
           }
           style={[styles.Button, {backgroundColor: 'white'}]}>
           <Text style={[styles.Btntext, {color: 'black'}]} value={'Menu'} />
@@ -77,7 +95,7 @@ const CustomerSupplier = ({navigation, route}) => {
         <Button
           onPress={() =>
             navigation.navigate(RouteName.CUSTOMERREVIEWS, {
-              Menu: route.params.TruckInfo.Menu,
+              ID: route.params.TruckInfo._id,
             })
           }
           style={[styles.Button, {backgroundColor: 'white'}]}>
@@ -102,7 +120,7 @@ const CustomerSupplier = ({navigation, route}) => {
             name={'heart'}
             // color={'#212121'}sadsd
             size={responsiveFontSize(3)}
-            onPress={setFavorite(false)}
+            onPress={()=>{setFavorite(false)}}
           />
         ) : (
           <Entypo
@@ -114,7 +132,7 @@ const CustomerSupplier = ({navigation, route}) => {
             name={'heart-outlined'}
             // color={'#212121'}sadsd
             size={responsiveFontSize(3)}
-            onPress={setFavorite(true)}
+            onPress={()=>{setFavorite(true)}}
           />
         )}
       </View>
