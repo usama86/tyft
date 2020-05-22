@@ -35,6 +35,7 @@ const CustomDrawer = ({navigation, route}) => {
           setName(res.Supplier[0].profileName);
           setPhone(res.Supplier[0].phoneNumber);
           setEmail(res.Supplier[0].email);
+          await AsyncStorage.setItem('TruckID' + '', res.TruckInfo[0]._id);
         }
       })
       .catch(error => {

@@ -29,6 +29,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
 import url from './Constants/constants';
 import {Textarea} from 'native-base';
+import moment from 'moment';
 const CustomerReviews = ({navigation, route}) => {
   const [menuItem, setMenuItem] = useState('Mexican');
   const [showModal, setShowModal] = useState(false);
@@ -36,24 +37,7 @@ const CustomerReviews = ({navigation, route}) => {
   const [rating, setRating] = useState(0);
   const [names, setNames] = useState('');
 
-  const [Data, setData] = useState([
-    {
-      id: 0,
-      rating: 3.5,
-      Name: 'John Smith',
-      time: '2 hour ago',
-      review:
-        'quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatu',
-    },
-    {
-      id: 1,
-      rating: 3,
-      Name: 'John Smith',
-      time: '2 hour ago',
-      review:
-        'quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatu',
-    },
-  ]);
+  const [Data, setData] = useState([]);
 
   React.useEffect(() => {
     getName();
@@ -92,6 +76,34 @@ const CustomerReviews = ({navigation, route}) => {
         console.log(error);
       });
   };
+const CalculateTime = date => {
+    let years = moment(new Date()).diff(moment(date), 'years');
+    if (years === 0) {
+      let months = moment(new Date()).diff(moment(date), 'months');
+      if (months === 0) {
+        let days = moment(new Date()).diff(moment(date), 'days');
+        if (days === 0) {
+          let hours = moment(new Date()).diff(moment(date), 'hours');
+          if (hours === 0) {
+            let minutes = moment(new Date()).diff(moment(date), 'minutes');
+            if (minutes === 0) {
+              return 'now';
+            } else {
+              return minutes + 'm';
+            }
+          } else {
+            return hours + 'h';
+          }
+        } else {
+          return days + 'd';
+        }
+      } else {
+        return months + 'm';
+      }
+    } else {
+      return years + 'y';
+    }
+  };
   const AddReviewHandler = async () => {
     console.log(review);
     console.log(rating);
@@ -127,7 +139,7 @@ const CustomerReviews = ({navigation, route}) => {
           imageSize={responsiveFontSize(2.8)}
         />
         <Text style={{color: '#A6A6A6'}} value={item.Name} />
-        <Text style={{color: '#A6A6A6'}} value={item.time} />
+        <Text style={{color: '#A6A6A6'}} value={CalculateTime(item.date)} />
       </View>
       <View style={styles.BottomView}>
         <Text value={item.Review} />
