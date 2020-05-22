@@ -66,7 +66,7 @@ const Profile = ({navigation, route}) => {
           password: password.value,
           profileName: name.value,
           phoneNumber: phone.value,
-          userType: 'Supplier',
+          // userType: 'Supplier',
           Language: Language,
         })
         .then(async Response => {

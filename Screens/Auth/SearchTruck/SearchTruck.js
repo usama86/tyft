@@ -50,7 +50,7 @@ const SearchTruck = ({navigation}) => {
         }
       })
       .catch(error => {
-        setisLoading(false);
+        // setisLoading(false);
         console.log(error);
       });
   };
