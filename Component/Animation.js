@@ -15,6 +15,10 @@ const Animation = ({
   ...props
 }) => {
   const [animate, SetAnimate] = React.useState(animationsIn);
+  React.useEffect(()=>{
+    if(animationOut)
+      SetAnimate(animationOut);
+  },[animationOut])
   return (
     <Animatable.View
       style={container}
@@ -31,7 +35,7 @@ Animation.propTypes = {
   animationOut: PropTypes.string,
   children: PropTypes.object,
   container: PropTypes.object,
-};
+}; 
 Animation.defaultProps = {
   animationsIn: 'zoomInDown',
   animationOut: '',

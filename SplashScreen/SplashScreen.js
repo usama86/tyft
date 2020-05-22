@@ -13,9 +13,14 @@ import {
 import * as Animatable from 'react-native-animatable';
 import Animation from './../Component/Animation';
 const SplashScreen = ({navigation}) => {
-
+  const  [val,setVal] = React.useState('');
+  React.useEffect(()=>{
+    setTimeout(() => {
+      setVal('zoomOutDown')
+    }, 4000);
+  },[])
   return (
-    <Animation container={styles.container} navigation={navigation} animationsIn={'zoomInDown'} animationOut={'zoomOutDown'}>
+    <Animation container={styles.container} navigation={navigation} animationsIn={'zoomInDown'}  animationOut={val}>
       <Image
         style={styles.logoStyle}
         source={require('./../images/MainLogo.png')}

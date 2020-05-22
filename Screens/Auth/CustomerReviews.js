@@ -1,4 +1,4 @@
-import React, {useState} from 'react'; 
+import React, {useState} from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
@@ -12,7 +12,7 @@ import Container from '../../Component/Container';
 import Button from '../../Component/Button';
 import Text from '../../Component/Text';
 import theme from '../theme';
-import {SearchBar, Rating,AirbnbRating } from 'react-native-elements';
+import {SearchBar, Rating, AirbnbRating} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -26,14 +26,15 @@ import * as RouteName from '../../Constants/RouteName';
 import Model from './../../Component/Modal';
 import Header from '../../Component/Header';
 import AsyncStorage from '@react-native-community/async-storage';
-
-import {Textarea} from "native-base";
-const CustomerReviews = ({navigation}) => {
+import axios from 'axios';
+import url from './Constants/constants';
+import {Textarea} from 'native-base';
+const CustomerReviews = ({navigation, route}) => {
   const [menuItem, setMenuItem] = useState('Mexican');
-  const [showModal,setShowModal] = useState(false);
-  const [review,setReview] = useState('')
-  const [rating,setRating] = useState(0);
-  const [names,setNames] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [review, setReview] = useState('');
+  const [rating, setRating] = useState(0);
+  const [names, setNames] = useState('');
 
   const [Data, setData] = useState([
     {
@@ -54,98 +55,166 @@ const CustomerReviews = ({navigation}) => {
     },
   ]);
 
-  React.useEffect(()=>{
+  React.useEffect(() => {
     getName();
-  },[])
+    getCustomerReviews();
+    console.log('TRUCK ID', route.params.ID);
+  }, []);
 
-  const getName=async()=>{
+  const getName = async () => {
     let userName = await AsyncStorage.getItem('userName');
     console.log(userName);
     setNames(userName);
     // let date = new Date(time);
-  }
+  };
 
-  const onPressButton=()=>{
+  const onPressButton = () => {
     setShowModal(true);
-  }
-
-  const AddReviewHandler=()=>{
+  };
+  const getCustomerReviews = async () => {
+    let UserID = await AsyncStorage.getItem('userID');
+    console.log(UserID);
+    axios
+      .post(url + '/api/supplier/getcustomerreview', {_id: route.params.ID})
+      .then(async Response => {
+        let ERROR = Response.data.code;
+        let Reviews = Response.data.Review;
+        console.log('Reviews', Reviews);
+        if (ERROR !== 'ABT0001') {
+          setData(Reviews);
+        } else {
+          setisLoading(false);
+          setData(null);
+        }
+      })
+      .catch(error => {
+        setisLoading(false);
+        console.log(error);
+      });
+  };
+  const AddReviewHandler = async () => {
     console.log(review);
-    console.log(names);
-    console.log(rating)
-  }
+    console.log(rating);
+    let userID = await AsyncStorage.getItem('userID');
+    let Name = await AsyncStorage.getItem('userName');
+    console.log(Name);
+    axios
+      .post(url + '/api/supplier/addreview', {
+        UserID: userID,
+        TruckID: route.params.ID,
+        Review: {
+          Review: review,
+          UserId: userID,
+          Rating: rating,
+          date: new Date(),
+          Name: Name,
+        },
+      })
+      .then(async Response => {
+        if (Response.data.code !== 'ABT0001') {
+          setShowModal(false);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
   const PrintCard = (item, index) => (
     <TouchableOpacity activeOpacity={0.8} style={styles.MainView}>
       <View style={styles.TopView}>
         <Rating
-          startingValue={item.rating}
+          startingValue={item.Rating}
           imageSize={responsiveFontSize(2.8)}
         />
         <Text style={{color: '#A6A6A6'}} value={item.Name} />
         <Text style={{color: '#A6A6A6'}} value={item.time} />
       </View>
       <View style={styles.BottomView}>
-        <Text value={item.review} />
+        <Text value={item.Review} />
       </View>
     </TouchableOpacity>
   );
   return (
     <SafeAreaView style={styles.parent}>
-      <Header  onPress={() => navigation.goBack()}>{'Customer Reviews'}</Header>
-      <View style={{width: '100%', height: responsiveHeight(75)}}>
-      <FlatList
-        data={Data}
-        keyExtractor={item => item.id}
-        contentContainerStyle={{
-          paddingVertical: responsiveHeight(2),
-          
-        }}
-        style={{height:10}}
-        renderItem={({item, index}) => PrintCard(item, index)}
-      />
-      </View>
-      <View style={{width:"100%"}}>
-      <Button
-          style={[styles.buttonStyle2]}
-          onPress={onPressButton}
-          rounded>
-          <Text
-            uppercase={false}
-            style={[styles.TextStyle1]}
-            value={"Add a Review"}
-          />
-        </Button>
-      </View>
-   
-   
+      <Header onPress={() => navigation.goBack()}>{'Customer Reviews'}</Header>
+      {Data ? (
+        <>
+          <View style={{width: '100%', height: responsiveHeight(75)}}>
+            <FlatList
+              data={Data}
+              keyExtractor={item => item.id}
+              contentContainerStyle={{
+                paddingVertical: responsiveHeight(2),
+              }}
+              style={{height: 10}}
+              renderItem={({item, index}) => PrintCard(item, index)}
+            />
+          </View>
+          <View style={{width: '100%'}}>
+            <Button
+              style={[styles.buttonStyle2]}
+              onPress={onPressButton}
+              rounded>
+              <Text
+                uppercase={false}
+                style={[styles.TextStyle1]}
+                value={'Add a Review'}
+              />
+            </Button>
+          </View>
+        </>
+      ) : (
+        <Text
+          bold
+          style={{textAlign: 'center', marginTop: responsiveHeight(10)}}
+          value={'No Reviews'}
+        />
+      )}
+
       <Model showModal={showModal}>
-            <TouchableOpacity activeOpacity={0.8} style={styles.MainView}>
-            <View style={styles.TopView}>
-            <View style={{marginTop:responsiveHeight(-6)}}>
-              <AirbnbRating 
+        <TouchableOpacity activeOpacity={0.8} style={styles.MainView}>
+          <View style={styles.TopView}>
+            <View style={{marginTop: responsiveHeight(-6)}}>
+              <AirbnbRating
                 // starStyle={{height:responsiveHeight(4),res}}
-                
-              defaultRating={0}
-              reviews={[]}
-              size={responsiveFontSize(2.8)}
+
+                defaultRating={0}
+                reviews={[]}
+                size={responsiveFontSize(2.8)}
                 // startingValue={0}
-                // showRating 
+                // showRating
                 imageSize={responsiveFontSize(2.8)}
                 // ratingCount={5}
-                onFinishRating={(val)=>setRating(val)}
-                
+                onFinishRating={val => setRating(val)}
               />
             </View>
-              <Text style={{color: '#A6A6A6',marginLeft:responsiveWidth(-9),fontWeight:'bold',fontSize:responsiveFontSize(2)}} value={names} />
-              
-              <Text style={{color: '#A6A6A6'}} bold value={"x"} onPress={()=>setShowModal(false)} />
-            </View>
-            <View style={styles.BottomView}>
-                <Textarea rowSpan={5} bordered placeholder="Write your Review here" onChangeText={(val)=>setReview(val)} />
-            </View>
+            <Text
+              style={{
+                color: '#A6A6A6',
+                marginLeft: responsiveWidth(-9),
+                fontWeight: 'bold',
+                fontSize: responsiveFontSize(2),
+              }}
+              value={names}
+            />
 
-            <View style={styles.TopView1}>
-             
+            <Text
+              style={{color: '#A6A6A6'}}
+              bold
+              value={'x'}
+              onPress={() => setShowModal(false)}
+            />
+          </View>
+          <View style={styles.BottomView}>
+            <Textarea
+              rowSpan={5}
+              bordered
+              placeholder="Write your Review here"
+              onChangeText={val => setReview(val)}
+            />
+          </View>
+
+          <View style={styles.TopView1}>
             <Button
               style={[styles.buttonStyle2]}
               onPress={AddReviewHandler}
@@ -153,15 +222,12 @@ const CustomerReviews = ({navigation}) => {
               <Text
                 uppercase={false}
                 style={[styles.TextStyle1]}
-                value={"Add Review"}
+                value={'Add Review'}
               />
             </Button>
-
-            </View>
-          </TouchableOpacity>
+          </View>
+        </TouchableOpacity>
       </Model>
-
-
     </SafeAreaView>
   );
 };
@@ -182,7 +248,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '90%',
     height: responsiveHeight(6),
-    marginLeft:responsiveWidth(4)
+    marginLeft: responsiveWidth(4),
     // borderStyle: 'solid',
     // borderWidth: 1,
     // borderColor: 'rgb(0, 0, 0)'
@@ -201,7 +267,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop:responsiveHeight(2)
+    marginTop: responsiveHeight(2),
   },
   BottomView: {
     marginTop: responsiveHeight(2),
