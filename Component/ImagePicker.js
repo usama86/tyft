@@ -25,7 +25,7 @@ const ImagePickers = ({SendUri, style, text}) => {
         skipBackup: true,
         path: 'images',
       },
-    };
+    }; 
     ImagePicker.showImagePicker(options, response => {
       if (response.didCancel) {
       } else if (response.error) {

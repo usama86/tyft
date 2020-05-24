@@ -16,28 +16,58 @@ import axios from 'axios';
 const CoverPhoto = ({navigation, route}) => {
   const [img, setImg] = React.useState(null);
   const [isLoading, setisLoading] = React.useState(false);
+  const [imageUrl,setImageUrl] = React.useState('');
   const SendUri = val => {
     setImg(val);
+    try
+    {
+      // setIsLoading(true)
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "multipart/form-data");
+      myHeaders.append("Accept", "application/json");
+      // let file = await uriToBlob(val.uri)
+      var formdata = new FormData();
+      formdata.append("file", {uri:val.uri, type:'image/jpeg',name:val.fileName});
+      formdata.append("upload_preset", "tyftBackend");
+
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: formdata,
+        redirect: 'follow'
+      };
+
+      fetch("https://api.cloudinary.com/v1_1/hmrzthc6f/image/upload", requestOptions)
+        .then(response => response.json())
+        .then(result => {
+          console.log(result)
+          setImageUrl(result.url);
+          // setImg(val);
+          // setIsLoading(false);
+         
+          
+        }
+          )
+        .catch(error => {
+          console.log('error', error)
+          // setIsLoading(false);
+        });
+        
+    }
+    catch(e)
+    {
+      console.log("error => ", e)
+    }
   };
   const Navigate = async() => {
     if (img) {
       setisLoading(true);
-      const dataa = new FormData();
-      dataa.append('file', img)
-      dataa.append('upload_preset', 'tyftBackend')
-      const res = await fetch(
-        'https://api.cloudinary.com/v1_1/hmrzthc6f/images/uploads',
-        {
-          method:'POST',
-          body: dataa
-        }
-      )
       let data = {
         email: route.params.Email,
         password: route.params.Password,
         profileName: route.params.Name,
-        // truckLogo: route.params.TruckLogo,
-        // coverPhoto: img, //img
+        truckLogo: route.params.TruckLogo,
+        coverPhoto: imageUrl, //img
         phoneNumber: route.params.Phone,
         userType: 'Supplier',
         truckName: route.params.TruckName,

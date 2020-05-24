@@ -20,6 +20,7 @@ const CustomDrawer = ({navigation, route}) => {
   const [name, setName] = useState(null);
   const [email, setEmail] = useState(null);
   const [phone, setPhone] = useState(null);
+  const [truckData,setTruckData] = useState([])
   useEffect(() => {
     getUserDetails();
   }, []);
@@ -35,6 +36,7 @@ const CustomDrawer = ({navigation, route}) => {
           setName(res.Supplier[0].profileName);
           setPhone(res.Supplier[0].phoneNumber);
           setEmail(res.Supplier[0].email);
+          setTruckData(res.TruckInfo)
           await AsyncStorage.setItem('TruckID' + '', res.TruckInfo[0]._id);
         }
       })
@@ -47,7 +49,7 @@ const CustomDrawer = ({navigation, route}) => {
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={styles.rowView}>
-            <Avatar rounded title={'Good Company'} size="large" />
+            <Avatar rounded imageProps={{uri:truckData.truckLogo}} size="large" />
             <View style={{marginLeft: 20}}>
               <Text style={styles.whiteText}>{name}</Text>
               <Text style={styles.whiteText}>{email}</Text>

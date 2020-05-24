@@ -1,5 +1,5 @@
 import React,{useEffect} from 'react';
-import {View, StyleSheet, Alert} from 'react-native';
+import {View, StyleSheet, ActivityIndicator} from 'react-native';
 import Input from '../../../Component/Input';
 import Text from '../../../Component/Text';
 import {
@@ -16,7 +16,9 @@ import RNFetchBlob from 'rn-fetch-blob';
 const TruckLogo = ({navigation,route}) => {
   const [check, SetCheck] = React.useState(false);
   const [name, SetName] = React.useState('');
-  const [TruckLogo, setImg] = React.useState(null)
+  const [TruckLogo, setImg] = React.useState(null);
+  const [imageUrl,setImageUrl] = React.useState('');
+  const [isLoading,setIsLoading] = React.useState(false);
   const changeInputHandler = () => {
     SetCheck(!check);
   };
@@ -25,17 +27,16 @@ const TruckLogo = ({navigation,route}) => {
   // },[])
   const SendUri = async (val)=>{
     
-    setImg(val)
-    console.log(val);
+    setImg(val);
     try
     {
-      
+      setIsLoading(true)
       var myHeaders = new Headers();
       myHeaders.append("Content-Type", "multipart/form-data");
       myHeaders.append("Accept", "application/json");
-
+      // let file = await uriToBlob(val.uri)
       var formdata = new FormData();
-      formdata.append("file", RNFetchBlob.wrap(val.uri), "/path/to/file");
+      formdata.append("file", {uri:val.uri, type:'image/jpeg',name:val.fileName});
       formdata.append("upload_preset", "tyftBackend");
 
       var requestOptions = {
@@ -46,72 +47,21 @@ const TruckLogo = ({navigation,route}) => {
       };
 
       fetch("https://api.cloudinary.com/v1_1/hmrzthc6f/image/upload", requestOptions)
-        .then(response => response.text())
-        .then(result => console.log(result))
-        .catch(error => console.log('error', error));
-//     let newFile = {
-//       uri : RNFetchBlob.wrap(val.uri),
-//       type: `test/${val.type}`,
-//       name: `test.${val.fileName}`
-// }
-//     console.log(newFile);
-//     const data = new FormData()
-//     data.append('file', newFile)
-//     data.append('upload_preset', 'tyftBackend')
-//     data.append("cloud_name", "hmrzthc6f")
-//     fetch("https://api.cloudinary.com/v1_1/hmrzthc6f/image/upload", {
-//       method: "post",
-//       // headers: {
-//       //   //         'Accept': 'application/json',
-//       //   //         'Content-Type': 'multipart/form-data',
-//       //   //     },
-//       body: data
-//     }).then(res => res.json()).
-//       then(data => {
-//         console.log(data)  
-//       }).catch(err => {
-//           console.log(err);
-      // })
-      
-
-  //   const data = new FormData()
-  //   data.append('file', RNFetchBlob.wrap(val.uri))
-  //   data.append('upload_preset', 'tyftBackend')
-  //   // data.append("cloud_name", "hmrzthc6f")
-  //   let response = await fetch('https://api.cloudinary.com/v1_1/hmrzthc6f/image/upload', {
-  //   method: 'post',
-  //   headers:{
-  //     'Content-Type': 'multipart/form-data',
-  //   },
-	// 	body: data
-  // });
-  // console.log(response);
-      // let ret = await fetch(
-      //   'https://api.cloudinary.com/v1_1/hmrzthc6f/image/upload',
-      //   'POST',
-       
-      //   {
-      //     'Content-Type': 'multipart/form-data',
-      //   },
-      //   data
-      //   // [
-      //   //   {
-      //   //     name: 'file',
-      //   //     filename: Date.now() + 'tyft',
-      //   //     type: val.type,
-      //   //     data: RNFetchBlob.wrap(val.uri),
-      //   //     upload_preset:'tyftBackend'
-      //   //   },
-      //   //   {
-      //   //     upload_preset: String('tyftBackend')
-      //   //   },
-      //   // ],
-      // );
-      //   console.log(JSON.stringify(ret));
-  //    Alert.alert(JSON.stringify(ret))
-
-
-
+        .then(response => response.json())
+        .then(result => {
+          console.log(result)
+          setImageUrl(result.url);
+          // setImg(val);
+          setIsLoading(false);
+         
+          
+        }
+          )
+        .catch(error => {
+          console.log('error', error)
+          setIsLoading(false);
+        });
+        
     }
     catch(e)
     {
@@ -123,6 +73,26 @@ const TruckLogo = ({navigation,route}) => {
     
     // console.log(val);
   }
+
+  // const uriToBlob = (uri) => {
+  //   return new Promise((resolve, reject) => {
+  //     const xhr = new XMLHttpRequest();
+  //     xhr.onload = function () {
+  //       // return the blob
+  //       resolve(xhr.response);
+  //     };
+
+  //     xhr.onerror = function () {
+  //       // something went wrong
+  //       reject(new Error('uriToBlob failed'));
+  //     };
+  //     // this helps us get a blob
+  //     xhr.responseType = 'blob';
+  //     xhr.open('GET', uri, true);
+
+  //     xhr.send(null);
+  //   });
+  // }
   return (
     <View style={{height:'100%',width:'100%'}}>
     <Header  onPress={() => navigation.goBack()}>{'Truck Logo'}</Header>
@@ -136,7 +106,7 @@ const TruckLogo = ({navigation,route}) => {
         Email: route.params.Email,
         Phone: route.params.Phone,
         Password: route.params.Password,
-        TruckLogo:TruckLogo
+        TruckLogo:imageUrl
 
       })}>
       <View style={styles.InputMainView}>
@@ -147,7 +117,13 @@ const TruckLogo = ({navigation,route}) => {
           style={{color: 'grey', marginLeft:responsiveWidth(2.5)}}
         />
       </View>
-      <ImagePicker text={'Upload your logo'}  SendUri={SendUri} style = {styles.ImageContainer} />
+      {false ? 
+       ( <ActivityIndicator size={'large'} style={{marginTop:responsiveHeight(25),marginLeft:responsiveWidth(0)}} />) 
+       : 
+       ( 
+        <ImagePicker text={'Upload your logo'}  SendUri={SendUri} style = {styles.ImageContainer} />
+       ) 
+       } 
     </Ui>
     </View>
   );

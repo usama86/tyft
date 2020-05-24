@@ -172,7 +172,9 @@ const VeggieWisper = ({navigation, route}) => {
         <View style={styles.HeaderContainer}>
           <ImageBackground
             style={styles.image}
-            source={require('../../../images/art.jpg')}>
+            source={{uri:TruckInfo.coverPhoto}}
+            
+            >
             <Header isHome onPress={() => navigation.openDrawer()}>
               {'Home'}
             </Header>
@@ -345,7 +347,7 @@ const VeggieWisper = ({navigation, route}) => {
              <Text style={{color:'#fff'}} value={'Save'} />
            </Button>
           </View>
-        </Modal>
+        </Modal> 
       </Container>
     );
   }
@@ -359,6 +361,7 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '102%',
+    resizeMode:'contain'
   },
   TabView: {
     height: responsiveHeight(7),
