@@ -14,7 +14,7 @@ import axios from 'axios';
 const CustomDrawer = ({navigation, route}) => {
   const Logout = async () => {
     await AsyncStorage.clear();
-    navigation.replace('Auth', {screen: Screens.SIGNIN});
+    navigation.replace('Auth', {screen: 'Auth'});
   };
   const [userInfo, setUserInfo] = useState([]);
   const [name, setName] = useState(null);

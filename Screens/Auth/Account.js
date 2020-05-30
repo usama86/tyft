@@ -234,19 +234,23 @@ const Account = ({navigation}) => {
           </Modal>
         </Ui>
       ) : (
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <View style={{flex: 1, alignItems: 'center',marginTop:responsiveHeight(10)}}>
           <Image
             resizeMode={'contain'}
             style={{width: '40%', height: '40%'}}
             source={require('../../images/2.jpg')}
           />
+          <View style={{width:responsiveWidth(82),marginLeft:responsiveWidth(14)}}>
+         <Text style={{color: '#696969',fontSize:responsiveFontSize(2),fontWeight:'bold'}} value={'A TYFT Account allows you to bookmark truck, review about them and make'} />
+         <Text style={{color: '#696969',fontSize:responsiveFontSize(2),fontWeight:'bold',marginLeft:responsiveWidth(22)}} value={'payment faster'}/>
+         </View>
           <View style={{marginTop: responsiveHeight(10)}}>
             <Button
               onPress={() => {
-                navigation.navigate(Route.SIGNIN);
+                navigation.navigate('Auth');
               }}
-              style={styles.button}>
-              <Text style={{color: '#fff'}} value={'Login'} />
+              style={styles.button1}>
+              <Text style={{color: '#fff'}} value={'SIGN IN NOW'} />
             </Button>
           </View>
         </View>
@@ -297,6 +301,15 @@ const styles = StyleSheet.create({
   },
   modalView: {
     paddingVertical: responsiveHeight(3),
+  },
+  button1: {
+    width: responsiveWidth(70),
+    height: responsiveHeight(5),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: theme.colors.primary,
+    borderRadius: 8,
+    marginLeft: responsiveWidth(3),
   },
 });
 export default Account;

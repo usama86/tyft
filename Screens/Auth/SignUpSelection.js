@@ -72,7 +72,7 @@ const SignUpSelection = props => {
             <Text style={styles.itemTitle}>{'As Supplier'}</Text>
           </View>
           <Text style={styles.itemText}>
-            Create a part of GASLIO vender list and target the local audiendce
+            Create a part of TYFT vendor list and target the local audience
             near you.It helps you to promote your business in your local are.
           </Text>
         </View>

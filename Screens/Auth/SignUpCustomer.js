@@ -172,7 +172,7 @@ const SignUp = ({navigation}) => {
           />
           {nameError ? <ErrorView>{nameErrorText}</ErrorView> : null}
           <Input
-            lower
+            // lower
             rounded
             placeholder="Email Address"
             onChangeText={val => changeEmail(val)}

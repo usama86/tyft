@@ -170,7 +170,7 @@ const SignUpSupplier = ({navigation}) => {
           <Input
             rounded
             value={email.email}
-            lower
+            //  
             onChangeText={e => changeEmail(e)}
             placeholder="Email Address"
             style={styles.Input}
