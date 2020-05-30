@@ -20,7 +20,7 @@ const AppStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 console.disableYellowBox = true;
 
-const Routes = () => {
+const Routes = () => { 
   return (
     <NavigationContainer>
       <AppStack.Navigator

@@ -46,25 +46,26 @@ const MenuSetting = ({navigation, route}) => {
   const Navigate = () => {
     if (!facebook.id) {
       setFacebook({
-        id: null,
-        Error: true,
-        ErrorText: 'Facebook account id is required.',
+        id: "Not Specified",
+        // Error: true,
+        // ErrorText: 'Facebook account id is required.',
       });
     }
     if (!instagram.id) {
       setInstagram({
-        id: null,
-        Error: true,
-        ErrorText: 'Instagram account id is required.',
+        id: "Not Specified",
+        // Error: true,
+        // ErrorText: 'Instagram account id is required.',
       });
     }
     if (!twitter.id) {
       setTwitter({
-        id: null,
-        Error: true,
-        ErrorText: 'Twitter account id is required.',
+        id: "Not Specified",
+        // Error: true,
+        // ErrorText: 'Twitter account id is required.',
       });
-    } else if ((facebook.id, instagram.id, twitter.id)) {
+    } 
+
       navigation.navigate(RouteName.SERVINGCUSINE, {
         Schedule: route.params.Schedule,
         Name: route.params.Name,
@@ -82,9 +83,9 @@ const MenuSetting = ({navigation, route}) => {
         InstagramID:instagram.id,
         TwitterID:twitter.id
       });
-    }
+    
   };
-  return (
+  return ( 
     <View style={{height: '100%', width: '100%'}}>
       <Header onPress={() => navigation.goBack()}>{'Social Media'}</Header>
       <Ui

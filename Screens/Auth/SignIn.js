@@ -51,6 +51,11 @@ const SignIn = ({navigation}) => {
             await AsyncStorage.setItem('userID' + '', usertoken.userId);
             await AsyncStorage.setItem('userType' + '', usertoken.userType);
             await AsyncStorage.setItem('userName' + '', usertoken.userName);
+            await AsyncStorage.setItem('email' + '', usertoken.email);
+            await AsyncStorage.setItem('profileName' + '', usertoken.profileName);
+            await AsyncStorage.setItem('phoneNumber' + '', usertoken.phoneNumber);
+            
+        
             await setLoading(false);
             if (usertoken.userType === 'Supplier') {
               navigation.navigate('App');

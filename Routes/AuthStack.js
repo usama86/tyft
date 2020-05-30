@@ -28,6 +28,7 @@ import Favourite from '../Screens/Auth/Favourites'
 import CustomerSupplier from './../Screens/Auth/CustomerSupplier';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
 import Account from './../Screens/Auth/Account';
+import AccountInfo from './../Screens/Auth/AccountInfo';
 const Tabs = createBottomTabNavigator();
 const StackAuth = createStackNavigator();
 const StackNearMe = createStackNavigator();
@@ -100,8 +101,10 @@ const FavouriteStack = ()=>(
 )
 const AccountStack = () =>(
   <StackFavourite.Navigator screenOptions={{headerShown:false}} >
+     <StackFavourite.Screen name={'AccountInfo'} component={AccountInfo} />
   <StackFavourite.Screen name={'Account'} component={Account} />
  
+  
   </StackFavourite.Navigator>
 )
 const AppTab = () => (
