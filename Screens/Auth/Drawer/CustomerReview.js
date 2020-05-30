@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
@@ -25,9 +25,9 @@ import Header from '../../../Component/Header';
 const CustomerReview = ({navigation}) => {
   const [menuItem, setMenuItem] = useState('Mexican');
   const [Data, setData] = useState([]);
-  useEffect(()=>{
-  getCustomerReviews();
-  },[])
+  useEffect(() => {
+    getCustomerReviews();
+  }, []);
   const getCustomerReviews = async () => {
     let UserID = await AsyncStorage.getItem('userID');
     let truckID = await AsyncStorage.getItem('TruckID');
