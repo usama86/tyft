@@ -101,6 +101,7 @@ const TruckLogo = ({navigation,route}) => {
       TextViewStyle={styles.UiText}
       ContentStyle={styles.ContentStyle}
       ButtonText={'Next'}
+      isLoading={isLoading}
       onPressButton={() => navigation.navigate(RouteName.TRUCKINFO,{
         Name: route.params.Name,
         Email: route.params.Email,

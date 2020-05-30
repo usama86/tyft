@@ -190,7 +190,7 @@ const MenuSetting = ({navigation, route}) => {
               </Button>
             </View>
           </Modal>
-          <View style={{height: responsiveHeight(30)}}>
+          <View style={{height: responsiveHeight(33)}}>
             <ScrollView>
               <View
                 style={{

@@ -21,7 +21,7 @@ const CoverPhoto = ({navigation, route}) => {
     setImg(val);
     try
     {
-      // setIsLoading(true)
+      setisLoading(true)
       var myHeaders = new Headers();
       myHeaders.append("Content-Type", "multipart/form-data");
       myHeaders.append("Accept", "application/json");
@@ -43,7 +43,7 @@ const CoverPhoto = ({navigation, route}) => {
           console.log(result)
           setImageUrl(result.url);
           // setImg(val);
-          // setIsLoading(false);
+          setisLoading(false);
          
           
         }

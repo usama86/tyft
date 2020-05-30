@@ -1,1 +1,1 @@
-export default url = 'https://tyft-backend.herokuapp.com/'
+export default url = 'https://tyft-backend.herokuapp.com'

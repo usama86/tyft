@@ -5,6 +5,7 @@ import {
   View,
   Image,
   FlatList,
+  ActivityIndicator
 } from 'react-native';
 import Text from '../../../Component/Text';
 import {
@@ -110,7 +111,10 @@ const Navigate = ()=>{
   return (
     <View style={{height:'100%',width:'100%'}}>
     <Header  onPress={() => navigation.goBack()}>{'Serving Cusine'}</Header>
-    <Ui
+ {indicator ?   
+ <ActivityIndicator size={'large'} style={{marginTop:responsiveHeight(25),marginLeft:responsiveWidth(0)}} />
+  :
+  <Ui
     isLoading={isLoading}
     ContentStyle={styles.HeadingContainer}
       // TextViewStyle={styles.TextViewStyle}
@@ -130,7 +134,10 @@ const Navigate = ()=>{
         }}
         renderItem={({item, index}) => PrintCard(item, index)}
       />
-    </Ui>
+    </Ui> 
+  
+  
+  }
     <Snackbar
           visible={visible}
           onDismiss={() => setVisible(false)}
