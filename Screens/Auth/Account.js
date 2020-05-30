@@ -107,6 +107,19 @@ const Account = ({navigation}) => {
   };
   useEffect(() => {
     checkUserStatus();
+    // if(route.params.UserData[0])
+    // {
+    //   let user = route.params.UserData[0];
+    //   if(user.profileName && user.email && user.phoneNumber )
+    //   {
+    //     SetName({value: route.params.UserData[0].profileName, errorText: null});
+    //     setEmail({value: route.params.UserData[0].email, errorText: null});
+    //     setPhone({value: route.params.UserData[0].phoneNumber, errorText: null});
+    //   }
+      
+       
+    // }
+    
   }, []);
   const changeEmail = e => {
     let EmailRegix = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -148,7 +161,7 @@ const Account = ({navigation}) => {
         </Header>
       )}
 
-      {LoggedIn ? (
+      {true ? (
         <Ui
           onPressButton={updateUser}
           isLoading={isLoading}
@@ -247,7 +260,7 @@ const Account = ({navigation}) => {
           <View style={{marginTop: responsiveHeight(10)}}>
             <Button
               onPress={() => {
-                navigation.navigate('Auth');
+                navigation.navigate(RouteName.HOME);
               }}
               style={styles.button1}>
               <Text style={{color: '#fff'}} value={'SIGN IN NOW'} />
