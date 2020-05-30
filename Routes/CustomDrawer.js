@@ -49,7 +49,7 @@ const CustomDrawer = ({navigation, route}) => {
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={styles.rowView}>
-            <Avatar rounded imageProps={{uri:truckData.truckLogo}} size="large" />
+            <Avatar source={{uri:truckData.truckLogo}} rounded size="large" />
             <View style={{marginLeft: 20}}>
               <Text style={styles.whiteText}>{name}</Text>
               <Text style={styles.whiteText}>{email}</Text>
