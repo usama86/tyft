@@ -22,8 +22,10 @@ import * as RouteName from './../../../Constants/RouteName';
 import Header from '../../../Component/Header';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Modal from '../../../Component/Modal';
+import AddItemModal from '../../../Component/Modal';
 import ErrorView from '../../../Component/ErrorField';
 const MenuSetting = ({navigation, route}) => {
+  const [addItem, setAddItem] = React.useState(false);
   const [Categories, setCategories] = React.useState([
     {label: 'Italian Food', value: 'Italian Food'},
     {label: 'Thai', value: 'Thai'},
@@ -52,11 +54,11 @@ const MenuSetting = ({navigation, route}) => {
       setCategory(null);
     } else if (e) {
       setCategory(e);
-      console.log('Category is here',category)
+      console.log('Category is here', category);
     }
   };
   const Navigate = () => {
-    if(Data.length>0){
+    if (Data.length > 0) {
       navigation.navigate(RouteName.COVERPHOTO, {
         Schedule: route.params.Schedule,
         Name: route.params.Name,
@@ -76,11 +78,9 @@ const MenuSetting = ({navigation, route}) => {
         ServingCusine: route.params.ServingCusine,
         Menu: Data,
       });
+    } else {
+      Alert.alert('Please Add Menu First');
     }
-    else {
-      Alert.alert('Please Add Menu First')
-    }
- 
   };
   const AddToList = () => {
     let newId = 0;
@@ -105,6 +105,7 @@ const MenuSetting = ({navigation, route}) => {
         category: SelectedValue,
       });
       setData(newArray);
+      setAddItem(false);
     }
   };
   const closeModal = () => {
@@ -139,7 +140,12 @@ const MenuSetting = ({navigation, route}) => {
   );
   return (
     <View style={{height: '100%', width: '100%'}}>
-      <Header onPress={() => navigation.goBack()}>{'Menu'}</Header>
+      <Header
+        Add
+        onAddPress={() => setAddItem(true)}
+        onPress={() => navigation.goBack()}>
+        {'Menu'}
+      </Header>
       <Ui
         ContainerStyle={{marginTop: responsiveHeight(4)}}
         TextViewStyle={styles.TextViewStyle}
@@ -149,6 +155,82 @@ const MenuSetting = ({navigation, route}) => {
         buttonStyle={styles.buttonStyle}
         onPressButton={Navigate}>
         <View style={styles.InputMainView}>
+          <AddItemModal
+            ModalContainer={{
+              paddingVertical: responsiveHeight(2),
+              paddingHorizontal: responsiveWidth(2),
+            }}
+            showModal={addItem}>
+            {/* <View style={{height: responsiveHeight(33),paddingVertical:responsiveHeight(2),paddingHorizontal:responsiveWidth(2)}}> */}
+            {/* <ScrollView> */}
+            <View
+              style={{
+                width: '80%',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <Select
+                itemList={Categories}
+                value={SelectedValue}
+                onChange={e => setSelectedValue(e)}
+                containerStyle={{width: '100%'}}
+                style={[styles.Input, {width: '100%'}]}
+              />
+              <TouchableOpacity
+                onPress={() => setShowModal(true)}
+                style={{left: responsiveWidth(7)}}>
+                <AntDesign
+                  name={'pluscircle'}
+                  color={'rgb(193, 32, 38)'}
+                  size={responsiveFontSize(3)}
+                />
+              </TouchableOpacity>
+            </View>
+
+            <Input
+              rounded
+              placeholder="Name"
+              onChangeText={e =>
+                setName({value: e, Error: false, ErrorText: null})
+              }
+              value={name.value}
+              style={styles.Input}
+            />
+            {name.Error ? <ErrorView>{name.ErrorText}</ErrorView> : null}
+            <Input
+              rounded
+              placeholder="Description"
+              onChangeText={e =>
+                setDescription({value: e, Error: false, ErrorText: null})
+              }
+              value={description.value}
+              style={styles.Input}
+            />
+            {description.Error ? (
+              <ErrorView>{description.ErrorText}</ErrorView>
+            ) : null}
+            <Input
+              rounded
+              placeholder="Price"
+              onChangeText={e =>
+                setPrice({value: e, Error: false, ErrorText: null})
+              }
+              value={price.value}
+              style={styles.Input}
+            />
+            {price.Error ? <ErrorView>{price.ErrorText}</ErrorView> : null}
+            {/* </ScrollView> */}
+            {/* </View> */}
+            <View style={styles.TextView}>
+              <Button style={styles.buttonStyle2} onPress={AddToList}>
+                <Text
+                  uppercase={true}
+                  value={'Add to List'}
+                  style={{color: 'white'}}
+                />
+              </Button>
+            </View>
+          </AddItemModal>
           <Modal showModal={showModal}>
             <View
               style={{
@@ -190,86 +272,16 @@ const MenuSetting = ({navigation, route}) => {
               </Button>
             </View>
           </Modal>
-          <View style={{height: responsiveHeight(33)}}>
-            <ScrollView>
-              <View
-                style={{
-                  width: '80%',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}>
-                <Select
-                  itemList={Categories}
-                  value={SelectedValue}
-                  onChange={e => setSelectedValue(e)}
-                  containerStyle={{width: '100%'}}
-                  style={[styles.Input, {width: '100%'}]}
-                />
-                <TouchableOpacity
-                  onPress={() => setShowModal(true)}
-                  style={{left: responsiveWidth(7)}}>
-                  <AntDesign
-                    name={'pluscircle'}
-                    color={'rgb(193, 32, 38)'}
-                    size={responsiveFontSize(3)}
-                  />
-                </TouchableOpacity>
-              </View>
-
-              <Input
-                rounded
-                placeholder="Name"
-                onChangeText={e =>
-                  setName({value: e, Error: false, ErrorText: null})
-                }
-                value={name.value}
-                style={styles.Input}
-              />
-              {name.Error ? <ErrorView>{name.ErrorText}</ErrorView> : null}
-              <Input
-                rounded
-                placeholder="Description"
-                onChangeText={e =>
-                  setDescription({value: e, Error: false, ErrorText: null})
-                }
-                value={description.value}
-                style={styles.Input}
-              />
-              {description.Error ? (
-                <ErrorView>{description.ErrorText}</ErrorView>
-              ) : null}
-              <Input
-                rounded
-                placeholder="Price"
-                onChangeText={e =>
-                  setPrice({value: e, Error: false, ErrorText: null})
-                }
-                value={price.value}
-                style={styles.Input}
-              />
-              {price.Error ? <ErrorView>{price.ErrorText}</ErrorView> : null}
-            </ScrollView>
-          </View>
-          <View style={styles.TextView}>
-            <Button style={styles.buttonStyle2} onPress={AddToList}>
-              {/* <Image style={styles.logoStyle1} source={require('./../images/TYFTLogo.png')} /> */}
-              <Text
-                uppercase={true}
-                value={'Add to List'}
-                style={{color: 'white'}}
-              />
-            </Button>
-          </View>
           {Data.length !== 0 ? (
-            <View style={{width: '100%', height: responsiveHeight(32)}}>
+            <View style={{width: responsiveWidth(90)}}>
               <FlatList
                 showsVerticalScrollIndicator={false}
                 data={Data}
                 ItemSeparatorComponent={() => (
                   <View
                     style={{
-                      marginTop: responsiveHeight(2),
-                      borderBottomColor: '#E6EdCD',
+                      
+                      borderBottomColor: 'grey',
                       borderBottomWidth: 1,
                     }}
                   />
@@ -297,6 +309,7 @@ const styles = StyleSheet.create({
   },
   Input: {
     marginTop: responsiveHeight(3),
+    width: '90%',
   },
   TextViewStyle: {
     //  width: responsiveWidth(60),
@@ -309,8 +322,9 @@ const styles = StyleSheet.create({
     width: '60%',
   },
   TextView: {
-    height: responsiveHeight(10),
+    height: responsiveHeight(15),
     justifyContent: 'center',
+    alignItems: 'center',
     width: '100%',
     borderBottomWidth: 1,
     borderBottomColor: 'grey',
@@ -323,8 +337,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgb(193, 32, 38)',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '28%',
-    height: responsiveHeight(5),
+    width: '60%',
+    height: responsiveHeight(7),
     borderRadius: 8,
   },
   buttonStyle: {
@@ -332,8 +346,8 @@ const styles = StyleSheet.create({
     marginLeft: responsiveWidth(-2.5),
   },
   MainView: {
-    height: responsiveHeight(10),
-    // width:responsiveWidth(50)
+    paddingVertical:responsiveHeight(2),
+    width: '100%',
   },
   Left: {
     width: '100%',

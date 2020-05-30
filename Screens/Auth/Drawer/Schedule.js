@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   Image,
   ActivityIndicator,
+  TextInput,
 } from 'react-native';
 import {Text, CheckBox, Icon} from 'react-native-elements';
 import HeaderLabel from './../../../Component/Text';
@@ -32,6 +33,16 @@ function Schedule({navigation, route}) {
     {day: 'Saturday', working: false, opening: '8:00 AM', closing: '5:00 PM'},
     {day: 'Sunday', working: false, opening: '8:00 AM', closing: '5:00 PM'},
   ]);
+  const changeClosing = (e, index) => {
+    let newArr = [...setting];
+    newArr[index].closing = e;
+    setSetting(newArr);
+  };
+  const changeOpening = (e, index) => {
+    let newArr = [...setting];
+    newArr[index].opening = e;
+    setSetting(newArr);
+  };
   const [showModal, setShowModal] = useState(false);
   const [indicator, setIndicator] = useState(false);
   const updateSchedule = async () => {
@@ -97,13 +108,20 @@ function Schedule({navigation, route}) {
               </View>
               <View style={styles.timeColumnView}>
                 <View style={styles.underlineView}>
-                  <Text>{item.opening}</Text>
+                  <TextInput
+                    style={{padding: 0, margin: 0}}
+                    value={item.opening}
+                    onChangeText={e => changeOpening(e, index)}
+                  />
                 </View>
-
                 <Icon name="clockcircleo" type="antdesign" size={15} />
                 <Text>-</Text>
                 <View style={styles.underlineView}>
-                  <Text>{item.closing}</Text>
+                  <TextInput
+                    style={{padding: 0, margin: 0}}
+                    value={item.closing}
+                    onChangeText={e => changeClosing(e, index)}
+                  />
                 </View>
 
                 <Icon name="clockcircleo" type="antdesign" size={15} />

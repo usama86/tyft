@@ -5,14 +5,24 @@ import {Button} from 'native-base';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import AsyncStorage from '@react-native-community/async-storage';
+import Ionicon from 'react-native-vector-icons/Ionicons';
 
 import {
   responsiveHeight,
   responsiveWidth,
   responsiveFontSize,
 } from 'react-native-responsive-dimensions';
-const Header = ({isHome, style, children, onPress,logout,navigation,Logout}) => {
- 
+const Header = ({
+  isHome,
+  style,
+  children,
+  Add,
+  onAddPress,
+  onPress,
+  logout,
+  navigation,
+  Logout,
+}) => {
   return (
     <View>
       <View style={[styles.default, style]}>
@@ -36,22 +46,28 @@ const Header = ({isHome, style, children, onPress,logout,navigation,Logout}) => 
         </TouchableOpacity>
       )}
 
-      {
-        logout?
+      {logout ? (
         <TouchableOpacity onPress={Logout} style={styles.switch}>
-        <AntDesign
-          name={'poweroff'}
-          size={responsiveFontSize(3.2)}
+          <AntDesign
+            name={'poweroff'}
+            size={responsiveFontSize(3.2)}
+            color={'black'}
+          />
+        </TouchableOpacity>
+      ) : null}
+      {Add ? (
+        <Ionicon
+          onPress={onAddPress}
+          style={styles.switch}
+          name={'ios-add'}
+          size={responsiveFontSize(4)}
           color={'black'}
         />
-      </TouchableOpacity>
-      :
-      null
-      }
+      ) : null}
     </View>
   );
 };
- 
+
 Header.propTypes = {
   children: PropTypes.array,
   onPress: PropTypes.func,
@@ -69,25 +85,25 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
-    elevation:5
+    elevation: 5,
   },
   text: {
     color: 'black',
     fontSize: responsiveFontSize(2.2),
-    fontWeight:'bold'
+    fontWeight: 'bold',
   },
   homeIcon: {
     position: 'absolute',
     left: '4%',
     top: responsiveHeight(2),
-    elevation:5
+    elevation: 5,
   },
-  switch:{
+  switch: {
     position: 'absolute',
     right: '7%',
     top: responsiveHeight(1.8),
-    elevation:5
-  }
+    elevation: 5,
+  },
 });
 
 export default Header;

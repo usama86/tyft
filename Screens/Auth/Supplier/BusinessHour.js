@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, ScrollView, SafeAreaView} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  SafeAreaView,
+  TextInput,
+} from 'react-native';
 import {Text, CheckBox, Icon} from 'react-native-elements';
 import HeaderLabel from './../../../Component/Text';
 import RoundButton from './../../../Component/Button';
@@ -22,11 +28,22 @@ const week = [
   {day: 'Sunday', working: false, opening: '8:00 AM', closing: '5:00 PM'},
 ];
 
-function BusinessHour({navigation,route}) {
+function BusinessHour({navigation, route}) {
   const [setting, setSetting] = useState(week);
   const [visible, setVisible] = useState(false);
+  const changeClosing = (e, index) => {
+    let newArr = [...setting];
+    newArr[index].closing = e;
+    setSetting(newArr);
+  };
+  const changeOpening = (e, index) => {
+    let newArr = [...setting];
+    newArr[index].opening = e;
+    setSetting(newArr);
+  };
   const Navigate = () => {
     let Schedule = setting.filter(item => item.working);
+    console.log('Schedue', Schedule);
     if (Schedule.length === 0) {
       setVisible(true);
     } else if (Schedule.length > 0) {
@@ -75,13 +92,21 @@ function BusinessHour({navigation,route}) {
                 </View>
                 <View style={styles.timeColumnView}>
                   <View style={styles.underlineView}>
-                    <Text>{item.opening}</Text>
+                    <TextInput
+                      style={{padding: 0, margin: 0}}
+                      value={item.opening}
+                      onChangeText={e => changeOpening(e, index)}
+                    />
                   </View>
 
                   <Icon name="clockcircleo" type="antdesign" size={15} />
                   <Text>-</Text>
                   <View style={styles.underlineView}>
-                    <Text>{item.closing}</Text>
+                    <TextInput
+                      style={{padding: 0, margin: 0}}
+                      value={item.closing}
+                      onChangeText={e => changeClosing(e, index)}
+                    />
                   </View>
 
                   <Icon name="clockcircleo" type="antdesign" size={15} />
