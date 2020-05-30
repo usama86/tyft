@@ -42,7 +42,7 @@ const AccountInfo = ({navigation}) => {
       CommonActions.reset({
         index: 0,
         routes: [
-          { name: Route.SIGNIN },
+          { name: Route.HOME },
         ],
       })
     );
@@ -149,7 +149,7 @@ const AccountInfo = ({navigation}) => {
           <View style={{marginTop: responsiveHeight(10)}}>
             <Button
               onPress={() => {
-                navigation.navigate('Auth');
+                navigation.navigate('Home');
               }}
               style={styles.button1}>
               <Text style={{color: '#fff'}} value={'SIGN IN NOW'} />

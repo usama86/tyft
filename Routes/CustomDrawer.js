@@ -21,8 +21,10 @@ const CustomDrawer = ({navigation, route}) => {
   const [email, setEmail] = useState(null);
   const [phone, setPhone] = useState(null);
   const [truckData,setTruckData] = useState([])
+
+  const [urls,setUrl] =useState('');
   useEffect(() => {
-    getUserDetails();
+    getUserDetails(); 
   }, []);
   const getUserDetails = async () => {
     let userId = await AsyncStorage.getItem('userID');
@@ -32,11 +34,13 @@ const CustomDrawer = ({navigation, route}) => {
         if (Response.data.code !== 'ABT0001') {
           let res = Response.data;
           let newArr = [{...res.Supplier[0], TruckInfo: res.TruckInfo}];
-          setUserInfo(newArr);
-          setName(res.Supplier[0].profileName);
+          setUserInfo(newArr); 
+          setName(res.Supplier[0].profileName); 
           setPhone(res.Supplier[0].phoneNumber);
           setEmail(res.Supplier[0].email);
           setTruckData(res.TruckInfo)
+          setUrl(res.TruckInfo[0].truckLogo) 
+          console.log(res.TruckInfo[0].truckLogo) 
           await AsyncStorage.setItem('TruckID' + '', res.TruckInfo[0]._id);
         }
       })
@@ -49,7 +53,7 @@ const CustomDrawer = ({navigation, route}) => {
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={styles.rowView}>
-            <Avatar source={{uri:truckData.truckLogo}} rounded size="large" />
+            <Avatar source={{uri:urls}} rounded size="large" />
             <View style={{marginLeft: 20}}>
               <Text style={styles.whiteText}>{name}</Text>
               <Text style={styles.whiteText}>{email}</Text>
@@ -99,7 +103,7 @@ const CustomDrawer = ({navigation, route}) => {
           <ListItem
             title={'Contact Us'}
             leftAvatar={<ProfileIcon name={'info'} size={25} />}
-            onPress={() => navigation.navigate('ContactUs')}
+            onPress={() => navigation.navigate('sign-out')}
           />
           <ListItem
             title={'Signout'}

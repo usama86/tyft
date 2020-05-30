@@ -88,7 +88,7 @@ const FindFoodTruck = ({navigation}) => {
         navigation.navigate(RouteName.CUSTOMERSUPPLIER, {TruckInfo: item})
       }>
       <View style={styles.LeftIcon}>
-        <Image style={styles.image} source={require('../../images/art.jpg')} />
+        <Image style={styles.image} source={{uri:item.truckLogo}} />
       </View>
       <View style={styles.RightContent}>
         <Text

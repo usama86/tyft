@@ -71,7 +71,7 @@ const CustomerSupplier = ({navigation, route}) => {
       <View style={styles.HeaderContainer}>
         <ImageBackground
           style={styles.image}
-          source={require('../../images/art.jpg')}>
+          source={{uri:route.params.TruckInfo.coverPhoto}}>
           <Header onPress={() => navigation.goBack()}>
             {route.params.TruckInfo.truckName}
           </Header>
