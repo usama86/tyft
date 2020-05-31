@@ -115,11 +115,12 @@ const SignUpSupplier = ({navigation}) => {
       });
     }
     if (password.password !== confirmpass.confirmpass) {
+      console.log('in not equal')
       setConfirmPass({
         confirmpass: null,
         confirmPassError: true,
         confirmPassErrorText:
-          'Confirm Password does not matches with confirm password',
+          'Confirm Password does not matches with password',
       });
     }
     if (!check) {
@@ -136,9 +137,11 @@ const SignUpSupplier = ({navigation}) => {
       phone.phone &&
       password.password &&
       !password.passwordError &&
-      confirmpass.confirmpass &&
+       confirmpass.confirmpass &&
+      !confirmpass.confirmPassError&&
       check
     ) {
+      console.log('com',confirmpass.confirmPassError)
       navigation.navigate(RouteName.TRUCKLOGO, {
         Name: name.name,
         Email: email.email,

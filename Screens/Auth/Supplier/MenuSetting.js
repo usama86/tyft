@@ -24,6 +24,8 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Modal from '../../../Component/Modal';
 import AddItemModal from '../../../Component/Modal';
 import ErrorView from '../../../Component/ErrorField';
+import Entypo from 'react-native-vector-icons/Entypo';
+
 const MenuSetting = ({navigation, route}) => {
   const [addItem, setAddItem] = React.useState(false);
   const [Categories, setCategories] = React.useState([
@@ -163,6 +165,14 @@ const MenuSetting = ({navigation, route}) => {
             showModal={addItem}>
             {/* <View style={{height: responsiveHeight(33),paddingVertical:responsiveHeight(2),paddingHorizontal:responsiveWidth(2)}}> */}
             {/* <ScrollView> */}
+            <View style={styles.CrossView}>
+              <Entypo
+                name={'circle-with-cross'}
+                color={'black'}
+                size={responsiveFontSize(3.2)}
+                onPress={() => setAddItem(false)}
+              />
+            </View>
             <View
               style={{
                 width: '80%',
@@ -212,6 +222,7 @@ const MenuSetting = ({navigation, route}) => {
             <Input
               rounded
               placeholder="Price"
+              keyboardType={'number-pad'}
               onChangeText={e =>
                 setPrice({value: e, Error: false, ErrorText: null})
               }
@@ -240,6 +251,14 @@ const MenuSetting = ({navigation, route}) => {
                 paddingHorizontal: responsiveWidth(2),
                 borderRadius: 8,
               }}>
+              <View style={styles.CrossView}>
+                <Entypo
+                  name={'circle-with-cross'}
+                  color={'black'}
+                  size={responsiveFontSize(3.2)}
+                  onPress={() => setShowModal(false)}
+                />
+              </View>
               <Text style={{textAlign: 'center'}} value={'Add Category'} bold />
               <Input
                 rounded
@@ -280,7 +299,6 @@ const MenuSetting = ({navigation, route}) => {
                 ItemSeparatorComponent={() => (
                   <View
                     style={{
-                      
                       borderBottomColor: 'grey',
                       borderBottomWidth: 1,
                     }}
@@ -346,7 +364,7 @@ const styles = StyleSheet.create({
     marginLeft: responsiveWidth(-2.5),
   },
   MainView: {
-    paddingVertical:responsiveHeight(2),
+    paddingVertical: responsiveHeight(2),
     width: '100%',
   },
   Left: {
@@ -364,6 +382,13 @@ const styles = StyleSheet.create({
   BoldText: {
     fontWeight: 'bold',
     fontSize: responsiveFontSize(3),
+  },
+  CrossView: {
+    height: responsiveHeight(5),
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    width: '95%',
+    alignSelf: 'center',
   },
 });
 export default MenuSetting;

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React,{useEffect,useState,useRef} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {StyleSheet, TouchableOpacity, View, Text, Image} from 'react-native';
 import {Button} from 'native-base';
 import MapView, {Marker, PROVIDER_GOOGLE, Callout} from 'react-native-maps';
@@ -14,8 +14,8 @@ const Maps = ({MapContainerStyle, Trucks}) => {
   const [markerLat, setMarkerLat] = React.useState(30.3753);
   const [markerLong, setMarkerLong] = React.useState(69.3451);
   const [mapReady, setMapReady] = React.useState(true);
-  const [Lat,setLat] = React.useState(0.00);
-  const [Long,setLong] =React.useState(0.00);
+  const [Lat, setLat] = React.useState(0.0);
+  const [Long, setLong] = React.useState(0.0);
   const mapView = useRef();
   const initialRegion = {
     latitude: 30.3753,
@@ -25,19 +25,18 @@ const Maps = ({MapContainerStyle, Trucks}) => {
   };
   const LATITUDE_DELTA = 0.015;
   const LONGITUDE_DELTA = 0.0121;
-  
+
   const setRegionInMap = region => {
     if (mapReady) {
-      console.log('map is ready',region)
+      console.log('map is ready', region);
       setTimeout(() => mapView.current.animateToRegion(region), 30);
-    }
-    else{
-      console.log('NOOO')
+    } else {
+      console.log('NOOO');
     }
   };
-  useEffect(()=>{
-  getCurrentLocation();
-  },[])
+  useEffect(() => {
+    getCurrentLocation();
+  }, []);
   const getCurrentLocation = () => {
     Geolocation.getCurrentPosition(
       async position => {
@@ -68,7 +67,7 @@ const Maps = ({MapContainerStyle, Trucks}) => {
         style={styles.map}
         initialRegion={initialRegion}
         onMapReady={() => {
-          setMapReady(true)
+          setMapReady(true);
         }}
         ref={mapView}
         // region={{
@@ -77,7 +76,7 @@ const Maps = ({MapContainerStyle, Trucks}) => {
         //   latitudeDelta: 0.015,
         //   longitudeDelta: 0.0121,
         // }}
-        >
+      >
         {Trucks.map((item, index) => {
           if (item.latitude && item.longitude) {
             return (
@@ -94,18 +93,35 @@ const Maps = ({MapContainerStyle, Trucks}) => {
                   }}
                   source={require('../images/delivery-truck.png')}
                 />
-                <Callout
-                 >
-                  <View  style={styles.BOX} >
-                    <Text style={styles.TruckName}>{item.truckName}</Text>
-                    <Text
-                      style={[
-                        item.status === 'Close'
-                          ? {color: 'red'}
-                          : {color: 'green'},
-                      ]}>
-                      {item.status}
-                    </Text>
+                <Callout tooltip={true}>
+                  <View style={styles.BOX}>
+                    <View
+                      style={{
+                        width: responsiveWidth(30),
+                        height: responsiveHeight(15),
+                        borderRadius: 15,
+                      }}>
+                      <Image
+                        resizeMode={'contain'}
+                        style={{width: '100%', height: '100%'}}
+                        source={require('../images/Logo.jpg')}
+                      />
+                    </View>
+                    <View
+                      style={{
+                        width: responsiveWidth(40),
+                        paddingLeft: responsiveWidth(2),
+                      }}>
+                      <Text style={styles.TruckName}>{item.truckName}</Text>
+                      <Text
+                        style={[
+                          item.status === 'Close'
+                            ? {color: 'red'}
+                            : {color: 'green'},
+                        ]}>
+                        {item.status}
+                      </Text>
+                    </View>
                   </View>
                 </Callout>
               </Marker>
@@ -138,10 +154,14 @@ const styles = StyleSheet.create({
   BOX: {
     elevation: 5,
     borderRadius: 15,
-    width:responsiveWidth(40),
-    height:responsiveHeight(15),
+    width: responsiveWidth(70),
+    height: responsiveHeight(15),
     paddingVertical: responsiveHeight(2),
     paddingHorizontal: responsiveWidth(2),
+    backgroundColor: '#fff',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   TruckName: {
     fontSize: responsiveFontSize(2),

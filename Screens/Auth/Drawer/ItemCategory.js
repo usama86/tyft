@@ -19,8 +19,14 @@ import Header from '../../../Component/Header';
 import AsyncStorage from '@react-native-community/async-storage';
 import url from './../Constants/constants';
 import axios from 'axios';
+import Entypo from 'react-native-vector-icons/Entypo';
+import Modal from '../../../Component/Modal';
+import Input from '../../../Component/Input';
+import Button from '../../../Component/Button';
 const ItemCategory = ({navigation}) => {
   const [menuItem, setMenuItem] = useState();
+  const [showModal, setShowModal] = React.useState(false);
+  const [showDeleteModal, setDeleteModal] = useState(false);
   const [indicator, setIndicator] = useState(false);
   const [Data, setData] = useState([]);
   useEffect(() => {
@@ -65,6 +71,22 @@ const ItemCategory = ({navigation}) => {
       <View style={styles.Right}>
         <Text value={'$ ' + item.price} />
       </View>
+      <View style={styles.CrossView}>
+        <Entypo
+          name={'pencil'}
+          color={'black'}
+          size={responsiveFontSize(3.2)}
+          onPress={() => setShowModal(true)}
+        />
+      </View>
+      <View style={styles.CrossView}>
+        <Entypo
+          name={'circle-with-cross'}
+          color={'black'}
+          size={responsiveFontSize(3.2)}
+          onPress={() => setDeleteModal(true)}
+        />
+      </View>
     </TouchableOpacity>
   );
   return (
@@ -96,6 +118,114 @@ const ItemCategory = ({navigation}) => {
           renderItem={({item, index}) => PrintCard(item, index)}
         />
       )}
+      <Modal showModal={showModal}>
+        <View
+          style={{
+            width: '100%',
+            backgroundColor: '#fff',
+            paddingVertical: responsiveHeight(2),
+            paddingHorizontal: responsiveWidth(2),
+            borderRadius: 8,
+          }}>
+          <View style={[styles.CrossView, {width: '90%'}]}>
+            <Entypo
+              name={'circle-with-cross'}
+              color={'black'}
+              size={responsiveFontSize(3.2)}
+              onPress={() => setShowModal(false)}
+            />
+          </View>
+          <Text style={{textAlign: 'center'}} value={'Edit Menu'} bold />
+          <Input
+            rounded
+            placeholder="Item Name"
+            style={{
+              width: '90%',
+              alignSelf: 'center',
+              marginTop: responsiveHeight(2),
+            }}
+          />
+          <Button
+            onPress={() => setShowModal(false)}
+            style={{
+              width: '80%',
+              height: responsiveHeight(6),
+              backgroundColor: 'rgb(193, 32, 38)',
+              justifyContent: 'center',
+              alignItems: 'center',
+              alignSelf: 'center',
+              marginTop: responsiveHeight(4),
+            }}
+            rounded>
+            <Text
+              uppercase={false}
+              value={'Update'}
+              style={{color: '#fff', fontWeight: 'bold'}}
+            />
+          </Button>
+        </View>
+      </Modal>
+      <Modal showModal={showDeleteModal}>
+        <View style={{width: '90%', alignSelf: 'center'}}>
+          <View style={[styles.CrossView, {width: '100%'}]}>
+            <Entypo
+              name={'circle-with-cross'}
+              color={'black'}
+              size={responsiveFontSize(3.2)}
+              onPress={() => setDeleteModal(false)}
+            />
+          </View>
+          <Text
+            style={{top: responsiveHeight(2)}}
+            value={'Are You Sure you Want To Delete This Item?'}
+          />
+          <View
+            style={{
+              marginVertical: responsiveHeight(2),
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              height: responsiveHeight(12),
+            }}>
+            <Button
+              onPress={() => setDeleteModal(false)}
+              style={{
+                width: '40%',
+                height: responsiveHeight(6),
+                backgroundColor: 'rgb(193, 32, 38)',
+                justifyContent: 'center',
+                alignItems: 'center',
+                alignSelf: 'center',
+                marginTop: responsiveHeight(4),
+              }}
+              rounded>
+              <Text
+                uppercase={false}
+                value={'Yes'}
+                style={{color: '#fff', fontWeight: 'bold'}}
+              />
+            </Button>
+            <Button
+              onPress={() => setDeleteModal(false)}
+              style={{
+                width: '40%',
+                height: responsiveHeight(6),
+                backgroundColor: 'rgb(193, 32, 38)',
+                justifyContent: 'center',
+                alignItems: 'center',
+                alignSelf: 'center',
+                marginTop: responsiveHeight(4),
+              }}
+              rounded>
+              <Text
+                uppercase={false}
+                value={'No'}
+                style={{color: '#fff', fontWeight: 'bold'}}
+              />
+            </Button>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };
@@ -127,14 +257,21 @@ const styles = StyleSheet.create({
     fontSize: responsiveFontSize(2),
   },
   Left: {
-    width: '70%',
+    width: '60%',
   },
   Right: {
-    width: '15%',
+    width: '20%',
   },
   parent: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  CrossView: {
+    height: responsiveHeight(5),
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    width: '10%',
+    alignSelf: 'center',
   },
 });
 

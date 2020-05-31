@@ -19,6 +19,7 @@ import Texts from './../../Component/Text';
 import url from './Constants/constants';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
+import Entypo from 'react-native-vector-icons/Entypo';
 import ErrorView from '../../Component/ErrorField';
 import {CommonActions} from '@react-navigation/native';
 import * as RouteName from '../../Constants/RouteName';
@@ -54,7 +55,6 @@ const SignIn = ({navigation}) => {
             await AsyncStorage.setItem('email' + '', usertoken.email);
             await AsyncStorage.setItem('profileName' + '', usertoken.profileName);
             await AsyncStorage.setItem('phoneNumber' + '', usertoken.phoneNumber);
-            
         
             await setLoading(false);
             if (usertoken.userType === 'Supplier') {
@@ -92,7 +92,7 @@ const SignIn = ({navigation}) => {
           borderBottomWidth: 0,
         }}
         placeholder="Email"
-        inputStyle={[styles.inputStyle,{textTransform:'lowercase'}]}
+        inputStyle={[styles.inputStyle]}
         onChangeText={text => {
           setEmail(text);
           setEmailErrorMessage(null);
@@ -221,6 +221,13 @@ const styles = StyleSheet.create({
   createAccountText: {
     textAlign: 'center',
     color: theme.colors.secondary,
+  },
+  CrossView: {
+    height: responsiveHeight(5),
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    width: '95%',
+    alignSelf: 'center',
   },
 });
 // function mapStateToProps(state) {

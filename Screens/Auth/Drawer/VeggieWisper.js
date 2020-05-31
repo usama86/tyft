@@ -1,4 +1,4 @@
-import React, {useState, useEffect,useRef} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
@@ -8,6 +8,7 @@ import {
   ImageBackground,
   ScrollView,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import Container from '../../../Component/Container';
 import Text from '../../../Component/Text';
@@ -43,8 +44,8 @@ const VeggieWisper = ({navigation, route}) => {
   const [markerLat, setMarkerLat] = React.useState(30.3753);
   const [markerLong, setMarkerLong] = React.useState(69.3451);
   const [mapReady, setMapReady] = React.useState(true);
-  const [Lat,setLat] = React.useState(0.00);
-  const [Long,setLong] =React.useState(0.00);
+  const [Lat, setLat] = React.useState(0.0);
+  const [Long, setLong] = React.useState(0.0);
   const mapView = useRef();
   const initialRegion = {
     latitude: 30.3753,
@@ -57,20 +58,24 @@ const VeggieWisper = ({navigation, route}) => {
   useEffect(() => {
     getUserDetails();
   }, []);
-  const setLocation = async()=>{
+  const setLocation = async () => {
     let TruckId = await AsyncStorage.getItem('TruckID');
     axios
-      .post(url + '/api/supplier/setlocation', {TruckID: TruckId,longitude:Long,latitude:Lat})
+      .post(url + '/api/supplier/setlocation', {
+        TruckID: TruckId,
+        longitude: Long,
+        latitude: Lat,
+      })
       .then(async Response => {
         if (Response.data.code !== 'ABT0001') {
-            console.log('LAT LONG UDATED')
-            setVisibleModal(false);
+          console.log('LAT LONG UDATED');
+          setVisibleModal(false);
         }
       })
       .catch(error => {
         console.log(error);
       });
-  }
+  };
   const getCurrentLocation = () => {
     Geolocation.getCurrentPosition(
       async position => {
@@ -83,7 +88,7 @@ const VeggieWisper = ({navigation, route}) => {
         setMarkerLat(parseFloat(position.coords.latitude));
         setMarkerLong(parseFloat(position.coords.longitude));
         setLat(parseFloat(position.coords.latitude));
-        setLong(parseFloat(position.coords.longitude))
+        setLong(parseFloat(position.coords.longitude));
         await setRegionInMap(region);
         console.log('CURRENT LOCATION IN GETLOCATION', region);
       },
@@ -98,16 +103,19 @@ const VeggieWisper = ({navigation, route}) => {
   const onMarkerDragEnd = e => {
     console.log('dragEnd', e.nativeEvent.coordinate);
     setLat(e.nativeEvent.coordinate.latitude);
-    setLong(e.nativeEvent.coordinate.longitude)
+    setLong(e.nativeEvent.coordinate.longitude);
   };
 
   const setRegionInMap = region => {
     if (mapReady) {
-      console.log('map is ready',region)
-      setTimeout(() => mapView.current.animateToRegion(region), 30);
-    }
-    else{
-      console.log('NOOO')
+      console.log('map is ready', region);
+      try {
+        setTimeout(() => mapView.current.animateToRegion(region), 30);
+      } catch (error) {
+        Alert('Cannot Access Current Location Please Try Again.');
+      }
+    } else {
+      console.log('NOOO');
     }
   };
   const getUserDetails = async () => {
@@ -123,12 +131,15 @@ const VeggieWisper = ({navigation, route}) => {
           setIndicator(false);
           await AsyncStorage.setItem('TruckID' + '', res.TruckInfo[0]._id);
           await AsyncStorage.setItem('MenuID' + '', res.TruckInfo[0].MenuID);
+          await setVisibleModal(true);
+          await getCurrentLocation();
         } else {
           setIndicator(false);
         }
       })
       .catch(error => {
-        console.log(error);
+        // console.log(error);
+        Alert.alert(error.toString());
       });
   };
   const openMap = (val, truckID) => {
@@ -172,16 +183,13 @@ const VeggieWisper = ({navigation, route}) => {
         <View style={styles.HeaderContainer}>
           <ImageBackground
             style={styles.image}
-            source={{uri:TruckInfo.coverPhoto}}
-            
-            >
+            source={{uri: TruckInfo.coverPhoto}}>
             <Header isHome onPress={() => navigation.openDrawer()}>
               {'Home'}
             </Header>
           </ImageBackground>
         </View>
         <CountButton button={TruckInfo.selectedServingCusines} />
-
         <View style={styles.flexView}>
           <Text bold style={{color: 'blue'}} value={TruckInfo.truckName} />
         </View>
@@ -301,7 +309,7 @@ const VeggieWisper = ({navigation, route}) => {
           />
         </View>
         <Modal showModal={visibleModal}>
-          {/* <View style={styles.crossView}>
+          <View style={styles.crossView}>
             <TouchableOpacity onPress={() => setVisibleModal(false)}>
               <Entypo
                 name={'circle-with-cross'}
@@ -309,14 +317,14 @@ const VeggieWisper = ({navigation, route}) => {
                 size={responsiveFontSize(3.5)}
               />
             </TouchableOpacity>
-          </View> */}
+          </View>
           <View style={styles.mapcon}>
             <MapView
               showsBuildings={true}
               showsTraffic={true}
               initialRegion={initialRegion}
               onMapReady={() => {
-                setMapReady(true)
+                setMapReady(true);
               }}
               loadingBackgroundColor={'#5465'}
               loadingEnabled={true}
@@ -334,20 +342,23 @@ const VeggieWisper = ({navigation, route}) => {
                   latitude: markerLat,
                   longitude: markerLong,
                 }}
-                 onDragEnd={e =>onMarkerDragEnd(e)}
+                onDragEnd={e => onMarkerDragEnd(e)}
                 draggable
               />
             </MapView>
           </View>
-          <View style={styles.InstructionView} >
-              <Text style={styles.InstructionText} value={'Please Drag the Marker to Select Your Current Location.'}/>
+          <View style={styles.InstructionView}>
+            <Text
+              style={styles.InstructionText}
+              value={'Please Drag the Marker to Select Your Current Location.'}
+            />
           </View>
-          <View style={styles.ButtonView} >
-           <Button onPress={setLocation} style={styles.Button} >
-             <Text style={{color:'#fff'}} value={'Save'} />
-           </Button>
+          <View style={styles.ButtonView}>
+            <Button onPress={setLocation} style={styles.Button}>
+              <Text style={{color: '#fff'}} value={'Save'} />
+            </Button>
           </View>
-        </Modal> 
+        </Modal>
       </Container>
     );
   }
@@ -361,7 +372,7 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '102%',
-    resizeMode:'contain'
+    resizeMode: 'contain',
   },
   TabView: {
     height: responsiveHeight(7),
@@ -430,19 +441,20 @@ const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
   },
-  InstructionView:{
-    width:'100%',paddingVertical:responsiveHeight(2)
+  InstructionView: {
+    width: '100%',
+    paddingVertical: responsiveHeight(2),
   },
-  InstructionText:{
-    color:'#000',
-    textAlign:'center'
+  InstructionText: {
+    color: '#000',
+    textAlign: 'center',
   },
-  ButtonView:{
-    height:responsiveHeight(10),
-    width:'100%',
+  ButtonView: {
+    height: responsiveHeight(10),
+    width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-  }
+  },
 });
 
 export default VeggieWisper;

@@ -28,7 +28,10 @@ import ErrorView from '../../../Component/ErrorField';
 import AsyncStorage from '@react-native-community/async-storage';
 import url from './../Constants/constants';
 import axios from 'axios';
+import AddItemModal from '../../../Component/Modal';
+import Entypo from 'react-native-vector-icons/Entypo';
 const MenuSetting = ({navigation, route}) => {
+  const [addItem, setAddItem] = React.useState(false);
   const [Categories, setCategories] = React.useState([
     {label: 'Italian Food', value: 'Italian Food'},
     {label: 'Thai', value: 'Thai'},
@@ -184,7 +187,7 @@ const MenuSetting = ({navigation, route}) => {
   );
   return (
     <View style={{height: '100%', width: '100%'}}>
-      <Header onPress={() => navigation.goBack()}>{'Menu'}</Header>
+      <Header Add  onAddPress={() => setAddItem(true)} onPress={() => navigation.goBack()}>{'Menu'}</Header>
       <Ui
         isLoading={indicator}
         ContainerStyle={{marginTop: responsiveHeight(4)}}
@@ -195,6 +198,91 @@ const MenuSetting = ({navigation, route}) => {
         buttonStyle={styles.buttonStyle}
         onPressButton={Navigate}>
         <View style={styles.InputMainView}>
+        <AddItemModal
+            ModalContainer={{
+              paddingVertical: responsiveHeight(2),
+              paddingHorizontal: responsiveWidth(2),
+            }}
+            showModal={addItem}>
+            {/* <View style={{height: responsiveHeight(33),paddingVertical:responsiveHeight(2),paddingHorizontal:responsiveWidth(2)}}> */}
+            {/* <ScrollView> */}
+            <View style={styles.CrossView}>
+              <Entypo
+                name={'circle-with-cross'}
+                color={'black'}
+                size={responsiveFontSize(3.2)}
+                onPress={() => setAddItem(false)}
+              />
+            </View>
+            <View
+              style={{
+                width: '80%',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <Select
+                itemList={Categories}
+                value={SelectedValue}
+                onChange={e => setSelectedValue(e)}
+                containerStyle={{width: '100%'}}
+                style={[styles.Input, {width: '100%'}]}
+              />
+              <TouchableOpacity
+                onPress={() => setShowModal(true)}
+                style={{left: responsiveWidth(7)}}>
+                <AntDesign
+                  name={'pluscircle'}
+                  color={'rgb(193, 32, 38)'}
+                  size={responsiveFontSize(3)}
+                />
+              </TouchableOpacity>
+            </View>
+
+            <Input
+              rounded
+              placeholder="Name"
+              onChangeText={e =>
+                setName({value: e, Error: false, ErrorText: null})
+              }
+              value={name.value}
+              style={styles.Input}
+            />
+            {name.Error ? <ErrorView>{name.ErrorText}</ErrorView> : null}
+            <Input
+              rounded
+              placeholder="Description"
+              onChangeText={e =>
+                setDescription({value: e, Error: false, ErrorText: null})
+              }
+              value={description.value}
+              style={styles.Input}
+            />
+            {description.Error ? (
+              <ErrorView>{description.ErrorText}</ErrorView>
+            ) : null}
+            <Input
+              rounded
+              placeholder="Price"
+              keyboardType={'number-pad'}
+              onChangeText={e =>
+                setPrice({value: e, Error: false, ErrorText: null})
+              }
+              value={price.value}
+              style={styles.Input}
+            />
+            {price.Error ? <ErrorView>{price.ErrorText}</ErrorView> : null}
+            {/* </ScrollView> */}
+            {/* </View> */}
+            <View style={styles.TextView}>
+              <Button style={styles.buttonStyle2} onPress={AddToList}>
+                <Text
+                  uppercase={true}
+                  value={'Add to List'}
+                  style={{color: 'white'}}
+                />
+              </Button>
+            </View>
+          </AddItemModal>
           <Modal showModal={showModal}>
             <View
               style={{
@@ -204,6 +292,14 @@ const MenuSetting = ({navigation, route}) => {
                 paddingHorizontal: responsiveWidth(2),
                 borderRadius: 8,
               }}>
+                        <View style={styles.CrossView}>
+              <Entypo
+                name={'circle-with-cross'}
+                color={'black'}
+                size={responsiveFontSize(3.2)}
+                onPress={() => setShowModal(false)}
+              />
+            </View>
               <Text style={{textAlign: 'center'}} value={'Add Category'} bold />
               <Input
                 rounded
@@ -236,86 +332,15 @@ const MenuSetting = ({navigation, route}) => {
               </Button>
             </View>
           </Modal>
-          <View style={{height: responsiveHeight(33)}}>
-            <ScrollView>
-              <View
-                style={{
-                  width: '80%',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}>
-                <Select
-                  itemList={Categories}
-                  value={SelectedValue}
-                  onChange={e => setSelectedValue(e)}
-                  containerStyle={{width: '100%'}}
-                  style={[styles.Input, {width: '100%'}]}
-                />
-                <TouchableOpacity
-                  onPress={() => setShowModal(true)}
-                  style={{left: responsiveWidth(7)}}>
-                  <AntDesign
-                    name={'pluscircle'}
-                    color={'rgb(193, 32, 38)'}
-                    size={responsiveFontSize(3)}
-                  />
-                </TouchableOpacity>
-              </View>
-
-              <Input
-                rounded
-                placeholder="Name"
-                onChangeText={e =>
-                  setName({value: e, Error: false, ErrorText: null})
-                }
-                value={name.value}
-                style={styles.Input}
-              />
-              {name.Error ? <ErrorView>{name.ErrorText}</ErrorView> : null}
-              <Input
-                rounded
-                placeholder="Description"
-                onChangeText={e =>
-                  setDescription({value: e, Error: false, ErrorText: null})
-                }
-                value={description.value}
-                style={styles.Input}
-              />
-              {description.Error ? (
-                <ErrorView>{description.ErrorText}</ErrorView>
-              ) : null}
-              <Input
-                rounded
-                placeholder="Price"
-                onChangeText={e =>
-                  setPrice({value: e, Error: false, ErrorText: null})
-                }
-                value={price.value}
-                style={styles.Input}
-              />
-              {price.Error ? <ErrorView>{price.ErrorText}</ErrorView> : null}
-            </ScrollView>
-          </View>
-          <View style={styles.TextView}>
-            <Button style={styles.buttonStyle2} onPress={AddToList}>
-              {/* <Image style={styles.logoStyle1} source={require('./../images/TYFTLogo.png')} /> */}
-              <Text
-                uppercase={true}
-                value={'Add to List'}
-                style={{color: 'white'}}
-              />
-            </Button>
-          </View>
           {Data.length !== 0 ? (
-            <View style={{width: '100%', height: responsiveHeight(32)}}>
+            <View style={{width: responsiveWidth(90)}}>
               <FlatList
                 showsVerticalScrollIndicator={false}
                 data={Data}
                 ItemSeparatorComponent={() => (
                   <View
                     style={{
-                      marginTop: responsiveHeight(2),
-                      borderBottomColor: '#E6EdCD',
+                      borderBottomColor: 'grey',
                       borderBottomWidth: 1,
                     }}
                   />
@@ -352,6 +377,7 @@ const styles = StyleSheet.create({
   },
   Input: {
     marginTop: responsiveHeight(3),
+    width: '90%',
   },
   TextViewStyle: {
     //  width: responsiveWidth(60),
@@ -422,6 +448,13 @@ const styles = StyleSheet.create({
   },
   modalView: {
     paddingVertical: responsiveHeight(3),
+  },
+  CrossView: {
+    height: responsiveHeight(5),
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    width: '95%',
+    alignSelf: 'center',
   },
 });
 export default MenuSetting;
