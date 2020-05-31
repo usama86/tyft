@@ -306,7 +306,7 @@ const MenuSetting = ({navigation, route}) => {
                 )}
                 keyExtractor={item => item.id}
                 contentContainerStyle={{
-                  paddingVertical: responsiveHeight(5),
+                  paddingVertical: responsiveHeight(0),
                 }}
                 renderItem={({item, index}) => PrintCard(item, index)}
               />
