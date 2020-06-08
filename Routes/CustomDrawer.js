@@ -4,6 +4,8 @@ import {Text, Avatar, Icon, ListItem} from 'react-native-elements';
 import * as Screens from './../Constants/RouteName';
 import ProfileIcon from 'react-native-vector-icons/AntDesign';
 import SignoutIcon from 'react-native-vector-icons/FontAwesome';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import MC from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
   responsiveFontSize,
   responsiveHeight,
@@ -65,12 +67,12 @@ const CustomDrawer = ({navigation, route}) => {
         <View style={styles.content}>
           <ListItem
             title={'Home'}
-            leftAvatar={<SignoutIcon name={'history'} size={25} />}
+            leftAvatar={<SignoutIcon name={'home'} size={25} />}
             onPress={() => navigation.navigate(Screens.VEGGIEWISPER)}
           />
           <ListItem
             title={'Schedule'}
-            leftAvatar={<SignoutIcon name={'history'} size={25} />}
+            leftAvatar={<AntDesign name={'clockcircle'} size={25} />}
             onPress={() =>
               navigation.navigate(Screens.SCHEDULED, {
                 schedule: userInfo[0].TruckInfo[0].schedule,
@@ -80,19 +82,19 @@ const CustomDrawer = ({navigation, route}) => {
           <ListItem
             title={'Customer Reviews'}
             leftAvatar={
-              <Icon name="truck-check" type="material-community" size={25} />
+              <Icon name="comment" type="fontAwesome" size={25} />
             }
             onPress={() => navigation.navigate(Screens.CUSTOMERREVIEWD)}
           />
 
           <ListItem
             title={'Menu'}
-            leftAvatar={<ProfileIcon name={'user'} size={25} />}
+            leftAvatar={  <Icon name="restaurant-menu" type="MaterialIcons" size={25} />}
             onPress={() => navigation.navigate(Screens.MENUSETTINGDRAWER)}
           />
           <ListItem
             title={'Item Categories'}
-            leftAvatar={<ProfileIcon name={'user'} size={25} />}
+            leftAvatar={<MC name={'food-fork-drink'} size={25} />}
             onPress={() => navigation.navigate(Screens.ITEMCATEGORYD)}
           />
           <ListItem
@@ -102,7 +104,7 @@ const CustomDrawer = ({navigation, route}) => {
           />
           <ListItem
             title={'Contact Us'}
-            leftAvatar={<ProfileIcon name={'info'} size={25} />}
+            leftAvatar={<ProfileIcon name={'contacts'} size={25} />}
             onPress={() => navigation.navigate('sign-out')}
           />
           <ListItem

@@ -1,11 +1,11 @@
-import React,{useState} from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
   View,
   Image,
   FlatList,
-  ActivityIndicator
+  ActivityIndicator,
 } from 'react-native';
 import Text from '../../../Component/Text';
 import {
@@ -20,15 +20,13 @@ import * as RouteName from './../../../Constants/RouteName';
 import Header from '../../../Component/Header';
 import {Snackbar} from 'react-native-paper';
 import axios from 'axios';
-const ServingCusine = ({navigation,route}) => {
+const ServingCusine = ({navigation, route}) => {
   const [isLoading, setisLoading] = useState(false);
-  
 
   const [visible, setVisible] = React.useState(false);
-  
-  const [Data,setData] = React.useState([]);
-  
-   
+
+  const [Data, setData] = React.useState([]);
+
   const [indicator, setIndicator] = useState(true);
 
   React.useEffect(() => {
@@ -36,12 +34,14 @@ const ServingCusine = ({navigation,route}) => {
   }, []);
   const getCusine = async () => {
     axios
-      .get(url + '/api/servingcusine/getcusines') 
+      .get(url + '/api/servingcusine/getcusines')
       .then(async Response => {
         if (Response) {
           console.log(Response);
-          let res = Response.data[0].cusine;
-          setData(res);
+          if (Response.data.length > 0) {
+            let res = Response.data[0].cusine;
+            setData(res);
+          }
           // let newArr = [{...res.Supplier[0], TruckInfo: res.TruckInfo}];
           // setUserInfo(newArr);
           // setTruckInfo(res.TruckInfo[0]);
@@ -55,13 +55,13 @@ const ServingCusine = ({navigation,route}) => {
       .catch(error => {
         console.log(error);
       });
-  }; 
-  const Checked = (index) => {
+  };
+  const Checked = index => {
     let newArr = [...Data];
     newArr[index].checked = !newArr[index].checked;
     setData(newArr);
   };
-  const PrintCard = (item, index) => ( 
+  const PrintCard = (item, index) => (
     <TouchableOpacity
       onPress={() => Checked(index)}
       activeOpacity={0.8}
@@ -70,7 +70,7 @@ const ServingCusine = ({navigation,route}) => {
         item.checked
           ? {backgroundColor: theme.colors.primary, borderWidth: 0}
           : null,
-      ]}> 
+      ]}>
       <Text
         style={[item.checked ? {color: 'white'} : null]}
         value={item.cusineName}
@@ -78,17 +78,16 @@ const ServingCusine = ({navigation,route}) => {
     </TouchableOpacity>
   );
 
-const Navigate = ()=>{
-  let newArray = Data.filter(item=>item.checked);
-  setisLoading(true);
-  if(newArray.length===0){
-  setVisible(true)
-  setisLoading(false)
-  }
-  else if (newArray.length>0){
-    console.log(newArray);
-    setisLoading(false)
-      navigation.navigate(RouteName.MENUSETTING,{
+  const Navigate = () => {
+    let newArray = Data.filter(item => item.checked);
+    setisLoading(true);
+    if (newArray.length === 0) {
+      setVisible(true);
+      setisLoading(false);
+    } else if (newArray.length > 0) {
+      console.log(newArray);
+      setisLoading(false);
+      navigation.navigate(RouteName.MENUSETTING, {
         Schedule: route.params.Schedule,
         Name: route.params.Name,
         Email: route.params.Email,
@@ -101,49 +100,55 @@ const Navigate = ()=>{
         TruckEmail: route.params.TruckEmail,
         City: route.params.City,
         Website: route.params.Website,
-        FacebookID:route.params.FacebookID,
-        InstagramID:route.params.InstagramID,
-        TwitterID:route.params.TwitterID,
-        ServingCusine:newArray
-      })
-  }
-}
+        FacebookID: route.params.FacebookID,
+        InstagramID: route.params.InstagramID,
+        TwitterID: route.params.TwitterID,
+        ServingCusine: newArray,
+      });
+    }
+  };
   return (
-    <View style={{height:'100%',width:'100%'}}>
-    <Header  onPress={() => navigation.goBack()}>{'Serving Cusine'}</Header>
- {indicator ?   
- <ActivityIndicator size={'large'} style={{marginTop:responsiveHeight(25),marginLeft:responsiveWidth(0)}} />
-  :
-  <Ui
-    isLoading={isLoading}
-    ContentStyle={styles.HeadingContainer}
-      // TextViewStyle={styles.TextViewStyle}
-      // TextValue={"Serving Cusine"}
-      ContainerStyle={{marginTop:responsiveHeight(2)}}
-      TextShow={false}
-      ButtonText={'Next'}
-      onPressButton={Navigate}
-      buttonStyle={{marginLeft:responsiveWidth(-2.5),marginTop:responsiveHeight(0)}}
-      >
-      <FlatList
-        data={Data}
-        numColumns={3}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={{
-          paddingVertical: responsiveHeight(0),
-        }}
-        renderItem={({item, index}) => PrintCard(item, index)}
-      />
-    </Ui> 
-  
-  
-  }
-    <Snackbar
-          visible={visible}
-          onDismiss={() => setVisible(false)}
-          duration={2000}>
-          Please Select Serving Cusine
-        </Snackbar>
+    <View style={{height: '100%', width: '100%'}}>
+      <Header onPress={() => navigation.goBack()}>{'Serving Cusine'}</Header>
+      {indicator ? (
+        <ActivityIndicator
+          size={'large'}
+          style={{
+            marginTop: responsiveHeight(25),
+            marginLeft: responsiveWidth(0),
+          }}
+        />
+      ) : (
+        <Ui
+          isLoading={isLoading}
+          ContentStyle={styles.HeadingContainer}
+          // TextViewStyle={styles.TextViewStyle}
+          // TextValue={"Serving Cusine"}
+          ContainerStyle={{marginTop: responsiveHeight(2)}}
+          TextShow={false}
+          ButtonText={'Next'}
+          onPressButton={Navigate}
+          buttonStyle={{
+            marginLeft: responsiveWidth(-2.5),
+            marginTop: responsiveHeight(0),
+          }}>
+          <FlatList
+            data={Data}
+            numColumns={3}
+            keyExtractor={item => item.id}
+            contentContainerStyle={{
+              paddingVertical: responsiveHeight(0),
+            }}
+            renderItem={({item, index}) => PrintCard(item, index)}
+          />
+        </Ui>
+      )}
+      <Snackbar
+        visible={visible}
+        onDismiss={() => setVisible(false)}
+        duration={2000}>
+        Please Select Serving Cusine
+      </Snackbar>
     </View>
   );
 };
@@ -153,13 +158,13 @@ const styles = StyleSheet.create({
   },
   TextViewStyle: {
     //  width: responsiveWidth(60),
-    borderBottomWidth:1,
-    borderBottomColor:'grey',
+    borderBottomWidth: 1,
+    borderBottomColor: 'grey',
   },
   HeadingContainer: {
     height: responsiveHeight(75),
-    marginLeft:responsiveWidth(-10),
-    marginBottom:responsiveHeight(4),
+    marginLeft: responsiveWidth(-10),
+    marginBottom: responsiveHeight(4),
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -176,13 +181,5 @@ const styles = StyleSheet.create({
     marginLeft: '6.25%',
     backgroundColor: '#fff',
   },
- 
 });
 export default ServingCusine;
-
-
-
-
-
-
-

@@ -116,7 +116,7 @@ const Profile = ({navigation, route}) => {
   };
   return (
     <View style={{height: '100%', width: '100%'}}>
-      <Header isHome>{'Profile'}</Header>
+      <Header onPress={()=>navigation.openDrawer()} isHome>{'Profile'}</Header>
       <Ui
         onPressButton={updateUser}
         isLoading={isLoading}

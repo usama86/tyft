@@ -187,7 +187,7 @@ const MenuSetting = ({navigation, route}) => {
   );
   return (
     <View style={{height: '100%', width: '100%'}}>
-      <Header Add  onAddPress={() => setAddItem(true)} onPress={() => navigation.goBack()}>{'Menu'}</Header>
+      <Header Add  isHome onAddPress={() => setAddItem(true)} onPress={() => navigation.openDrawer()}>{'Menu'}</Header>
       <Ui
         isLoading={indicator}
         ContainerStyle={{marginTop: responsiveHeight(4)}}

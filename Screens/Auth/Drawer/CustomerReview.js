@@ -39,7 +39,13 @@ const CustomerReview = ({navigation}) => {
         let Reviews = Response.data.Review;
         console.log('Reviews', Reviews);
         if (ERROR !== 'ABT0001') {
-          setData(Reviews);
+          if (Reviews.length > 0) {
+            console.log('length 1');
+            setData(Reviews);
+          } else {
+            console.log('length 0');
+            setData(null);
+          }
         } else {
           setData(null);
         }
@@ -98,14 +104,18 @@ const CustomerReview = ({navigation}) => {
           {'Customer Review'}
         </Header>
       </View>
-      <FlatList
-        data={Data}
-        keyExtractor={item => item.id}
-        contentContainerStyle={{
-          paddingVertical: responsiveHeight(2),
-        }}
-        renderItem={({item, index}) => PrintCard(item, index)}
-      />
+      {Data ? (
+        <FlatList
+          data={Data}
+          keyExtractor={item => item.id}
+          contentContainerStyle={{
+            paddingVertical: responsiveHeight(2),
+          }}
+          renderItem={({item, index}) => PrintCard(item, index)}
+        />
+      ) : (
+        <Text style={styles.NoComments} bold value={'No Comments has been added Yet.'} />
+      )}
     </SafeAreaView>
   );
 };
@@ -133,6 +143,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
+  NoComments:{
+    marginTop:responsiveHeight(30),
+    textAlign:'center',
+    width:'70%',
+    alignSelf:'center'
+  }
 });
 
 export default CustomerReview;
