@@ -77,57 +77,61 @@ const Maps = ({MapContainerStyle, Trucks}) => {
         //   longitudeDelta: 0.0121,
         // }}
       >
-        {Trucks.map((item, index) => {
-          if (item.latitude && item.longitude) {
-            return (
-              <Marker
-                coordinate={{
-                  latitude: parseFloat(item.latitude),
-                  longitude: parseFloat(item.longitude),
-                }}>
-                <Image
-                  resizeMode={'contain'}
-                  style={{
-                    width: responsiveWidth(15),
-                    height: responsiveHeight(5),
-                  }}
-                  source={require('../images/delivery-truck.png')}
-                />
-                <Callout tooltip={true}>
-                  <View style={styles.BOX}>
-                    <View
-                      style={{
-                        width: responsiveWidth(30),
-                        height: responsiveHeight(15),
-                        borderRadius: 15,
-                      }}>
-                      <Image
-                        resizeMode={'contain'}
-                        style={{width: '100%', height: '100%'}}
-                        source={require('../images/Logo.jpg')}
-                      />
+        {Trucks ? (
+          Trucks.map((item, index) => {
+            if (item.latitude && item.longitude) {
+              return (
+                <Marker
+                  coordinate={{
+                    latitude: parseFloat(item.latitude),
+                    longitude: parseFloat(item.longitude),
+                  }}>
+                  <Image
+                    resizeMode={'contain'}
+                    style={{
+                      width: responsiveWidth(15),
+                      height: responsiveHeight(5),
+                    }}
+                    source={require('../images/delivery-truck.png')}
+                  />
+                  <Callout tooltip={true}>
+                    <View style={styles.BOX}>
+                      <View
+                        style={{
+                          width: responsiveWidth(30),
+                          height: responsiveHeight(15),
+                          borderRadius: 15,
+                        }}>
+                        <Image
+                          resizeMode={'contain'}
+                          style={{width: '100%', height: '100%'}}
+                          source={require('../images/Logo.jpg')}
+                        />
+                      </View>
+                      <View
+                        style={{
+                          width: responsiveWidth(40),
+                          paddingLeft: responsiveWidth(2),
+                        }}>
+                        <Text style={styles.TruckName}>{item.truckName}</Text>
+                        <Text
+                          style={[
+                            item.status === 'Close'
+                              ? {color: 'red'}
+                              : {color: 'green'},
+                          ]}>
+                          {item.status}
+                        </Text>
+                      </View>
                     </View>
-                    <View
-                      style={{
-                        width: responsiveWidth(40),
-                        paddingLeft: responsiveWidth(2),
-                      }}>
-                      <Text style={styles.TruckName}>{item.truckName}</Text>
-                      <Text
-                        style={[
-                          item.status === 'Close'
-                            ? {color: 'red'}
-                            : {color: 'green'},
-                        ]}>
-                        {item.status}
-                      </Text>
-                    </View>
-                  </View>
-                </Callout>
-              </Marker>
-            );
-          }
-        })}
+                  </Callout>
+                </Marker>
+              );
+            }
+          })
+        ) : (
+          <Text style={styles.NoTruckText}>{'No Trucks Available'}</Text>
+        )}
       </MapView>
     </View>
   );
@@ -166,6 +170,18 @@ const styles = StyleSheet.create({
   TruckName: {
     fontSize: responsiveFontSize(2),
     fontWeight: 'bold',
+  },
+  NoTruckText: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    elevation: 5,
+    textAlign: 'center',
+    marginTop: responsiveHeight(30),
+    fontWeight: 'bold',
+    fontSize: responsiveFontSize(3),
   },
 });
 

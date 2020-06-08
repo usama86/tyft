@@ -29,12 +29,15 @@ import url from './Constants/constants';
 import axios from 'axios';
 import moment from 'moment';
 import FuzzySearch from 'fuzzy-search'; // Or: var FuzzySearch = require('fuzzy-search');
+
 const FindFoodTruck = ({navigation}) => {
   const [Data, setData] = useState([]);
   const [day, setDay] = useState(null);
   const [isLoading, setisLoading] = useState(true);
   const [searchVal, setSearchVal] = useState('');
   const [isMsg, setIsMsg] = useState(false);
+  const [buttonData, setButtonData] = React.useState([]);
+  const [indicator, setIndicator] = React.useState(true);
   const onChangeSearch = val => {
     setSearchVal(val);
     if (val == '') {
@@ -78,8 +81,30 @@ const FindFoodTruck = ({navigation}) => {
       });
   };
   useEffect(() => {
+    getCusine();
     getAllTrucks();
   }, []);
+  const getCusine = async () => {
+    axios
+      .get(url + '/api/servingcusine/getcusines')
+      .then(async Response => {
+        if (Response) {
+          console.log(Response);
+          console.log('Response of getCusine',Response.data)
+          if(Response.data.length>0){
+            let res = await Response.data[0].cusine;
+            await setButtonData(res);
+            console.log('Button', res);
+          }
+          setIndicator(false);
+        } else {
+          setIndicator(false);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
   const PrintCard = (item, index) => (
     <TouchableOpacity
       activeOpacity={0.8}

@@ -7,7 +7,7 @@ import {
   FlatList,
   SafeAreaView,
   ScrollView,
-  ActivityIndicator
+  ActivityIndicator,
 } from 'react-native';
 import Container from '../../Component/Container';
 import Button from '../../Component/Button';
@@ -27,7 +27,6 @@ import Header from '../../Component/Header';
 import url from './Constants/constants';
 import axios from 'axios';
 const FindFoodTruck = ({navigation}) => {
-  
   const [indicator, setIndicator] = useState(true);
 
   useEffect(() => {
@@ -37,12 +36,16 @@ const FindFoodTruck = ({navigation}) => {
   const [Data, setData] = useState([]);
   const getCusine = async () => {
     axios
-      .get(url + '/api/servingcusine/getcusines') 
+      .get(url + '/api/servingcusine/getcusines')
       .then(async Response => {
         if (Response) {
           console.log(Response);
-          let res = Response.data[0].cusine;
-          setData(res);
+          if (Response.data.length > 1) {
+            let res = Response.data[0].cusine;
+            setData(res);
+          } else {
+            setData(null);
+          }
           // let newArr = [{...res.Supplier[0], TruckInfo: res.TruckInfo}];
           // setUserInfo(newArr);
           // setTruckInfo(res.TruckInfo[0]);
@@ -55,14 +58,15 @@ const FindFoodTruck = ({navigation}) => {
       })
       .catch(error => {
         console.log(error);
+        setIndicator(false);
       });
-  }; 
+  };
   const Checked = index => {
     let newArr = [...Data];
     newArr[index].checked = !newArr[index].checked;
     setData(newArr);
-  }; 
-  const PrintCard = (item, index) => ( 
+  };
+  const PrintCard = (item, index) => (
     <TouchableOpacity
       onPress={() => Checked(index)}
       activeOpacity={0.8}
@@ -71,7 +75,7 @@ const FindFoodTruck = ({navigation}) => {
         item.checked
           ? {backgroundColor: theme.colors.primary, borderWidth: 0}
           : null,
-      ]}> 
+      ]}>
       <Text
         style={[item.checked ? {color: 'white'} : null]}
         value={item.cusineName}
@@ -83,25 +87,39 @@ const FindFoodTruck = ({navigation}) => {
       <Header onPress={() => navigation.goBack()}>
         {'Serving By Cuisine Type'}
       </Header>
-   { indicator ?  
+      {indicator ? (
         <ActivityIndicator
-        size={'large'}
-        color={'#000'}
-        style={styles.indicator}
-      />
-   :
-      <ScrollView>
-      <FlatList
-        data={Data}
-        numColumns={3}
-        keyExtractor={item => item.id}
-        contentContainerStyle={{
-          paddingVertical: responsiveHeight(2),
-        }}
-        renderItem={({item, index}) => PrintCard(item, index)}
-      />
-    </ScrollView>
-    }  
+          size={'large'}
+          color={'#000'}
+          style={styles.indicator}
+        />
+      ) : Data ? (
+        <ScrollView>
+          <FlatList
+            data={Data}
+            numColumns={3}
+            keyExtractor={item => item.id}
+            contentContainerStyle={{
+              paddingVertical: responsiveHeight(2),
+            }}
+            renderItem={({item, index}) => PrintCard(item, index)}
+          />
+        </ScrollView>
+      ) : (
+        <View
+          style={{
+            width:'100%',
+            height:responsiveHeight(10),
+            justifyContent:'center',
+            alignItems:'center',
+            marginTop:responsiveHeight(30)
+          }}>
+          <Text
+            bold
+            value={'No Cusines Available'}
+          />
+        </View>
+      )}
     </SafeAreaView>
   );
 };
@@ -141,6 +159,13 @@ const styles = StyleSheet.create({
   parent: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  indicator: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
 });
 

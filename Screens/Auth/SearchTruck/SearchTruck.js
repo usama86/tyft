@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
@@ -40,13 +40,16 @@ const SearchTruck = ({navigation}) => {
         let ERROR = Response.data.code;
         let Trucks = Response.data.TruckInfo;
         if (ERROR !== 'ABT0001') {
-          let filtered = Trucks.filter(item=>item.status === 'Open')
-          console.log('Filtered',filtered)
-          let currentDate = moment();
-          let day = currentDate.format('dddd');
-          setDay(day);
-          setTruck(filtered);
-        } else {
+          let filtered = Trucks.filter(item => item.status === 'Open');
+          if (filtered.length > 0) {
+            let currentDate = moment();
+            let day = currentDate.format('dddd');
+            setDay(day);
+            setTruck(filtered);
+          } else {
+            console.log('in else of filter ');
+            setTruck(null);
+          }
         }
       })
       .catch(error => {
@@ -60,9 +63,11 @@ const SearchTruck = ({navigation}) => {
       .then(async Response => {
         if (Response) {
           console.log(Response);
-          let res = await Response.data[0].cusine;
-          await setButtonData(res);
-          console.log('Button', res);
+          if (Response.data.length > 0) {
+            let res = await Response.data[0].cusine;
+            await setButtonData(res);
+            console.log('Button', res);
+          }
           setIndicator(false);
         } else {
           setIndicator(false);
@@ -70,6 +75,7 @@ const SearchTruck = ({navigation}) => {
       })
       .catch(error => {
         console.log(error);
+        setIndicator(false);
       });
   };
 
@@ -84,7 +90,7 @@ const SearchTruck = ({navigation}) => {
           style={styles.indicator}
         />
       ) : (
-        <View style={{color:'red',height:responsiveHeight(50)}} >
+        <View style={{color: 'red', height: responsiveHeight(50)}}>
           {/* <View
             style={{
               marginVertical: responsiveHeight(1),
@@ -119,7 +125,7 @@ const SearchTruck = ({navigation}) => {
               //style={{marginTop:responsiveHeight(1.3),transform: [{ scaleY: 2 }]}}
             />
           </View> */}
-          <Map Trucks = {Truck} />
+          <Map Trucks={Truck} />
         </View>
       )}
     </SafeAreaView>
