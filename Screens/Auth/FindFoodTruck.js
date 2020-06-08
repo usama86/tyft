@@ -106,7 +106,7 @@ const FindFoodTruck = ({navigation}) => {
             marginTop: responsiveHeight(-17.5),
             flexDirection: 'row',
             justifyContent: 'flex-start',
-          }}
+          }} 
         />
         <View style={[styles.flex, {marginTop: responsiveHeight(5)}]}>
           <Entypo
@@ -205,40 +205,40 @@ const FindFoodTruck = ({navigation}) => {
           }}
         />
       </View>
-      <View
-        style={{
-          marginVertical: responsiveHeight(1),
-          marginLeft: responsiveWidth(-7),
-          flexDirection: 'row',
-          justifyContent: 'space-around',
-        }}>
-        <View style={{width: '80%'}}>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            <Button style={styles.button}>
-              <Text style={styles.TextStyle} value={'Burger'} />
-            </Button>
-            <Button style={styles.button}>
-              <Text style={styles.TextStyle} value={'Pizza'} />
-            </Button>
-            <Button style={styles.button}>
-              <Text style={styles.TextStyle} value={'BBQ'} />
-            </Button>
-            <Button style={styles.button}>
-              <Text style={styles.TextStyle} value={'Burger'} />
-            </Button>
-            <Button style={styles.button}>
-              <Text style={styles.TextStyle} value={'Pizza'} />
-            </Button>
-            <Button style={styles.button}>
-              <Text style={styles.TextStyle} value={'BBQ'} />
-            </Button>
-          </ScrollView>
-        </View>
-        <TouchableOpacity
-          onPress={() => navigation.navigate(RouteName.SERVINGCUSINETYPE)}>
-          <SettingIcon name={'sound-mix'} size={40} />
-        </TouchableOpacity>
-      </View>
+        <View
+            style={{
+              marginVertical: responsiveHeight(1),
+              marginLeft: responsiveWidth(-7),
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+            }}>
+            <View style={{width: '80%'}}>
+              <ScrollView
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}>
+                {buttonData
+                  ? buttonData.map(data => (
+                      <Button style={styles.button}>
+                        <Text 
+                          style={styles.TextStyle}
+                          value={data.cusineName}
+                        />
+                      </Button>
+                    ))
+                  : null}
+              </ScrollView>
+            </View>
+
+            <SettingIcon
+              name={'sound-mix'}
+              size={38}
+              color={'grey'}
+              onPress={() => {
+                navigation.navigate(RouteName.SERVINGCUSINETYPE);
+              }}
+              //style={{marginTop:responsiveHeight(1.3),transform: [{ scaleY: 2 }]}}
+            />
+          </View>
       {isLoading ? (
         <ActivityIndicator
           color={'#000'}

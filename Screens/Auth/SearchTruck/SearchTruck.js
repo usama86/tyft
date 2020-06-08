@@ -84,8 +84,8 @@ const SearchTruck = ({navigation}) => {
           style={styles.indicator}
         />
       ) : (
-        <View>
-          <View
+        <View style={{color:'red',height:responsiveHeight(50)}} >
+          {/* <View
             style={{
               marginVertical: responsiveHeight(1),
               marginLeft: responsiveWidth(-7),
@@ -118,7 +118,7 @@ const SearchTruck = ({navigation}) => {
               }}
               //style={{marginTop:responsiveHeight(1.3),transform: [{ scaleY: 2 }]}}
             />
-          </View>
+          </View> */}
           <Map Trucks = {Truck} />
         </View>
       )}

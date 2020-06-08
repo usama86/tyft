@@ -29,9 +29,36 @@ const ItemCategory = ({navigation}) => {
   const [showDeleteModal, setDeleteModal] = useState(false);
   const [indicator, setIndicator] = useState(false);
   const [Data, setData] = useState([]);
+  const [selected, setSelected] = useState(0);
   useEffect(() => {
     getMenuOfSupplier();
   }, []);
+
+  const deleteItem = async() =>{
+    console.log(selected);
+    let MenuID = await AsyncStorage.getItem('MenuID');
+    let copiedData = [...Data];
+    copiedData.splice(selected, 1);
+    console.log(url + '/api/menu/updatemenu');
+    axios
+      .post(url + '/api/menu/updatemenu', {
+        _id: MenuID,
+        Menu: copiedData,
+      })
+      .then(async Response => {
+        console.log(Response);
+        const ERROR = Response.data.code;
+        if (ERROR === 'ABT0000') {
+          console.log('Updated');
+          setData(copiedData);
+          setDeleteModal(false); 
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  
+  }
   const getMenuOfSupplier = async () => {
     setIndicator(true);
     let MenuID = await AsyncStorage.getItem('MenuID');
@@ -84,7 +111,11 @@ const ItemCategory = ({navigation}) => {
           name={'circle-with-cross'}
           color={'black'}
           size={responsiveFontSize(3.2)}
-          onPress={() => setDeleteModal(true)}
+          onPress={() => {
+            // let x;
+            setSelected(index);
+            setDeleteModal(true)
+          }}
         />
       </View>
     </TouchableOpacity>
@@ -177,7 +208,7 @@ const ItemCategory = ({navigation}) => {
           </View>
           <Text
             style={{top: responsiveHeight(2)}}
-            value={'Are You Sure you Want To Delete This Item?'}
+            value={'Are you sure you want to delete this item?'}
           />
           <View
             style={{
@@ -188,7 +219,7 @@ const ItemCategory = ({navigation}) => {
               height: responsiveHeight(12),
             }}>
             <Button
-              onPress={() => setDeleteModal(false)}
+              onPress={deleteItem}
               style={{
                 width: '40%',
                 height: responsiveHeight(6),

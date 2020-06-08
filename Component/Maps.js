@@ -139,7 +139,7 @@ Maps.propTypes = {
 Maps.defaultProps = {
   MapContainerStyle: {
     width: '100%',
-    height: responsiveHeight(78),
+    height: responsiveHeight(88),
   },
 };
 
