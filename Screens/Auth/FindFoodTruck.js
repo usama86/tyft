@@ -82,18 +82,24 @@ const FindFoodTruck = ({navigation, route}) => {
       });
   };
   const setDataParams = async () => {
-    let data; //= route.params.CusineName;
-    if (route && route.params && route.params.CusineName) {
+    if (route.params.CusineName) {
       // setCusineName(data);
-      setButtonData(route.params.CusineName);
-      console.log('in Effect',data)
+      let CheckArray = route.params.CusineName? route.params.CusineName.filter(item => item.checked):null;
+      console.log('Checked Array', CheckArray);
+      // let oldAray = [...buttonData];
+      // for (let i = 0; i < oldAray.length; i++) {
+      //   if (oldAray[i].cusineName === CheckArray[i].cusineName)
+      //     oldAray[i].checked = true;
+      // }
     }
+    // await setButtonData(oldAray);
+    console.log('in Effect', route.params.CusineName);
   };
   useEffect(() => {
     getCusine();
     getAllTrucks();
-    navigation.addListener('focus', () => {
-      setDataParams();
+    navigation.addListener('focus', async () => {
+      await setDataParams();
     });
   }, []);
   const getCusine = async () => {
@@ -264,11 +270,11 @@ const FindFoodTruck = ({navigation, route}) => {
                     style={[
                       styles.button,
                       data.checked
-                          ? {
-                              backgroundColor: theme.colors.primary,
-                              borderWidth: 0,
-                            }
-                          : null
+                        ? {
+                            backgroundColor: theme.colors.primary,
+                            borderWidth: 0,
+                          }
+                        : null,
                       // : route.params.CusineName === data.cusineName
                       // ? {
                       //     backgroundColor: theme.colors.primary,
@@ -279,9 +285,7 @@ const FindFoodTruck = ({navigation, route}) => {
                     <Text
                       style={[
                         styles.TextStyle,
-                        data.checked 
-                            ? {color: '#fff'}
-                            : {color: '#000'}
+                        data.checked ? {color: '#fff'} : {color: '#000'},
                       ]}
                       value={data.cusineName}
                     />
