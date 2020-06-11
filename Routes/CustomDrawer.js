@@ -57,9 +57,9 @@ const CustomDrawer = ({navigation, route}) => {
           <View style={styles.rowView}>
             <Avatar source={{uri:urls}} rounded size="large" />
             <View style={{marginLeft: 20,width:'60%'}}>
-              <Text style={styles.whiteText}>{name}</Text>
-              <Text style={styles.whiteText}>{email}</Text>
-              <Text style={styles.whiteText}>{phone}</Text>
+              <Text style={styles.whiteText} numberOfLines={1}>{name}</Text>
+              <Text style={styles.whiteText}  numberOfLines={1}>{email}</Text> 
+              <Text style={styles.whiteText} numberOfLines={1}>{phone}</Text>
             </View>
           </View>
         </View>

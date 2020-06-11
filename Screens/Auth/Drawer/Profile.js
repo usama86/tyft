@@ -67,7 +67,7 @@ const Profile = ({navigation, route}) => {
           profileName: name.value,
           phoneNumber: phone.value,
           // userType: 'Supplier',
-          Language: Language,
+          // Language: Language,
         })
         .then(async Response => {
           console.log('Responsessss', Response.data.code);
@@ -172,7 +172,7 @@ const Profile = ({navigation, route}) => {
           />
         </View>
 
-        <View style={styles.radioView}>
+        {/* <View style={styles.radioView}>
           <Radio
             selected={'English' ? true : false}
             onPress={e => {
@@ -189,7 +189,7 @@ const Profile = ({navigation, route}) => {
             style={{marginLeft: responsiveWidth(8)}}
           />
           <Text value={'Spanish'} style={{marginLeft: responsiveWidth(2)}} />
-        </View>
+        </View> */}
         <Modal ModalContainer={styles.modalView} showModal={update}>
           <View style={styles.IconView}>
             <Image

@@ -8,6 +8,8 @@ import {
   TextInput,
   SafeAreaView,
   ActivityIndicator,
+  Alert,
+  alert
 } from 'react-native';
 import Container from '../../Component/Container';
 import Button from '../../Component/Button';
@@ -108,6 +110,8 @@ const CustomerReviews = ({navigation, route}) => {
     }
   };
   const AddReviewHandler = async () => {
+   if(review!=='')
+   { 
     setAddCommentLoader(true);
     console.log(review);
     console.log(rating);
@@ -137,6 +141,10 @@ const CustomerReviews = ({navigation, route}) => {
         setAddCommentLoader(false);
         console.log(error);
       });
+    }
+    else
+      Alert.alert('Please type Review');
+
   };
   const PrintCard = (item, index) => (
     <TouchableOpacity activeOpacity={0.8} style={styles.MainView}>
@@ -169,7 +177,7 @@ const CustomerReviews = ({navigation, route}) => {
               renderItem={({item, index}) => PrintCard(item, index)}
             />
           </View>
-          <View style={{width: '100%'}}>
+      {names ?    <View style={{width: '100%'}}>
             <Button
               style={[styles.buttonStyle2]}
               onPress={onPressButton}
@@ -180,7 +188,7 @@ const CustomerReviews = ({navigation, route}) => {
                 value={'Add a Review'}
               />
             </Button>
-          </View>
+            </View>:null }
         </>
       ) : (
         <Text

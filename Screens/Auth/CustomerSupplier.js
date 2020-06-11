@@ -29,10 +29,28 @@ import axios from 'axios';
 const CustomerSupplier = ({navigation, route}) => {
   const [ToggleSwitch, setToggleSwitch] = useState(false);
   const [favoriteSwitch, setFavoriteSwitch] = useState(false);
+  const [ratingVal,setRatingVal] =useState(0)
   useEffect(() => {
     console.log('Params=>', route.params.TruckInfo);
+    getRating();
     getFavorite();
   }, []);
+  const getRating = ()=>{
+    let ratingVal=0;
+    if(route.params.TruckInfo.customerReview)
+    {
+      let len =route.params.TruckInfo.customerReview.length;
+     
+      for(var i=0;i<len;i++)
+      {
+        ratingVal +=route.params.TruckInfo.customerReview[i].Rating
+      }
+      ratingVal = ratingVal / route.params.TruckInfo.customerReview.length;
+    }
+
+    setRatingVal(ratingVal);
+
+  }
   const getFavorite=async()=>{
     let userID = await AsyncStorage.getItem('userID');
     axios
@@ -146,7 +164,7 @@ const CustomerSupplier = ({navigation, route}) => {
         ) : (
           <Rating
             readonly
-            startingValue={0}
+            startingValue={ratingVal}
             imageSize={responsiveFontSize(2.8)}
           />
         )}
