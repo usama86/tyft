@@ -30,7 +30,7 @@ import axios from 'axios';
 import moment from 'moment';
 import FuzzySearch from 'fuzzy-search'; // Or: var FuzzySearch = require('fuzzy-search');
 
-const FindFoodTruck = ({navigation}) => {
+const FindFoodTruck = ({navigation, route}) => {
   const [Data, setData] = useState([]);
   const [day, setDay] = useState(null);
   const [isLoading, setisLoading] = useState(true);
@@ -38,6 +38,7 @@ const FindFoodTruck = ({navigation}) => {
   const [isMsg, setIsMsg] = useState(false);
   const [buttonData, setButtonData] = React.useState([]);
   const [indicator, setIndicator] = React.useState(true);
+  const [cusineName, setCusineName] = useState(null);
   const onChangeSearch = val => {
     setSearchVal(val);
     if (val == '') {
@@ -48,7 +49,7 @@ const FindFoodTruck = ({navigation}) => {
         caseSensitive: false,
       });
       const result = searcher.search(val);
-      console.log(result);
+      // console.log(result);
       setData(result);
       if (result.length == 0 || result === undefined) {
         setIsMsg(true);
@@ -66,7 +67,7 @@ const FindFoodTruck = ({navigation}) => {
         let Trucks = Response.data.TruckInfo;
         if (ERROR !== 'ABT0001') {
           let currentDate = moment();
-          let filtered = Trucks.filter(item=>item.status === 'Open')
+          let filtered = Trucks.filter(item => item.status === 'Open');
           let day = currentDate.format('dddd');
           setDay(day);
           setData(filtered);
@@ -80,21 +81,32 @@ const FindFoodTruck = ({navigation}) => {
         console.log(error);
       });
   };
+  const setDataParams = async () => {
+    let data; //= route.params.CusineName;
+    if (route && route.params && route.params.CusineName) {
+      // setCusineName(data);
+      setButtonData(route.params.CusineName);
+      console.log('in Effect',data)
+    }
+  };
   useEffect(() => {
     getCusine();
     getAllTrucks();
+    navigation.addListener('focus', () => {
+      setDataParams();
+    });
   }, []);
   const getCusine = async () => {
     axios
       .get(url + '/api/servingcusine/getcusines')
       .then(async Response => {
         if (Response) {
-          console.log(Response);
-          console.log('Response of getCusine',Response.data)
-          if(Response.data.length>0){
+          // console.log(Response);
+          // console.log('Response of getCusine', Response.data);
+          if (Response.data.length > 0) {
             let res = await Response.data[0].cusine;
             await setButtonData(res);
-            console.log('Button', res);
+            // console.log('Button', res);
           }
           setIndicator(false);
         } else {
@@ -113,7 +125,7 @@ const FindFoodTruck = ({navigation}) => {
         navigation.navigate(RouteName.CUSTOMERSUPPLIER, {TruckInfo: item})
       }>
       <View style={styles.LeftIcon}>
-        <Image style={styles.image} source={{uri:item.truckLogo}} />
+        <Image style={styles.image} source={{uri: item.truckLogo}} />
       </View>
       <View style={styles.RightContent}>
         <Text
@@ -126,12 +138,13 @@ const FindFoodTruck = ({navigation}) => {
             width: '30%',
             marginRight: responsiveWidth(2),
             right: responsiveWidth(1),
+            paddingHorizontal: responsiveWidth(2),
           }}
           tabProp={{
             marginTop: responsiveHeight(-17.5),
             flexDirection: 'row',
             justifyContent: 'flex-start',
-          }} 
+          }}
         />
         <View style={[styles.flex, {marginTop: responsiveHeight(5)}]}>
           <Entypo
@@ -191,6 +204,11 @@ const FindFoodTruck = ({navigation}) => {
       </View>
     </TouchableOpacity>
   );
+  const Checked = index => {
+    let newArr = [...buttonData];
+    newArr[index].checked = !newArr[index].checked;
+    setButtonData(newArr);
+  };
   return (
     <SafeAreaView style={styles.parent}>
       <Header onPress={() => navigation.goBack()}>{'Find Food Truck'}</Header>
@@ -230,40 +248,59 @@ const FindFoodTruck = ({navigation}) => {
           }}
         />
       </View>
-        <View
-            style={{
-              marginVertical: responsiveHeight(1),
-              marginLeft: responsiveWidth(-7),
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-            }}>
-            <View style={{width: '80%'}}>
-              <ScrollView
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}>
-                {buttonData
-                  ? buttonData.map(data => (
-                      <Button style={styles.button}>
-                        <Text 
-                          style={styles.TextStyle}
-                          value={data.cusineName}
-                        />
-                      </Button>
-                    ))
-                  : null}
-              </ScrollView>
-            </View>
+      <View
+        style={{
+          marginVertical: responsiveHeight(1),
+          marginLeft: responsiveWidth(-7),
+          flexDirection: 'row',
+          justifyContent: 'space-around',
+        }}>
+        <View style={{width: '80%'}}>
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+            {buttonData
+              ? buttonData.map((data, index) => (
+                  <Button
+                    onPress={() => Checked(index)}
+                    style={[
+                      styles.button,
+                      data.checked
+                          ? {
+                              backgroundColor: theme.colors.primary,
+                              borderWidth: 0,
+                            }
+                          : null
+                      // : route.params.CusineName === data.cusineName
+                      // ? {
+                      //     backgroundColor: theme.colors.primary,
+                      //     borderWidth: 0,
+                      //   }
+                      // : null,
+                    ]}>
+                    <Text
+                      style={[
+                        styles.TextStyle,
+                        data.checked 
+                            ? {color: '#fff'}
+                            : {color: '#000'}
+                      ]}
+                      value={data.cusineName}
+                    />
+                  </Button>
+                ))
+              : null}
+          </ScrollView>
+        </View>
 
-            <SettingIcon
-              name={'sound-mix'}
-              size={38}
-              color={'grey'}
-              onPress={() => {
-                navigation.navigate(RouteName.SERVINGCUSINETYPE);
-              }}
-              //style={{marginTop:responsiveHeight(1.3),transform: [{ scaleY: 2 }]}}
-            />
-          </View>
+        <SettingIcon
+          name={'sound-mix'}
+          size={38}
+          color={'grey'}
+          onPress={() => {
+            navigation.navigate(RouteName.SERVINGCUSINETYPE);
+          }}
+          //style={{marginTop:responsiveHeight(1.3),transform: [{ scaleY: 2 }]}}
+        />
+      </View>
       {isLoading ? (
         <ActivityIndicator
           color={'#000'}
@@ -279,22 +316,22 @@ const FindFoodTruck = ({navigation}) => {
             marginLeft: responsiveWidth(25),
           }}
         />
-      ) : Data.length>0 ? (
+      ) : Data.length > 0 ? (
         <FlatList
           data={Data}
           keyExtractor={item => item.id}
           renderItem={({item, index}) => PrintCard(item, index)}
         />
-      ) : 
-      <Text
-      value={'No Truck Found'}
-      bold
-      style={{
-        marginTop: responsiveHeight(25),
-        marginLeft: responsiveWidth(25),
-      }}
-    />  
-      }
+      ) : (
+        <Text
+          value={'No Truck Found'}
+          bold
+          style={{
+            marginTop: responsiveHeight(25),
+            marginLeft: responsiveWidth(25),
+          }}
+        />
+      )}
     </SafeAreaView>
   );
 };
@@ -312,12 +349,13 @@ const styles = StyleSheet.create({
     height: responsiveHeight(5),
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: theme.colors.primary,
+    backgroundColor: theme.colors.underline,
     borderRadius: 8,
     marginLeft: responsiveWidth(5),
+    elevation: 5,
   },
   TextStyle: {
-    color: 'white',
+    color: '#000',
   },
   TextStyle: {
     color: 'white',

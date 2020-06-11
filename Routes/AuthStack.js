@@ -49,7 +49,7 @@ const NearMeStack = () => (
   </StackNearMe.Navigator>
 );
 const SearchStack = () => (
-  <StackSearch.Navigator screenOptions={{headerShown: false}}>
+  <StackSearch.Navigator  screenOptions={{headerShown: false}}>
     <StackSearch.Screen
       name={RouteName.FINDFOODTRUCK}
       component={FindFoodTruck}
@@ -134,7 +134,7 @@ const AppTab = () => (
       inactiveTintColor: 'gray',
     }}>
     <Tabs.Screen options={{title:'Near Me'}} name={'NearMe'} children={NearMeStack} />
-    <Tabs.Screen name={'Search'} children={SearchStack} />
+    <Tabs.Screen name={'Search'}  children={SearchStack} />
     <Tabs.Screen options={{title:'Favourite'}} name={'FavouriteStack'} children={FavouriteStack} />
     <Tabs.Screen options={{title:'Account'}} name={'AccountStack'} children={AccountStack} />
   </Tabs.Navigator>

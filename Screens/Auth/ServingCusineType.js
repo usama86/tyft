@@ -28,6 +28,7 @@ import url from './Constants/constants';
 import axios from 'axios';
 const FindFoodTruck = ({navigation}) => {
   const [indicator, setIndicator] = useState(true);
+  const [CusineName, setCusinename] = useState([]);
 
   useEffect(() => {
     getCusine();
@@ -39,8 +40,8 @@ const FindFoodTruck = ({navigation}) => {
       .get(url + '/api/servingcusine/getcusines')
       .then(async Response => {
         if (Response) {
-          console.log(Response);
-          if (Response.data.length > 1) {
+          console.log('Serving CUSINESS TYPE', Response.data);
+          if (Response.data.length > 0) {
             let res = Response.data[0].cusine;
             setData(res);
           } else {
@@ -64,6 +65,10 @@ const FindFoodTruck = ({navigation}) => {
   const Checked = index => {
     let newArr = [...Data];
     newArr[index].checked = !newArr[index].checked;
+    // if (newArr[index].checked) {
+    //   setCusinename(newArr[index].cusineName);
+    // }
+    // console.log('Cusine Name', newArr[index].cusineName);
     setData(newArr);
   };
   const PrintCard = (item, index) => (
@@ -94,30 +99,43 @@ const FindFoodTruck = ({navigation}) => {
           style={styles.indicator}
         />
       ) : Data ? (
-        <ScrollView>
-          <FlatList
-            data={Data}
-            numColumns={3}
-            keyExtractor={item => item.id}
-            contentContainerStyle={{
-              paddingVertical: responsiveHeight(2),
-            }}
-            renderItem={({item, index}) => PrintCard(item, index)}
-          />
-        </ScrollView>
+        <>
+          <View style={{height: responsiveHeight(70)}}>
+            <ScrollView>
+              <FlatList
+                data={Data}
+                numColumns={3}
+                keyExtractor={item => item.id}
+                contentContainerStyle={{
+                  paddingVertical: responsiveHeight(2),
+                }}
+                renderItem={({item, index}) => PrintCard(item, index)}
+              />
+            </ScrollView>
+          </View>
+          <View style={styles.ApplyButton}>
+            <Button
+              onPress={() =>
+                navigation.navigate(RouteName.FINDFOODTRUCK, {
+                  CusineName: Data,
+                })
+              }
+              style={[styles.buttonStyle2]}
+              rounded>
+              <Text style={{color: '#fff'}} uppercase={false} value={'Apply'} />
+            </Button>
+          </View>
+        </>
       ) : (
         <View
           style={{
-            width:'100%',
-            height:responsiveHeight(10),
-            justifyContent:'center',
-            alignItems:'center',
-            marginTop:responsiveHeight(30)
+            width: '100%',
+            height: responsiveHeight(10),
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: responsiveHeight(30),
           }}>
-          <Text
-            bold
-            value={'No Cusines Available'}
-          />
+          <Text bold value={'No Cusines Available'} />
         </View>
       )}
     </SafeAreaView>
@@ -166,6 +184,23 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
+  },
+  ApplyButton: {
+    height: responsiveHeight(10),
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '90%',
+    alignSelf: 'center',
+  },
+  buttonStyle2: {
+    backgroundColor: 'rgb(193, 32, 38)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '90%',
+    height: responsiveHeight(6),
+    // borderStyle: 'solid',
+    // borderWidth: 1,
+    // borderColor: 'rgb(0, 0, 0)'
   },
 });
 

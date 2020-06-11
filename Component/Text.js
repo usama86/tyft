@@ -9,7 +9,7 @@ const tyftText = ({ style, bold, value, ...props }) => {
         boldStyle
     } = styles;
 	return (
-		<Text {...props} style={[TextStyle,style,bold ? boldStyle:null]}>
+		<Text {...props}  style={[TextStyle,style,bold ? boldStyle:null]}>
 			{value}
 		</Text>
 	);

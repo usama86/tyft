@@ -66,7 +66,6 @@ const SearchTruck = ({navigation}) => {
           if (Response.data.length > 0) {
             let res = await Response.data[0].cusine;
             await setButtonData(res);
-            console.log('Button', res);
           }
           setIndicator(false);
         } else {
