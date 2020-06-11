@@ -7,6 +7,7 @@ import {
   FlatList,
   TextInput,
   SafeAreaView,
+  ActivityIndicator,
 } from 'react-native';
 import Container from '../../Component/Container';
 import Button from '../../Component/Button';
@@ -36,13 +37,16 @@ const CustomerReviews = ({navigation, route}) => {
   const [review, setReview] = useState('');
   const [rating, setRating] = useState(0);
   const [names, setNames] = useState('');
+  const [addCommentLoader, setAddCommentLoader] = useState(false);
 
   const [Data, setData] = useState([]);
 
   React.useEffect(() => {
-    getName();
-    getCustomerReviews();
-    console.log('TRUCK ID', route.params.ID);
+    navigation.addListener('focus', () => {
+      getName();
+      getCustomerReviews();
+      console.log('TRUCK ID', route.params.ID);
+    });
   }, []);
 
   const getName = async () => {
@@ -51,7 +55,6 @@ const CustomerReviews = ({navigation, route}) => {
     setNames(userName);
     // let date = new Date(time);
   };
-
   const onPressButton = () => {
     setShowModal(true);
   };
@@ -76,7 +79,7 @@ const CustomerReviews = ({navigation, route}) => {
         console.log(error);
       });
   };
-const CalculateTime = date => {
+  const CalculateTime = date => {
     let years = moment(new Date()).diff(moment(date), 'years');
     if (years === 0) {
       let months = moment(new Date()).diff(moment(date), 'months');
@@ -105,6 +108,7 @@ const CalculateTime = date => {
     }
   };
   const AddReviewHandler = async () => {
+    setAddCommentLoader(true);
     console.log(review);
     console.log(rating);
     let userID = await AsyncStorage.getItem('userID');
@@ -124,10 +128,13 @@ const CalculateTime = date => {
       })
       .then(async Response => {
         if (Response.data.code !== 'ABT0001') {
-          setShowModal(false);
+          await getCustomerReviews();
+          await setShowModal(false);
+          await setAddCommentLoader(false);
         }
       })
       .catch(error => {
+        setAddCommentLoader(false);
         console.log(error);
       });
   };
@@ -227,16 +234,30 @@ const CalculateTime = date => {
           </View>
 
           <View style={styles.TopView1}>
-            <Button
-              style={[styles.buttonStyle2]}
-              onPress={AddReviewHandler}
-              rounded>
-              <Text
-                uppercase={false}
-                style={[styles.TextStyle1]}
-                value={'Add Review'}
-              />
-            </Button>
+            {addCommentLoader ? (
+              <View
+                style={[
+                  styles.buttonStyle2,
+                  {
+                    borderRadius: 8,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  },
+                ]}>
+                <ActivityIndicator color={'white'} size={'small'} />
+              </View>
+            ) : (
+              <Button
+                style={[styles.buttonStyle2]}
+                onPress={AddReviewHandler}
+                rounded>
+                <Text
+                  uppercase={false}
+                  style={[styles.TextStyle1]}
+                  value={'Add Review'}
+                />
+              </Button>
+            )}
           </View>
         </TouchableOpacity>
       </Model>

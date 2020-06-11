@@ -56,7 +56,7 @@ const CustomDrawer = ({navigation, route}) => {
         <View style={styles.header}>
           <View style={styles.rowView}>
             <Avatar source={{uri:urls}} rounded size="large" />
-            <View style={{marginLeft: 20}}>
+            <View style={{marginLeft: 20,width:'60%'}}>
               <Text style={styles.whiteText}>{name}</Text>
               <Text style={styles.whiteText}>{email}</Text>
               <Text style={styles.whiteText}>{phone}</Text>
@@ -131,10 +131,12 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingLeft: 20,
     paddingBottom: 20,
+    width:'100%'
   },
   rowView: {
     flexDirection: 'row',
     alignItems: 'center',
+    width:'100%'
   },
   content: {
     flex: 3,

@@ -26,7 +26,9 @@ const CustomerReview = ({navigation}) => {
   const [menuItem, setMenuItem] = useState('Mexican');
   const [Data, setData] = useState([]);
   useEffect(() => {
-    getCustomerReviews();
+    navigation.addListener('focus',()=>{
+      getCustomerReviews();
+    })
   }, []);
   const getCustomerReviews = async () => {
     let UserID = await AsyncStorage.getItem('userID');
@@ -111,10 +113,14 @@ const CustomerReview = ({navigation}) => {
           contentContainerStyle={{
             paddingVertical: responsiveHeight(2),
           }}
-          renderItem={({item, index}) => PrintCard(item, index)}
+          renderItem={({item, index}) => PrintCard(item, index)}  
         />
       ) : (
-        <Text style={styles.NoComments} bold value={'No Comments has been added Yet.'} />
+        <Text
+          style={styles.NoComments}
+          bold
+          value={'No Comments has been added Yet.'}
+        />
       )}
     </SafeAreaView>
   );
@@ -143,12 +149,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  NoComments:{
-    marginTop:responsiveHeight(30),
-    textAlign:'center',
-    width:'70%',
-    alignSelf:'center'
-  }
+  NoComments: {
+    marginTop: responsiveHeight(30),
+    textAlign: 'center',
+    width: '70%',
+    alignSelf: 'center',
+  },
 });
 
 export default CustomerReview;
