@@ -232,7 +232,7 @@ const FindFoodTruck = ({navigation, route}) => {
           }}
           inputContainerStyle={{
             backgroundColor: '#F5F5F5',
-            width: '100%',
+            width: '95%',
             paddingLeft: 5,
             borderWidth: 0,
           }}
@@ -245,13 +245,23 @@ const FindFoodTruck = ({navigation, route}) => {
                 style={{marginLeft: 0}}
               />
             </TouchableOpacity>
-          }
+        }
           containerStyle={{
             backgroundColor: 'white',
             width: '90%',
             alignSelf: 'center',
             borderWidth: 0,
           }}
+        />
+        <SettingIcon
+          name={'sound-mix'}
+          size={38}
+          color={'grey'}
+          style={{marginLeft:responsiveWidth(-5)}}
+          onPress={() => {
+            navigation.navigate(RouteName.SERVINGCUSINETYPE);
+          }}
+          //style={{marginTop:responsiveHeight(1.3),transform: [{ scaleY: 2 }]}}
         />
       </View>
       <View
@@ -261,7 +271,7 @@ const FindFoodTruck = ({navigation, route}) => {
           flexDirection: 'row',
           justifyContent: 'space-around',
         }}>
-        <View style={{width: '80%'}}>
+        {/* <View style={{width: '80%'}}>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             {buttonData
               ? buttonData.map((data, index) => (
@@ -293,9 +303,9 @@ const FindFoodTruck = ({navigation, route}) => {
                 ))
               : null}
           </ScrollView>
-        </View>
+        </View> */}
 
-        <SettingIcon
+        {/* <SettingIcon
           name={'sound-mix'}
           size={38}
           color={'grey'}
@@ -303,8 +313,8 @@ const FindFoodTruck = ({navigation, route}) => {
             navigation.navigate(RouteName.SERVINGCUSINETYPE);
           }}
           //style={{marginTop:responsiveHeight(1.3),transform: [{ scaleY: 2 }]}}
-        />
-      </View>
+        /> */}
+       </View> 
       {isLoading ? (
         <ActivityIndicator
           color={'#000'}

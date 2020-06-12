@@ -202,7 +202,7 @@ const Favorite = ({navigation}) => {
           }}
           inputContainerStyle={{
             backgroundColor: '#F5F5F5',
-            width: '100%',
+            width: '95%',
             paddingLeft: 5,
             borderWidth: 0,
           }}
@@ -223,6 +223,14 @@ const Favorite = ({navigation}) => {
             borderWidth: 0,
           }}
         />
+               <TouchableOpacity
+               style={{marginLeft:responsiveWidth(-5)}}
+          onPress={() => navigation.navigate(RouteName.SERVINGCUSINETYPE)}>
+           <SettingIcon
+            name={'sound-mix'}
+            size={40}
+          />
+        </TouchableOpacity>
       </View>
       <View
         style={{
@@ -231,7 +239,7 @@ const Favorite = ({navigation}) => {
           flexDirection: 'row',
           justifyContent: 'space-around',
         }}>
-        <View style={{width: '80%'}}>
+        {/* <View style={{width: '80%'}}>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             <Button style={styles.button}>
               <Text style={styles.TextStyle} value={'Burger'} />
@@ -252,14 +260,14 @@ const Favorite = ({navigation}) => {
               <Text style={styles.TextStyle} value={'BBQ'} />
             </Button>
           </ScrollView>
-        </View>
-        <TouchableOpacity
+        </View> */}
+        {/* <TouchableOpacity
           onPress={() => navigation.navigate(RouteName.SERVINGCUSINETYPE)}>
            <SettingIcon
             name={'sound-mix'}
             size={40}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
       {isLoading ? (
         <ActivityIndicator
