@@ -86,18 +86,18 @@ const ItemCategory = ({navigation}) => {
           style={{fontWeight: 'bold', fontSize: responsiveFontSize(2)}}
           value={item.name}
         />
-        <Text
+        {/* <Text
           style={{
             fontSize: responsiveFontSize(1.6),
             color: '#A6A6A6',
             marginTop: responsiveHeight(1),
           }}
           value={item.description}
-        />
+        /> */}
       </View>
-      <View style={styles.Right}>
+      {/* <View style={styles.Right}>
         <Text value={'$ ' + item.price} />
-      </View>
+      </View> */}
       <View style={styles.CrossView}>
         <Entypo
           name={'pencil'}
@@ -125,17 +125,15 @@ const ItemCategory = ({navigation}) => {
       <Header isHome onPress={() => navigation.openDrawer()}>
         {'Menu'}
       </Header>
-      <View style={styles.HeadingContainer}>
-        {/* <Text style={{textTransform: 'uppercase'}} bold value={'Menu'} /> */}
+      {/* <View style={styles.HeadingContainer}>
         <TextInput
           placeholder={'Mexican'}
           value={menuItem}
           editable={false}
           selectTextOnFocus={false}
-          //onChangeText={val => setMenuItem(val)}
           style={styles.input}
         />
-      </View>
+      </View> */}
 
       {indicator ? (
         <ActivityIndicator color={'#000'} size={'large'} />
@@ -288,7 +286,7 @@ const styles = StyleSheet.create({
     fontSize: responsiveFontSize(2),
   },
   Left: {
-    width: '60%',
+    width: '75%',
   },
   Right: {
     width: '20%',
@@ -302,7 +300,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'flex-end',
     width: '10%',
-    alignSelf: 'center',
+    alignSelf: 'center', 
   },
 });
 

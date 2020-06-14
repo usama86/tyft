@@ -1,6 +1,13 @@
 import PropTypes from 'prop-types';
 import React, {useEffect, useState, useRef} from 'react';
-import {StyleSheet, TouchableOpacity, View, Text, Image} from 'react-native';
+import {
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  Text,
+  Image,
+  ActivityIndicator,
+} from 'react-native';
 import {Button} from 'native-base';
 import MapView, {Marker, PROVIDER_GOOGLE, Callout} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
@@ -10,12 +17,13 @@ import {
   responsiveFontSize,
 } from 'react-native-responsive-dimensions';
 
-const Maps = ({MapContainerStyle, Trucks}) => {
+const Maps = ({MapContainerStyle, Trucks, navigation}) => {
   const [markerLat, setMarkerLat] = React.useState(30.3753);
   const [markerLong, setMarkerLong] = React.useState(69.3451);
   const [mapReady, setMapReady] = React.useState(true);
   const [Lat, setLat] = React.useState(0.0);
   const [Long, setLong] = React.useState(0.0);
+  const [LoadingMap, setLoadingMap] = React.useState(false);
   const mapView = useRef();
   const initialRegion = {
     latitude: 30.3753,
@@ -26,19 +34,28 @@ const Maps = ({MapContainerStyle, Trucks}) => {
   const LATITUDE_DELTA = 0.015;
   const LONGITUDE_DELTA = 0.0121;
 
-  const setRegionInMap = region => {
+  const setRegionInMap = async region => {
+    console.log('in SET REgin\n\n\n');
+
     if (mapReady) {
       console.log('map is ready', region);
-      setTimeout(() => mapView.current.animateToRegion(region), 30);
+
+      setTimeout(() => {
+        mapView.current.animateToRegion(region), 30;
+      });
     } else {
       console.log('NOOO');
     }
   };
   useEffect(() => {
+    // navigation.addListener('focus',()=>{
     getCurrentLocation();
+    // })
   }, []);
-  const getCurrentLocation = () => {
-    Geolocation.getCurrentPosition(
+  const getCurrentLocation = async () => {
+    setLoadingMap(true);
+    console.log('hi in get Current');
+    await Geolocation.getCurrentPosition(
       async position => {
         const region = {
           latitude: position.coords.latitude,
@@ -46,8 +63,9 @@ const Maps = ({MapContainerStyle, Trucks}) => {
           latitudeDelta: LATITUDE_DELTA,
           longitudeDelta: LONGITUDE_DELTA,
         };
+        await setLoadingMap(false);
         await setRegionInMap(region);
-        console.log('CURRENT LOCATION IN GETLOCATION', region);
+        // await console.log('CURRENT LOCATION IN GETLOCATION', region);
       },
       error => console.log('this is ERROR', error),
       {
@@ -133,6 +151,17 @@ const Maps = ({MapContainerStyle, Trucks}) => {
           <Text style={styles.NoTruckText}>{'No Trucks Available'}</Text>
         )}
       </MapView>
+      {LoadingMap ? (
+        <View style={styles.LoadingView}>
+          <ActivityIndicator
+            animating={LoadingMap}
+            style={styles.indicator}
+            color={'red'}
+            size={'small'}
+          />
+          <Text style={{marginTop:responsiveHeight(7)}} >{'Fetching Current Location Please Wait.'}</Text>
+        </View>
+      ) : null}
     </View>
   );
 };
@@ -182,6 +211,22 @@ const styles = StyleSheet.create({
     marginTop: responsiveHeight(30),
     fontWeight: 'bold',
     fontSize: responsiveFontSize(3),
+  },
+  indicator: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  LoadingView: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
 });
 

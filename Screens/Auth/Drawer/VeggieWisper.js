@@ -9,6 +9,7 @@ import {
   ScrollView,
   ActivityIndicator,
   Alert,
+  Linking
 } from 'react-native';
 import Container from '../../../Component/Container';
 import Text from '../../../Component/Text';
@@ -293,16 +294,19 @@ const VeggieWisper = ({navigation, route}) => {
         </View>
         <View style={styles.SocialIcons}>
           <AntDesign
+            onPress={()=>Linking.openURL('http://twitter.com')}
             name={'twitter'}
             color={'#212121'}
             size={responsiveFontSize(2.5)}
           />
           <AntDesign
+            onPress={()=>Linking.openURL('http://instagram.com')}
             name={'instagram'}
             color={'#212121'}
             size={responsiveFontSize(2.5)}
           />
           <AntDesign
+          onPress={()=>Linking.openURL('http://facebook.com')}
             name={'facebook-square'}
             color={'#212121'}
             size={responsiveFontSize(2.5)}

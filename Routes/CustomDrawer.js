@@ -105,7 +105,7 @@ const CustomDrawer = ({navigation, route}) => {
           <ListItem
             title={'Contact Us'}
             leftAvatar={<ProfileIcon name={'contacts'} size={25} />}
-            onPress={() => navigation.navigate('sign-out')}
+            // onPress={() => navigation.navigate('sign-out')}
           />
           <ListItem
             title={'Signout'}

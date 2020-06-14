@@ -48,7 +48,7 @@ const AppDrawer = () => {
       ]}>
       <Drawer.Navigator
         // sceneContainerStyle={{backgroundColor: 'red'}}
-        overlayColor={'rgba(0,0,0,0)'}
+        overlayColor={'rgba(0,0,0,0.5)'}
         drawerContent={props => {
           setProgress(props.progress);
           return <CustomDrawer navigation={props.navigation} />;

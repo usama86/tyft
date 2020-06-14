@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect,useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -42,6 +42,9 @@ const MenuSetting = ({navigation, route}) => {
   const [showModal, setShowModal] = React.useState(false);
   const [category, setCategory] = React.useState(null);
   const [update, setUpdated] = React.useState(null);
+  const [showModal2, setShowModal2] = React.useState(false);
+  const [showDeleteModal, setDeleteModal] = useState(false);
+  const [selected, setSelected] = useState(0);
   const [name, setName] = React.useState({
     value: null,
     Error: false,
@@ -60,6 +63,31 @@ const MenuSetting = ({navigation, route}) => {
   useEffect(() => {
     getMenuOfSupplier();
   }, []);
+  const deleteItem = async() =>{
+    console.log(selected);
+    let MenuID = await AsyncStorage.getItem('MenuID');
+    let copiedData = [...Data];
+    copiedData.splice(selected, 1);
+    console.log(url + '/api/menu/updatemenu');
+    axios
+      .post(url + '/api/menu/updatemenu', {
+        _id: MenuID,
+        Menu: copiedData,
+      })
+      .then(async Response => {
+        console.log(Response);
+        const ERROR = Response.data.code;
+        if (ERROR === 'ABT0000') {
+          console.log('Updated');
+          setData(copiedData);
+          setDeleteModal(false); 
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  
+  }
   const getMenuOfSupplier = async () => {
     let MenuID = await AsyncStorage.getItem('MenuID');
     axios
@@ -166,28 +194,70 @@ const MenuSetting = ({navigation, route}) => {
   };
   const PrintCard = (item, index) => (
     <TouchableOpacity activeOpacity={0.8} style={styles.MainView}>
-      <View style={styles.Left}>
-        <Text
-          style={{fontWeight: 'bold', fontSize: responsiveFontSize(2)}}
-          value={item.name}
-        />
-        <Text
+      <View
+        style={{
+          width: '100%',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}>
+        <View style={{width: '75%'}}>
+          <View style={styles.Left}>
+            <Text
+              style={{fontWeight: 'bold', fontSize: responsiveFontSize(2)}}
+              value={item.name}
+            />
+            <Text
+              style={{
+                fontSize: responsiveFontSize(1.6),
+                color: '#A6A6A6',
+                marginTop: responsiveHeight(1),
+              }}
+              value={item.description}
+            />
+          </View>
+          <View style={styles.Right}>
+            <Text value={'$ ' + item.price} />
+          </View>
+        </View>
+        <View
           style={{
-            fontSize: responsiveFontSize(1.6),
-            color: '#A6A6A6',
-            marginTop: responsiveHeight(1),
-          }}
-          value={item.description}
-        />
-      </View>
-      <View style={styles.Right}>
-        <Text value={'$ ' + item.price} />
+            width: '25%',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}>
+          <View style={styles.CrossView}>
+            <Entypo
+              name={'pencil'}
+              color={'black'}
+              size={responsiveFontSize(3.2)}
+              onPress={() => setShowModal2(true)}
+            />
+          </View>
+          <View style={styles.CrossView}>
+            <Entypo
+              name={'circle-with-cross'}
+              color={'black'}
+              size={responsiveFontSize(3.2)}
+              onPress={() => {
+                // let x;
+                setSelected(index);
+                setDeleteModal(true);
+              }}
+            />
+          </View>
+        </View>
       </View>
     </TouchableOpacity>
   );
   return (
     <View style={{height: '100%', width: '100%'}}>
-      <Header Add  isHome onAddPress={() => setAddItem(true)} onPress={() => navigation.openDrawer()}>{'Menu'}</Header>
+      <Header
+        Add
+        isHome
+        onAddPress={() => setAddItem(true)}
+        onPress={() => navigation.openDrawer()}>
+        {'Menu'}
+      </Header>
       <Ui
         isLoading={indicator}
         ContainerStyle={{marginTop: responsiveHeight(4)}}
@@ -198,7 +268,7 @@ const MenuSetting = ({navigation, route}) => {
         buttonStyle={styles.buttonStyle}
         onPressButton={Navigate}>
         <View style={styles.InputMainView}>
-        <AddItemModal
+          <AddItemModal
             ModalContainer={{
               paddingVertical: responsiveHeight(2),
               paddingHorizontal: responsiveWidth(2),
@@ -292,14 +362,14 @@ const MenuSetting = ({navigation, route}) => {
                 paddingHorizontal: responsiveWidth(2),
                 borderRadius: 8,
               }}>
-                        <View style={styles.CrossView}>
-              <Entypo
-                name={'circle-with-cross'}
-                color={'black'}
-                size={responsiveFontSize(3.2)}
-                onPress={() => setShowModal(false)}
-              />
-            </View>
+              <View style={styles.CrossView}>
+                <Entypo
+                  name={'circle-with-cross'}
+                  color={'black'}
+                  size={responsiveFontSize(3.2)}
+                  onPress={() => setShowModal(false)}
+                />
+              </View>
               <Text style={{textAlign: 'center'}} value={'Add Category'} bold />
               <Input
                 rounded
@@ -368,6 +438,114 @@ const MenuSetting = ({navigation, route}) => {
           <Text style={styles.UpdatedText}>{'Updated'}</Text>
         </Modal>
       </Ui>
+      <Modal showModal={showModal2}>
+        <View
+          style={{
+            width: '100%',
+            backgroundColor: '#fff',
+            paddingVertical: responsiveHeight(2),
+            paddingHorizontal: responsiveWidth(2),
+            borderRadius: 8,
+          }}>
+          <View style={[styles.CrossView, {width: '90%'}]}>
+            <Entypo
+              name={'circle-with-cross'}
+              color={'black'}
+              size={responsiveFontSize(3.2)}
+              onPress={() => setShowModal2(false)}
+            />
+          </View>
+          <Text style={{textAlign: 'center'}} value={'Edit Menu'} bold />
+          <Input
+            rounded
+            placeholder="Item Name"
+            style={{
+              width: '90%',
+              alignSelf: 'center',
+              marginTop: responsiveHeight(2),
+            }}
+          />
+          <Button
+            onPress={() => setShowModal2(false)}
+            style={{
+              width: '80%',
+              height: responsiveHeight(6),
+              backgroundColor: 'rgb(193, 32, 38)',
+              justifyContent: 'center',
+              alignItems: 'center',
+              alignSelf: 'center',
+              marginTop: responsiveHeight(4),
+            }}
+            rounded>
+            <Text
+              uppercase={false}
+              value={'Update'}
+              style={{color: '#fff', fontWeight: 'bold'}}
+            />
+          </Button>
+        </View>
+      </Modal>
+      <Modal showModal={showDeleteModal}>
+        <View style={{width: '90%', alignSelf: 'center'}}>
+          <View style={[styles.CrossView, {width: '100%'}]}>
+            <Entypo
+              name={'circle-with-cross'}
+              color={'black'}
+              size={responsiveFontSize(3.2)}
+              onPress={() => setDeleteModal(false)}
+            />
+          </View>
+          <Text
+            style={{top: responsiveHeight(2)}}
+            value={'Are you sure you want to delete this item?'}
+          />
+          <View
+            style={{
+              marginVertical: responsiveHeight(2),
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              height: responsiveHeight(12),
+            }}>
+            <Button
+              onPress={deleteItem}
+              style={{
+                width: '40%',
+                height: responsiveHeight(6),
+                backgroundColor: 'rgb(193, 32, 38)',
+                justifyContent: 'center',
+                alignItems: 'center',
+                alignSelf: 'center',
+                marginTop: responsiveHeight(4),
+              }}
+              rounded>
+              <Text
+                uppercase={false}
+                value={'Yes'}
+                style={{color: '#fff', fontWeight: 'bold'}}
+              />
+            </Button>
+            <Button
+              onPress={() => setDeleteModal(false)}
+              style={{
+                width: '40%',
+                height: responsiveHeight(6),
+                backgroundColor: 'rgb(193, 32, 38)',
+                justifyContent: 'center',
+                alignItems: 'center',
+                alignSelf: 'center',
+                marginTop: responsiveHeight(4),
+              }}
+              rounded>
+              <Text
+                uppercase={false}
+                value={'No'}
+                style={{color: '#fff', fontWeight: 'bold'}}
+              />
+            </Button>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -412,10 +590,7 @@ const styles = StyleSheet.create({
     marginTop: responsiveHeight(9.8),
     marginLeft: responsiveWidth(-2.5),
   },
-  MainView: {
-    height: responsiveHeight(10),
-    // width:responsiveWidth(50)
-  },
+  MainView: {paddingVertical: responsiveHeight(0.5)},
   Left: {
     width: '100%',
   },
@@ -453,7 +628,7 @@ const styles = StyleSheet.create({
     height: responsiveHeight(5),
     justifyContent: 'center',
     alignItems: 'flex-end',
-    width: '95%',
+    width: '50%',
     alignSelf: 'center',
   },
 });

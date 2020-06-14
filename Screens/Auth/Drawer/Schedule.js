@@ -23,15 +23,64 @@ import AsyncStorage from '@react-native-community/async-storage';
 import url from './../Constants/constants';
 import axios from 'axios';
 import Modal from '../../../Component/Modal';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import moment from 'moment';
 function Schedule({navigation, route}) {
   const [setting, setSetting] = useState([
-    {day: 'Monday', working: false, opening: '8:00 AM', closing: '5:00 PM'},
-    {day: 'Tuesday', working: false, opening: '8:00 AM', closing: '5:00 PM'},
-    {day: 'Wednesday', working: false, opening: '8:00 AM', closing: '5:00 PM'},
-    {day: 'Thursday', working: false, opening: '8:00 AM', closing: '5:00 PM'},
-    {day: 'Friday', working: false, opening: '8:00 AM', closing: '5:00 PM'},
-    {day: 'Saturday', working: false, opening: '8:00 AM', closing: '5:00 PM'},
-    {day: 'Sunday', working: false, opening: '8:00 AM', closing: '5:00 PM'},
+    {
+      day: 'Monday',
+      working: false,
+      opening: null,
+      closing: null,
+      isDatePickerVisible: false,
+      isDatePickerVisible2: false,
+    },
+    {
+      day: 'Tuesday',
+      working: false,
+      opening: null,
+      closing: null,
+      isDatePickerVisible: false,
+      isDatePickerVisible2: false,
+    },
+    {
+      day: 'Wednesday',
+      working: false,
+      opening: null,
+      closing: null,
+      isDatePickerVisible: false,
+      isDatePickerVisible2: false,
+    },
+    {
+      day: 'Thursday',
+      working: false,
+      opening: null,
+      closing: null,
+      isDatePickerVisible: false,
+      isDatePickerVisible2: false,
+    },
+    {
+      day: 'Friday',
+      working: false,
+      opening: null,
+      closing: null,
+      isDatePickerVisible: false,
+      isDatePickerVisible2: false,
+    },
+    {
+      day: 'Saturday',
+      working: false,
+      opening: null,
+      closing: null,
+      isDatePickerVisible: false,
+    },
+    {
+      day: 'Sunday',
+      working: false,
+      opening: null,
+      closing: null,
+      isDatePickerVisible: false,
+    },
   ]);
   const changeClosing = (e, index) => {
     let newArr = [...setting];
@@ -108,23 +157,58 @@ function Schedule({navigation, route}) {
               </View>
               <View style={styles.timeColumnView}>
                 <View style={styles.underlineView}>
-                  <TextInput
-                    style={{padding: 0, margin: 0}}
-                    value={item.opening}
-                    onChangeText={e => changeOpening(e, index)}
-                  />
+                  <Text>{item.opening}</Text>
                 </View>
-                <Icon name="clockcircleo" type="antdesign" size={15} />
+                <Icon
+                  onPress={() => {
+                    item.isDatePickerVisible = true;
+                    setSetting([...setting]);
+                  }}
+                  name="clockcircleo"
+                  type="antdesign"
+                  size={15}
+                />
+                <DateTimePickerModal
+                  isVisible={item.isDatePickerVisible}
+                  mode="time"
+                  display="spinner"
+                  onConfirm={date => {
+                    item.opening = moment(date).format('hh:mm A');
+                    item.isDatePickerVisible = false;
+                    setSetting([...setting]);
+                  }}
+                  onCancel={() => {
+                    item.isDatePickerVisible = false;
+                    setSetting([...setting]);
+                  }}
+                />
                 <Text>-</Text>
                 <View style={styles.underlineView}>
-                  <TextInput
-                    style={{padding: 0, margin: 0}}
-                    value={item.closing}
-                    onChangeText={e => changeClosing(e, index)}
-                  />
+                  <Text>{item.closing}</Text>
                 </View>
-
-                <Icon name="clockcircleo" type="antdesign" size={15} />
+                <DateTimePickerModal
+                  isVisible={item.isDatePickerVisible2}
+                  mode="time"
+                  display="spinner"
+                  onConfirm={date => {
+                    item.closing = moment(date).format('hh:mm A');
+                    item.isDatePickerVisible2 = false;
+                    setSetting([...setting]);
+                  }}
+                  onCancel={() => {
+                    item.isDatePickerVisible2 = false;
+                    setSetting([...setting]);
+                  }}
+                />
+                <Icon
+                  onPress={() => {
+                    item.isDatePickerVisible2 = true;
+                    setSetting([...setting]);
+                  }}
+                  name="clockcircleo"
+                  type="antdesign"
+                  size={15}
+                />
               </View>
             </View>
           ))}
@@ -219,9 +303,9 @@ const styles = StyleSheet.create({
     // paddingLeft: 40,
     // paddingRight: 40,
     // paddingBottom: 20,
-    width:'80%',
-    alignSelf:'center',
-    marginBottom:responsiveHeight(2),
+    width: '80%',
+    alignSelf: 'center',
+    marginBottom: responsiveHeight(2),
     flexDirection: 'row',
     justifyContent: 'space-between',
   },

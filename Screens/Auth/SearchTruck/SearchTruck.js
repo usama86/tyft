@@ -30,8 +30,10 @@ const SearchTruck = ({navigation}) => {
   const [day, setDay] = useState(null);
   const [indicator, setIndicator] = React.useState(true);
   React.useEffect(() => {
-    getCusine();
-    getAllTrucks();
+    navigation.addListener('focus',()=>{
+      getCusine();
+      getAllTrucks();
+    })
   }, []);
   const getAllTrucks = () => {
     axios
@@ -124,7 +126,7 @@ const SearchTruck = ({navigation}) => {
               //style={{marginTop:responsiveHeight(1.3),transform: [{ scaleY: 2 }]}}
             />
           </View> */}
-          <Map Trucks={Truck} />
+          <Map navigation={navigation} Trucks={Truck} />
         </View>
       )}
     </SafeAreaView>

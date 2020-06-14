@@ -81,26 +81,23 @@ const FindFoodTruck = ({navigation, route}) => {
         console.log(error);
       });
   };
-  const setDataParams = async () => {
-    if (route.params.CusineName) {
-      // setCusineName(data);
-      let CheckArray = route.params.CusineName? route.params.CusineName.filter(item => item.checked):null;
-      console.log('Checked Array', CheckArray);
-      // let oldAray = [...buttonData];
-      // for (let i = 0; i < oldAray.length; i++) {
-      //   if (oldAray[i].cusineName === CheckArray[i].cusineName)
-      //     oldAray[i].checked = true;
-      // }
-    }
-    // await setButtonData(oldAray);
-    console.log('in Effect', route.params.CusineName);
-  };
+  // const setDataParams = async () => {
+  //   if (route.params.CusineName) {
+  //     // setCusineName(data);
+  //     let CheckArray = route.params.CusineName? route.params.CusineName.filter(item => item.checked):null;
+  //     console.log('Checked Array', CheckArray);
+  //     // let oldAray = [...buttonData];
+  //     // for (let i = 0; i < oldAray.length; i++) {
+  //     //   if (oldAray[i].cusineName === CheckArray[i].cusineName)
+  //     //     oldAray[i].checked = true;
+  //     // }
+  //   }
+  //   // await setButtonData(oldAray);
+  //   console.log('in Effect', route.params.CusineName);
+  // };
   useEffect(() => {
     getCusine();
     getAllTrucks();
-    navigation.addListener('focus', async () => {
-      await setDataParams();
-    });
   }, []);
   const getCusine = async () => {
     axios
