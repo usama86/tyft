@@ -66,7 +66,7 @@ const AccountInfo = ({navigation}) => {
     let id   = await AsyncStorage.getItem('userID');
     let name = await AsyncStorage.getItem('userName');
     let emails = await AsyncStorage.getItem('email');
-    // await AsyncStorage.setItem('profileName' + '', usertoken.profileName);
+    //  await AsyncStorage.setItem('profileName' + '', usertoken.profileName);
     let phones = await AsyncStorage.getItem('phoneNumber');    
     console.log(id);
     console.log(name);
@@ -110,7 +110,7 @@ const AccountInfo = ({navigation}) => {
                 <Avatar rounded size={responsiveFontSize(13)} />  
                 {/* imageProps={{uri:truckData.truckLogo}} */}
                 <View style={{marginLeft: 20}}>
-                <Text style={styles.whiteText} bold value={'Muhammad Usama'}/>
+                <Text style={styles.whiteText} bold value={name}/>
                 </View>
             </View>
             </View>
