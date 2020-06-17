@@ -123,7 +123,7 @@ const ItemCategory = ({navigation}) => {
   return (
     <SafeAreaView style={styles.parent}>
       <Header isHome onPress={() => navigation.openDrawer()}>
-        {'Menu'}
+        {'Menu Category'}
       </Header>
       {/* <View style={styles.HeadingContainer}>
         <TextInput
@@ -164,10 +164,10 @@ const ItemCategory = ({navigation}) => {
               onPress={() => setShowModal(false)}
             />
           </View>
-          <Text style={{textAlign: 'center'}} value={'Edit Menu'} bold />
+          <Text style={{textAlign: 'center'}} value={'Edit Category'} bold />
           <Input
             rounded
-            placeholder="Item Name"
+            placeholder="Edit Category here"
             style={{
               width: '90%',
               alignSelf: 'center',
@@ -206,7 +206,7 @@ const ItemCategory = ({navigation}) => {
           </View>
           <Text
             style={{top: responsiveHeight(2)}}
-            value={'Are you sure you want to delete this item?'}
+            value={'Are you sure you want to delete this category?'}
           />
           <View
             style={{

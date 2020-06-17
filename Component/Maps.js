@@ -114,24 +114,30 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
                   />
                   <Callout tooltip={true}>
                     <View style={styles.BOX}>
-                      <View
+                      {/* <View
                         style={{
                           width: responsiveWidth(30),
                           height: responsiveHeight(15),
                           borderRadius: 15,
-                        }}>
+                          backgroundColor:'red'
+                        }}> */}
                         <Image
-                          resizeMode={'contain'}
-                          style={{width: '100%', height: '100%'}}
-                          source={require('../images/Logo.jpg')}
+                          // resizeMode={'contain'}
+                          style={{
+                            width: responsiveWidth(30),
+                            height: responsiveHeight(15),
+                            borderRadius: 15,
+                            // backgroundColor:'red'
+                          }}
+                          source={require('../images/delivery-truck.png')}
                         />
-                      </View>
+                      {/* </View> */}
                       <View
                         style={{
                           width: responsiveWidth(40),
                           paddingLeft: responsiveWidth(2),
                         }}>
-                        <Text style={styles.TruckName}>{item.truckName}</Text>
+                        <Text style={styles.TruckName}>{item.truckName}ss</Text>
                         <Text
                           style={[
                             item.status === 'Close'
