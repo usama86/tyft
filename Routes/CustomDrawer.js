@@ -13,6 +13,7 @@ import {
 import AsyncStorage from '@react-native-community/async-storage';
 import url from '../Screens/Auth/Constants/constants';
 import axios from 'axios';
+import ImagePicker from 'react-native-image-picker';
 const CustomDrawer = ({navigation, route}) => {
   const Logout = async () => {
     await AsyncStorage.clear();
@@ -22,12 +23,29 @@ const CustomDrawer = ({navigation, route}) => {
   const [name, setName] = useState(null);
   const [email, setEmail] = useState(null);
   const [phone, setPhone] = useState(null);
-  const [truckData,setTruckData] = useState([])
-
-  const [urls,setUrl] =useState('');
+  const [truckData, setTruckData] = useState([]);
+  const [urls, setUrl] = useState('');
   useEffect(() => {
-    getUserDetails(); 
+    getUserDetails();
   }, []);
+  const SelectImage = () => {
+    const options = {
+      title: 'Select or Capture Your Image',
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+    ImagePicker.showImagePicker(options, response => {
+      if (response.didCancel) {
+      } else if (response.error) {
+      } else {
+        // console.log(response)
+        const img = response;
+        setUrl(img);
+      }
+    });
+  };
   const getUserDetails = async () => {
     let userId = await AsyncStorage.getItem('userID');
     axios
@@ -36,13 +54,13 @@ const CustomDrawer = ({navigation, route}) => {
         if (Response.data.code !== 'ABT0001') {
           let res = Response.data;
           let newArr = [{...res.Supplier[0], TruckInfo: res.TruckInfo}];
-          setUserInfo(newArr); 
-          setName(res.Supplier[0].profileName); 
+          setUserInfo(newArr);
+          setName(res.Supplier[0].profileName);
           setPhone(res.Supplier[0].phoneNumber);
           setEmail(res.Supplier[0].email);
-          setTruckData(res.TruckInfo)
-          setUrl(res.TruckInfo[0].truckLogo) 
-          console.log(res.TruckInfo[0].truckLogo) 
+          setTruckData(res.TruckInfo);
+          setUrl(res.TruckInfo[0].truckLogo);
+          console.log(res.TruckInfo[0].truckLogo);
           await AsyncStorage.setItem('TruckID' + '', res.TruckInfo[0]._id);
         }
       })
@@ -55,11 +73,24 @@ const CustomDrawer = ({navigation, route}) => {
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={styles.rowView}>
-            <Avatar source={{uri:urls}} rounded size="large" />
-            <View style={{marginLeft: 20,width:'60%'}}>
-              <Text style={styles.whiteText} numberOfLines={1}>{name}</Text>
-              <Text style={styles.whiteText}  numberOfLines={1}>{email}</Text> 
-              <Text style={styles.whiteText} numberOfLines={1}>{phone}</Text>
+            <Avatar
+              onPress={SelectImage}
+              icon={{name: 'user', type: 'font-awesome'}}
+              showEditButton
+              source={img.urls ? {uri: urls} : null}
+              rounded
+              size="large"
+            />
+            <View style={{marginLeft: 20, width: '60%'}}>
+              <Text style={styles.whiteText} numberOfLines={1}>
+                {name}
+              </Text>
+              <Text style={styles.whiteText} numberOfLines={1}>
+                {email}
+              </Text>
+              <Text style={styles.whiteText} numberOfLines={1}>
+                {phone}
+              </Text>
             </View>
           </View>
         </View>
@@ -81,15 +112,15 @@ const CustomDrawer = ({navigation, route}) => {
           />
           <ListItem
             title={'Customer Reviews'}
-            leftAvatar={
-              <Icon name="comment" type="fontAwesome" size={25} />
-            }
+            leftAvatar={<Icon name="comment" type="fontAwesome" size={25} />}
             onPress={() => navigation.navigate(Screens.CUSTOMERREVIEWD)}
           />
 
           <ListItem
             title={'Menu'}
-            leftAvatar={  <Icon name="restaurant-menu" type="MaterialIcons" size={25} />}
+            leftAvatar={
+              <Icon name="restaurant-menu" type="MaterialIcons" size={25} />
+            }
             onPress={() => navigation.navigate(Screens.MENUSETTINGDRAWER)}
           />
           <ListItem
@@ -100,7 +131,9 @@ const CustomDrawer = ({navigation, route}) => {
           <ListItem
             title={'Profile'}
             leftAvatar={<ProfileIcon name={'user'} size={25} />}
-            onPress={() => navigation.navigate(Screens.PROFILED,{UserData:userInfo})}
+            onPress={() =>
+              navigation.navigate(Screens.PROFILED, {UserData: userInfo})
+            }
           />
           <ListItem
             title={'Contact Us'}
@@ -131,12 +164,12 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingLeft: 20,
     paddingBottom: 20,
-    width:'100%'
+    width: '100%',
   },
   rowView: {
     flexDirection: 'row',
     alignItems: 'center',
-    width:'100%'
+    width: '100%',
   },
   content: {
     flex: 3,

@@ -14,7 +14,7 @@ const AuthLoading = ({navigation}) => {
     if (userType === 'Supplier') {
       console.log('in supplier');
       setTimeout(() => {
-        navigation.navigate('App');
+        navigation.replace('App');
         // navigation.dispatch(
         //   CommonActions.reset({
         //     index: 0,
@@ -25,7 +25,7 @@ const AuthLoading = ({navigation}) => {
     } else if (userType === 'Customer') {
       console.log('in Customer');
       setTimeout(() => {
-        navigation.navigate('Auth', {screen: 'Tabs'});
+        navigation.replace('Auth', {screen: 'Tabs'});
         // navigation.dispatch(
         //   CommonActions.reset({
         //     index: 0,
@@ -36,7 +36,7 @@ const AuthLoading = ({navigation}) => {
     } else if (userType === null) {
       console.log('No Token');
       setTimeout(() => {
-        navigation.navigate('Auth');
+        navigation.replace('Auth');
         // navigation.dispatch(
         //   CommonActions.reset({
         //     index: 0,

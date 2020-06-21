@@ -21,6 +21,7 @@ const Header = ({
   onPress,
   logout,
   navigation,
+  NoIcon,
   Logout,
 }) => {
   return (
@@ -28,7 +29,7 @@ const Header = ({
       <View style={[styles.default, style]}>
         <Text style={styles.text}>{children}</Text>
       </View>
-      {isHome ? (
+      {NoIcon ? null : isHome ? (
         <TouchableOpacity onPress={onPress} style={styles.homeIcon}>
           <Entypo
             name={'menu'}

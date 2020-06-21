@@ -114,24 +114,23 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
                   />
                   <Callout tooltip={true}>
                     <View style={styles.BOX}>
-                      {/* <View
+                      <View
                         style={{
                           width: responsiveWidth(30),
                           height: responsiveHeight(15),
                           borderRadius: 15,
-                          backgroundColor:'red'
-                        }}> */}
+                          backgroundColor: 'red',
+                        }}>
                         <Image
-                          // resizeMode={'contain'}
+                          resizeMode={'contain'}
                           style={{
-                            width: responsiveWidth(30),
-                            height: responsiveHeight(15),
-                            borderRadius: 15,
-                            // backgroundColor:'red'
+                            width: '100%',
+                            height: '100%',
+                            //  backgroundColor:'red'
                           }}
-                          source={require('../images/delivery-truck.png')}
+                          source={require('../images/button.png')}
                         />
-                      {/* </View> */}
+                      </View>
                       <View
                         style={{
                           width: responsiveWidth(40),
@@ -165,7 +164,9 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
             color={'red'}
             size={'small'}
           />
-          <Text style={{marginTop:responsiveHeight(7)}} >{'Fetching Current Location Please Wait.'}</Text>
+          <Text style={{marginTop: responsiveHeight(7)}}>
+            {'Fetching Current Location Please Wait.'}
+          </Text>
         </View>
       ) : null}
     </View>

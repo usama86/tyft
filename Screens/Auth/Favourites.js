@@ -105,7 +105,9 @@ const Favorite = ({navigation}) => {
       });
   };
   useEffect(() => {
-    getFavouriteRestaurants();
+    navigation.addListener('focus',()=>{
+      getFavouriteRestaurants();
+    })
   }, []);
   const PrintCard = (item, index) => (
     <TouchableOpacity

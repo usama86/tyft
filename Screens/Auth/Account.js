@@ -17,8 +17,8 @@ import * as Route from '../../Constants/RouteName';
 import url from './Constants/constants';
 import axios from 'axios';
 import Modal from '../../Component/Modal';
-import { CommonActions } from '@react-navigation/native';
-const Account = ({navigation}) => {
+import {CommonActions} from '@react-navigation/native';
+const Account = ({navigation, route}) => {
   const [name, SetName] = React.useState({value: null, errorText: null});
   const [email, setEmail] = React.useState({value: null, errorText: null});
   const [phone, setPhone] = React.useState({value: null, errorText: null});
@@ -39,16 +39,19 @@ const Account = ({navigation}) => {
     navigation.dispatch(
       CommonActions.reset({
         index: 0,
-        routes: [
-          { name: Route.SIGNIN },
-        ],
-      })
+        routes: [{name: Route.SIGNIN}],
+      }),
     );
   };
   const checkUserStatus = async () => {
+    console.log('Params in account=>..', route.params);
     let userType = await AsyncStorage.getItem('userType');
     if (userType !== null) {
       setLoggedin(true);
+      SetName({value: route.params.name, errorText: null});
+      setPhone({value: route.params.phone, errorText: null});
+      setEmail({value: route.params.email, errorText: null});
+      setLanguage(route.params.Language);
     } else {
       setLoggedin(false);
     }
@@ -106,20 +109,9 @@ const Account = ({navigation}) => {
     }
   };
   useEffect(() => {
-    checkUserStatus();
-    // if(route.params.UserData[0])
-    // {
-    //   let user = route.params.UserData[0];
-    //   if(user.profileName && user.email && user.phoneNumber )
-    //   {
-    //     SetName({value: route.params.UserData[0].profileName, errorText: null});
-    //     setEmail({value: route.params.UserData[0].email, errorText: null});
-    //     setPhone({value: route.params.UserData[0].phoneNumber, errorText: null});
-    //   }
-      
-       
-    // }
-    
+    navigation.addListener('focus', () => {
+      checkUserStatus();
+    });
   }, []);
   const changeEmail = e => {
     let EmailRegix = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -220,7 +212,7 @@ const Account = ({navigation}) => {
 
           <View style={styles.radioView}>
             <Radio
-              selected={'English' ? true : false}
+              selected={Language === 'English' ? true : false}
               onPress={e => {
                 setLanguage('English');
               }}
@@ -247,16 +239,42 @@ const Account = ({navigation}) => {
           </Modal>
         </Ui>
       ) : (
-        <View style={{flex: 1, alignItems: 'center',marginTop:responsiveHeight(10)}}>
+        <View
+          style={{
+            flex: 1,
+            alignItems: 'center',
+            marginTop: responsiveHeight(10),
+          }}>
           <Image
             resizeMode={'contain'}
             style={{width: '40%', height: '40%'}}
             source={require('../../images/2.jpg')}
           />
-          <View style={{width:responsiveWidth(82),marginLeft:responsiveWidth(14)}}>
-         <Text style={{color: '#696969',fontSize:responsiveFontSize(2),fontWeight:'bold'}} value={'A TYFT Account allows you to bookmark truck, review about them and make'} />
-         <Text style={{color: '#696969',fontSize:responsiveFontSize(2),fontWeight:'bold',marginLeft:responsiveWidth(22)}} value={'payment faster'}/>
-         </View>
+          <View
+            style={{
+              width: responsiveWidth(82),
+              marginLeft: responsiveWidth(14),
+            }}>
+            <Text
+              style={{
+                color: '#696969',
+                fontSize: responsiveFontSize(2),
+                fontWeight: 'bold',
+              }}
+              value={
+                'A TYFT Account allows you to bookmark truck, review about them and make'
+              }
+            />
+            <Text
+              style={{
+                color: '#696969',
+                fontSize: responsiveFontSize(2),
+                fontWeight: 'bold',
+                marginLeft: responsiveWidth(22),
+              }}
+              value={'payment faster'}
+            />
+          </View>
           <View style={{marginTop: responsiveHeight(10)}}>
             <Button
               onPress={() => {

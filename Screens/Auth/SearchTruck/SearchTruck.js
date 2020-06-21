@@ -83,7 +83,7 @@ const SearchTruck = ({navigation}) => {
   return (
     // <Container containerStyle={styles.ContainerStyles}>
     <SafeAreaView style={styles.parent}>
-      <Header onPress={() => navigation.goBack()}>{'Search Truck'}</Header>
+      <Header NoIcon onPress={() => navigation.goBack()}>{'Search Truck'}</Header>
       {indicator ? (
         <ActivityIndicator
           size={'large'}

@@ -6,6 +6,7 @@ import {
   Image,
   FlatList,
   ImageBackground,
+  Linking,
 } from 'react-native';
 import Container from './../../Component/Container';
 import Text from '../../Component/Text';
@@ -29,29 +30,25 @@ import axios from 'axios';
 const CustomerSupplier = ({navigation, route}) => {
   const [ToggleSwitch, setToggleSwitch] = useState(false);
   const [favoriteSwitch, setFavoriteSwitch] = useState(false);
-  const [ratingVal,setRatingVal] =useState(0)
+  const [ratingVal, setRatingVal] = useState(0);
   useEffect(() => {
-    console.log('Params=>', route.params.TruckInfo);
+    console.log('Params in=>', route.params.TruckInfo.socialMedia);
     getRating();
     getFavorite();
-  }, []);
-  const getRating = ()=>{
-    let ratingVal=0;
-    if(route.params.TruckInfo.customerReview)
-    {
-      let len =route.params.TruckInfo.customerReview.length;
-     
-      for(var i=0;i<len;i++)
-      {
-        ratingVal +=route.params.TruckInfo.customerReview[i].Rating
+  },[]);
+  const getRating = () => {
+    console.log('in get rating')
+    let RatingVal = 0;
+    let len = route.params.TruckInfo.customerReview.length;
+    if (route.params.TruckInfo.customerReview!==[]&&len>0) {
+      for (var i = 0; i < len; i++) {
+        RatingVal += route.params.TruckInfo.customerReview[i].Rating;
       }
-      ratingVal = ratingVal / route.params.TruckInfo.customerReview.length;
+      RatingVal = RatingVal / route.params.TruckInfo.customerReview.length;
+       setRatingVal(RatingVal);
     }
-
-    setRatingVal(ratingVal);
-
-  }
-  const getFavorite=async()=>{
+  };
+  const getFavorite = async () => {
     let userID = await AsyncStorage.getItem('userID');
     axios
       .post(url + '/api/supplier/getfavorite', {
@@ -59,6 +56,7 @@ const CustomerSupplier = ({navigation, route}) => {
       })
       .then(async Response => {
         if (Response.data.code === 'ABT0000') {
+          console.log('Get Fav',Response.data)
           setFavoriteSwitch(true);
         }
       })
@@ -89,7 +87,7 @@ const CustomerSupplier = ({navigation, route}) => {
       <View style={styles.HeaderContainer}>
         <ImageBackground
           style={styles.image}
-          source={{uri:route.params.TruckInfo.coverPhoto}}>
+          source={{uri: route.params.TruckInfo.coverPhoto}}>
           <Header onPress={() => navigation.goBack()}>
             {route.params.TruckInfo.truckName}
           </Header>
@@ -100,13 +98,12 @@ const CustomerSupplier = ({navigation, route}) => {
           <Text style={styles.Btntext} value={'Info'} />
         </Button>
         <Button
-          onPress={() =>{
+          onPress={() => {
             // console.log(route.params.TruckInfo.MenuID);
             navigation.navigate(RouteName.MENU, {
               Menu: route.params.TruckInfo.MenuID,
-            })
-          }
-          }
+            });
+          }}
           style={[styles.Button, {backgroundColor: 'white'}]}>
           <Text style={[styles.Btntext, {color: 'black'}]} value={'Menu'} />
         </Button>
@@ -138,7 +135,9 @@ const CustomerSupplier = ({navigation, route}) => {
             name={'heart'}
             // color={'#212121'}sadsd
             size={responsiveFontSize(3)}
-            onPress={()=>{setFavorite(false)}}
+            onPress={() => {
+              setFavorite(false);
+            }}
           />
         ) : (
           <Entypo
@@ -150,7 +149,9 @@ const CustomerSupplier = ({navigation, route}) => {
             name={'heart-outlined'}
             // color={'#212121'}sadsd
             size={responsiveFontSize(3)}
-            onPress={()=>{setFavorite(true)}}
+            onPress={() => {
+              setFavorite(true);
+            }}
           />
         )}
       </View>
@@ -239,21 +240,32 @@ const CustomerSupplier = ({navigation, route}) => {
         />
       </View>
       <View style={styles.SocialIcons}>
-        <AntDesign
-          name={'twitter'}
-          color={'#212121'}
-          size={responsiveFontSize(2.5)}
-        />
-        <AntDesign
-          name={'instagram'}
-          color={'#212121'}
-          size={responsiveFontSize(2.5)}
-        />
-        <AntDesign
-          name={'facebook-square'}
-          color={'#212121'}
-          size={responsiveFontSize(2.5)}
-        />
+        {route.params.TruckInfo.socialMedia.twitter ? (
+          <AntDesign
+            onPress={() =>
+              Linking.openURL(route.params.TruckInfo.socialMedia.twitter)
+            }
+            name={'twitter'}
+            color={'#212121'}
+            size={responsiveFontSize(2.5)}
+          />
+        ) : null}
+        {route.params.TruckInfo.socialMedia.instagram ? (
+          <AntDesign
+            onPress={() => Linking.openURL(route.params.TruckInfo.socialMedia.instagram)}
+            name={'instagram'}
+            color={'#212121'}
+            size={responsiveFontSize(2.5)}
+          />
+        ) : null}
+        {route.params.TruckInfo.socialMedia.facebook ? (
+          <AntDesign
+            onPress={() => Linking.openURL(route.params.TruckInfo.socialMedia.facebook)}
+            name={'facebook-square'}
+            color={'#212121'}
+            size={responsiveFontSize(2.5)}
+          />
+        ) : null}
       </View>
     </Container>
   );
