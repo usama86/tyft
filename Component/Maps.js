@@ -11,6 +11,7 @@ import {
 import {Button} from 'native-base';
 import MapView, {Marker, PROVIDER_GOOGLE, Callout} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
+import FA5 from 'react-native-vector-icons/FontAwesome5';
 import {
   responsiveHeight,
   responsiveWidth,
@@ -151,7 +152,7 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
                           width: responsiveWidth(40),
                           paddingLeft: responsiveWidth(2),
                         }}>
-                        <Text style={styles.TruckName}>{item.truckName}ss</Text>
+                        <Text style={styles.TruckName}>{item.truckName}</Text>
                         <Text
                           style={[
                             item.status === 'Close'
@@ -160,6 +161,18 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
                           ]}>
                           {item.status}
                         </Text>
+                        <View style={{flexDirection:'row',width:'90%',height:responsiveHeight(5),alignItems:'center'}}>
+                          <FA5 name={'directions'} color={'green'} size={responsiveFontSize(3)} />
+                        <Text
+                          style={[
+                            {marginLeft:responsiveWidth(1)},
+                            item.status === 'Close'
+                              ? {color: 'red'}
+                              : {color: 'green'},
+                          ]}>
+                          {'Get Directions'}
+                        </Text>
+                        </View>
                       </View>
                     </View>
                   </Callout>

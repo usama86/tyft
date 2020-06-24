@@ -18,6 +18,7 @@ import url from './Constants/constants';
 import axios from 'axios';
 import Modal from '../../Component/Modal';
 import {CommonActions} from '@react-navigation/native';
+
 const Account = ({navigation, route}) => {
   const [name, SetName] = React.useState({value: null, errorText: null});
   const [email, setEmail] = React.useState({value: null, errorText: null});
@@ -34,6 +35,7 @@ const Account = ({navigation, route}) => {
   const [Language, setLanguage] = React.useState('English');
   const [isLoading, setisLoading] = React.useState(false);
   const [update, setUpdated] = React.useState(null);
+  const [islogout, setisLogout] = React.useState(null);
   const Logout = async () => {
     await AsyncStorage.clear();
     navigation.dispatch(
@@ -42,6 +44,7 @@ const Account = ({navigation, route}) => {
         routes: [{name: Route.SIGNIN}],
       }),
     );
+    setisLogout(false);
   };
   const checkUserStatus = async () => {
     console.log('Params in account=>..', route.params);
@@ -141,15 +144,13 @@ const Account = ({navigation, route}) => {
     <View style={{height: '100%', width: '100%'}}>
       {LoggedIn ? (
         <Header
-          logout
-          Logout={Logout}
           navigation={navigation}
           onPress={() => navigation.goBack()}>
-          {'Account'}
+          {'Update Account'}
         </Header>
       ) : (
         <Header navigation={navigation} onPress={() => navigation.goBack()}>
-          {'Account'}
+          {'Update Account'}
         </Header>
       )}
 
@@ -342,5 +343,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginLeft: responsiveWidth(3),
   },
+
 });
 export default Account;

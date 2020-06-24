@@ -20,6 +20,7 @@ import Modal from '../../Component/Modal';
 import {Avatar, Icon, ListItem} from 'react-native-elements';
 import {CommonActions} from '@react-navigation/native';
 import ImagePicker from 'react-native-image-picker';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 const AccountInfo = ({navigation}) => {
   const [name, SetName] = React.useState('');
   const [email, setEmail] = React.useState('');
@@ -37,15 +38,17 @@ const AccountInfo = ({navigation}) => {
   const [LoggedIn, setLoggedin] = React.useState(false);
   const [isLoading, setisLoading] = React.useState(false);
   const [update, setUpdated] = React.useState(null);
-  const [img,setImage] =React.useState(null);
+  const [img, setImage] = React.useState(null);
+  const [islogout, setisLogout] = React.useState(null);
   const Logout = async () => {
     await AsyncStorage.clear();
     navigation.dispatch(
       CommonActions.reset({
         index: 0,
-        routes: [{name: Route.HOME}],
+        routes: [{name: Route.SIGNIN}],
       }),
     );
+    setisLogout(false);
   };
   const checkUserStatus = async () => {
     let userType = await AsyncStorage.getItem('userType');
@@ -59,24 +62,24 @@ const AccountInfo = ({navigation}) => {
     checkUserStatus();
     getData();
   }, []);
-const SelectImage  =()=>{
-  const options = {
-    title: 'Select or Capture Your Image',
-    storageOptions: {
-      skipBackup: true,
-      path: 'images',
-    },
-  }; 
-  ImagePicker.showImagePicker(options, response => {
-    if (response.didCancel) {
-    } else if (response.error) {
-    } else {
-      // console.log(response)
-      const img = response;
-      setImage(img);
-    }
-  });
-}
+  const SelectImage = () => {
+    const options = {
+      title: 'Select or Capture Your Image',
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+    ImagePicker.showImagePicker(options, response => {
+      if (response.didCancel) {
+      } else if (response.error) {
+      } else {
+        // console.log(response)
+        const img = response;
+        setImage(img);
+      }
+    });
+  };
   const getData = async () => {
     let id = await AsyncStorage.getItem('userID');
     let name = await AsyncStorage.getItem('userName');
@@ -110,7 +113,7 @@ const SelectImage  =()=>{
       {LoggedIn ? (
         <Header
           logout
-          Logout={Logout}
+          Logout={() => setisLogout(true)}
           navigation={navigation}
           onPress={() => navigation.goBack()}>
           {'Account'}
@@ -140,7 +143,7 @@ const SelectImage  =()=>{
             <View style={styles.header}>
               <View style={styles.rowView}>
                 <Avatar
-                  source={img?{uri: img.uri}:null}
+                  source={img ? {uri: img.uri} : null}
                   icon={{name: 'user', type: 'font-awesome'}}
                   showEditButton
                   rounded
@@ -199,6 +202,57 @@ const SelectImage  =()=>{
               />
             </View>
           </View>
+          <Modal ModalContainer={styles.modalView} showModal={islogout}>
+            <View style={styles.IconView}>
+              <AntDesign
+                name={'questioncircle'}
+                color={'black'}
+                size={responsiveFontSize(10)}
+              />
+            </View>
+            <Text
+              style={{textAlign:'center',fontWeight:'bold',fontSize:responsiveFontSize(2)}}
+              value={'Are you sure you wanna Signout?'}
+            />
+            <View style={styles.ButtonView}>
+              <Button
+                onPress={Logout}
+                style={{
+                  width: '40%',
+                  height: responsiveHeight(6),
+                  backgroundColor: 'rgb(193, 32, 38)',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  alignSelf: 'center',
+                  marginTop: responsiveHeight(4),
+                }}
+                rounded>
+                <Text
+                  uppercase={false}
+                  value={'Yes'}
+                  style={{color: '#fff', fontWeight: 'bold'}}
+                />
+              </Button>
+              <Button
+                onPress={() => setisLogout(false)}
+                style={{
+                  width: '40%',
+                  height: responsiveHeight(6),
+                  backgroundColor: 'rgb(193, 32, 38)',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  alignSelf: 'center',
+                  marginTop: responsiveHeight(4),
+                }}
+                rounded>
+                <Text
+                  uppercase={false}
+                  value={'No'}
+                  style={{color: '#fff', fontWeight: 'bold'}}
+                />
+              </Button>
+            </View>
+          </Modal>
         </Ui>
       ) : (
         <View
@@ -281,7 +335,7 @@ const styles = StyleSheet.create({
   IconView: {
     width: '90%',
     alignSelf: 'center',
-    height: responsiveHeight(20),
+    height: responsiveHeight(15),
     justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: responsiveHeight(2),
@@ -318,6 +372,14 @@ const styles = StyleSheet.create({
   ContainerStyle: {
     //   backgroundColor:'red',
     marginTop: responsiveHeight(3),
+  },
+  ButtonView: {
+    height: responsiveHeight(8),
+    width: '90%',
+    alignSelf: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 });
 export default AccountInfo;

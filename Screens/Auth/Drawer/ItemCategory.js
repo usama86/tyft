@@ -23,6 +23,9 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Modal from '../../../Component/Modal';
 import Input from '../../../Component/Input';
 import Button from '../../../Component/Button';
+import AddItemModal from '../../../Component/Modal';
+import Select from '../../../Component/Select';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 const ItemCategory = ({navigation}) => {
   const [menuItem, setMenuItem] = useState();
   const [showModal, setShowModal] = React.useState(false);
@@ -30,11 +33,34 @@ const ItemCategory = ({navigation}) => {
   const [indicator, setIndicator] = useState(false);
   const [Data, setData] = useState([]);
   const [selected, setSelected] = useState(0);
+  const [addItem, setAddItem] = React.useState(false);
+  const [SelectedValue, setSelectedValue] = React.useState(null);
+  const [showModalAddCatgory, setShowModalAddCategory] = useState(false);
+  const [category, setCategory] = React.useState(null);
+  const [Categories, setCategories] = React.useState([
+    {label: 'Italian Food', value: 'Italian Food'},
+    {label: 'Thai', value: 'Thai'},
+  ]);
+  const [name, setName] = React.useState({
+    value: null,
+    Error: false,
+    ErrorText: null,
+  });
+  const [description, setDescription] = React.useState({
+    value: null,
+    Error: false,
+    ErrorText: null,
+  });
+  const [price, setPrice] = React.useState({
+    value: null,
+    Error: false,
+    ErrorText: null,
+  });
   useEffect(() => {
     getMenuOfSupplier();
   }, []);
 
-  const deleteItem = async() =>{
+  const deleteItem = async () => {
     console.log(selected);
     let MenuID = await AsyncStorage.getItem('MenuID');
     let copiedData = [...Data];
@@ -51,14 +77,13 @@ const ItemCategory = ({navigation}) => {
         if (ERROR === 'ABT0000') {
           console.log('Updated');
           setData(copiedData);
-          setDeleteModal(false); 
+          setDeleteModal(false);
         }
       })
       .catch(error => {
         console.log(error);
       });
-  
-  }
+  };
   const getMenuOfSupplier = async () => {
     setIndicator(true);
     let MenuID = await AsyncStorage.getItem('MenuID');
@@ -114,15 +139,61 @@ const ItemCategory = ({navigation}) => {
           onPress={() => {
             // let x;
             setSelected(index);
-            setDeleteModal(true)
+            setDeleteModal(true);
           }}
         />
       </View>
     </TouchableOpacity>
   );
+  const AddToList = () => {
+    let newId = 0;
+    let newArray = [...Data];
+    if (!name.value) {
+      setName({value: null, Error: true, ErrorText: 'Name is required.'});
+    }
+    if (!description.value) {
+      setDescription({
+        value: null,
+        Error: true,
+        ErrorText: 'Description is required.',
+      });
+    }
+    if (!price.value) {
+      setPrice({value: null, Error: true, ErrorText: 'Price is required.'});
+    } else if (name.value && description.value && price.value) {
+      newArray.push({
+        name: name.value,
+        price: price.value,
+        description: description.value,
+        category: SelectedValue,
+      });
+      setData(newArray);
+    }
+  };
+  const changeCategory = e => {
+    if (e === '') {
+      setCategory(null);
+    } else if (e) {
+      setCategory(e);
+      console.log('Category is here', e);
+    }
+  };
+  const closeModal = () => {
+    let newArr = [...Categories];
+    if (category) {
+      newArr.unshift({label: category, value: category});
+      setSelectedValue(category);
+    }
+    setCategories(newArr);
+    setShowModal(false);
+  };
   return (
     <SafeAreaView style={styles.parent}>
-      <Header isHome onPress={() => navigation.openDrawer()}>
+      <Header
+        Add
+        onAddPress={() => setAddItem(true)}
+        isHome
+        onPress={() => navigation.openDrawer()}>
         {'Menu Category'}
       </Header>
       {/* <View style={styles.HeadingContainer}>
@@ -147,6 +218,146 @@ const ItemCategory = ({navigation}) => {
           renderItem={({item, index}) => PrintCard(item, index)}
         />
       )}
+      <AddItemModal
+        ModalContainer={{
+          paddingVertical: responsiveHeight(2),
+          paddingHorizontal: responsiveWidth(2),
+        }}
+        showModal={addItem}>
+        {/* <View style={{height: responsiveHeight(33),paddingVertical:responsiveHeight(2),paddingHorizontal:responsiveWidth(2)}}> */}
+        {/* <ScrollView> */}
+        <View
+          style={[
+            styles.CrossView,
+            {alignSelf: 'flex-end', marginRight: responsiveWidth(2)},
+          ]}>
+          <Entypo
+            name={'circle-with-cross'}
+            color={'black'}
+            size={responsiveFontSize(3.2)}
+            onPress={() => setAddItem(false)}
+          />
+        </View>
+        <View
+          style={{
+            width: '80%',
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+          <Select
+            itemList={Categories}
+            value={SelectedValue}
+            onChange={e => setSelectedValue(e)}
+            containerStyle={{width: '100%'}}
+            style={[styles.Input, {width: '100%'}]}
+          />
+          <TouchableOpacity
+            onPress={() => setShowModalAddCategory(true)}
+            style={{left: responsiveWidth(7)}}>
+            <AntDesign
+              name={'pluscircle'}
+              color={'rgb(193, 32, 38)'}
+              size={responsiveFontSize(3)}
+            />
+          </TouchableOpacity>
+        </View>
+
+        {/* <Input
+          rounded
+          placeholder="Name"
+          onChangeText={e => setName({value: e, Error: false, ErrorText: null})}
+          value={name.value}
+          style={[styles.Input, {marginTop: responsiveHeight(3), width: '90%'}]}
+        />
+        {name.Error ? <ErrorView>{name.ErrorText}</ErrorView> : null}
+        <Input
+          rounded
+          placeholder="Description"
+          onChangeText={e =>
+            setDescription({value: e, Error: false, ErrorText: null})
+          }
+          value={description.value}
+          style={[styles.Input, {marginTop: responsiveHeight(3), width: '90%'}]}
+        />
+        {description.Error ? (
+          <ErrorView>{description.ErrorText}</ErrorView>
+        ) : null}
+        <Input
+          rounded
+          placeholder="Price"
+          keyboardType={'number-pad'}
+          onChangeText={e =>
+            setPrice({value: e, Error: false, ErrorText: null})
+          }
+          value={price.value}
+          style={[styles.Input, {marginTop: responsiveHeight(3), width: '90%'}]}
+        />
+        {price.Error ? <ErrorView>{price.ErrorText}</ErrorView> : null} */}
+        {/* </ScrollView> */}
+        {/* </View> */}
+        <View style={styles.TextView}>
+          <Button style={styles.buttonStyle2} onPress={AddToList}>
+            <Text
+              uppercase={true}
+              value={'Add to List'}
+              style={{color: 'white'}}
+            />
+          </Button>
+        </View>
+      </AddItemModal>
+      <Modal showModal={showModalAddCatgory}>
+        <View
+          style={{
+            width: '100%',
+            backgroundColor: '#fff',
+            paddingVertical: responsiveHeight(2),
+            paddingHorizontal: responsiveWidth(2),
+            borderRadius: 8,
+          }}>
+          <View
+            style={[
+              styles.CrossView,
+              {alignSelf: 'flex-end', marginRight: responsiveWidth(2)},
+            ]}>
+            <Entypo
+              name={'circle-with-cross'}
+              color={'black'}
+              size={responsiveFontSize(3.2)}
+              onPress={() => setShowModalAddCategory(false)}
+            />
+          </View>
+          <Text style={{textAlign: 'center'}} value={'Add Category'} bold />
+          <Input
+            rounded
+            onChangeText={e => changeCategory(e)}
+            value={category}
+            placeholder="Category"
+            style={{
+              width: '90%',
+              alignSelf: 'center',
+              marginTop: responsiveHeight(2),
+            }}
+          />
+          <Button
+            onPress={() => setShowModalAddCategory(true)}
+            style={{
+              width: '80%',
+              height: responsiveHeight(6),
+              backgroundColor: 'rgb(193, 32, 38)',
+              justifyContent: 'center',
+              alignItems: 'center',
+              alignSelf: 'center',
+              marginTop: responsiveHeight(4),
+            }}
+            rounded>
+            <Text
+              uppercase={false}
+              value={'Add'}
+              style={{color: '#fff', fontWeight: 'bold'}}
+            />
+          </Button>
+        </View>
+      </Modal>
       <Modal showModal={showModal}>
         <View
           style={{
@@ -300,7 +511,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'flex-end',
     width: '10%',
-    alignSelf: 'center', 
+    alignSelf: 'center',
+  },
+  TextView: {
+    height: responsiveHeight(10),
+    justifyContent: 'center',
+    width: '100%',
+    borderBottomWidth: 1,
+    borderBottomColor: 'grey',
+  },
+  buttonStyle2: {
+    backgroundColor: 'rgb(193, 32, 38)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '28%',
+    height: responsiveHeight(5),
+    borderRadius: 8,
   },
 });
 
