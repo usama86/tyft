@@ -16,7 +16,7 @@ import {
   responsiveWidth,
   responsiveFontSize,
 } from 'react-native-responsive-dimensions';
-
+import {showLocation} from 'react-native-map-link';
 const Maps = ({MapContainerStyle, Trucks, navigation}) => {
   const [markerLat, setMarkerLat] = React.useState(30.3753);
   const [markerLong, setMarkerLong] = React.useState(69.3451);
@@ -52,6 +52,24 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
     getCurrentLocation();
     // })
   }, []);
+  const openMap = (sourceLat, sourceLong) => {
+    showLocation({
+      latitude: Lat,
+      longitude: Long,
+      sourceLatitude: sourceLat, // optionally specify starting location for directions
+      sourceLongitude: sourceLong, // not optional if sourceLatitude is specified
+      title: 'The White House', // optional
+      googleForceLatLon: false, // optionally force GoogleMaps to use the latlon for the query instead of the title
+      googlePlaceId: 'ChIJGVtI4by3t4kRr51d_Qm_x58', // optionally specify the google-place-id
+      alwaysIncludeGoogle: true, // optional, true will always add Google Maps to iOS and open in Safari, even if app is not installed (default: false)
+      dialogTitle: 'This is the dialog Title', // optional (default: 'Open in Maps')
+      dialogMessage: 'This is the amazing dialog Message', // optional (default: 'What app would you like to use?')
+      cancelText: 'This is the cancel button text', // optional (default: 'Cancel')
+      appsWhiteList: ['google-maps'], // optionally you can set which apps to show (default: will show all supported apps installed on device)
+      // appTitles: { 'google-maps': 'My custom Google Maps title' } // optionally you can override default app titles
+      // app: 'uber'  // optionally specify specific app to use
+    });
+  };
   const getCurrentLocation = async () => {
     setLoadingMap(true);
     console.log('hi in get Current');
@@ -63,6 +81,8 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
           latitudeDelta: LATITUDE_DELTA,
           longitudeDelta: LONGITUDE_DELTA,
         };
+        await setLat(position.coords.latitude);
+        await setLong(position.coords.longitude);
         await setLoadingMap(false);
         await setRegionInMap(region);
         // await console.log('CURRENT LOCATION IN GETLOCATION', region);
@@ -87,14 +107,7 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
         onMapReady={() => {
           setMapReady(true);
         }}
-        ref={mapView}
-        // region={{
-        //   latitude: 33.598085,
-        //   longitude: 73.1242303,
-        //   latitudeDelta: 0.015,
-        //   longitudeDelta: 0.0121,
-        // }}
-      >
+        ref={mapView}>
         {Trucks ? (
           Trucks.map((item, index) => {
             if (item.latitude && item.longitude) {
@@ -112,7 +125,9 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
                     }}
                     source={require('../images/delivery-truck.png')}
                   />
-                  <Callout tooltip={true}>
+                  <Callout
+                    onPress={() => openMap(item.latitude, item.longitude)}
+                    tooltip={true}>
                     <View style={styles.BOX}>
                       <View
                         style={{

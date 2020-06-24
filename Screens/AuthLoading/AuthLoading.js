@@ -13,7 +13,7 @@ const AuthLoading = ({navigation}) => {
     await console.log('Got Token', userID);
     if (userType === 'Supplier') {
       console.log('in supplier');
-      setTimeout(() => {
+      // setTimeout(() => {
         navigation.replace('App');
         // navigation.dispatch(
         //   CommonActions.reset({
@@ -21,10 +21,10 @@ const AuthLoading = ({navigation}) => {
         //     routes: [{name: 'App'}],
         //   }),
         // );
-      }, 2000);
+      // }, 2000);
     } else if (userType === 'Customer') {
-      console.log('in Customer');
-      setTimeout(() => {
+      // console.log('in Customer');
+      // setTimeout(() => {
         navigation.replace('Auth', {screen: 'Tabs'});
         // navigation.dispatch(
         //   CommonActions.reset({
@@ -32,10 +32,10 @@ const AuthLoading = ({navigation}) => {
         //     routes: [{name: 'Tabs'}],
         //   }),
         // );
-      }, 2000);
+      // }, 2000);
     } else if (userType === null) {
-      console.log('No Token');
-      setTimeout(() => {
+      // console.log('No Token');
+      // setTimeout(() => {
         navigation.replace('Auth');
         // navigation.dispatch(
         //   CommonActions.reset({
@@ -43,7 +43,7 @@ const AuthLoading = ({navigation}) => {
         //     routes: [{name: 'Auth'}],
         //   }),
         // );
-      }, 2000);
+      // }, 2000);
     }
   };
   useEffect(() => {

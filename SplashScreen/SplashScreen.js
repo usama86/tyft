@@ -17,7 +17,7 @@ const SplashScreen = ({navigation}) => {
   React.useEffect(()=>{
     setTimeout(() => {
       setVal('zoomOutDown')
-    }, 4000);
+    }, 2000);
   },[])
   return (
     <Animation container={styles.container} navigation={navigation} animationsIn={'zoomInDown'}  animationOut={val}>
