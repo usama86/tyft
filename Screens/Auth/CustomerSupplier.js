@@ -27,6 +27,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import AsyncStorage from '@react-native-community/async-storage';
 import url from './Constants/constants';
 import axios from 'axios';
+import FA5 from 'react-native-vector-icons/FontAwesome5';
 const CustomerSupplier = ({navigation, route}) => {
   const [ToggleSwitch, setToggleSwitch] = useState(false);
   const [favoriteSwitch, setFavoriteSwitch] = useState(false);
@@ -35,17 +36,17 @@ const CustomerSupplier = ({navigation, route}) => {
     console.log('Params in=>', route.params.TruckInfo.socialMedia);
     getRating();
     getFavorite();
-  },[]);
+  }, []);
   const getRating = () => {
-    console.log('in get rating')
+    console.log('in get rating');
     let RatingVal = 0;
     let len = route.params.TruckInfo.customerReview.length;
-    if (route.params.TruckInfo.customerReview!==[]&&len>0) {
+    if (route.params.TruckInfo.customerReview !== [] && len > 0) {
       for (var i = 0; i < len; i++) {
         RatingVal += route.params.TruckInfo.customerReview[i].Rating;
       }
       RatingVal = RatingVal / route.params.TruckInfo.customerReview.length;
-       setRatingVal(RatingVal);
+      setRatingVal(RatingVal);
     }
   };
   const getFavorite = async () => {
@@ -56,7 +57,7 @@ const CustomerSupplier = ({navigation, route}) => {
       })
       .then(async Response => {
         if (Response.data.code === 'ABT0000') {
-          console.log('Get Fav',Response.data)
+          console.log('Get Fav', Response.data);
           setFavoriteSwitch(true);
         }
       })
@@ -173,7 +174,7 @@ const CustomerSupplier = ({navigation, route}) => {
       <View
         style={{
           flexDirection: 'row',
-          width: '30%',
+          width: '100%',
           justifyContent: 'space-between',
           marginLeft: responsiveWidth(3),
         }}>
@@ -185,6 +186,37 @@ const CustomerSupplier = ({navigation, route}) => {
           }}
           value={'OPEN'}
         />
+        <TouchableOpacity
+          onPress={() =>
+            route.params.openMap(
+              route.params.TruckInfo.latitude,
+              route.params.TruckInfo.longitude,
+            )
+          }
+          style={{
+            flexDirection: 'row',
+            width: '40%',
+            height: responsiveHeight(5),
+            alignItems: 'center',
+            marginLeft: responsiveWidth(3),
+            alignSelf: 'flex-end',
+          }}>
+          <FA5
+            name={'directions'}
+            color={'green'}
+            size={responsiveFontSize(3)}
+          />
+          <Text
+            style={{marginLeft: responsiveWidth(2)}}
+            value={'Get Directions'}
+          />
+          {/* <Text
+                            style={[
+                              {marginLeft: responsiveWidth(1)},
+                            ]}>
+                            {'Get Directions'}
+                          </Text> */}
+        </TouchableOpacity>
       </View>
       <View
         style={{
@@ -209,7 +241,9 @@ const CustomerSupplier = ({navigation, route}) => {
           value={route.params.TruckInfo.truckEmail}
         />
       </View>
-      <View style={styles.iconView}>
+      <TouchableOpacity
+        onPress={() => Linking.openURL(route.params.TruckInfo.truckWebsite)}
+        style={styles.iconView}>
         <Foundation
           style={{marginLeft: responsiveWidth(1), width: '20%'}}
           name={'shield'}
@@ -223,7 +257,7 @@ const CustomerSupplier = ({navigation, route}) => {
           }}
           value={route.params.TruckInfo.truckWebsite}
         />
-      </View>
+      </TouchableOpacity>
       <View style={styles.iconView}>
         <AntDesign
           style={{marginLeft: responsiveWidth(1), width: '20%'}}
@@ -241,30 +275,67 @@ const CustomerSupplier = ({navigation, route}) => {
       </View>
       <View style={styles.SocialIcons}>
         {route.params.TruckInfo.socialMedia.twitter ? (
-          <AntDesign
+          <TouchableOpacity
+          style={{width:responsiveWidth(5),height:responsiveHeight(2.5)}}
             onPress={() =>
               Linking.openURL(route.params.TruckInfo.socialMedia.twitter)
-            }
-            name={'twitter'}
-            color={'#212121'}
-            size={responsiveFontSize(2.5)}
-          />
-        ) : null}
+            }>
+            <Image
+              style={{width: '100%', height: '100%'}}
+              resizeMode={'contain'}
+              source={require('../../images/twitter.png')}
+            />
+          </TouchableOpacity>
+        ) : // <AntDesign
+        //   onPress={() =>
+        //     Linking.openURL(route.params.TruckInfo.socialMedia.twitter)
+        //   }
+        //   name={'twitter'}
+        //   color={'#212121'}
+        //   size={responsiveFontSize(2.5)}
+        // />
+        null}
         {route.params.TruckInfo.socialMedia.instagram ? (
-          <AntDesign
-            onPress={() => Linking.openURL(route.params.TruckInfo.socialMedia.instagram)}
-            name={'instagram'}
-            color={'#212121'}
-            size={responsiveFontSize(2.5)}
-          />
+                   <TouchableOpacity
+                   style={{width:responsiveWidth(5),height:responsiveHeight(2.5)}}
+                   onPress={() =>
+                     Linking.openURL(route.params.TruckInfo.socialMedia.instagram)
+                   }>
+                   <Image
+                     style={{width: '100%', height: '100%'}}
+                     resizeMode={'contain'}
+                     source={require('../../images/instagram-sketched.png')}
+                   />
+                 </TouchableOpacity>
+          // <AntDesign
+          //   onPress={() =>
+          //     Linking.openURL(route.params.TruckInfo.socialMedia.instagram)
+          //   }
+          //   name={'instagram'}
+          //   color={'#212121'}
+          //   size={responsiveFontSize(2.5)}
+          // />
         ) : null}
         {route.params.TruckInfo.socialMedia.facebook ? (
-          <AntDesign
-            onPress={() => Linking.openURL(route.params.TruckInfo.socialMedia.facebook)}
-            name={'facebook-square'}
-            color={'#212121'}
-            size={responsiveFontSize(2.5)}
-          />
+                      <TouchableOpacity
+                      style={{width:responsiveWidth(5),height:responsiveHeight(2.5)}}
+                      onPress={() =>
+                        Linking.openURL(route.params.TruckInfo.socialMedia.facebook)
+                      }>
+                      <Image
+                        style={{width: '100%', height: '100%'}}
+                        resizeMode={'contain'}
+                        source={require('../../images/facebook.png')}
+                      />
+                    </TouchableOpacity>
+          // <AntDesign
+          //   onPress={() =>
+          //     Linking.openURL(route.params.TruckInfo.socialMedia.facebook)
+          //   }
+          //   name={'facebook-square'}
+          //   color={'#212121'}
+          //   size={responsiveFontSize(2.5)}
+          // />
         ) : null}
       </View>
     </Container>

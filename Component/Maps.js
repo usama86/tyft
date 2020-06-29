@@ -12,6 +12,7 @@ import {Button} from 'native-base';
 import MapView, {Marker, PROVIDER_GOOGLE, Callout} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import FA5 from 'react-native-vector-icons/FontAwesome5';
+import * as RouteName from '../Constants/RouteName';
 import {
   responsiveHeight,
   responsiveWidth,
@@ -54,6 +55,10 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
     // })
   }, []);
   const openMap = (sourceLat, sourceLong) => {
+    console.log('source lat', sourceLat);
+    console.log('sorce long', sourceLong);
+    console.log('Lat', Lat);
+    console.log('Long', Long);
     showLocation({
       latitude: Lat,
       longitude: Long,
@@ -111,6 +116,7 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
         ref={mapView}>
         {Trucks ? (
           Trucks.map((item, index) => {
+            console.log('item=>>>', item);
             if (item.latitude && item.longitude) {
               return (
                 <Marker
@@ -127,26 +133,26 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
                     source={require('../images/delivery-truck.png')}
                   />
                   <Callout
-                    onPress={() => openMap(item.latitude, item.longitude)}
+                    onPress={
+                      () =>
+                        navigation.navigate('Search', {
+                          screen: RouteName.CUSTOMERSUPPLIER,
+                          params: {TruckInfo: item, openMap: openMap},
+                        })
+                      // navigation.navigate(RouteName.CUSTOMERSUPPLIER, {
+                      //   TruckInfo: item,
+                      //   openMap: openMap,
+                      // })
+                    }
                     tooltip={true}>
                     <View style={styles.BOX}>
-                      <View
-                        style={{
-                          width: responsiveWidth(30),
-                          height: responsiveHeight(15),
-                          borderRadius: 15,
-                          backgroundColor: 'red',
-                        }}>
+                      <Text>
                         <Image
-                          resizeMode={'contain'}
-                          style={{
-                            width: '100%',
-                            height: '100%',
-                            //  backgroundColor:'red'
-                          }}
-                          source={require('../images/button.png')}
+                          style={{height: 300, width: 100}}
+                          source={{uri: item.coverPhoto}}
+                          resizeMode="cover"
                         />
-                      </View>
+                      </Text>
                       <View
                         style={{
                           width: responsiveWidth(40),
@@ -161,18 +167,28 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
                           ]}>
                           {item.status}
                         </Text>
-                        <View style={{flexDirection:'row',width:'90%',height:responsiveHeight(5),alignItems:'center'}}>
-                          <FA5 name={'directions'} color={'green'} size={responsiveFontSize(3)} />
-                        <Text
-                          style={[
-                            {marginLeft:responsiveWidth(1)},
-                            item.status === 'Close'
-                              ? {color: 'red'}
-                              : {color: 'green'},
-                          ]}>
-                          {'Get Directions'}
-                        </Text>
-                        </View>
+                        {/* <View
+                          style={{
+                            flexDirection: 'row',
+                            width: '90%',
+                            height: responsiveHeight(5),
+                            alignItems: 'center',
+                          }}>
+                          <FA5
+                            name={'directions'}
+                            color={'green'}
+                            size={responsiveFontSize(3)}
+                          />
+                          <Text
+                            style={[
+                              {marginLeft: responsiveWidth(1)},
+                              item.status === 'Close'
+                                ? {color: 'red'}
+                                : {color: 'green'},
+                            ]}>
+                            {'Get Directions'}
+                          </Text>
+                        </View> */}
                       </View>
                     </View>
                   </Callout>

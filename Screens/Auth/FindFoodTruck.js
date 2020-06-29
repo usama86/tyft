@@ -29,7 +29,9 @@ import url from './Constants/constants';
 import axios from 'axios';
 import moment from 'moment';
 import FuzzySearch from 'fuzzy-search'; // Or: var FuzzySearch = require('fuzzy-search');
-
+import Geolocation from '@react-native-community/geolocation';
+import {showLocation} from 'react-native-map-link';
+import FA5 from 'react-native-vector-icons/FontAwesome5';
 const FindFoodTruck = ({navigation, route}) => {
   const [Data, setData] = useState([]);
   const [day, setDay] = useState(null);
@@ -39,6 +41,9 @@ const FindFoodTruck = ({navigation, route}) => {
   const [buttonData, setButtonData] = React.useState([]);
   const [indicator, setIndicator] = React.useState(true);
   const [cusineName, setCusineName] = useState(null);
+  const [Lat, setLat] = React.useState(0.0);
+  const [Long, setLong] = React.useState(0.0);
+
   const onChangeSearch = val => {
     setSearchVal(val);
     if (val == '') {
@@ -96,9 +101,32 @@ const FindFoodTruck = ({navigation, route}) => {
   //   console.log('in Effect', route.params.CusineName);
   // };
   useEffect(() => {
+    getCurrentLocation();
     getCusine();
     getAllTrucks();
   }, []);
+  const openMap = (sourceLat, sourceLong) => {
+    console.log('source lat', sourceLat);
+    console.log('sorce long', sourceLong);
+    console.log('Lat', Lat);
+    console.log('Long', Long);
+    showLocation({
+      latitude: Lat,
+      longitude: Long,
+      sourceLatitude: sourceLat, // optionally specify starting location for directions
+      sourceLongitude: sourceLong, // not optional if sourceLatitude is specified
+      title: 'The White House', // optional
+      googleForceLatLon: false, // optionally force GoogleMaps to use the latlon for the query instead of the title
+      googlePlaceId: 'ChIJGVtI4by3t4kRr51d_Qm_x58', // optionally specify the google-place-id
+      alwaysIncludeGoogle: true, // optional, true will always add Google Maps to iOS and open in Safari, even if app is not installed (default: false)
+      dialogTitle: 'This is the dialog Title', // optional (default: 'Open in Maps')
+      dialogMessage: 'This is the amazing dialog Message', // optional (default: 'What app would you like to use?')
+      cancelText: 'This is the cancel button text', // optional (default: 'Cancel')
+      appsWhiteList: ['google-maps'], // optionally you can set which apps to show (default: will show all supported apps installed on device)
+      // appTitles: { 'google-maps': 'My custom Google Maps title' } // optionally you can override default app titles
+      // app: 'uber'  // optionally specify specific app to use
+    });
+  };
   const getCusine = async () => {
     axios
       .get(url + '/api/servingcusine/getcusines')
@@ -120,12 +148,30 @@ const FindFoodTruck = ({navigation, route}) => {
         console.log(error);
       });
   };
+  const getCurrentLocation = async () => {
+    console.log('hi in get Current in FindFoodTruck');
+    await Geolocation.getCurrentPosition(
+      async position => {
+        await setLat(position.coords.latitude);
+        await setLong(position.coords.longitude);
+      },
+      error => console.log('this is ERROR', error),
+      {
+        enableHighAccuracy: false,
+        timeout: 20000,
+        maximumAge: 2000,
+      },
+    );
+  };
   const PrintCard = (item, index) => (
     <TouchableOpacity
       activeOpacity={0.8}
       style={styles.MainView}
       onPress={() =>
-        navigation.navigate(RouteName.CUSTOMERSUPPLIER, {TruckInfo: item})
+        navigation.navigate(RouteName.CUSTOMERSUPPLIER, {
+          TruckInfo: item,
+          openMap: openMap,
+        })
       }>
       <View style={styles.LeftIcon}>
         <Image style={styles.image} source={{uri: item.truckLogo}} />
@@ -156,6 +202,31 @@ const FindFoodTruck = ({navigation, route}) => {
             size={responsiveFontSize(2.3)}
           />
           <Text value={item.truckCity} />
+          <TouchableOpacity
+            onPress={() => openMap(item.latitude, item.longitude)}
+            style={{
+              flexDirection: 'row',
+              width: '90%',
+              height: responsiveHeight(5),
+              alignItems: 'center',
+              marginLeft: responsiveWidth(3),
+            }}>
+            <FA5
+              name={'directions'}
+              color={'green'}
+              size={responsiveFontSize(3)}
+            />
+            <Text
+              style={{marginLeft: responsiveWidth(2)}}
+              value={'Get Directions'}
+            />
+            {/* <Text
+                            style={[
+                              {marginLeft: responsiveWidth(1)},
+                            ]}>
+                            {'Get Directions'}
+                          </Text> */}
+          </TouchableOpacity>
         </View>
         {item.schedule
           ? item.schedule.map(item2 =>
@@ -207,11 +278,6 @@ const FindFoodTruck = ({navigation, route}) => {
       </View>
     </TouchableOpacity>
   );
-  const Checked = index => {
-    let newArr = [...buttonData];
-    newArr[index].checked = !newArr[index].checked;
-    setButtonData(newArr);
-  };
   return (
     <SafeAreaView style={styles.parent}>
       <Header onPress={() => navigation.goBack()}>{'Find Food Truck'}</Header>
@@ -242,7 +308,7 @@ const FindFoodTruck = ({navigation, route}) => {
                 style={{marginLeft: 0}}
               />
             </TouchableOpacity>
-        }
+          }
           containerStyle={{
             backgroundColor: 'white',
             width: '90%',
@@ -254,7 +320,7 @@ const FindFoodTruck = ({navigation, route}) => {
           name={'sound-mix'}
           size={38}
           color={'grey'}
-          style={{marginLeft:responsiveWidth(-5)}}
+          style={{marginLeft: responsiveWidth(-5)}}
           onPress={() => {
             navigation.navigate(RouteName.SERVINGCUSINETYPE);
           }}
@@ -311,7 +377,7 @@ const FindFoodTruck = ({navigation, route}) => {
           }}
           //style={{marginTop:responsiveHeight(1.3),transform: [{ scaleY: 2 }]}}
         /> */}
-       </View> 
+      </View>
       {isLoading ? (
         <ActivityIndicator
           color={'#000'}
