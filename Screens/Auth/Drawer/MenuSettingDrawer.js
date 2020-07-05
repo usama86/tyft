@@ -1,4 +1,4 @@
-import React, {useEffect,useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -63,7 +63,7 @@ const MenuSetting = ({navigation, route}) => {
   useEffect(() => {
     getMenuOfSupplier();
   }, []);
-  const deleteItem = async() =>{
+  const deleteItem = async () => {
     console.log(selected);
     let MenuID = await AsyncStorage.getItem('MenuID');
     let copiedData = [...Data];
@@ -80,14 +80,13 @@ const MenuSetting = ({navigation, route}) => {
         if (ERROR === 'ABT0000') {
           console.log('Updated');
           setData(copiedData);
-          setDeleteModal(false); 
+          setDeleteModal(false);
         }
       })
       .catch(error => {
         console.log(error);
       });
-  
-  }
+  };
   const getMenuOfSupplier = async () => {
     let MenuID = await AsyncStorage.getItem('MenuID');
     axios
@@ -181,6 +180,7 @@ const MenuSetting = ({navigation, route}) => {
         category: SelectedValue,
       });
       setData(newArray);
+      setAddItem(false)
     }
   };
   const closeModal = () => {
@@ -230,7 +230,16 @@ const MenuSetting = ({navigation, route}) => {
               name={'pencil'}
               color={'black'}
               size={responsiveFontSize(3.2)}
-              onPress={() => setShowModal2(true)}
+              onPress={() => {
+                setShowModal2(true);
+                  setName({value: item.name, Error: null, ErrorText: null});
+                  setDescription({
+                    value: item.description,
+                    Error: null,
+                    ErrorText: null,
+                  });
+                  setPrice({value: item.price.toString(), Error: null, ErrorText: null});
+              }}
             />
           </View>
           <View style={styles.CrossView}>
@@ -438,50 +447,54 @@ const MenuSetting = ({navigation, route}) => {
           <Text style={styles.UpdatedText}>{'Updated'}</Text>
         </Modal>
       </Ui>
-      <Modal showModal={showModal2}>
-        <View
-          style={{
-            width: '100%',
-            backgroundColor: '#fff',
-            paddingVertical: responsiveHeight(2),
-            paddingHorizontal: responsiveWidth(2),
-            borderRadius: 8,
-          }}>
-          <View style={[styles.CrossView, {width: '90%'}]}>
-            <Entypo
-              name={'circle-with-cross'}
-              color={'black'}
-              size={responsiveFontSize(3.2)}
-              onPress={() => setShowModal2(false)}
-            />
-          </View>
-          <Text style={{textAlign: 'center'}} value={'Edit Menu'} bold />
-          <Input
-            rounded
-            placeholder="Item Name"
-            style={{
-              width: '90%',
-              alignSelf: 'center',
-              marginTop: responsiveHeight(2),
-            }}
-          />
-          <Button
+      <Modal
+        showModal={showModal2}
+        ModalContainer={{
+          paddingVertical: responsiveHeight(2),
+          paddingHorizontal: responsiveWidth(2),
+        }}>
+        <View style={styles.CrossView}>
+          <Entypo
+            name={'circle-with-cross'}
+            color={'black'}
+            size={responsiveFontSize(3.2)}
             onPress={() => setShowModal2(false)}
-            style={{
-              width: '80%',
-              height: responsiveHeight(6),
-              backgroundColor: 'rgb(193, 32, 38)',
-              justifyContent: 'center',
-              alignItems: 'center',
-              alignSelf: 'center',
-              marginTop: responsiveHeight(4),
-            }}
-            rounded>
-            <Text
-              uppercase={false}
-              value={'Update'}
-              style={{color: '#fff', fontWeight: 'bold'}}
-            />
+          />
+        </View>
+        <Input
+          rounded
+          placeholder="Name"
+          onChangeText={e => setName({value: e, Error: false, ErrorText: null})}
+          value={name.value}
+          style={styles.Input}
+        />
+        {name.Error ? <ErrorView>{name.ErrorText}</ErrorView> : null}
+        <Input
+          rounded
+          placeholder="Description"
+          onChangeText={e =>
+            setDescription({value: e, Error: false, ErrorText: null})
+          }
+          value={description.value}
+          style={styles.Input}
+        />
+        {description.Error ? (
+          <ErrorView>{description.ErrorText}</ErrorView>
+        ) : null}
+        <Input
+          rounded
+          placeholder="Price"
+          keyboardType={'number-pad'}
+          onChangeText={e =>
+            setPrice({value: e, Error: false, ErrorText: null})
+          }
+          value={price.value}
+          style={styles.Input}
+        />
+        {price.Error ? <ErrorView>{price.ErrorText}</ErrorView> : null}
+        <View style={styles.TextView}>
+          <Button style={styles.buttonStyle2} onPress={()=>setShowModal2(false)}>
+            <Text uppercase={true} value={'Update'} style={{color: 'white'}} />
           </Button>
         </View>
       </Modal>

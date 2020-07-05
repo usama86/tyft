@@ -14,7 +14,7 @@ import {
 import Container from '../../../Component/Container';
 import Text from '../../../Component/Text';
 import theme from '../../theme';
-import {SearchBar, Rating} from 'react-native-elements';
+import {SearchBar, Rating, colors} from 'react-native-elements';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Foundation from 'react-native-vector-icons/Foundation';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -34,6 +34,8 @@ import Header from '../../../Component/Header';
 import AsyncStorage from '@react-native-community/async-storage';
 import url from './../Constants/constants';
 import axios from 'axios';
+import Feather from 'react-native-vector-icons/Feather';
+import ImagePicker from 'react-native-image-picker';
 // import Button from '../../../Component/Button'
 const VeggieWisper = ({navigation, route}) => {
   const [ToggleSwitch, setToggleSwitch] = useState(false);
@@ -47,6 +49,7 @@ const VeggieWisper = ({navigation, route}) => {
   const [mapReady, setMapReady] = React.useState(true);
   const [Lat, setLat] = React.useState(0.0);
   const [Long, setLong] = React.useState(0.0);
+  const [urls, setUrl] = useState(null);
   const mapView = useRef();
   const initialRegion = {
     latitude: 30.3753,
@@ -170,6 +173,24 @@ const VeggieWisper = ({navigation, route}) => {
         console.log(error);
       });
   };
+  const SelectImage = () => {
+    const options = {
+      title: 'Select or Capture Your Image',
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+    ImagePicker.showImagePicker(options, response => {
+      if (response.didCancel) {
+      } else if (response.error) {
+      } else {
+        // console.log(response)
+        const img = response;
+        setUrl(img);
+      }
+    });
+  };
   if (indicator) {
     return (
       <ActivityIndicator
@@ -183,11 +204,19 @@ const VeggieWisper = ({navigation, route}) => {
       <Container>
         <View style={styles.HeaderContainer}>
           <ImageBackground
+          resizeMode={'contain'}
             style={styles.image}
-            source={{uri: TruckInfo.coverPhoto}}>
+            source={{uri: urls? urls.uri : TruckInfo.coverPhoto}}>
             <Header isHome onPress={() => navigation.openDrawer()}>
               {'Home'}
             </Header>
+            <Entypo
+              style={{alignSelf: 'flex-end', marginRight: responsiveWidth(4)}}
+              name={'pencil'}
+              onPress={SelectImage}
+              color={'#B40E33'}
+              size={responsiveFontSize(4)}
+            />
           </ImageBackground>
         </View>
         <CountButton button={TruckInfo.selectedServingCusines} />
@@ -262,7 +291,9 @@ const VeggieWisper = ({navigation, route}) => {
             value={TruckInfo.truckEmail}
           />
         </View>
-        <View style={styles.iconView}>
+        <TouchableOpacity
+          onPress={() => Linking.openURL(TruckInfo.truckWebsite)}
+          style={styles.iconView}>
           <Foundation
             style={{marginLeft: responsiveWidth(1), width: '20%'}}
             name={'shield'}
@@ -276,9 +307,9 @@ const VeggieWisper = ({navigation, route}) => {
             }}
             value={TruckInfo.truckWebsite}
           />
-        </View>
+        </TouchableOpacity>
         <View style={styles.iconView}>
-          <AntDesign
+          <Feather
             style={{marginLeft: responsiveWidth(1), width: '20%'}}
             name={'phone'}
             color={'#212121'}
@@ -294,28 +325,37 @@ const VeggieWisper = ({navigation, route}) => {
         </View>
         <View style={styles.SocialIcons}>
           {TruckInfo.socialMedia.twitter ? (
-            <AntDesign
-              onPress={() => Linking.openURL(TruckInfo.socialMedia.twitter)}
-              name={'twitter'}
-              color={'#212121'}
-              size={responsiveFontSize(2.5)}
-            />
+            <TouchableOpacity
+              style={{width: responsiveWidth(5), height: responsiveHeight(2.5)}}
+              onPress={() => Linking.openURL(TruckInfo.socialMedia.twitter)}>
+              <Image
+                style={{width: '100%', height: '100%'}}
+                resizeMode={'contain'}
+                source={require('../../../images/twitter.png')}
+              />
+            </TouchableOpacity>
           ) : null}
           {TruckInfo.socialMedia.instagram ? (
-            <AntDesign
-              onPress={() => Linking.openURL(TruckInfo.socialMedia.instagram)}
-              name={'instagram'}
-              color={'#212121'}
-              size={responsiveFontSize(2.5)}
-            />
+            <TouchableOpacity
+              style={{width: responsiveWidth(5), height: responsiveHeight(2.5)}}
+              onPress={() => Linking.openURL(TruckInfo.socialMedia.instagram)}>
+              <Image
+                style={{width: '100%', height: '100%'}}
+                resizeMode={'contain'}
+                source={require('../../../images/instagram-sketched.png')}
+              />
+            </TouchableOpacity>
           ) : null}
           {TruckInfo.socialMedia.facebook ? (
-            <AntDesign
-              onPress={() => Linking.openURL(TruckInfo.socialMedia.facebook)}
-              name={'facebook-square'}
-              color={'#212121'}
-              size={responsiveFontSize(2.5)}
-            />
+            <TouchableOpacity
+              style={{width: responsiveWidth(5), height: responsiveHeight(2.5)}}
+              onPress={() => Linking.openURL(TruckInfo.socialMedia.facebook)}>
+              <Image
+                style={{width: '100%', height: '100%'}}
+                resizeMode={'contain'}
+                source={require('../../../images/facebook.png')}
+              />
+            </TouchableOpacity>
           ) : null}
         </View>
         <Modal showModal={visibleModal}>
@@ -381,7 +421,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: '102%',
+    height: '100%',
     resizeMode: 'contain',
   },
   TabView: {

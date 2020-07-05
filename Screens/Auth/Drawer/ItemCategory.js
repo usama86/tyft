@@ -37,6 +37,7 @@ const ItemCategory = ({navigation}) => {
   const [SelectedValue, setSelectedValue] = React.useState(null);
   const [showModalAddCatgory, setShowModalAddCategory] = useState(false);
   const [category, setCategory] = React.useState(null);
+  const [EditCategory, setEditCategory] = useState(null);
   const [Categories, setCategories] = React.useState([
     {label: 'Italian Food', value: 'Italian Food'},
     {label: 'Thai', value: 'Thai'},
@@ -128,7 +129,10 @@ const ItemCategory = ({navigation}) => {
           name={'pencil'}
           color={'black'}
           size={responsiveFontSize(3.2)}
-          onPress={() => setShowModal(true)}
+          onPress={() => {
+            setShowModal(true);
+            setEditCategory(item.name);
+          }}
         />
       </View>
       <View style={styles.CrossView}>
@@ -177,15 +181,6 @@ const ItemCategory = ({navigation}) => {
       setCategory(e);
       console.log('Category is here', e);
     }
-  };
-  const closeModal = () => {
-    let newArr = [...Categories];
-    if (category) {
-      newArr.unshift({label: category, value: category});
-      setSelectedValue(category);
-    }
-    setCategories(newArr);
-    setShowModal(false);
   };
   return (
     <SafeAreaView style={styles.parent}>
@@ -378,6 +373,8 @@ const ItemCategory = ({navigation}) => {
           <Text style={{textAlign: 'center'}} value={'Edit Category'} bold />
           <Input
             rounded
+            value={EditCategory}
+            onChangeText={val => setEditCategory(val)}
             placeholder="Edit Category here"
             style={{
               width: '90%',
