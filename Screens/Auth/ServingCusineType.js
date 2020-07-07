@@ -26,10 +26,10 @@ import * as RouteName from '../../Constants/RouteName';
 import Header from '../../Component/Header';
 import url from './Constants/constants';
 import axios from 'axios';
-const FindFoodTruck = ({navigation}) => {
+const FindFoodTruck = ({navigation, route}) => {
   const [indicator, setIndicator] = useState(true);
   const [CusineName, setCusinename] = useState([]);
-
+  const [selectedItems, setSelectedItems] = useState([]);
   useEffect(() => {
     getCusine();
   }, []);
@@ -62,18 +62,21 @@ const FindFoodTruck = ({navigation}) => {
         setIndicator(false);
       });
   };
-  const Checked = index => {
+  const Checked = (item, index) => {
     let newArr = [...Data];
     newArr[index].checked = !newArr[index].checked;
-    // if (newArr[index].checked) {
-    //   setCusinename(newArr[index].cusineName);
-    // }
-    // console.log('Cusine Name', newArr[index].cusineName);
+    if (newArr[index].checked) {
+      let dupSelected = [];
+      dupSelected.push(...selectedItems, newArr[index].cusineName);
+      setSelectedItems(dupSelected);
+    }
     setData(newArr);
+    // console.log('Cusine Name', newArr[index].cusineName);
+
   };
   const PrintCard = (item, index) => (
     <TouchableOpacity
-      onPress={() => Checked(index)}
+      onPress={() => Checked(item, index)}
       activeOpacity={0.8}
       style={[
         styles.MainView,
@@ -115,11 +118,13 @@ const FindFoodTruck = ({navigation}) => {
           </View>
           <View style={styles.ApplyButton}>
             <Button
-              onPress={() =>
+              onPress={() => {
                 navigation.navigate(RouteName.FINDFOODTRUCK, {
                   CusineName: Data,
-                })
-              }
+                  selectedItems: selectedItems,
+                });
+                route.params.onFilterSearch(selectedItems);
+              }}
               style={[styles.buttonStyle2]}
               rounded>
               <Text style={{color: '#fff'}} uppercase={false} value={'Apply'} />

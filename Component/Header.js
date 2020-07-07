@@ -23,6 +23,7 @@ const Header = ({
   navigation,
   NoIcon,
   Logout,
+  nothing
 }) => {
   return (
     <View>
@@ -37,7 +38,7 @@ const Header = ({
             color={'black'}
           />
         </TouchableOpacity>
-      ) : (
+      ) : nothing ? null : (
         <TouchableOpacity onPress={onPress} style={styles.homeIcon}>
           <AntDesign
             name={'arrowleft'}

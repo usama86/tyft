@@ -146,11 +146,11 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
                     }
                     tooltip={true}>
                     <View style={styles.BOX}>
-                      <Text>
+                      <Text style={{paddingBottom:responsiveHeight(10)}} >
                         <Image
-                          style={{height: 300, width: 100}}
+                          style={{height: responsiveHeight(15), width: responsiveWidth(30)}}
                           source={{uri: item.coverPhoto}}
-                          resizeMode="cover"
+                          resizeMode={'contain'}
                         />
                       </Text>
                       <View
