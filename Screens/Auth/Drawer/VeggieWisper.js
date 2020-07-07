@@ -326,7 +326,7 @@ const VeggieWisper = ({navigation, route}) => {
         <View style={styles.SocialIcons}>
           {TruckInfo.socialMedia.twitter ? (
             <TouchableOpacity
-              style={{width: responsiveWidth(5), height: responsiveHeight(2.5)}}
+              style={{width: responsiveWidth(10), height: responsiveHeight(5)}}
               onPress={() => Linking.openURL(TruckInfo.socialMedia.twitter)}>
               <Image
                 style={{width: '100%', height: '100%'}}
@@ -337,7 +337,7 @@ const VeggieWisper = ({navigation, route}) => {
           ) : null}
           {TruckInfo.socialMedia.instagram ? (
             <TouchableOpacity
-              style={{width: responsiveWidth(5), height: responsiveHeight(2.5)}}
+              style={{width: responsiveWidth(10), height: responsiveHeight(5)}}
               onPress={() => Linking.openURL(TruckInfo.socialMedia.instagram)}>
               <Image
                 style={{width: '100%', height: '100%'}}
@@ -348,7 +348,7 @@ const VeggieWisper = ({navigation, route}) => {
           ) : null}
           {TruckInfo.socialMedia.facebook ? (
             <TouchableOpacity
-              style={{width: responsiveWidth(5), height: responsiveHeight(2.5)}}
+              style={{width: responsiveWidth(10), height: responsiveHeight(5)}}
               onPress={() => Linking.openURL(TruckInfo.socialMedia.facebook)}>
               <Image
                 style={{width: '100%', height: '100%'}}
@@ -462,7 +462,7 @@ const styles = StyleSheet.create({
   },
   SocialIcons: {
     height: responsiveHeight(15),
-    width: '30%',
+    width: '50%',
     alignSelf: 'center',
     alignItems: 'center',
     flexDirection: 'row',
