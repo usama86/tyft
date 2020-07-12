@@ -41,6 +41,8 @@ const ServingCusine = ({navigation, route}) => {
           if (Response.data.length > 0) {
             let res = Response.data[0].cusine;
             setData(res);
+            console.log('hi');
+            console.log(res);
           }
           // let newArr = [{...res.Supplier[0], TruckInfo: res.TruckInfo}];
           // setUserInfo(newArr);

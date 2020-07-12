@@ -187,7 +187,64 @@ const VeggieWisper = ({navigation, route}) => {
       } else {
         // console.log(response)
         const img = response;
-        setUrl(img);
+        try {
+          // setIsLoading(true);
+          var myHeaders = new Headers();
+          myHeaders.append('Content-Type', 'multipart/form-data');
+          myHeaders.append('Accept', 'application/json');
+          // let file = await uriToBlob(val.uri)
+          var formdata = new FormData();
+          formdata.append('file', {
+            uri: img.uri,
+            type: 'image/jpeg',
+            name: img.fileName,
+          });
+          formdata.append('upload_preset', 'tyftBackend');
+          var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: formdata,
+            redirect: 'follow',
+          };
+          fetch(
+            'https://api.cloudinary.com/v1_1/hmrzthc6f/image/upload',
+            requestOptions,
+          )
+            .then(response => response.json())
+            .then(async(result) => {
+              console.log(result);
+             
+
+              let TruckId = await AsyncStorage.getItem('TruckID');
+              axios
+                .post(url + '/api/supplier/updatecoverimage', {
+                  _id: TruckId,
+                  imgUrl: result.url
+                })
+                .then(async Response => {
+                  console.log('Responsessss', Response.data.code);
+                  let Code = Response.data.code;
+                  if (Code === 'ABT0000') {
+                    setUrl(img); //
+                    // navigation.navigate(Route.SIGNIN);
+                  } else {
+                    console.log('NOT ADDEED');
+                    // setisLoading(false);
+                  }
+                })
+                .catch(error => {
+                  console.log(error);
+                });
+              // setImageUrl(result.url); updatetruckimage
+              // setIsLoading(false);
+            })
+            .catch(error => {
+              console.log('error', error);
+              // setIsLoading(false);
+            });
+        } catch (e) {
+          console.log('error => ', e);
+        }
       }
     });
   };

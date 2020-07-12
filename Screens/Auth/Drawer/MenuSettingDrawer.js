@@ -125,7 +125,7 @@ const MenuSetting = ({navigation, route}) => {
       console.log('Category is here', e);
     }
   };
-  const UpdateMenu = async () => {
+  const UpdateMenu = async (val) => {
     setIndicator(true);
     let MenuID = await AsyncStorage.getItem('MenuID');
     axios
@@ -149,6 +149,8 @@ const MenuSetting = ({navigation, route}) => {
       .catch(error => {
         console.log(error);
       });
+      if(val)
+        setShowModal2(false)
   };
   const Navigate = () => {
     if (Data.length > 0) {
@@ -157,7 +159,7 @@ const MenuSetting = ({navigation, route}) => {
       Alert.alert('Please Add Menu First');
     }
   };
-  const AddToList = () => {
+  const AddToList =async () => {
     let newId = 0;
     let newArray = [...Data];
     if (!name.value) {
@@ -179,6 +181,30 @@ const MenuSetting = ({navigation, route}) => {
         description: description.value,
         category: SelectedValue,
       });
+      setIndicator(true);
+      let MenuID = await AsyncStorage.getItem('MenuID');
+      axios
+        .post(url + '/api/menu/updatemenu', {
+          _id: MenuID,
+          Menu: newArray,
+        })
+        .then(async Response => {
+          const ERROR = Response.data.code;
+          if (ERROR === 'ABT0000') {
+            console.log('Updated');
+            setUpdated(true);
+            setIndicator(false);
+            setTimeout(() => {
+              setUpdated(false);
+            }, 500);
+          } else {
+            setIndicator(false);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+
       setData(newArray);
       setAddItem(false)
     }
@@ -493,7 +519,7 @@ const MenuSetting = ({navigation, route}) => {
         />
         {price.Error ? <ErrorView>{price.ErrorText}</ErrorView> : null}
         <View style={styles.TextView}>
-          <Button style={styles.buttonStyle2} onPress={()=>setShowModal2(false)}>
+          <Button style={styles.buttonStyle2} onPress={()=>UpdateMenu('modal2')}>
             <Text uppercase={true} value={'Update'} style={{color: 'white'}} />
           </Button>
         </View>
