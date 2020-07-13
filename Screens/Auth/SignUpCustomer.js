@@ -75,6 +75,7 @@ const SignUp = ({navigation}) => {
     }
   };
   const AddCustomer = () => {
+    console.log(languge)
     if (name === null) {
       SetNameError(true);
       SetNameErrorText('Please Enter Your Name');
@@ -113,6 +114,7 @@ const SignUp = ({navigation}) => {
       !confirmPasswordError
     ) {
       setisLoading(true);
+      console.log(languge)
       // const data = {
       //   email: email,
       //   password: password,
@@ -221,14 +223,14 @@ const SignUp = ({navigation}) => {
         <View style={styles.radioView}>
           <Radio
             selected={languge === 'English' ? true : false}
-            onPress={() => setLanguage('English')}
+            onPress={() => {setLanguage('English');}}
           />
           <Text value={'English'} style={{marginLeft: responsiveWidth(2)}} />
 
           <Radio
             selected={languge === 'Spanish' ? true : false}
             style={{marginLeft: responsiveWidth(8)}}
-            onPress={() => setLanguage('Spanish')}
+            onPress={() => {setLanguage('Spanish')}}
           />
           <Text value={'Spanish'} style={{marginLeft: responsiveWidth(2)}} />
         </View>

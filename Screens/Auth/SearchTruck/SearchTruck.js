@@ -91,7 +91,7 @@ const SearchTruck = ({navigation}) => {
           style={styles.indicator}
         />
       ) : (
-        <View style={{color: 'red', height: responsiveHeight(50)}}>
+        <View style={{color: 'red', height: responsiveHeight(90),}}>
           {/* <View
             style={{
               marginVertical: responsiveHeight(1),

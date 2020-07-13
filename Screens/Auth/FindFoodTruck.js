@@ -321,7 +321,7 @@ const FindFoodTruck = ({navigation, route}) => {
   };
   return (
     <SafeAreaView style={styles.parent}>
-      <Header nothing onPress={() => navigation.goBack()}>
+      <Header NoIcon nothing onPress={() => navigation.goBack()}>
         {'Find Food Truck'}
       </Header>
       <View style={styles.seacrhbarContainter}>

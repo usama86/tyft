@@ -190,6 +190,7 @@ const Account = ({navigation, route}) => {
               style={styles.Input}
             />
             <Input
+                secureTextEntry={true}
               rounded
               placeholder="Password"
               onChangeText={e => changePassword(e)}
@@ -198,6 +199,7 @@ const Account = ({navigation, route}) => {
               style={styles.Input}
             />
             <Input
+                secureTextEntry={true}
               rounded
               value={confirmPassword.value}
               onChangeText={e =>
