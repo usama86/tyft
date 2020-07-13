@@ -474,7 +474,7 @@ const VeggieWisper = ({navigation, route}) => {
 const styles = StyleSheet.create({
   HeaderContainer: {
     height: responsiveHeight(25),
-    width: '100%',
+    width: responsiveWidth(100),
   },
   image: {
     width: '100%',

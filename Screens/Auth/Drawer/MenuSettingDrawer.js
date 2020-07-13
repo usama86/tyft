@@ -45,6 +45,7 @@ const MenuSetting = ({navigation, route}) => {
   const [showModal2, setShowModal2] = React.useState(false);
   const [showDeleteModal, setDeleteModal] = useState(false);
   const [selected, setSelected] = useState(0);
+  const [edit, setEdit] = useState(false);
   const [name, setName] = React.useState({
     value: null,
     Error: false,
@@ -125,7 +126,7 @@ const MenuSetting = ({navigation, route}) => {
       console.log('Category is here', e);
     }
   };
-  const UpdateMenu = async (val) => {
+  const UpdateMenu = async val => {
     setIndicator(true);
     let MenuID = await AsyncStorage.getItem('MenuID');
     axios
@@ -149,8 +150,7 @@ const MenuSetting = ({navigation, route}) => {
       .catch(error => {
         console.log(error);
       });
-      if(val)
-        setShowModal2(false)
+    if (val) setShowModal2(false);
   };
   const Navigate = () => {
     if (Data.length > 0) {
@@ -159,7 +159,7 @@ const MenuSetting = ({navigation, route}) => {
       Alert.alert('Please Add Menu First');
     }
   };
-  const AddToList =async () => {
+  const AddToList = async () => {
     let newId = 0;
     let newArray = [...Data];
     if (!name.value) {
@@ -206,7 +206,7 @@ const MenuSetting = ({navigation, route}) => {
         });
 
       setData(newArray);
-      setAddItem(false)
+      setAddItem(false);
     }
   };
   const closeModal = () => {
@@ -258,13 +258,17 @@ const MenuSetting = ({navigation, route}) => {
               size={responsiveFontSize(3.2)}
               onPress={() => {
                 setShowModal2(true);
-                  setName({value: item.name, Error: null, ErrorText: null});
-                  setDescription({
-                    value: item.description,
-                    Error: null,
-                    ErrorText: null,
-                  });
-                  setPrice({value: item.price.toString(), Error: null, ErrorText: null});
+                setName({value: item.name, Error: null, ErrorText: null});
+                setDescription({
+                  value: item.description,
+                  Error: null,
+                  ErrorText: null,
+                });
+                setPrice({
+                  value: item.price.toString(),
+                  Error: null,
+                  ErrorText: null,
+                });
               }}
             />
           </View>
@@ -289,20 +293,24 @@ const MenuSetting = ({navigation, route}) => {
       <Header
         Add
         isHome
-        onAddPress={() => setAddItem(true)}
+        onAddPress={() => {
+          setEdit(true);
+          setAddItem(true);
+          setName({value: null, Error: false, ErrorText: null});
+          setDescription({value: null, Error: false, ErrorText: null});
+          setPrice({value: null, Error: false, ErrorText: null});
+        }}
         onPress={() => navigation.openDrawer()}>
         {'Menu'}
       </Header>
       <Ui
         isLoading={indicator}
-        ContainerStyle={{marginTop: responsiveHeight(4)}}
+        ContainerStyle={{marginTop: responsiveHeight(1)}}
         TextViewStyle={styles.TextViewStyle}
         TextValue={'Menu Setting'}
-        ButtonText={'Next'}
         TextShow={false}
-        buttonStyle={styles.buttonStyle}
-        onPressButton={Navigate}>
-        <View style={styles.InputMainView}>
+        noShowButton={true}>
+        <View>
           <AddItemModal
             ModalContainer={{
               paddingVertical: responsiveHeight(2),
@@ -311,12 +319,14 @@ const MenuSetting = ({navigation, route}) => {
             showModal={addItem}>
             {/* <View style={{height: responsiveHeight(33),paddingVertical:responsiveHeight(2),paddingHorizontal:responsiveWidth(2)}}> */}
             {/* <ScrollView> */}
-            <View style={styles.CrossView}>
+            <View style={[styles.CrossView,{width:'95%'}]}>
               <Entypo
                 name={'circle-with-cross'}
                 color={'black'}
                 size={responsiveFontSize(3.2)}
-                onPress={() => setAddItem(false)}
+                onPress={() => {
+                  setAddItem(false);
+                }}
               />
             </View>
             <View
@@ -356,11 +366,12 @@ const MenuSetting = ({navigation, route}) => {
             <Input
               rounded
               placeholder="Description"
+              multiline={true}
               onChangeText={e =>
                 setDescription({value: e, Error: false, ErrorText: null})
               }
               value={description.value}
-              style={styles.Input}
+              style={{height:responsiveHeight(19),marginTop:responsiveHeight(2),width:'90%'}}
             />
             {description.Error ? (
               <ErrorView>{description.ErrorText}</ErrorView>
@@ -397,7 +408,7 @@ const MenuSetting = ({navigation, route}) => {
                 paddingHorizontal: responsiveWidth(2),
                 borderRadius: 8,
               }}>
-              <View style={styles.CrossView}>
+              <View style={[styles.CrossView,{width:'95%'}]}>
                 <Entypo
                   name={'circle-with-cross'}
                   color={'black'}
@@ -452,7 +463,7 @@ const MenuSetting = ({navigation, route}) => {
                 )}
                 keyExtractor={item => item.id}
                 contentContainerStyle={{
-                  paddingVertical: responsiveHeight(5),
+                  paddingVertical: responsiveHeight(1),
                 }}
                 renderItem={({item, index}) => PrintCard(item, index)}
               />
@@ -479,7 +490,7 @@ const MenuSetting = ({navigation, route}) => {
           paddingVertical: responsiveHeight(2),
           paddingHorizontal: responsiveWidth(2),
         }}>
-        <View style={styles.CrossView}>
+        <View style={[styles.CrossView,{width:'95%'}]}>
           <Entypo
             name={'circle-with-cross'}
             color={'black'}
@@ -498,11 +509,12 @@ const MenuSetting = ({navigation, route}) => {
         <Input
           rounded
           placeholder="Description"
+          multiline={true}
           onChangeText={e =>
             setDescription({value: e, Error: false, ErrorText: null})
           }
           value={description.value}
-          style={styles.Input}
+          style={{height:responsiveHeight(19),marginTop:responsiveHeight(2),width:'90%'}}
         />
         {description.Error ? (
           <ErrorView>{description.ErrorText}</ErrorView>
@@ -519,7 +531,9 @@ const MenuSetting = ({navigation, route}) => {
         />
         {price.Error ? <ErrorView>{price.ErrorText}</ErrorView> : null}
         <View style={styles.TextView}>
-          <Button style={styles.buttonStyle2} onPress={()=>UpdateMenu('modal2')}>
+          <Button
+            style={styles.buttonStyle2}
+            onPress={() => UpdateMenu('modal2')}>
             <Text uppercase={true} value={'Update'} style={{color: 'white'}} />
           </Button>
         </View>
@@ -589,9 +603,6 @@ const MenuSetting = ({navigation, route}) => {
   );
 };
 const styles = StyleSheet.create({
-  InputMainView: {
-    marginVertical: responsiveHeight(2),
-  },
   Input: {
     marginTop: responsiveHeight(3),
     width: '90%',
@@ -624,6 +635,7 @@ const styles = StyleSheet.create({
     width: '28%',
     height: responsiveHeight(5),
     borderRadius: 8,
+    alignSelf: 'center',
   },
   buttonStyle: {
     marginTop: responsiveHeight(9.8),
@@ -669,6 +681,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     width: '50%',
     alignSelf: 'center',
+    
   },
 });
 export default MenuSetting;

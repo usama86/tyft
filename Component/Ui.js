@@ -23,6 +23,7 @@ const Ui = ({
   onPressButton,
   TextShow,
   buttonStyle,
+  noShowButton,
   // HeaderValue
 }) => {
   return (
@@ -33,7 +34,7 @@ const Ui = ({
         </View>
       ) : null}
       <View style={[styles.Content, ContentStyle]}>{children}</View>
-      {isLoading ? (
+      {noShowButton ? null : isLoading ? (
         <View style={[styles.buttonStyle2, buttonStyle, {borderRadius: 33}]}>
           <ActivityIndicator color={'#fff'} size={'large'} />
         </View>
@@ -99,7 +100,6 @@ const styles = StyleSheet.create({
   footer: {
     marginTop: responsiveHeight(2),
   },
-
 });
 
 Ui.defaultProps = {

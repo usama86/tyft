@@ -239,14 +239,24 @@ const ItemCategory = ({navigation}) => {
             flexDirection: 'row',
             alignItems: 'center',
           }}>
-          <Select
+          <Input
+            rounded
+            placeholder="Name"
+            onChangeText={e =>
+              setName({value: e, Error: false, ErrorText: null})
+            }
+            value={name.value}
+            style={{width:'100%'}}
+          />
+          {name.Error ? <ErrorView>{name.ErrorText}</ErrorView> : null}
+          {/* <Select
             itemList={Categories}
             value={SelectedValue}
             onChange={e => setSelectedValue(e)}
             containerStyle={{width: '100%'}}
             style={[styles.Input, {width: '100%'}]}
-          />
-          <TouchableOpacity
+          /> */}
+          {/* <TouchableOpacity
             onPress={() => setShowModalAddCategory(true)}
             style={{left: responsiveWidth(7)}}>
             <AntDesign
@@ -254,7 +264,7 @@ const ItemCategory = ({navigation}) => {
               color={'rgb(193, 32, 38)'}
               size={responsiveFontSize(3)}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
 
         {/* <Input
@@ -524,6 +534,7 @@ const styles = StyleSheet.create({
     width: '28%',
     height: responsiveHeight(5),
     borderRadius: 8,
+    alignSelf: 'center',
   },
 });
 
