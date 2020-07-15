@@ -143,9 +143,7 @@ const Account = ({navigation, route}) => {
   return (
     <View style={{height: '100%', width: '100%'}}>
       {LoggedIn ? (
-        <Header
-          navigation={navigation}
-          onPress={() => navigation.goBack()}>
+        <Header navigation={navigation} onPress={() => navigation.goBack()}>
           {'Update Account'}
         </Header>
       ) : (
@@ -190,7 +188,7 @@ const Account = ({navigation, route}) => {
               style={styles.Input}
             />
             <Input
-                secureTextEntry={true}
+              secureTextEntry={true}
               rounded
               placeholder="Password"
               onChangeText={e => changePassword(e)}
@@ -199,7 +197,7 @@ const Account = ({navigation, route}) => {
               style={styles.Input}
             />
             <Input
-                secureTextEntry={true}
+              secureTextEntry={true}
               rounded
               value={confirmPassword.value}
               onChangeText={e =>
@@ -345,6 +343,5 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginLeft: responsiveWidth(3),
   },
-
 });
 export default Account;

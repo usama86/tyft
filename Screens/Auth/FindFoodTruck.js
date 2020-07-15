@@ -68,37 +68,37 @@ const FindFoodTruck = ({navigation, route}) => {
     }
   };
   const onFilterSearch = async selectedItems => {
+    // getAllTrucks();
     console.log('hheloooo', selectedItems);
-    if (selectedItems == []) {
+    let unique = [...new Set(selectedItems)];
+    console.log('UNIQUE', unique);
+    if (unique.length === 0) {
       getAllTrucks();
       setIsMsg(false);
     } else {
-      console.log('ffizzzee');
-      const searcher = new FuzzySearch(
-        Data,
-        ['truckName', 'selectedServingCusines.cusineName', 'truckCity'],
-        {
-          caseSensitive: false,
-        },
-      );
-      let newArr = [];
-      let result = [];
-      for (let i = 0; i < selectedItems.length; i++) {
-        result = searcher.search(selectedItems[i]);
-        console.log('Result', result);
-        if (
-          result.length > 0 
-        ) {
-          newArr.push(result[0]);
+      console.log('\n\n\n\nDATA=>>>\n\n\n', Data);
+      let matched = [];
+      for (let i = 0; i < unique.length; i++) {
+        for (let j = 0; j < Data.length; j++) {
+          for (let k = 0; k < Data[j].selectedServingCusines.length; k++) {
+            console.log('SELECTED', Data[j].selectedServingCusines[k]);
+            if (Data[j].selectedServingCusines[k].cusineName === unique[i]) {
+              matched.push(Data[j]);
+            }
+          }
         }
       }
-      console.log('NEW ARRAY', newArr);
-      await setData(newArr);
-
-      if (result.length == 0 || result === undefined) {
+      await setData(matched);
+      console.log('MATCHED', matched.length);
+      if (matched.length == 0 || matched === undefined) {
         setIsMsg(true);
+        setTimeout(() => {
+          setIsMsg(false);
+          getAllTrucks();
+       }, 1000);
       } else {
         setIsMsg(false);
+        await setData(matched);
       }
     }
   };
@@ -139,9 +139,12 @@ const FindFoodTruck = ({navigation, route}) => {
   //   console.log('in Effect', route.params.CusineName);
   // };
   useEffect(() => {
-    getCurrentLocation();
-    getCusine();
-    getAllTrucks();
+ 
+      
+      getCurrentLocation();
+      getCusine();
+      getAllTrucks();
+  
   }, []);
   const openMap = (sourceLat, sourceLong) => {
     console.log('source lat', sourceLat);
@@ -202,7 +205,6 @@ const FindFoodTruck = ({navigation, route}) => {
     );
   };
   const PrintCard = (item, index) => {
-    console.log('itemmm', item);
     return (
       <TouchableOpacity
         activeOpacity={0.8}
