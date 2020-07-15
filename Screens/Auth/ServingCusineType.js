@@ -29,18 +29,38 @@ import axios from 'axios';
 const FindFoodTruck = ({navigation, route}) => {
   const [indicator, setIndicator] = useState(true);
   const [CusineName, setCusinename] = useState([]);
+  const [Datas, setDatas] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
   useEffect(() => {
     getCusine();
+    getAllTrucks();
   }, []);
 
   const [Data, setData] = useState([]);
+  const getAllTrucks = () => {
+    console.log('in trucks')
+    axios
+      .get(url + '/api/supplier/getalltruck')
+      .then(async Response => {
+        let ERROR = Response.data.code;
+        let Trucks = Response.data.TruckInfo;
+        if (ERROR !== 'ABT0001') {
+          let filtered = Trucks.filter(item => item.status === 'Open');
+     
+          setDatas(filtered);
+     
+        } 
+
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
   const getCusine = async () => {
     axios
       .get(url + '/api/servingcusine/getcusines')
       .then(async Response => {
         if (Response) {
-          console.log('Serving CUSINESS TYPE', Response.data);
           if (Response.data.length > 0) {
             let res = Response.data[0].cusine;
             setData(res);
@@ -123,7 +143,7 @@ const FindFoodTruck = ({navigation, route}) => {
                   CusineName: Data,
                   selectedItems: selectedItems,
                 });
-                route.params.onFilterSearch(selectedItems);
+                route.params.onFilterSearch(selectedItems,Datas);
               }}
               style={[styles.buttonStyle2]}
               rounded>

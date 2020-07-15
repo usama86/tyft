@@ -67,35 +67,36 @@ const FindFoodTruck = ({navigation, route}) => {
       }
     }
   };
-  const onFilterSearch = async selectedItems => {
+  const onFilterSearch = async (selectedItems,Trucks) => {
     // getAllTrucks();
     console.log('hheloooo', selectedItems);
+    console.log('Trucks',Trucks);
     let unique = [...new Set(selectedItems)];
     console.log('UNIQUE', unique);
     if (unique.length === 0) {
       getAllTrucks();
       setIsMsg(false);
     } else {
-      console.log('\n\n\n\nDATA=>>>\n\n\n', Data);
+      // console.log('\n\n\n\nDATA=>>>\n\n\n', Data);
       let matched = [];
       for (let i = 0; i < unique.length; i++) {
-        for (let j = 0; j < Data.length; j++) {
-          for (let k = 0; k < Data[j].selectedServingCusines.length; k++) {
-            console.log('SELECTED', Data[j].selectedServingCusines[k]);
-            if (Data[j].selectedServingCusines[k].cusineName === unique[i]) {
-              matched.push(Data[j]);
+        for (let j = 0; j < Trucks.length; j++) {
+          for (let k = 0; k < Trucks[j].selectedServingCusines.length; k++) {
+            // console.log('SELECTED', Data[j].selectedServingCusines[k]);
+            if (Trucks[j].selectedServingCusines[k].cusineName === unique[i]) {
+              matched.push(Trucks[j]);
             }
           }
         }
       }
-      await setData(matched);
       console.log('MATCHED', matched.length);
       if (matched.length == 0 || matched === undefined) {
+        console.log('NOT MATCHED')
         setIsMsg(true);
         setTimeout(() => {
           setIsMsg(false);
           getAllTrucks();
-       }, 1000);
+        }, 1000);
       } else {
         setIsMsg(false);
         await setData(matched);
@@ -103,6 +104,7 @@ const FindFoodTruck = ({navigation, route}) => {
     }
   };
   const getAllTrucks = () => {
+    console.log('in trucks')
     axios
       .get(url + '/api/supplier/getalltruck')
       .then(async Response => {
@@ -139,12 +141,9 @@ const FindFoodTruck = ({navigation, route}) => {
   //   console.log('in Effect', route.params.CusineName);
   // };
   useEffect(() => {
- 
-      
-      getCurrentLocation();
-      getCusine();
-      getAllTrucks();
-  
+    getCurrentLocation();
+    getCusine();
+    getAllTrucks();
   }, []);
   const openMap = (sourceLat, sourceLong) => {
     console.log('source lat', sourceLat);
@@ -209,11 +208,12 @@ const FindFoodTruck = ({navigation, route}) => {
       <TouchableOpacity
         activeOpacity={0.8}
         style={styles.MainView}
-        onPress={() =>
+        onPress={() =>{
           navigation.navigate(RouteName.CUSTOMERSUPPLIER, {
             TruckInfo: item,
             openMap: openMap,
           })
+        }
         }>
         <View style={styles.LeftIcon}>
           <Image style={styles.image} source={{uri: item.truckLogo}} />
@@ -367,9 +367,11 @@ const FindFoodTruck = ({navigation, route}) => {
           color={'grey'}
           style={{marginLeft: responsiveWidth(-5)}}
           onPress={() => {
+     
             navigation.navigate(RouteName.SERVINGCUSINETYPE, {
               onFilterSearch: onFilterSearch,
             });
+            // getAllTrucks();
           }}
           //style={{marginTop:responsiveHeight(1.3),transform: [{ scaleY: 2 }]}}
         />
