@@ -57,3 +57,5 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
+Screens/Auth/Constants/constants.js
+Screens/Auth/Constants/constants.js
