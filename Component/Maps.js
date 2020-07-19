@@ -19,9 +19,8 @@ import {
   responsiveFontSize,
 } from 'react-native-responsive-dimensions';
 import {showLocation} from 'react-native-map-link';
+import moment from 'moment';
 const Maps = ({MapContainerStyle, Trucks, navigation}) => {
-  const [markerLat, setMarkerLat] = React.useState(30.3753);
-  const [markerLong, setMarkerLong] = React.useState(69.3451);
   const [mapReady, setMapReady] = React.useState(true);
   const [Lat, setLat] = React.useState(0.0);
   const [Long, setLong] = React.useState(0.0);
@@ -101,6 +100,37 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
       },
     );
   };
+  const getStatus = (item, index) => {
+    let day = moment(new Date()).format('dddd');
+    let matchedDay = item.schedule.filter(data => day === data.day);
+    if (matchedDay.length > 0) {
+      let startTime = new Date(
+        'Mon 03-Jul-2017, ' + matchedDay[0].opening.toString(),
+      ).getHours();
+
+      let endTime = new Date(
+        'Mon 03-Jul-2017, ' + matchedDay[0].closing.toString(),
+      ).getHours();
+
+      console.log('Start Time', startTime);
+      console.log('End Time', endTime);
+      // console.log('Matched Day', matchedDay);
+      var currentTime = new Date().getHours();
+      console.log('Current Time ', currentTime);
+       if(startTime<=currentTime && currentTime <=endTime){
+            console.log('Between')
+            return 'Open'
+       }
+       else{
+        console.log('No Between')
+         return 'Close'
+       }
+    } else {
+      return 'Close';
+    }
+
+    // return currentTime.toString();
+  };
   return (
     <View style={[styles.mapcon, MapContainerStyle]}>
       <MapView
@@ -133,22 +163,20 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
                     source={require('../images/delivery-truck.png')}
                   />
                   <Callout
-                    onPress={
-                      () =>
-                        navigation.navigate('Search', {
-                          screen: RouteName.CUSTOMERSUPPLIER,
-                          params: {TruckInfo: item, openMap: openMap},
-                        })
-                      // navigation.navigate(RouteName.CUSTOMERSUPPLIER, {
-                      //   TruckInfo: item,
-                      //   openMap: openMap,
-                      // })
+                    onPress={() =>
+                      navigation.navigate('Search', {
+                        screen: RouteName.CUSTOMERSUPPLIER,
+                        params: {TruckInfo: item, openMap: openMap},
+                      })
                     }
                     tooltip={true}>
                     <View style={styles.BOX}>
-                      <Text style={{paddingBottom:responsiveHeight(10)}} >
+                      <Text style={{paddingBottom: responsiveHeight(10)}}>
                         <Image
-                          style={{height: responsiveHeight(15), width: responsiveWidth(30)}}
+                          style={{
+                            height: responsiveHeight(15),
+                            width: responsiveWidth(30),
+                          }}
                           source={{uri: item.coverPhoto}}
                           resizeMode={'contain'}
                         />
@@ -165,30 +193,8 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
                               ? {color: 'red'}
                               : {color: 'green'},
                           ]}>
-                          {item.status}
+                          {getStatus(item, index)}
                         </Text>
-                        {/* <View
-                          style={{
-                            flexDirection: 'row',
-                            width: '90%',
-                            height: responsiveHeight(5),
-                            alignItems: 'center',
-                          }}>
-                          <FA5
-                            name={'directions'}
-                            color={'green'}
-                            size={responsiveFontSize(3)}
-                          />
-                          <Text
-                            style={[
-                              {marginLeft: responsiveWidth(1)},
-                              item.status === 'Close'
-                                ? {color: 'red'}
-                                : {color: 'green'},
-                            ]}>
-                            {'Get Directions'}
-                          </Text>
-                        </View> */}
                       </View>
                     </View>
                   </Callout>

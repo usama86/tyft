@@ -61,8 +61,10 @@ const AccountInfo = ({navigation}) => {
     }
   };
   useEffect(() => {
-    checkUserStatus();
-    getData();
+    navigation.addListener('focus',()=>{
+      checkUserStatus();
+      getData();
+    })
   }, []);
   const SelectImage = () => {
     const options = {

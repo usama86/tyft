@@ -91,6 +91,7 @@ const Account = ({navigation, route}) => {
           Language: Language,
         })
         .then(async Response => {
+          await AsyncStorage.setItem('language' + '', Language);
           console.log('Responsessss', Response.data.code);
           let Code = Response.data.code;
           if (Code === 'ABT0000') {

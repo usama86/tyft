@@ -184,7 +184,7 @@ const CustomerSupplier = ({navigation, route}) => {
             fontWeight: 'bold',
             fontSize: responsiveFontSize(2),
           }}
-          value={'OPEN'}
+          value={''}
         />
         <TouchableOpacity
           onPress={() =>

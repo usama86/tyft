@@ -109,6 +109,37 @@ const Favorite = ({navigation}) => {
       getFavouriteRestaurants();
     })
   }, []);
+  const getStatus = (item, index) => {
+    let day = moment(new Date()).format('dddd');
+    let matchedDay = item.schedule.filter(data => day === data.day);
+    if (matchedDay.length > 0) {
+      let startTime = new Date(
+        'Mon 03-Jul-2017, ' + matchedDay[0].opening.toString(),
+      ).getHours();
+
+      let endTime = new Date(
+        'Mon 03-Jul-2017, ' + matchedDay[0].closing.toString(),
+      ).getHours();
+
+      console.log('Start Time', startTime);
+      console.log('End Time', endTime);
+      // console.log('Matched Day', matchedDay);
+      var currentTime = new Date().getHours();
+      console.log('Current Time ', currentTime);
+       if(startTime<=currentTime && currentTime <=endTime){
+            console.log('Between')
+            return 'Open'
+       }
+       else{
+        console.log('No Between')
+         return 'Close'
+       }
+    } else {
+      return 'Close';
+    }
+
+    // return currentTime.toString();
+  };
   const PrintCard = (item, index) => (
     <TouchableOpacity
       activeOpacity={0.8}
@@ -167,7 +198,7 @@ const Favorite = ({navigation}) => {
           ]}>
           <TouchableOpacity>
             <Text
-              value={item.status}
+              value={getStatus(item,index)}
               style={{
                 color: 'green',
                 fontSize: responsiveFontSize(2),

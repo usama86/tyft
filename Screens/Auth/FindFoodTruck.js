@@ -67,10 +67,10 @@ const FindFoodTruck = ({navigation, route}) => {
       }
     }
   };
-  const onFilterSearch = async (selectedItems,Trucks) => {
+  const onFilterSearch = async (selectedItems, Trucks) => {
     // getAllTrucks();
     console.log('hheloooo', selectedItems);
-    console.log('Trucks',Trucks);
+    console.log('Trucks', Trucks);
     let unique = [...new Set(selectedItems)];
     console.log('UNIQUE', unique);
     if (unique.length === 0) {
@@ -91,7 +91,7 @@ const FindFoodTruck = ({navigation, route}) => {
       }
       console.log('MATCHED', matched.length);
       if (matched.length == 0 || matched === undefined) {
-        console.log('NOT MATCHED')
+        console.log('NOT MATCHED');
         setIsMsg(true);
         setTimeout(() => {
           setIsMsg(false);
@@ -103,8 +103,39 @@ const FindFoodTruck = ({navigation, route}) => {
       }
     }
   };
+  const getStatus = (item, index) => {
+    let day = moment(new Date()).format('dddd');
+    let matchedDay = item.schedule.filter(data => day === data.day);
+    if (matchedDay.length > 0) {
+      let startTime = new Date(
+        'Mon 03-Jul-2017, ' + matchedDay[0].opening.toString(),
+      ).getHours();
+
+      let endTime = new Date(
+        'Mon 03-Jul-2017, ' + matchedDay[0].closing.toString(),
+      ).getHours();
+
+      console.log('Start Time', startTime);
+      console.log('End Time', endTime);
+      // console.log('Matched Day', matchedDay);
+      var currentTime = new Date().getHours();
+      console.log('Current Time ', currentTime);
+       if(startTime<=currentTime && currentTime <=endTime){
+            console.log('Between')
+            return 'Open'
+       }
+       else{
+        console.log('No Between')
+         return 'Close'
+       }
+    } else {
+      return 'Close';
+    }
+
+    // return currentTime.toString();
+  };
   const getAllTrucks = () => {
-    console.log('in trucks')
+    console.log('in trucks');
     axios
       .get(url + '/api/supplier/getalltruck')
       .then(async Response => {
@@ -208,13 +239,12 @@ const FindFoodTruck = ({navigation, route}) => {
       <TouchableOpacity
         activeOpacity={0.8}
         style={styles.MainView}
-        onPress={() =>{
+        onPress={() => {
           navigation.navigate(RouteName.CUSTOMERSUPPLIER, {
             TruckInfo: item,
             openMap: openMap,
-          })
-        }
-        }>
+          });
+        }}>
         <View style={styles.LeftIcon}>
           <Image style={styles.image} source={{uri: item.truckLogo}} />
         </View>
@@ -301,7 +331,7 @@ const FindFoodTruck = ({navigation, route}) => {
             ]}>
             <TouchableOpacity>
               <Text
-                value={item.status}
+                value={getStatus(item, index)}
                 style={{
                   color: 'green',
                   fontSize: responsiveFontSize(2),
@@ -367,7 +397,6 @@ const FindFoodTruck = ({navigation, route}) => {
           color={'grey'}
           style={{marginLeft: responsiveWidth(-5)}}
           onPress={() => {
-     
             navigation.navigate(RouteName.SERVINGCUSINETYPE, {
               onFilterSearch: onFilterSearch,
             });
