@@ -376,13 +376,15 @@ const TruckInfo = ({navigation, route}) => {
   };
   return (
     <View style={{height: '100%', width: '100%'}}>
-      <Header isHome onPress={() => navigation.openDrawer()}>{'Truck Info'}</Header>
+      <Header isHome onPress={() => navigation.openDrawer()}>
+        {'Truck Info'}
+      </Header>
       <Ui
         TextViewStyle={styles.TextViewStyle}
         TextValue={"Your food truck's info"}
         ButtonText={'Next'}
-        ContentStyle={{height:null}}
-        buttonStyle={{marginVertical:responsiveHeight(1)}}
+        ContentStyle={{height: null}}
+        buttonStyle={{marginVertical: responsiveHeight(1)}}
         onPressButton={Navigate}>
         <View style={styles.InputMainView}>
           <Input
@@ -400,11 +402,19 @@ const TruckInfo = ({navigation, route}) => {
           <Input
             rounded
             placeholder="Business Description"
-            style={styles.Input}
+            multiline={true}
             value={businessDesc.description}
             onChangeText={e =>
               setBusinessDesc({description: e, Error: false, ErrorText: null})
             }
+            style={[
+              styles.Input,
+              {
+                height: responsiveHeight(19),
+                marginTop: responsiveHeight(2),
+                width: '90%',
+              },
+            ]}
           />
           {businessDesc.Error ? (
             <ErrorView>{businessDesc.ErrorText}</ErrorView>

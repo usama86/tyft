@@ -28,7 +28,15 @@ const Profile = ({navigation}) => {
         <Input
           rounded
           placeholder="Business Description"
-          style={styles.Input}
+          multiline={true}
+          style={[
+            styles.Input,
+            {
+              height: responsiveHeight(19),
+              marginTop: responsiveHeight(2),
+              width: '90%',
+            },
+          ]}
         />
         <Input rounded placeholder="Contact" style={styles.Input} />
         <Input rounded placeholder="Email" style={styles.Input} />
@@ -46,7 +54,7 @@ const styles = StyleSheet.create({
     marginTop: responsiveHeight(3),
   },
   TextViewStyle: {
-  //  width: responsiveWidth(60),
+    //  width: responsiveWidth(60),
   },
   radioView: {
     flexDirection: 'row',

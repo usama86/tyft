@@ -143,15 +143,25 @@ const TruckInfo = ({navigation, route}) => {
           {truckName.Error ? (
             <ErrorView>{truckName.ErrorText}</ErrorView>
           ) : null}
+
           <Input
             rounded
             placeholder="Business Description"
-            style={styles.Input}
+            multiline={true}
             value={businessDesc.description}
             onChangeText={e =>
               setBusinessDesc({description: e, Error: false, ErrorText: null})
             }
+            style={[
+              styles.Input,
+              {
+                height: responsiveHeight(19),
+                marginTop: responsiveHeight(2),
+                width: '90%',
+              },
+            ]}
           />
+
           {businessDesc.Error ? (
             <ErrorView>{businessDesc.ErrorText}</ErrorView>
           ) : null}

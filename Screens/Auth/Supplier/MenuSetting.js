@@ -60,29 +60,25 @@ const MenuSetting = ({navigation, route}) => {
     }
   };
   const Navigate = () => {
-    if (Data.length > 0) {
-      navigation.navigate(RouteName.COVERPHOTO, {
-        Schedule: route.params.Schedule,
-        Name: route.params.Name,
-        Email: route.params.Email,
-        Phone: route.params.Phone,
-        Password: route.params.Password,
-        TruckLogo: route.params.TruckLogo,
-        TruckName: route.params.TruckName,
-        BusinessDescription: route.params.BusinessDescription,
-        TruckContact: route.params.TruckContact,
-        TruckEmail: route.params.TruckEmail,
-        City: route.params.City,
-        Website: route.params.Website,
-        FacebookID: route.params.FacebookID,
-        InstagramID: route.params.InstagramID,
-        TwitterID: route.params.TwitterID,
-        ServingCusine: route.params.ServingCusine,
-        Menu: Data,
-      });
-    } else {
-      Alert.alert('Please Add Menu First');
-    }
+    navigation.navigate(RouteName.COVERPHOTO, {
+      Schedule: route.params.Schedule,
+      Name: route.params.Name,
+      Email: route.params.Email,
+      Phone: route.params.Phone,
+      Password: route.params.Password,
+      TruckLogo: route.params.TruckLogo,
+      TruckName: route.params.TruckName,
+      BusinessDescription: route.params.BusinessDescription,
+      TruckContact: route.params.TruckContact,
+      TruckEmail: route.params.TruckEmail,
+      City: route.params.City,
+      Website: route.params.Website,
+      FacebookID: route.params.FacebookID,
+      InstagramID: route.params.InstagramID,
+      TwitterID: route.params.TwitterID,
+      ServingCusine: route.params.ServingCusine,
+      Menu: Data.length > 0 ? Data : [],
+    });
   };
   const AddToList = () => {
     let newId = 0;
@@ -207,14 +203,23 @@ const MenuSetting = ({navigation, route}) => {
               style={styles.Input}
             />
             {name.Error ? <ErrorView>{name.ErrorText}</ErrorView> : null}
+
             <Input
               rounded
+              multiline={true}
               placeholder="Description"
               onChangeText={e =>
                 setDescription({value: e, Error: false, ErrorText: null})
               }
               value={description.value}
-              style={styles.Input}
+              style={[
+                styles.Input,
+                {
+                  height: responsiveHeight(19),
+                  marginTop: responsiveHeight(2),
+                  width: '90%',
+                },
+              ]}
             />
             {description.Error ? (
               <ErrorView>{description.ErrorText}</ErrorView>
