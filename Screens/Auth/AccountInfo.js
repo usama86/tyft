@@ -28,6 +28,7 @@ const AccountInfo = ({navigation}) => {
   const [profileName, setProfileName] = React.useState('');
   const [Language, setLanguage] = React.useState('');
   const [urls, setUrl] = React.useState('');
+  const [photo,setPhoto] =React.useState('')
   const [password, setPassword] = React.useState({
     value: null,
     errorText: null,
@@ -75,65 +76,65 @@ const AccountInfo = ({navigation}) => {
       if (response.didCancel) {
       } else if (response.error) {
       } else {
-
-            const img = response;
-            // TruckID: route.params.ID,
-                    try {
-                      // setIsLoading(true);
-                      var myHeaders = new Headers();
-                      myHeaders.append('Content-Type', 'multipart/form-data');
-                      myHeaders.append('Accept', 'application/json');
-                      // let file = await uriToBlob(val.uri)
-                      var formdata = new FormData();
-                      formdata.append('file', {
-                        uri: img.uri,
-                        type: 'image/jpeg',
-                        name: img.fileName,
-                      });
-                      formdata.append('upload_preset', 'tyftBackend');
-                      var requestOptions = {
-                        method: 'POST',
-                        headers: myHeaders,
-                        body: formdata,
-                        redirect: 'follow',
-                      };
-                      fetch(
-                        'https://api.cloudinary.com/v1_1/hmrzthc6f/image/upload',
-                        requestOptions,
-                      )
-                        .then(response => response.json())
-                        .then(async(result) => {
-                          console.log(result);
-                          let userId = await AsyncStorage.getItem('userID');
-                          axios
-                            .post(url + '/api/users/updateprofileimage', {
-                              _id: userId,
-                              imgUrl: result.url
-                            })
-                            .then(async Response => {
-                              console.log('Responsessss', Response.data.code);
-                              let Code = Response.data.code;
-                              if (Code === 'ABT0000') {
-                                setUrl(img); //
-                                // navigation.navigate(Route.SIGNIN);
-                              } else {
-                                console.log('NOT ADDEED');
-                                // setisLoading(false);
-                              }
-                            })
-                            .catch(error => {
-                              console.log(error);
-                            });
-                          // setImageUrl(result.url); updatetruckimage
-                          // setIsLoading(false);
-                        })
-                        .catch(error => {
-                          console.log('error', error);
-                          // setIsLoading(false);
-                        });
-                    } catch (e) {
-                      console.log('error => ', e);
-                    }
+        setImage(response);
+        const img = response;
+        // TruckID: route.params.ID,
+        try {
+          // setIsLoading(true);
+          var myHeaders = new Headers();
+          myHeaders.append('Content-Type', 'multipart/form-data');
+          myHeaders.append('Accept', 'application/json');
+          // let file = await uriToBlob(val.uri)
+          var formdata = new FormData();
+          formdata.append('file', {
+            uri: img.uri,
+            type: 'image/jpeg',
+            name: img.fileName,
+          });
+          formdata.append('upload_preset', 'tyftBackend');
+          var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: formdata,
+            redirect: 'follow',
+          };
+          fetch(
+            'https://api.cloudinary.com/v1_1/hmrzthc6f/image/upload',
+            requestOptions,
+          )
+            .then(response => response.json())
+            .then(async result => {
+              console.log(result);
+              let userId = await AsyncStorage.getItem('userID');
+              axios
+                .post(url + '/api/users/updateprofileimage', {
+                  _id: userId,
+                  imgUrl: result.url,
+                })
+                .then(async Response => {
+                  console.log('Responsessss', Response.data.code);
+                  let Code = Response.data.code;
+                  if (Code === 'ABT0000') {
+                    setUrl(img); //
+                    // navigation.navigate(Route.SIGNIN);
+                  } else {
+                    console.log('NOT ADDEED');
+                    // setisLoading(false);
+                  }
+                })
+                .catch(error => {
+                  console.log(error);
+                });
+              // setImageUrl(result.url); updatetruckimage
+              // setIsLoading(false);
+            })
+            .catch(error => {
+              console.log('error', error);
+              // setIsLoading(false);
+            });
+        } catch (e) {
+          console.log('error => ', e);
+        }
       }
     });
   };
@@ -143,6 +144,10 @@ const AccountInfo = ({navigation}) => {
     let emails = await AsyncStorage.getItem('email');
     //  await AsyncStorage.setItem('profileName' + '', usertoken.profileName);
     let phones = await AsyncStorage.getItem('phoneNumber');
+    let photo = await AsyncStorage.getItem('profilePhoto');
+    let language = await AsyncStorage.getItem('language');
+    setPhoto(photo);
+    setLanguage(language)
     //  let Language = await AsyncStorage.getItem('Language');
     //  setLanguage(Language)
     console.log(id);
@@ -153,17 +158,17 @@ const AccountInfo = ({navigation}) => {
     SetName(name);
     setEmail(emails);
     setPhone(phones);
-    axios
-      .get(url + '/api/users/getuser', {
-        email: emails,
-      })
-      .then(async Response => {
-        console.log('Response of Get User', Response.data);
-        setLanguage(Response.data[0].Language);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    // axios
+    //   .get(url + '/api/users/getuser', {
+    //     email: emails,
+    //   })
+    //   .then(async Response => {
+    //     console.log('Response of Get User', Response.data);
+    //     setLanguage(Response.data[0].Language);
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   });
   };
   return (
     <View style={{height: '100%', width: '100%'}}>
@@ -200,7 +205,7 @@ const AccountInfo = ({navigation}) => {
             <View style={styles.header}>
               <View style={styles.rowView}>
                 <Avatar
-                  source={img ? {uri: img.uri} : null}
+                  source={img ? {uri: img.uri} : {uri:photo}}
                   icon={{name: 'user', type: 'font-awesome'}}
                   showEditButton
                   rounded
@@ -268,7 +273,11 @@ const AccountInfo = ({navigation}) => {
               />
             </View>
             <Text
-              style={{textAlign:'center',fontWeight:'bold',fontSize:responsiveFontSize(2)}}
+              style={{
+                textAlign: 'center',
+                fontWeight: 'bold',
+                fontSize: responsiveFontSize(2),
+              }}
               value={'Are you sure you wanna Signout?'}
             />
             <View style={styles.ButtonView}>
