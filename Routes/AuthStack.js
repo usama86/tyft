@@ -29,6 +29,7 @@ import CustomerSupplier from './../Screens/Auth/CustomerSupplier';
 import {responsiveWidth} from 'react-native-responsive-dimensions';
 import Account from './../Screens/Auth/Account';
 import AccountInfo from './../Screens/Auth/AccountInfo';
+import ServingCusineType2 from '../Screens/Auth/ServingCusineType2';
 const Tabs = createBottomTabNavigator();
 const StackAuth = createStackNavigator();
 const StackNearMe = createStackNavigator();
@@ -82,10 +83,15 @@ const FavouriteStack = () => (
       name={RouteName.CUSTOMERSUPPLIER}
       component={CustomerSupplier}
     />
+    
 
     <StackSearch.Screen
       name={RouteName.SERVINGCUSINETYPE}
       component={ServingCusinetype}
+    />
+        <StackSearch.Screen
+      name={RouteName.SERVINGCUSINETYPE2}
+      component={ServingCusineType2}
     />
     <StackSearch.Screen
       options={{headerShown: false}}

@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
@@ -7,7 +7,7 @@ import {
   FlatList,
   SafeAreaView,
   ScrollView,
-  ActivityIndicator
+  ActivityIndicator,
 } from 'react-native';
 import Container from '../../Component/Container';
 import Button from '../../Component/Button';
@@ -30,34 +30,14 @@ import url from './Constants/constants';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 import moment from 'moment';
-import FuzzySearch from 'fuzzy-search'; 
+import FuzzySearch from 'fuzzy-search';
 const Favorite = ({navigation}) => {
-  const [Data, setData] = useState([
-   
-    // {
-    //   id: 3,
-    //   Title: 'Taco Truck',
-    //   subtitle1: 'American,Soul Food,Indian',
-    //   subtitle2: '1620 US-70,Coleny KS 679311',
-    //   subtitle3: '11:00 AM - 2:00 PM',
-    //   status: 'OPEN',
-    //   rating: 2,
-    // },
-    // {
-    //   id: 4,
-    //   Title: 'Taco Truck',
-    //   subtitle1: 'American,Soul Food,Indian',
-    //   subtitle2: '1620 US-70,Coleny KS 679311',
-    //   subtitle3: '11:00 AM - 2:00 PM',
-    //   status: 'OPEN',
-    //   rating: 1,
-    // },
-  ]);
+  const [Data, setData] = useState([]);
   const [day, setDay] = useState(null);
   const [isLoading, setisLoading] = useState(true);
   const [isMsg, setIsMsg] = useState(false);
   const [searchVal, setSearchVal] = useState('');
-
+const [uniqueProps,setuniqueProps] =useState([])
   const onChangeSearch = val => {
     setSearchVal(val);
     if (val == '') {
@@ -78,18 +58,15 @@ const Favorite = ({navigation}) => {
     }
   };
 
-
   const getFavouriteRestaurants = async () => {
     let UserID = await AsyncStorage.getItem('userID');
-    console.log(UserID)
+    console.log(UserID);
     axios
-      .post(url + '/api/supplier/getfavoritetruck',{_id:UserID})
+      .post(url + '/api/supplier/getfavoritetruck', {_id: UserID})
       .then(async Response => {
         let ERROR = Response.data.code;
         let Favourites = Response.data.records;
-        console.log('FAVVV',Favourites)
         if (ERROR !== 'ABT0001') {
-          console.log('FAVV',Favourites)
           let currentDate = moment();
           let day = currentDate.format('dddd');
           setDay(day);
@@ -105,9 +82,9 @@ const Favorite = ({navigation}) => {
       });
   };
   useEffect(() => {
-    navigation.addListener('focus',()=>{
+    navigation.addListener('focus', () => {
       getFavouriteRestaurants();
-    })
+    });
   }, []);
   const getStatus = (item, index) => {
     let day = moment(new Date()).format('dddd');
@@ -126,14 +103,13 @@ const Favorite = ({navigation}) => {
       // console.log('Matched Day', matchedDay);
       var currentTime = new Date().getHours();
       console.log('Current Time ', currentTime);
-       if(startTime<=currentTime && currentTime <=endTime){
-            console.log('Between')
-            return 'Open'
-       }
-       else{
-        console.log('No Between')
-         return 'Close'
-       }
+      if (startTime <= currentTime && currentTime <= endTime) {
+        console.log('Between');
+        return 'Open';
+      } else {
+        console.log('No Between');
+        return 'Close';
+      }
     } else {
       return 'Close';
     }
@@ -145,7 +121,10 @@ const Favorite = ({navigation}) => {
       activeOpacity={0.8}
       style={styles.MainView}
       onPress={() =>
-        navigation.navigate(RouteName.CUSTOMERSUPPLIER, {TruckInfo: item})
+        navigation.navigate(RouteName.CUSTOMERSUPPLIER, {
+          TruckInfo: item,
+          openMap: null,
+        })
       }>
       <View style={styles.LeftIcon}>
         <Image style={styles.image} source={{uri: item.truckLogo}} />
@@ -155,12 +134,15 @@ const Favorite = ({navigation}) => {
           style={{fontSize: responsiveFontSize(2), fontWeight: 'bold'}}
           value={item.truckName}
         />
-        <CountButton 
+        <CountButton
           button={item.selectedServingCusines}
-          buttonProp={{width:responsiveWidth(17),height:responsiveHeight(3)}}
-          tabProp={{marginTop:responsiveHeight(-18),left:responsiveWidth(-2)}}
+          buttonProp={{width: responsiveWidth(17), height: responsiveHeight(3)}}
+          tabProp={{
+            marginTop: responsiveHeight(-18),
+            left: responsiveWidth(-2),
+          }}
         />
-        <View style={[styles.flex,{marginTop:responsiveHeight(5)}]}>
+        <View style={[styles.flex, {marginTop: responsiveHeight(5)}]}>
           <Entypo
             name={'location-pin'}
             color={'#212121'}
@@ -198,7 +180,7 @@ const Favorite = ({navigation}) => {
           ]}>
           <TouchableOpacity>
             <Text
-              value={getStatus(item,index)}
+              value={getStatus(item, index)}
               style={{
                 color: 'green',
                 fontSize: responsiveFontSize(2),
@@ -217,15 +199,51 @@ const Favorite = ({navigation}) => {
       </View>
     </TouchableOpacity>
   );
+  const onFilterSearch = async (selectedItems, Trucks) => {
+    // getAllTrucks();
+    console.log('hheloooo', selectedItems);
+    console.log('Trucks', Trucks);
+    let unique = [...new Set(selectedItems)];
+    console.log('UNIQUE', unique);
+    if (unique.length === 0) {
+      getFavouriteRestaurants();
+      setIsMsg(false);
+    } else {
+      // console.log('\n\n\n\nDATA=>>>\n\n\n', Data);
+      let matched = [];
+      setuniqueProps(unique);
+      for (let i = 0; i < unique.length; i++) {
+        for (let j = 0; j < Trucks.length; j++) {
+          for (let k = 0; k < Trucks[j].selectedServingCusines.length; k++) {
+            // console.log('SELECTED', Data[j].selectedServingCusines[k]);
+            if (Trucks[j].selectedServingCusines[k].cusineName === unique[i]) {
+              matched.push(Trucks[j]);
+            }
+          }
+        }
+      }
+      console.log('MATCHED', matched.length);
+      if (matched.length == 0 || matched === undefined) {
+        console.log('NOT MATCHED');
+        setIsMsg(true);
+      } else {
+        setIsMsg(false);
+        await setData(matched);
+      }
+    }
+  };
+  const onClear = ()=>{
+    getFavouriteRestaurants();
+    setIsMsg(false);
+  }
   return (
     <SafeAreaView style={styles.parent}>
-      <Header onPress={() => navigation.goBack()}>{'Find Food Truck'}</Header>
+      <Header onPress={() => navigation.goBack()}>{'Favourite'}</Header>
       <View style={styles.seacrhbarContainter}>
         <SearchBar
           placeholder="Type something..."
           onChangeText={onChangeSearch}
           value={searchVal}
-          
           round
           lightTheme
           leftIconContainerStyle={{
@@ -251,24 +269,32 @@ const Favorite = ({navigation}) => {
           }
           containerStyle={{
             backgroundColor: 'white',
-            width: '90%',
+            width: '80%',
             alignSelf: 'center',
             borderWidth: 0,
           }}
         />
-               <TouchableOpacity
-               style={{marginLeft:responsiveWidth(-5)}}
-          onPress={() => navigation.navigate(RouteName.SERVINGCUSINETYPE)}>
-           <SettingIcon
-            name={'sound-mix'}
-            size={40}
+        <TouchableOpacity onPress={onClear} style={{right: responsiveWidth(3)}}>
+          <Text
+            style={{fontSize: responsiveFontSize(2), fontWeight: 'bold'}}
+            value={'Clear'}
           />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{}}
+          onPress={() =>
+            navigation.navigate(RouteName.SERVINGCUSINETYPE2, {
+              onFilterSearch: onFilterSearch,
+              uniqueProps:uniqueProps
+            })
+          }>
+          <SettingIcon name={'sound-mix'} size={40} />
         </TouchableOpacity>
       </View>
       <View
         style={{
           marginVertical: responsiveHeight(1),
-          marginLeft:responsiveWidth(-7),
+          marginLeft: responsiveWidth(-7),
           flexDirection: 'row',
           justifyContent: 'space-around',
         }}>
@@ -317,22 +343,22 @@ const Favorite = ({navigation}) => {
             marginLeft: responsiveWidth(25),
           }}
         />
-      ) : Data.length>0 ? (
+      ) : Data.length > 0 ? (
         <FlatList
           data={Data}
           keyExtractor={item => item.id}
           renderItem={({item, index}) => PrintCard(item, index)}
         />
-      ) : 
-      <Text
-      value={'No Truck Found'}
-      bold
-      style={{
-        marginTop: responsiveHeight(25),
-        marginLeft: responsiveWidth(25),
-      }}
-    />  
-      }
+      ) : (
+        <Text
+          value={'No Truck Found'}
+          bold
+          style={{
+            marginTop: responsiveHeight(25),
+            marginLeft: responsiveWidth(25),
+          }}
+        />
+      )}
     </SafeAreaView>
   );
 };

@@ -14,6 +14,7 @@ export const SOCIALMEDIADETAILS = 'SocialMediaDetails';
 export const SEARCHTRUCK = 'SearchTruck';
 export const FINDFOODTRUCK = 'FindFoodTruck';
 export const SERVINGCUSINETYPE = 'ServingCusineType';
+export const SERVINGCUSINETYPE2 = 'ServingCusineType2';
 export const PROFILE = 'Profile';
 export const MENU = 'Menu';
 export const CUSTOMERREVIEWS = 'CustomerReviews';

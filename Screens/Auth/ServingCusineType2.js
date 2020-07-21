@@ -26,27 +26,29 @@ import * as RouteName from '../../Constants/RouteName';
 import Header from '../../Component/Header';
 import url from './Constants/constants';
 import axios from 'axios';
+import AsyncStorage from '@react-native-community/async-storage';
 const FindFoodTruck = ({navigation, route}) => {
   const [indicator, setIndicator] = useState(true);
   const [CusineName, setCusinename] = useState([]);
   const [Datas, setDatas] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
+  const [restaurants, setRestaurants] = useState([]);
   useEffect(() => {
     getCusine();
-    getAllTrucks();
+    getFavouriteRestaurants();
   }, []);
 
   const [Data, setData] = useState([]);
-  const getAllTrucks = () => {
-    console.log('in trucks');
+  const getFavouriteRestaurants = async () => {
+    let UserID = await AsyncStorage.getItem('userID');
+    console.log(UserID);
     axios
-      .get(url + '/api/supplier/getalltruck')
+      .post(url + '/api/supplier/getfavoritetruck', {_id: UserID})
       .then(async Response => {
         let ERROR = Response.data.code;
-        let Trucks = Response.data.TruckInfo;
+        let Favourites = Response.data.records;
         if (ERROR !== 'ABT0001') {
-          let filtered = Trucks.filter(item => item.status === 'Open');
-          setDatas(filtered);
+          setRestaurants(Favourites);
         }
       })
       .catch(error => {
@@ -87,6 +89,13 @@ const FindFoodTruck = ({navigation, route}) => {
       dupSelected.push(...selectedItems, newArr[index].cusineName);
       setSelectedItems(dupSelected);
     }
+    else{
+      let dupSelected = [...selectedItems];
+      dupSelected.push(...selectedItems, newArr[index].cusineName);
+      dupSelected.splice(index,1);
+      newArr[index].checked = false;
+      setSelectedItems(dupSelected);
+    }
     setData(newArr);
     // console.log('Cusine Name', newArr[index].cusineName);
   };
@@ -98,6 +107,11 @@ const FindFoodTruck = ({navigation, route}) => {
         styles.MainView,
         item.checked
           ? {backgroundColor: theme.colors.primary, borderWidth: 0}
+          : null,
+        route.params.uniqueProps !== undefined
+          ? route.params.uniqueProps.find((a, i) => a === item.cusineName)
+            ? {backgroundColor: theme.colors.primary}
+            : null
           : null,
       ]}>
       <Text
@@ -135,11 +149,11 @@ const FindFoodTruck = ({navigation, route}) => {
           <View style={styles.ApplyButton}>
             <Button
               onPress={() => {
-                navigation.navigate(RouteName.FINDFOODTRUCK, {
-                  CusineName: Datas,
+                navigation.navigate('Favourite', {
+                  CusineName: Data,
                   selectedItems: selectedItems,
                 });
-                route.params.onFilterSearch(selectedItems, Datas);
+                route.params.onFilterSearch(selectedItems, restaurants);
               }}
               style={[styles.buttonStyle2]}
               rounded>

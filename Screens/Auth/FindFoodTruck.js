@@ -120,14 +120,13 @@ const FindFoodTruck = ({navigation, route}) => {
       // console.log('Matched Day', matchedDay);
       var currentTime = new Date().getHours();
       console.log('Current Time ', currentTime);
-       if(startTime<=currentTime && currentTime <=endTime){
-            console.log('Between')
-            return 'Open'
-       }
-       else{
-        console.log('No Between')
-         return 'Close'
-       }
+      if (startTime <= currentTime && currentTime <= endTime) {
+        console.log('Between');
+        return 'Open';
+      } else {
+        console.log('No Between');
+        return 'Close';
+      }
     } else {
       return 'Close';
     }
@@ -351,6 +350,10 @@ const FindFoodTruck = ({navigation, route}) => {
       </TouchableOpacity>
     );
   };
+  const onClear = () => {
+    getAllTrucks();
+    setIsMsg(false);
+  };
   return (
     <SafeAreaView style={styles.parent}>
       <Header NoIcon nothing onPress={() => navigation.goBack()}>
@@ -386,16 +389,22 @@ const FindFoodTruck = ({navigation, route}) => {
           }
           containerStyle={{
             backgroundColor: 'white',
-            width: '90%',
+            width: '80%',
             alignSelf: 'center',
             borderWidth: 0,
           }}
         />
+        <TouchableOpacity onPress={onClear} style={{right: responsiveWidth(3)}}>
+          <Text
+            style={{fontSize: responsiveFontSize(2), fontWeight: 'bold'}}
+            value={'Clear'}
+          />
+        </TouchableOpacity>
         <SettingIcon
           name={'sound-mix'}
           size={38}
           color={'grey'}
-          style={{marginLeft: responsiveWidth(-5)}}
+          style={{}}
           onPress={() => {
             navigation.navigate(RouteName.SERVINGCUSINETYPE, {
               onFilterSearch: onFilterSearch,
@@ -411,51 +420,8 @@ const FindFoodTruck = ({navigation, route}) => {
           marginLeft: responsiveWidth(-7),
           flexDirection: 'row',
           justifyContent: 'space-around',
-        }}>
-        {/* <View style={{width: '80%'}}>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            {buttonData
-              ? buttonData.map((data, index) => (
-                  <Button
-                    onPress={() => Checked(index)}
-                    style={[
-                      styles.button,
-                      data.checked
-                        ? {
-                            backgroundColor: theme.colors.primary,
-                            borderWidth: 0,
-                          }
-                        : null,
-                      // : route.params.CusineName === data.cusineName
-                      // ? {
-                      //     backgroundColor: theme.colors.primary,
-                      //     borderWidth: 0,
-                      //   }
-                      // : null,
-                    ]}>
-                    <Text
-                      style={[
-                        styles.TextStyle,
-                        data.checked ? {color: '#fff'} : {color: '#000'},
-                      ]}
-                      value={data.cusineName}
-                    />
-                  </Button>
-                ))
-              : null}
-          </ScrollView>
-        </View> */}
-
-        {/* <SettingIcon
-          name={'sound-mix'}
-          size={38}
-          color={'grey'}
-          onPress={() => {
-            navigation.navigate(RouteName.SERVINGCUSINETYPE);
-          }}
-          //style={{marginTop:responsiveHeight(1.3),transform: [{ scaleY: 2 }]}}
-        /> */}
-      </View>
+        }}
+      />
       {isLoading ? (
         <ActivityIndicator
           color={'#000'}
