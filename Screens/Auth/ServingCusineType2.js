@@ -34,8 +34,11 @@ const FindFoodTruck = ({navigation, route}) => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
   useEffect(() => {
-    getCusine();
-    getFavouriteRestaurants();
+    navigation.addListener('focus', () => {
+      getCusine();
+      getFavouriteRestaurants();
+      console.log('hhh');
+    });
   }, []);
 
   const [Data, setData] = useState([]);
@@ -62,16 +65,22 @@ const FindFoodTruck = ({navigation, route}) => {
         if (Response) {
           if (Response.data.length > 0) {
             let res = Response.data[0].cusine;
+            if (route.params.uniqueProps !== undefined) {
+              for (let k = 0; k < res.length; k++) {
+                if (
+                  route.params.uniqueProps.find(
+                    (a, i) => a === res[k].cusineName,
+                  )
+                ) {
+                  res[k].checked = true;
+                }
+              }
+            }
             setData(res);
           } else {
             setData(null);
           }
-          // let newArr = [{...res.Supplier[0], TruckInfo: res.TruckInfo}];
-          // setUserInfo(newArr);
-          // setTruckInfo(res.TruckInfo[0]);
           setIndicator(false);
-          // await AsyncStorage.setItem('TruckID'+'',res.TruckInfo[0]._id);
-          // await AsyncStorage.setItem('MenuID'+'',res.TruckInfo[0].MenuID);
         } else {
           setIndicator(false);
         }
@@ -83,21 +92,15 @@ const FindFoodTruck = ({navigation, route}) => {
   };
   const Checked = (item, index) => {
     let newArr = [...Data];
+    let dupSelected = [...selectedItems];
     newArr[index].checked = !newArr[index].checked;
     if (newArr[index].checked) {
-      let dupSelected = [];
-      dupSelected.push(...selectedItems, newArr[index].cusineName);
-      setSelectedItems(dupSelected);
-    }
-    else{
-      let dupSelected = [...selectedItems];
-      dupSelected.push(...selectedItems, newArr[index].cusineName);
-      dupSelected.splice(index,1);
-      newArr[index].checked = false;
-      setSelectedItems(dupSelected);
+      dupSelected.push(newArr[index].cusineName);
+    } else {
+      dupSelected.splice(index, 1);
     }
     setData(newArr);
-    // console.log('Cusine Name', newArr[index].cusineName);
+    setSelectedItems(dupSelected);
   };
   const PrintCard = (item, index) => (
     <TouchableOpacity
@@ -107,11 +110,6 @@ const FindFoodTruck = ({navigation, route}) => {
         styles.MainView,
         item.checked
           ? {backgroundColor: theme.colors.primary, borderWidth: 0}
-          : null,
-        route.params.uniqueProps !== undefined
-          ? route.params.uniqueProps.find((a, i) => a === item.cusineName)
-            ? {backgroundColor: theme.colors.primary}
-            : null
           : null,
       ]}>
       <Text

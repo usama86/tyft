@@ -208,6 +208,7 @@ const [uniqueProps,setuniqueProps] =useState([])
     if (unique.length === 0) {
       getFavouriteRestaurants();
       setIsMsg(false);
+      setuniqueProps(unique);
     } else {
       // console.log('\n\n\n\nDATA=>>>\n\n\n', Data);
       let matched = [];

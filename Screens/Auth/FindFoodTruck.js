@@ -43,7 +43,7 @@ const FindFoodTruck = ({navigation, route}) => {
   const [cusineName, setCusineName] = useState(null);
   const [Lat, setLat] = React.useState(0.0);
   const [Long, setLong] = React.useState(0.0);
-
+  const [uniqueProps,setuniqueProps] =useState([])
   const onChangeSearch = val => {
     setSearchVal(val);
     if (val == '') {
@@ -76,9 +76,11 @@ const FindFoodTruck = ({navigation, route}) => {
     if (unique.length === 0) {
       getAllTrucks();
       setIsMsg(false);
+      setuniqueProps(unique);
     } else {
       // console.log('\n\n\n\nDATA=>>>\n\n\n', Data);
       let matched = [];
+      setuniqueProps(unique);
       for (let i = 0; i < unique.length; i++) {
         for (let j = 0; j < Trucks.length; j++) {
           for (let k = 0; k < Trucks[j].selectedServingCusines.length; k++) {
@@ -93,16 +95,48 @@ const FindFoodTruck = ({navigation, route}) => {
       if (matched.length == 0 || matched === undefined) {
         console.log('NOT MATCHED');
         setIsMsg(true);
-        setTimeout(() => {
-          setIsMsg(false);
-          getAllTrucks();
-        }, 1000);
       } else {
         setIsMsg(false);
         await setData(matched);
       }
     }
   };
+  // const onFilterSearch = async (selectedItems, Trucks) => {
+  //   // getAllTrucks();
+  //   console.log('hheloooo', selectedItems);
+  //   console.log('Trucks', Trucks);
+  //   let unique = [...new Set(selectedItems)];
+  //   console.log('UNIQUE', unique);
+  //   if (unique.length === 0) {
+  //     getAllTrucks();
+  //     setIsMsg(false);
+  //   } else {
+  //     // console.log('\n\n\n\nDATA=>>>\n\n\n', Data);
+  //     let matched = [];
+  //     for (let i = 0; i < unique.length; i++) {
+  //       for (let j = 0; j < Trucks.length; j++) {
+  //         for (let k = 0; k < Trucks[j].selectedServingCusines.length; k++) {
+  //           // console.log('SELECTED', Data[j].selectedServingCusines[k]);
+  //           if (Trucks[j].selectedServingCusines[k].cusineName === unique[i]) {
+  //             matched.push(Trucks[j]);
+  //           }
+  //         }
+  //       }
+  //     }
+  //     console.log('MATCHED', matched.length);
+  //     if (matched.length == 0 || matched === undefined) {
+  //       console.log('NOT MATCHED');
+  //       setIsMsg(true);
+  //       setTimeout(() => {
+  //         setIsMsg(false);
+  //         getAllTrucks();
+  //       }, 1000);
+  //     } else {
+  //       setIsMsg(false);
+  //       await setData(matched);
+  //     }
+  //   }
+  // };
   const getStatus = (item, index) => {
     let day = moment(new Date()).format('dddd');
     let matchedDay = item.schedule.filter(data => day === data.day);
@@ -408,6 +442,7 @@ const FindFoodTruck = ({navigation, route}) => {
           onPress={() => {
             navigation.navigate(RouteName.SERVINGCUSINETYPE, {
               onFilterSearch: onFilterSearch,
+              uniqueProps:uniqueProps
             });
             // getAllTrucks();
           }}

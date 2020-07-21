@@ -60,16 +60,22 @@ const FindFoodTruck = ({navigation, route}) => {
         if (Response) {
           if (Response.data.length > 0) {
             let res = Response.data[0].cusine;
+            if (route.params.uniqueProps !== undefined) {
+              for (let k = 0; k < res.length; k++) {
+                if (
+                  route.params.uniqueProps.find(
+                    (a, i) => a === res[k].cusineName,
+                  )
+                ) {
+                  res[k].checked = true;
+                }
+              }
+            }
             setData(res);
           } else {
             setData(null);
           }
-          // let newArr = [{...res.Supplier[0], TruckInfo: res.TruckInfo}];
-          // setUserInfo(newArr);
-          // setTruckInfo(res.TruckInfo[0]);
           setIndicator(false);
-          // await AsyncStorage.setItem('TruckID'+'',res.TruckInfo[0]._id);
-          // await AsyncStorage.setItem('MenuID'+'',res.TruckInfo[0].MenuID);
         } else {
           setIndicator(false);
         }
@@ -79,16 +85,54 @@ const FindFoodTruck = ({navigation, route}) => {
         setIndicator(false);
       });
   };
+  // const getCusine = async () => {
+  //   axios
+  //     .get(url + '/api/servingcusine/getcusines')
+  //     .then(async Response => {
+  //       if (Response) {
+  //         if (Response.data.length > 0) {
+  //           let res = Response.data[0].cusine;
+  //           setData(res);
+  //         } else {
+  //           setData(null);
+  //         }
+  //         // let newArr = [{...res.Supplier[0], TruckInfo: res.TruckInfo}];
+  //         // setUserInfo(newArr);
+  //         // setTruckInfo(res.TruckInfo[0]);
+  //         setIndicator(false);
+  //         // await AsyncStorage.setItem('TruckID'+'',res.TruckInfo[0]._id);
+  //         // await AsyncStorage.setItem('MenuID'+'',res.TruckInfo[0].MenuID);
+  //       } else {
+  //         setIndicator(false);
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.log(error);
+  //       setIndicator(false);
+  //     });
+  // };
+  // const Checked = (item, index) => {
+  //   let newArr = [...Data];
+  //   newArr[index].checked = !newArr[index].checked;
+  //   if (newArr[index].checked) {
+  //     let dupSelected = [];
+  //     dupSelected.push(...selectedItems, newArr[index].cusineName);
+  //     setSelectedItems(dupSelected);
+  //   }
+  //   setData(newArr);
+  //   // console.log('Cusine Name', newArr[index].cusineName);
+  // };
   const Checked = (item, index) => {
     let newArr = [...Data];
+    let dupSelected = [...selectedItems];
     newArr[index].checked = !newArr[index].checked;
     if (newArr[index].checked) {
-      let dupSelected = [];
-      dupSelected.push(...selectedItems, newArr[index].cusineName);
-      setSelectedItems(dupSelected);
+      dupSelected.push(newArr[index].cusineName);
+    } else {
+      dupSelected.splice(index, 1);
     }
     setData(newArr);
-    // console.log('Cusine Name', newArr[index].cusineName);
+    setSelectedItems(dupSelected);
   };
   const PrintCard = (item, index) => (
     <TouchableOpacity
