@@ -23,7 +23,9 @@ const Header = ({
   navigation,
   NoIcon,
   Logout,
-  nothing
+  nothing,
+  Clear,
+  onClearPress,
 }) => {
   return (
     <View>
@@ -55,6 +57,13 @@ const Header = ({
             size={responsiveFontSize(3.2)}
             color={'black'}
           />
+        </TouchableOpacity>
+      ) : null}
+      {Clear ? (
+        <TouchableOpacity onPress={onClearPress} style={[styles.switch,{marginTop:responsiveHeight(0.5)}]}>
+          <Text style={{fontSize: responsiveFontSize(2), fontWeight: 'bold'}}>
+            {'Clear'}
+          </Text>
         </TouchableOpacity>
       ) : null}
       {Add ? (

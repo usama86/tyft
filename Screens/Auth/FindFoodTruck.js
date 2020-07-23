@@ -390,7 +390,7 @@ const FindFoodTruck = ({navigation, route}) => {
   };
   return (
     <SafeAreaView style={styles.parent}>
-      <Header NoIcon nothing onPress={() => navigation.goBack()}>
+      <Header Clear onClearPress={onClear}  NoIcon nothing onPress={() => navigation.goBack()}>
         {'Find Food Truck'}
       </Header>
       <View style={styles.seacrhbarContainter}>
@@ -428,12 +428,6 @@ const FindFoodTruck = ({navigation, route}) => {
             borderWidth: 0,
           }}
         />
-        <TouchableOpacity onPress={onClear} style={{right: responsiveWidth(3)}}>
-          <Text
-            style={{fontSize: responsiveFontSize(2), fontWeight: 'bold'}}
-            value={'Clear'}
-          />
-        </TouchableOpacity>
         <SettingIcon
           name={'sound-mix'}
           size={38}

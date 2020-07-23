@@ -15,6 +15,8 @@ import CustomerReview from './../Screens/Auth/Drawer/CustomerReview';
 import ItemCategory from './../Screens/Auth/Drawer/ItemCategory';
 import Profile from './../Screens/Auth/Drawer/Profile';
 import Animated from 'react-native-reanimated';
+import SocialMediaDrawer from '../Screens/Auth/Drawer/SocailMediaDrawer';
+import ServingCusineDrawer from '../Screens/Auth/Drawer/ServingCusineTypeDrawer';
 
 const AppStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -73,6 +75,8 @@ const AppDrawer = () => {
           component={ItemCategory}
         />
         <Drawer.Screen name={RouteName.PROFILED} component={Profile} />
+        <Drawer.Screen name={'SocialMediaDrawer'} component={SocialMediaDrawer} />
+        <Drawer.Screen name={'ServingCusineDrawer'} component={ServingCusineDrawer} />
       </Drawer.Navigator>
     </Animated.View>
   );

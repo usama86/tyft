@@ -6,6 +6,9 @@ import ProfileIcon from 'react-native-vector-icons/AntDesign';
 import SignoutIcon from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MC from 'react-native-vector-icons/MaterialCommunityIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import SLI from 'react-native-vector-icons/SimpleLineIcons'
+import Entypo from 'react-native-vector-icons/Entypo';
 import {
   responsiveFontSize,
   responsiveHeight,
@@ -42,7 +45,7 @@ const CustomDrawer = ({navigation, route}) => {
       } else {
         // console.log(route.params.ID)
         const img = response;
-// TruckID: route.params.ID,
+        // TruckID: route.params.ID,
         try {
           // setIsLoading(true);
           var myHeaders = new Headers();
@@ -67,15 +70,14 @@ const CustomDrawer = ({navigation, route}) => {
             requestOptions,
           )
             .then(response => response.json())
-            .then(async(result) => {
+            .then(async result => {
               console.log(result);
-             
 
               let TruckId = await AsyncStorage.getItem('TruckID');
               axios
                 .post(url + '/api/supplier/updatetrucklogo', {
                   _id: TruckId,
-                  imgUrl: result.url
+                  imgUrl: result.url,
                 })
                 .then(async Response => {
                   console.log('Responsessss', Response.data.code);
@@ -101,7 +103,6 @@ const CustomDrawer = ({navigation, route}) => {
         } catch (e) {
           console.log('error => ', e);
         }
-       
       }
     });
   };
@@ -136,7 +137,7 @@ const CustomDrawer = ({navigation, route}) => {
               onPress={SelectImage}
               icon={{name: 'user', type: 'font-awesome'}}
               showEditButton
-              source={urls.uri ? {uri: urls.uri} : {uri:urls}}
+              source={urls.uri ? {uri: urls.uri} : {uri: urls}}
               rounded
               size="large"
             />
@@ -193,6 +194,16 @@ const CustomDrawer = ({navigation, route}) => {
             onPress={() =>
               navigation.navigate(Screens.PROFILED, {UserData: userInfo})
             }
+          />
+          <ListItem
+            title={'Social Media'}
+            leftAvatar={<SLI name={'social-stumbleupon'} size={25} />}
+            onPress={() => navigation.navigate('SocialMediaDrawer')}
+          />
+          <ListItem
+            title={'Serving Cusines'}
+            leftAvatar={<Entypo name={'bowl'} size={25} />}
+            onPress={() => navigation.navigate('ServingCusineDrawer')}
           />
           <ListItem
             title={'Contact Us'}

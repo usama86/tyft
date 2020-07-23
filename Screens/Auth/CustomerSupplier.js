@@ -28,6 +28,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import url from './Constants/constants';
 import axios from 'axios';
 import FA5 from 'react-native-vector-icons/FontAwesome5';
+import Feather from 'react-native-vector-icons/Feather';
 const CustomerSupplier = ({navigation, route}) => {
   const [ToggleSwitch, setToggleSwitch] = useState(false);
   const [favoriteSwitch, setFavoriteSwitch] = useState(false);
@@ -259,7 +260,7 @@ const CustomerSupplier = ({navigation, route}) => {
         />
       </TouchableOpacity>
       <View style={styles.iconView}>
-        <AntDesign
+        <Feather
           style={{marginLeft: responsiveWidth(1), width: '20%'}}
           name={'phone'}
           color={'#212121'}
@@ -276,7 +277,7 @@ const CustomerSupplier = ({navigation, route}) => {
       <View style={styles.SocialIcons}>
         {route.params.TruckInfo.socialMedia.twitter ? (
           <TouchableOpacity
-          style={{width:responsiveWidth(5),height:responsiveHeight(2.5)}}
+          style={{width:responsiveWidth(10),height:responsiveHeight(5)}}
             onPress={() =>
               Linking.openURL(route.params.TruckInfo.socialMedia.twitter)
             }>
@@ -297,7 +298,7 @@ const CustomerSupplier = ({navigation, route}) => {
         null}
         {route.params.TruckInfo.socialMedia.instagram ? (
                    <TouchableOpacity
-                   style={{width:responsiveWidth(5),height:responsiveHeight(2.5)}}
+                   style={{width:responsiveWidth(10),height:responsiveHeight(5)}}
                    onPress={() =>
                      Linking.openURL(route.params.TruckInfo.socialMedia.instagram)
                    }>
@@ -318,7 +319,7 @@ const CustomerSupplier = ({navigation, route}) => {
         ) : null}
         {route.params.TruckInfo.socialMedia.facebook ? (
                       <TouchableOpacity
-                      style={{width:responsiveWidth(5),height:responsiveHeight(2.5)}}
+                      style={{width:responsiveWidth(10),height:responsiveHeight(5)}}
                       onPress={() =>
                         Linking.openURL(route.params.TruckInfo.socialMedia.facebook)
                       }>
@@ -397,7 +398,7 @@ const styles = StyleSheet.create({
   },
   SocialIcons: {
     height: responsiveHeight(15),
-    width: '30%',
+    width: '50%',
     alignSelf: 'center',
     alignItems: 'center',
     flexDirection: 'row',

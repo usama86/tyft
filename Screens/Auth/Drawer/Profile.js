@@ -407,14 +407,14 @@ const TruckInfo = ({navigation, route}) => {
             onChangeText={e =>
               setBusinessDesc({description: e, Error: false, ErrorText: null})
             }
-            style={[
-              styles.Input,
+            style={
+      
               {
                 height: responsiveHeight(19),
                 marginTop: responsiveHeight(2),
-                width: '90%',
-              },
-            ]}
+                width: '100%',
+              }
+            }
           />
           {businessDesc.Error ? (
             <ErrorView>{businessDesc.ErrorText}</ErrorView>

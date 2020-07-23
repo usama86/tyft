@@ -239,7 +239,7 @@ const [uniqueProps,setuniqueProps] =useState([])
   }
   return (
     <SafeAreaView style={styles.parent}>
-      <Header onPress={() => navigation.goBack()}>{'Favourite'}</Header>
+      <Header Clear onClearPress={onClear} onPress={() => navigation.goBack()}>{'Favourite'}</Header>
       <View style={styles.seacrhbarContainter}>
         <SearchBar
           placeholder="Type something..."
@@ -275,12 +275,6 @@ const [uniqueProps,setuniqueProps] =useState([])
             borderWidth: 0,
           }}
         />
-        <TouchableOpacity onPress={onClear} style={{right: responsiveWidth(3)}}>
-          <Text
-            style={{fontSize: responsiveFontSize(2), fontWeight: 'bold'}}
-            value={'Clear'}
-          />
-        </TouchableOpacity>
         <TouchableOpacity
           style={{}}
           onPress={() =>
