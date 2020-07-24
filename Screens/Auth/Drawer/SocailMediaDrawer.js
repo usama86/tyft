@@ -32,7 +32,6 @@ const MenuSetting = ({navigation, route}) => {
     <View style={{height: '100%', width: '100%'}}>
       <Header isHome  onPress={() => navigation.openDrawer()}>{'Social Media'}</Header>
       <Ui
-        TextViewStyle={styles.TextViewStyle} 
         TextValue={'Social Media Details'}
         ButtonText={'Done'}
      >
@@ -85,11 +84,7 @@ const styles = StyleSheet.create({
   Input: {
     marginTop: responsiveHeight(3),
   },
-  TextViewStyle: {
-    //  width: responsiveWidth(60),
-    borderBottomWidth: 1,
-    borderBottomColor: 'grey',
-  },
+
   TextView: {
     width: '90%',
     marginLeft: responsiveWidth(3),
