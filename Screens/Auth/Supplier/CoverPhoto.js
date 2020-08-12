@@ -82,6 +82,7 @@ const CoverPhoto = ({navigation, route}) => {
         twitter: route.params.TwitterID,
         selectedServingCusines: route.params.ServingCusine,
         Menu: route.params.Menu,
+        categoryArray:route.params.categoryArray
       };
       axios
         .post(

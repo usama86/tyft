@@ -51,6 +51,7 @@ const MenuSetting = ({navigation, route}) => {
     Error: false,
     ErrorText: null,
   });
+  const [categoryArray,setCategoryArray] = React.useState([]);
   const changeCategory = e => {
     if (e === '') {
       setCategory(null);
@@ -78,6 +79,7 @@ const MenuSetting = ({navigation, route}) => {
       TwitterID: route.params.TwitterID,
       ServingCusine: route.params.ServingCusine,
       Menu: Data.length > 0 ? Data : [],
+      categoryArray:categoryArray,
     });
   };
   const AddToList = () => {
@@ -102,6 +104,10 @@ const MenuSetting = ({navigation, route}) => {
         description: description.value,
         category: SelectedValue,
       });
+
+
+      let copy = [ ...categoryArray, SelectedValue]; // --> [1,2,3,4]
+      setCategoryArray(copy);
       setData(newArray);
       setAddItem(false);
     }

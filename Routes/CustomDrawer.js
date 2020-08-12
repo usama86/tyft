@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, View, SafeAreaView} from 'react-native';
+import {StyleSheet, View, SafeAreaView, ScrollView} from 'react-native';
 import {Text, Avatar, Icon, ListItem} from 'react-native-elements';
 import * as Screens from './../Constants/RouteName';
 import ProfileIcon from 'react-native-vector-icons/AntDesign';
@@ -131,6 +131,7 @@ const CustomDrawer = ({navigation, route}) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
+      <ScrollView>
         <View style={styles.header}>
           <View style={styles.rowView}>
             <Avatar
@@ -192,7 +193,7 @@ const CustomDrawer = ({navigation, route}) => {
             title={'Profile'}
             leftAvatar={<ProfileIcon name={'user'} size={25} />}
             onPress={() =>
-              navigation.navigate(Screens.PROFILED, {UserData: userInfo})
+              navigation.navigate(Screens.PROFILED, {truckData: truckData})
             }
           />
           <ListItem
@@ -216,6 +217,7 @@ const CustomDrawer = ({navigation, route}) => {
             onPress={Logout}
           />
         </View>
+      </ScrollView>
       </View>
     </SafeAreaView>
   );

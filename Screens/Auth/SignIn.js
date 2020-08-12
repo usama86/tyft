@@ -54,8 +54,14 @@ const SignIn = ({navigation}) => {
             await AsyncStorage.setItem('userType' + '', usertoken.userType);
             await AsyncStorage.setItem('userName' + '', usertoken.userName);
             await AsyncStorage.setItem('email' + '', usertoken.email);
-            await AsyncStorage.setItem('profilePhoto' + '', usertoken.profilePhoto);
-            await AsyncStorage.setItem('language' + '', usertoken.Language);
+            if(usertoken.profilePhoto)
+              await AsyncStorage.setItem('profilePhoto' + '', usertoken.profilePhoto);
+            else 
+              await AsyncStorage.setItem('profilePhoto' + '', '');
+            if(usertoken.Language)
+              await AsyncStorage.setItem('language' + '', usertoken.Language);
+            else  
+              await AsyncStorage.setItem('language' + '', '');
             await AsyncStorage.setItem(
               'profileName' + '',
               usertoken.profileName,

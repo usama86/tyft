@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   ScrollView,
   ActivityIndicator,
+  Alert
 } from 'react-native';
 import Container from '../../../Component/Container';
 import Button from '../../../Component/Button';
@@ -25,6 +26,7 @@ import {
 import * as RouteName from '../../../Constants/RouteName';
 import Header from '../../../Component/Header';
 import url from '../Constants/constants';
+import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
 const FindFoodTruck = ({navigation, route}) => {
   const [indicator, setIndicator] = useState(true);
@@ -74,6 +76,25 @@ const FindFoodTruck = ({navigation, route}) => {
         setIndicator(false);
       });
   };
+  const saveServingCusine=async()=>{
+    let TruckId = await AsyncStorage.getItem('TruckID');
+    axios
+      .post(url + '/api/supplier/updateservingcusine', {
+        _id: TruckId,
+        selectedServingCusines:Data
+      })
+      .then(async Response => {
+        let ERROR = Response.code;
+        let Trucks = Response;
+        if (ERROR !== 'ABT0001') {
+          Alert.alert('Updated Serving Cusine');
+        }
+      }) 
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
   const Checked = (item, index) => {
     let newArr = [...Data];
     let dupSelected = [...selectedItems];
@@ -102,6 +123,7 @@ const FindFoodTruck = ({navigation, route}) => {
       />
     </TouchableOpacity>
   );
+
   return (
     <SafeAreaView style={styles.parent}>
       <Header isHome onPress={() => navigation.openDrawer()}>
@@ -129,8 +151,8 @@ const FindFoodTruck = ({navigation, route}) => {
             </ScrollView>
           </View>
           <View style={styles.ApplyButton}>
-            <Button style={[styles.buttonStyle2]} rounded>
-              <Text style={{color: '#fff'}} uppercase={false} value={'Done'} />
+            <Button style={[styles.buttonStyle2]} rounded onPress={saveServingCusine}>
+              <Text style={{color: '#fff'}} uppercase={false} value={'Save'} />
             </Button>
           </View>
         </>

@@ -58,19 +58,18 @@ const ItemCategory = ({navigation}) => {
     ErrorText: null,
   });
   useEffect(() => {
-    getMenuOfSupplier();
+    getCategoryOfSupplier();
   }, []);
 
   const deleteItem = async () => {
     console.log(selected);
-    let MenuID = await AsyncStorage.getItem('MenuID');
+    let TruckId = await AsyncStorage.getItem('TruckID');
     let copiedData = [...Data];
     copiedData.splice(selected, 1);
-    console.log(url + '/api/menu/updatemenu');
     axios
-      .post(url + '/api/menu/updatemenu', {
-        _id: MenuID,
-        Menu: copiedData,
+      .post(url + '/api/menu/updateCategory', {
+        _id: TruckId,
+        categoryArrays: copiedData,
       })
       .then(async Response => {
         console.log(Response);
@@ -85,18 +84,45 @@ const ItemCategory = ({navigation}) => {
         console.log(error);
       });
   };
-  const getMenuOfSupplier = async () => {
+
+  const UpdateCategory = async val => {
     setIndicator(true);
-    let MenuID = await AsyncStorage.getItem('MenuID');
+    let TruckId = await AsyncStorage.getItem('TruckID');
     axios
-      .post(url + '/api/menu/getmenu', {
-        _id: MenuID,
+      .post(url + '/api/menu/updateCategory', {
+        _id: TruckId,
+        categoryArrays: Data,
       })
       .then(async Response => {
         const ERROR = Response.data.code;
         if (ERROR === 'ABT0000') {
+          console.log('Updated');
+          setShowModal(false)
           setIndicator(false);
-          setData(Response.data.MenuData);
+          setTimeout(() => {
+            setShowModal(false)
+          }, 500);
+        } else {
+          setIndicator(false);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    if (val) setShowModal2(false);
+  };
+  const getCategoryOfSupplier = async () => {
+    setIndicator(true);
+    let TruckId = await AsyncStorage.getItem('TruckID');
+    axios
+      .post(url + '/api/supplier/getcategory', {
+        _id: TruckId,
+      })
+      .then(async Response => {
+        const ERROR = Response.data.code;
+        if (ERROR !== 'ABT0001') {
+          setIndicator(false);
+          setData(Response.data);
         } else {
           setIndicator(false);
         }
@@ -110,7 +136,7 @@ const ItemCategory = ({navigation}) => {
       <View style={styles.Left}>
         <Text
           style={{fontWeight: 'bold', fontSize: responsiveFontSize(2)}}
-          value={item.name}
+          value={item}
         />
         {/* <Text
           style={{
@@ -131,7 +157,7 @@ const ItemCategory = ({navigation}) => {
           size={responsiveFontSize(3.2)}
           onPress={() => {
             setShowModal(true);
-            setEditCategory(item.name);
+            setEditCategory(item);
           }}
         />
       </View>
@@ -393,7 +419,7 @@ const ItemCategory = ({navigation}) => {
             }}
           />
           <Button
-            onPress={() => setShowModal(false)}
+            onPress={() => UpdateCategory()}
             style={{
               width: '80%',
               height: responsiveHeight(6),

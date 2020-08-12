@@ -251,7 +251,7 @@
 // export default Profile;
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet,Alert} from 'react-native';
 import Input from '../../../Component/Input';
 import Text from '../../../Component/Text';
 import {
@@ -263,6 +263,8 @@ import Ui from '../../../Component/Ui';
 import * as RouteName from './../../../Constants/RouteName';
 import Header from '../../../Component/Header';
 import ErrorView from '../../../Component/ErrorField';
+import axios from 'axios';
+
 const TruckInfo = ({navigation, route}) => {
   const [check, SetCheck] = React.useState(false);
   const [truckName, SetTruckName] = React.useState({
@@ -295,6 +297,20 @@ const TruckInfo = ({navigation, route}) => {
     Error: null,
     ErrorText: null,
   });
+
+
+  React.useEffect(()=>{
+    if(route.params.truckData)
+    {
+    SetTruckName({name:route.params.truckData[0].truckName,ErrorText:null})
+    setBusinessDesc({description:route.params.truckData[0].businessDesc,ErrorText:null})
+    setContact({contact:route.params.truckData[0].truckContact,ErrorText:null})
+    setEmail({email:route.params.truckData[0].truckEmail,ErrorText:null})
+    setCity({city:route.params.truckData[0].truckCity,ErrorText:null})
+    setWebsite({website:route.params.truckData[0].truckWebsite,ErrorText:null})
+    }
+  },[])
+
   const changeInputHandler = () => {
     SetCheck(!check);
   };
@@ -308,71 +324,30 @@ const TruckInfo = ({navigation, route}) => {
       setEmail({email: e, Error: true, ErrorText: 'Please Enter Valid Email'});
     }
   };
-  const Navigate = () => {
-    if (!truckName.name) {
-      SetTruckName({
-        name: null,
-        Error: true,
-        ErrorText: 'Truck Name must not be empty',
+  const Navigate =async () => {
+    let TruckId = await AsyncStorage.getItem('TruckID');
+
+    axios
+      .post(url + '/api/supplier/updatetruckinfo', {
+        _id: TruckId,
+        truckName:truckName.name,
+        businessDesc:businessDesc.businessDesc,
+        truckContact:contact.contact,
+        truckEmail:email.email,
+        truckCity:city.city,
+        truckWebsite:website.website,
+      })
+      .then(async Response => {
+        console.log(Response);
+        const ERROR = Response.data.code;
+        if (ERROR === 'ABT0000') {
+          console.log('Updated');
+          Alert.alert('Truck Data Updated Successfully.');
+        }
+      })
+      .catch(error => {
+        console.log(error);
       });
-    }
-    if (!businessDesc.description) {
-      setBusinessDesc({
-        description: null,
-        Error: true,
-        ErrorText: 'Business Description must not be empty',
-      });
-    }
-    if (!contact.contact) {
-      setContact({
-        contact: null,
-        Error: true,
-        ErrorText: 'Contact number must not be empty',
-      });
-    }
-    if (!email.email) {
-      setEmail({
-        email: null,
-        Error: true,
-        ErrorText: 'Email must not be empty',
-      });
-    }
-    if (!city.city) {
-      setCity({
-        city: null,
-        Error: true,
-        ErrorText: 'City name must not be empty',
-      });
-    }
-    if (!website.website) {
-      setWebsite({
-        website: null,
-        Error: true,
-        ErrorText: 'Website must not be empty',
-      });
-    } else if (
-      truckName.name &&
-      businessDesc.description &&
-      contact.contact &&
-      email.email &&
-      !email.Error &&
-      city.city &&
-      website.website
-    ) {
-      navigation.navigate(RouteName.BUSINESSHOUR, {
-        Name: route.params.Name,
-        Email: route.params.Email,
-        Phone: route.params.Phone,
-        Password: route.params.Password,
-        TruckLogo: route.params.TruckLogo,
-        TruckName: truckName.name,
-        BusinessDescription: businessDesc.description,
-        TruckContact: contact.contact,
-        TruckEmail: email.email,
-        City: city.city,
-        Website: website.website,
-      });
-    }
   };
   return (
     <View style={{height: '100%', width: '100%'}}>
@@ -382,7 +357,7 @@ const TruckInfo = ({navigation, route}) => {
       <Ui
         TextViewStyle={styles.TextViewStyle}
         TextValue={"Your food truck's info"}
-        ButtonText={'Next'}
+        ButtonText={'Done'}
         ContentStyle={{height: null}}
         buttonStyle={{marginVertical: responsiveHeight(1)}}
         onPressButton={Navigate}>
@@ -393,7 +368,7 @@ const TruckInfo = ({navigation, route}) => {
             onChangeText={e =>
               SetTruckName({name: e, Error: false, ErrorText: null})
             }
-            value={truckName.name}
+            value={truckName}
             style={styles.Input}
           />
           {truckName.Error ? (
@@ -403,7 +378,7 @@ const TruckInfo = ({navigation, route}) => {
             rounded
             placeholder="Business Description"
             multiline={true}
-            value={businessDesc.description}
+            value={businessDesc}
             onChangeText={e =>
               setBusinessDesc({description: e, Error: false, ErrorText: null})
             }
@@ -423,7 +398,7 @@ const TruckInfo = ({navigation, route}) => {
             rounded
             placeholder="Contact"
             style={styles.Input}
-            value={contact.contact}
+            value={contact}
             onChangeText={e =>
               setContact({contact: e, Error: false, ErrorText: null})
             }
@@ -433,7 +408,7 @@ const TruckInfo = ({navigation, route}) => {
             rounded
             placeholder="Email"
             onChangeText={e => changeEmail(e)}
-            value={email.email}
+            value={email}
             style={styles.Input}
           />
           {email.Error ? <ErrorView>{email.ErrorText}</ErrorView> : null}
@@ -443,7 +418,7 @@ const TruckInfo = ({navigation, route}) => {
             onChangeText={e =>
               setCity({city: e, Error: false, ErrorText: null})
             }
-            value={city.city}
+            value={city}
             style={styles.Input}
           />
           {city.Error ? <ErrorView>{city.ErrorText}</ErrorView> : null}
@@ -453,7 +428,7 @@ const TruckInfo = ({navigation, route}) => {
             onChangeText={e =>
               setWebsite({website: e, Error: false, ErrorText: null})
             }
-            value={website.website}
+            value={website}
             style={styles.Input}
           />
           {website.Error ? <ErrorView>{website.ErrorText}</ErrorView> : null}
