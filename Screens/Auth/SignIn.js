@@ -37,6 +37,7 @@ const SignIn = ({navigation}) => {
     if (!password) {
       setPasswordErrorMessage('Password must not be empty');
     } else if (email && password) {
+      console.log('in login')
       setLoading(true);
       let credentials = {
         email: email,
@@ -73,8 +74,10 @@ const SignIn = ({navigation}) => {
 
             await setLoading(false);
             if (usertoken.userType === 'Supplier') {
+              console.log('inn Supplier')
               navigation.navigate('App');
             } else if (usertoken.userType === 'Customer') {
+              console.log('inn Customer')
               navigation.navigate('Auth', {screen: 'Tabs'});
             }
             //  await navigation.dispatch(

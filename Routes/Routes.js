@@ -17,6 +17,7 @@ import Profile from './../Screens/Auth/Drawer/Profile';
 import Animated from 'react-native-reanimated';
 import SocialMediaDrawer from '../Screens/Auth/Drawer/SocailMediaDrawer';
 import ServingCusineDrawer from '../Screens/Auth/Drawer/ServingCusineTypeDrawer';
+import ContactUs from '../Screens/Auth/Drawer/Contactus';
 
 const AppStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -77,6 +78,7 @@ const AppDrawer = () => {
         <Drawer.Screen name={RouteName.PROFILED} component={Profile} />
         <Drawer.Screen name={'SocialMediaDrawer'} component={SocialMediaDrawer} />
         <Drawer.Screen name={'ServingCusineDrawer'} component={ServingCusineDrawer} />
+        <Drawer.Screen name={'ContactUs'} component={ContactUs} />
       </Drawer.Navigator>
     </Animated.View>
   );

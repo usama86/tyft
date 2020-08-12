@@ -111,6 +111,33 @@ const ItemCategory = ({navigation}) => {
       });
     if (val) setShowModal2(false);
   };
+  const AddCategory = async(array)=>{
+    console.log('ADDD A')
+    setIndicator(true);
+    let TruckId = await AsyncStorage.getItem('TruckID');
+    axios
+      .post(url + '/api/menu/updateCategory', {
+        _id: TruckId,
+        categoryArrays: array,
+      })
+      .then(async Response => {
+        const ERROR = Response.data.code;
+        if (ERROR === 'ABT0000') {
+          console.log('Updated');
+          setShowModal(false)
+          setIndicator(false);
+          setTimeout(() => {
+            setShowModal(false)
+          }, 500);
+        } else {
+          setIndicator(false);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    // if (val) setShowModal2(false);
+  }
   const getCategoryOfSupplier = async () => {
     setIndicator(true);
     let TruckId = await AsyncStorage.getItem('TruckID');
@@ -120,6 +147,7 @@ const ItemCategory = ({navigation}) => {
       })
       .then(async Response => {
         const ERROR = Response.data.code;
+        console.log('Ctageogory',Response.data)
         if (ERROR !== 'ABT0001') {
           setIndicator(false);
           setData(Response.data);
@@ -176,28 +204,32 @@ const ItemCategory = ({navigation}) => {
     </TouchableOpacity>
   );
   const AddToList = () => {
+    console.log('hjhjb')
     let newId = 0;
     let newArray = [...Data];
     if (!name.value) {
       setName({value: null, Error: true, ErrorText: 'Name is required.'});
     }
-    if (!description.value) {
-      setDescription({
-        value: null,
-        Error: true,
-        ErrorText: 'Description is required.',
-      });
-    }
-    if (!price.value) {
-      setPrice({value: null, Error: true, ErrorText: 'Price is required.'});
-    } else if (name.value && description.value && price.value) {
+    // if (!description.value) {
+    //   setDescription({
+    //     value: null,
+    //     Error: true,
+    //     ErrorText: 'Description is required.',
+    //   });
+    // }
+    // if (!price.value) {
+    //   setPrice({value: null, Error: true, ErrorText: 'Price is required.'});
+    // } else
+    
+    if (name.value) {
       newArray.push({
         name: name.value,
-        price: price.value,
-        description: description.value,
-        category: SelectedValue,
+        // price: price.value,
+        // description: description.value,
+        // category: SelectedValue,
       });
       setData(newArray);
+      AddCategory(newArray);
     }
   };
   const changeCategory = e => {
