@@ -51,10 +51,22 @@ const SignIn = ({navigation}) => {
           if (token) {
             let usertoken = await decode(token);
             console.log('TOKEN', usertoken);
-            await AsyncStorage.setItem('userID' + '', usertoken.userId);
-            await AsyncStorage.setItem('userType' + '', usertoken.userType);
-            await AsyncStorage.setItem('userName' + '', usertoken.userName);
-            await AsyncStorage.setItem('email' + '', usertoken.email);
+            if(usertoken.userId)
+              await AsyncStorage.setItem('userID' + '', usertoken.userId);
+            else 
+              await AsyncStorage.setItem('userID' + '', ''); 
+            if(usertoken.userType)
+              await AsyncStorage.setItem('userType' + '', usertoken.userType);
+            else 
+              await AsyncStorage.setItem('userType' + '', ''); 
+            if(usertoken.userName)
+              await AsyncStorage.setItem('userName' + '', usertoken.userName);
+            else 
+              await AsyncStorage.setItem('userName' + '', ''); 
+            if(usertoken.email)
+              await AsyncStorage.setItem('email' + '', usertoken.email);
+            else 
+              await AsyncStorage.setItem('email' + '', '');  
             if(usertoken.profilePhoto)
               await AsyncStorage.setItem('profilePhoto' + '', usertoken.profilePhoto);
             else 
