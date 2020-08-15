@@ -224,11 +224,8 @@ const ItemCategory = ({navigation}) => {
     if (name.value) {
       newArray.push({
         name: name.value,
-        // price: price.value,
-        // description: description.value,
-        // category: SelectedValue,
       });
-      setData(newArray);
+      // setData(newArray);
       AddCategory(newArray);
     }
   };
