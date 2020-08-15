@@ -381,7 +381,7 @@ const VeggieWisper = ({navigation, route}) => {
           />
         </View>
         <View style={styles.SocialIcons}>
-          {TruckInfo.socialMedia.twitter ? (
+          {TruckInfo.socialMedia && TruckInfo.socialMedia.twitter ? (
             <TouchableOpacity
               style={{width: responsiveWidth(10), height: responsiveHeight(5)}}
               onPress={() => Linking.openURL(TruckInfo.socialMedia.twitter)}>
@@ -392,7 +392,7 @@ const VeggieWisper = ({navigation, route}) => {
               />
             </TouchableOpacity>
           ) : null}
-          {TruckInfo.socialMedia.instagram ? (
+          {TruckInfo.socialMedia && TruckInfo.socialMedia.instagram ? (
             <TouchableOpacity
               style={{width: responsiveWidth(10), height: responsiveHeight(5)}}
               onPress={() => Linking.openURL(TruckInfo.socialMedia.instagram)}>
@@ -403,7 +403,7 @@ const VeggieWisper = ({navigation, route}) => {
               />
             </TouchableOpacity>
           ) : null}
-          {TruckInfo.socialMedia.facebook ? (
+          {TruckInfo.socialMedia && TruckInfo.socialMedia.facebook ? (
             <TouchableOpacity
               style={{width: responsiveWidth(10), height: responsiveHeight(5)}}
               onPress={() => Linking.openURL(TruckInfo.socialMedia.facebook)}>

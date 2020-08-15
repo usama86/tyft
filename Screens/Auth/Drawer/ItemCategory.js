@@ -57,6 +57,8 @@ const ItemCategory = ({navigation}) => {
     Error: false,
     ErrorText: null,
   });
+
+  const [index,setIndex] = React.useState(0);
   useEffect(() => {
     getCategoryOfSupplier();
   }, []);
@@ -67,7 +69,7 @@ const ItemCategory = ({navigation}) => {
     let copiedData = [...Data];
     copiedData.splice(selected, 1);
     axios
-      .post(url + '/api/menu/updateCategory', {
+      .post(url + '/api/supplier/updatecategory', {
         _id: TruckId,
         categoryArrays: copiedData,
       })
@@ -86,12 +88,16 @@ const ItemCategory = ({navigation}) => {
   };
 
   const UpdateCategory = async val => {
+    let indexCategory = index;
+    let CopyData =[...Data];
+    CopyData[indexCategory] = EditCategory;
+
     setIndicator(true);
     let TruckId = await AsyncStorage.getItem('TruckID');
     axios
-      .post(url + '/api/menu/updateCategory', {
+      .post(url + '/api/supplier/updatecategory', {
         _id: TruckId,
-        categoryArrays: Data,
+        categoryArrays: CopyData,
       })
       .then(async Response => {
         const ERROR = Response.data.code;
@@ -99,6 +105,7 @@ const ItemCategory = ({navigation}) => {
           console.log('Updated');
           setShowModal(false)
           setIndicator(false);
+          getCategoryOfSupplier();
           setTimeout(() => {
             setShowModal(false)
           }, 500);
@@ -116,7 +123,7 @@ const ItemCategory = ({navigation}) => {
     setIndicator(true);
     let TruckId = await AsyncStorage.getItem('TruckID');
     axios
-      .post(url + '/api/menu/updateCategory', {
+      .post(url + '/api/supplier/updateCategory', {
         _id: TruckId,
         categoryArrays: array,
       })
@@ -186,6 +193,7 @@ const ItemCategory = ({navigation}) => {
           onPress={() => {
             setShowModal(true);
             setEditCategory(item);
+            setIndex(index);
           }}
         />
       </View>
