@@ -1,10 +1,11 @@
 import React from 'react';
-import {View, StyleSheet,Alert,alert} from 'react-native';
+import {View, StyleSheet,Alert,alert,Image} from 'react-native';
 import Input from '../../../Component/Input';
 import Text from '../../../Component/Text';
 import {
   responsiveHeight,
   responsiveWidth,
+  responsiveFontSize
 } from 'react-native-responsive-dimensions';
 import Checkbox from '../../../Component/Checkbox';
 import Ui from '../../../Component/Ui';
@@ -14,10 +15,12 @@ import ErrorView from '../../../Component/ErrorField';
 import AsyncStorage from '@react-native-community/async-storage';
 import url from '../Constants/constants';
 import axios from 'axios';
+import Modal from '../../../Component/Modal';
 const MenuSetting = ({navigation, route}) => {
   const [facebook, setFacebook] = React.useState('');
   const [instagram, setInstagram] = React.useState('');
   const [twitter, setTwitter] = React.useState('');
+  const [update, setUpdated] = React.useState(null);
 
   React.useEffect(() => {
     getSocialMedia();
@@ -64,7 +67,10 @@ const MenuSetting = ({navigation, route}) => {
         let ERROR = Response.code;
         let Trucks = Response;
         if (ERROR !== 'ABT0001') {
-          Alert.alert('Updated Social Media');
+          setUpdated(true);
+          setTimeout(() => {
+            setUpdated(false);
+          }, 2000);
         }
       }) 
       .catch(error => {
@@ -118,6 +124,15 @@ const MenuSetting = ({navigation, route}) => {
             {/* {twitter.Error ? <ErrorView>{twitter.ErrorText}</ErrorView> : null} */}
           </View>
         </View>
+        <Modal ModalContainer={styles.modalView} showModal={update}>
+        <View style={styles.IconView}>
+          <Image
+            style={{width: '100%', height: '100%', resizeMode: 'contain'}}
+            source={require('../../../images/button.png')}
+          />
+        </View>
+        <Text style={styles.UpdatedText} value={'Updated'} />
+      </Modal>
       </Ui>
     </View>
   );
@@ -141,6 +156,23 @@ const styles = StyleSheet.create({
   },
   Time: {
     height: responsiveHeight(20),
+  },
+  UpdatedText: {
+    fontWeight: 'bold',
+    fontSize: responsiveFontSize(2.5),
+    color: '#1AB975',
+    textAlign: 'center',
+  },
+  modalView: {
+    paddingVertical: responsiveHeight(3),
+  },
+  IconView: {
+    width: '90%',
+    alignSelf: 'center',
+    height: responsiveHeight(20),
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: responsiveHeight(2),
   },
 });
 export default MenuSetting;

@@ -8,7 +8,7 @@ import {
   SafeAreaView,
   ScrollView,
   ActivityIndicator,
-  Alert
+  Alert,
 } from 'react-native';
 import Container from '../../../Component/Container';
 import Button from '../../../Component/Button';
@@ -28,14 +28,18 @@ import Header from '../../../Component/Header';
 import url from '../Constants/constants';
 import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
+import Modal from '../../../Component/Modal';
 const FindFoodTruck = ({navigation, route}) => {
   const [indicator, setIndicator] = useState(true);
   const [CusineName, setCusinename] = useState([]);
   const [Datas, setDatas] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
+  const [update, setUpdated] = React.useState(null);
   useEffect(() => {
-    getCusine();
-    getAllTrucks();
+    navigation.addListener('focus', () => {
+      getCusine();
+      getAllTrucks();
+    });
   }, []);
 
   const [Data, setData] = useState([]);
@@ -76,24 +80,27 @@ const FindFoodTruck = ({navigation, route}) => {
         setIndicator(false);
       });
   };
-  const saveServingCusine=async()=>{
+  const saveServingCusine = async () => {
     let TruckId = await AsyncStorage.getItem('TruckID');
     axios
       .post(url + '/api/supplier/updateservingcusine', {
         _id: TruckId,
-        selectedServingCusines:Data
+        selectedServingCusines: Data,
       })
       .then(async Response => {
         let ERROR = Response.code;
         let Trucks = Response;
         if (ERROR !== 'ABT0001') {
-          Alert.alert('Updated Serving Cusine');
+          setUpdated(true);
+          setTimeout(() => {
+            setUpdated(false);
+          }, 2000);
         }
-      }) 
+      })
       .catch(error => {
         console.log(error);
       });
-  }
+  };
 
   const Checked = (item, index) => {
     let newArr = [...Data];
@@ -151,7 +158,10 @@ const FindFoodTruck = ({navigation, route}) => {
             </ScrollView>
           </View>
           <View style={styles.ApplyButton}>
-            <Button style={[styles.buttonStyle2]} rounded onPress={saveServingCusine}>
+            <Button
+              style={[styles.buttonStyle2]}
+              rounded
+              onPress={saveServingCusine}>
               <Text style={{color: '#fff'}} uppercase={false} value={'Save'} />
             </Button>
           </View>
@@ -168,6 +178,15 @@ const FindFoodTruck = ({navigation, route}) => {
           <Text bold value={'No Cusines Available'} />
         </View>
       )}
+      <Modal ModalContainer={styles.modalView} showModal={update}>
+        <View style={styles.IconView}>
+          <Image
+            style={{width: '100%', height: '100%', resizeMode: 'contain'}}
+            source={require('../../../images/button.png')}
+          />
+        </View>
+        <Text style={styles.UpdatedText} value={'Updated'} />
+      </Modal>
     </SafeAreaView>
   );
 };
@@ -231,6 +250,23 @@ const styles = StyleSheet.create({
     // borderStyle: 'solid',
     // borderWidth: 1,
     // borderColor: 'rgb(0, 0, 0)'
+  },
+  UpdatedText: {
+    fontWeight: 'bold',
+    fontSize: responsiveFontSize(2.5),
+    color: '#1AB975',
+    textAlign: 'center',
+  },
+  modalView: {
+    paddingVertical: responsiveHeight(3),
+  },
+  IconView: {
+    width: '90%',
+    alignSelf: 'center',
+    height: responsiveHeight(20),
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: responsiveHeight(2),
   },
 });
 

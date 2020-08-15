@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import Button from './Button';
 import Text from './Text';
@@ -10,18 +10,52 @@ import {
 } from 'react-native-responsive-dimensions';
 import theme from './../Screens/theme';
 const CountButton = ({button, tabProp, buttonProp, buttonText}) => {
+  const [count, setCount] = useState(null);
+  useEffect(() => {
+    let count;
+    for (let i = 0; i < button.length; i++) {
+      if (button[i].checked) {
+        ++count;
+      }
+    }
+    setCount(count);
+  }, []);
   return (
     <View style={[styles.TabView, tabProp]}>
       {button.map((item, index) => (
         <>
-          {index < 2 ? (
+          {index < 2 && item.checked ? (
             <Button style={[styles.Button, buttonProp]}>
-              <Text numberOfLines={1} style={styles.Btntext} value={item.cusineName} />
+              <Text
+                numberOfLines={1}
+                style={styles.Btntext}
+                value={item.cusineName}
+              />
             </Button>
           ) : null}
         </>
       ))}
-      {button.length - 2 <= 0 ? null : (
+      {count > 0 ? (
+        <Button
+          style={[
+            styles.Button,
+            {backgroundColor: theme.colors.primary, width: responsiveWidth(20)},
+            buttonProp,
+          ]}>
+          <Text
+            style={[
+              styles.Btntext,
+              {
+                color: 'white',
+                fontWeight: 'bold',
+                fontSize: responsiveFontSize(2),
+              },
+            ]}
+            value={'+ ' + count}
+          />
+        </Button>
+      ) : null}
+      {/* {button.length - 2 > 0 ? (
         <Button
           style={[
             styles.Button,
@@ -40,7 +74,7 @@ const CountButton = ({button, tabProp, buttonProp, buttonText}) => {
             value={'+ ' + (button.length - 2)}
           />
         </Button>
-      )}
+      ) : null} */}
     </View>
   );
 };

@@ -60,7 +60,9 @@ const VeggieWisper = ({navigation, route}) => {
   const LATITUDE_DELTA = 0.015;
   const LONGITUDE_DELTA = 0.0121;
   useEffect(() => {
-    getUserDetails();
+    navigation.addListener('focus',()=>{
+      getUserDetails();
+    })
   }, []);
   const setLocation = async () => {
     let TruckId = await AsyncStorage.getItem('TruckID');

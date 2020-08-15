@@ -481,7 +481,7 @@ const MenuSetting = ({navigation, route}) => {
               source={require('../../../images/button.png')}
             />
           </View>
-          <Text style={styles.UpdatedText}>{'Updated'}</Text>
+          <Text style={styles.UpdatedText} value={'Updated'} />
         </Modal>
       </Ui>
       <Modal

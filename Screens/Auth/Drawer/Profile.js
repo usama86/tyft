@@ -1,11 +1,12 @@
 
 import React from 'react';
-import {View, StyleSheet,Alert} from 'react-native';
+import {View, StyleSheet,Alert,Image} from 'react-native';
 import Input from '../../../Component/Input';
 import Text from '../../../Component/Text';
 import {
   responsiveHeight,
   responsiveWidth,
+  responsiveFontSize
 } from 'react-native-responsive-dimensions';
 import Checkbox from '../../../Component/Checkbox';
 import Ui from '../../../Component/Ui';
@@ -14,9 +15,10 @@ import Header from '../../../Component/Header';
 import ErrorView from '../../../Component/ErrorField';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage'
-
+import Modal from '../../../Component/Modal';
 const TruckInfo = ({navigation, route}) => {
   const [check, SetCheck] = React.useState(false);
+  const [update, setUpdated] = React.useState(null);
   const [truckName, SetTruckName] = React.useState({
     name: null,
     Error: false,
@@ -81,7 +83,7 @@ const TruckInfo = ({navigation, route}) => {
       .post(url + '/api/supplier/updatetruckinfo', {
         _id: TruckId,
         truckName:truckName.name,
-        businessDesc:businessDesc.businessDesc,
+        businessDesc:businessDesc.description,
         truckContact:contact.contact,
         truckEmail:email.email,
         truckCity:city.city,
@@ -92,7 +94,10 @@ const TruckInfo = ({navigation, route}) => {
         const ERROR = Response.data.code;
         if (ERROR === 'ABT0000') {
           console.log('Updated');
-          Alert.alert('Truck Data Updated Successfully.');
+          setUpdated(true);
+          setTimeout(() => {
+            setUpdated(false);
+          }, 2000);
         }
       })
       .catch(error => {
@@ -183,6 +188,15 @@ const TruckInfo = ({navigation, route}) => {
           />
           {website.Error ? <ErrorView>{website.ErrorText}</ErrorView> : null}
         </View>
+        <Modal ModalContainer={styles.modalView} showModal={update}>
+        <View style={styles.IconView}>
+          <Image
+            style={{width: '100%', height: '100%', resizeMode: 'contain'}}
+            source={require('../../../images/button.png')}
+          />
+        </View>
+        <Text style={styles.UpdatedText} value={'Updated'} />
+      </Modal>
       </Ui>
     </View>
   );
@@ -199,6 +213,23 @@ const styles = StyleSheet.create({
   },
   radioView: {
     flexDirection: 'row',
+  },
+  UpdatedText: {
+    fontWeight: 'bold',
+    fontSize: responsiveFontSize(2.5),
+    color: '#1AB975',
+    textAlign: 'center',
+  },
+  modalView: {
+    paddingVertical: responsiveHeight(3),
+  },
+  IconView: {
+    width: '90%',
+    alignSelf: 'center',
+    height: responsiveHeight(20),
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: responsiveHeight(2),
   },
 });
 export default TruckInfo;
