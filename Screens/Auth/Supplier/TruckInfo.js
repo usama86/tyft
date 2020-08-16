@@ -129,7 +129,8 @@ const TruckInfo = ({navigation, route}) => {
         TextViewStyle={styles.TextViewStyle}
         TextValue={"Your food truck's info"}
         ButtonText={'Next'}
-        ContentStyle={{height: null}}
+        ContentStyle={{height: null,paddingBottom:responsiveHeight(3)}}
+        buttonStyle={{marginBottom:responsiveHeight(2)}}
         onPressButton={Navigate}>
         <View style={styles.InputMainView}>
           <Input
@@ -153,14 +154,14 @@ const TruckInfo = ({navigation, route}) => {
             onChangeText={e =>
               setBusinessDesc({description: e, Error: false, ErrorText: null})
             }
-            style={[
+            style={
               // styles.Input,
               {
                 height: responsiveHeight(19),
                 marginTop: responsiveHeight(2),
                 width: '90%',
-              },
-            ]}
+              }
+            }
           />
 
           {businessDesc.Error ? (

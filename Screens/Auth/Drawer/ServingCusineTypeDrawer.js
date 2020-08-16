@@ -34,6 +34,7 @@ const FindFoodTruck = ({navigation, route}) => {
   const [CusineName, setCusinename] = useState([]);
   const [Datas, setDatas] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
+  const [loading, setLoading] = React.useState(null);
   const [update, setUpdated] = React.useState(null);
   useEffect(() => {
     navigation.addListener('focus', () => {
@@ -81,6 +82,7 @@ const FindFoodTruck = ({navigation, route}) => {
       });
   };
   const saveServingCusine = async () => {
+    setLoading(true)
     let TruckId = await AsyncStorage.getItem('TruckID');
     axios
       .post(url + '/api/supplier/updateservingcusine', {
@@ -88,31 +90,35 @@ const FindFoodTruck = ({navigation, route}) => {
         selectedServingCusines: Data,
       })
       .then(async Response => {
+        console.log('Dataaa',Data)
         let ERROR = Response.code;
         let Trucks = Response;
         if (ERROR !== 'ABT0001') {
           setUpdated(true);
           setTimeout(() => {
+            setLoading(false)
             setUpdated(false);
           }, 2000);
         }
       })
       .catch(error => {
+        setLoading(false)
         console.log(error);
       });
   };
 
   const Checked = (item, index) => {
     let newArr = [...Data];
-    let dupSelected = [...selectedItems];
+    //  let dupSelected = [...selectedItems];
     newArr[index].checked = !newArr[index].checked;
-    if (newArr[index].checked) {
-      dupSelected.push(newArr[index].cusineName);
-    } else {
-      dupSelected.splice(index, 1);
-    }
     setData(newArr);
-    setSelectedItems(dupSelected);
+    // if (newArr[index].checked) {
+    //   dupSelected.push(newArr[index].cusineName);
+    // } else {
+    //   dupSelected.splice(index, 1);
+    // }
+    // setData(newArr);
+    // setSelectedItems(dupSelected);
   };
   const PrintCard = (item, index) => (
     <TouchableOpacity
@@ -159,6 +165,7 @@ const FindFoodTruck = ({navigation, route}) => {
           </View>
           <View style={styles.ApplyButton}>
             <Button
+              loading={loading}
               style={[styles.buttonStyle2]}
               rounded
               onPress={saveServingCusine}>

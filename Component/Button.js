@@ -1,15 +1,33 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import {Button} from 'native-base';
 import {
   responsiveHeight,
   responsiveWidth,
 } from 'react-native-responsive-dimensions';
-const tyftButton = ({style, children,rounded, onPress, ...props}) => {
-  const {Buttons,roundedstyle} = styles;
-  return (
-    <TouchableOpacity activeOpacity={0.8} style={[Buttons, style,rounded ?roundedstyle:null]} onPress={onPress} {...props}>
+const tyftButton = ({style, children, rounded, onPress, loading, ...props}) => {
+  const {Buttons, roundedstyle} = styles;
+
+  return loading ? (
+    <TouchableOpacity
+      activeOpacity={0.8}
+      style={[Buttons, style, rounded ? roundedstyle : null]}
+      onPress={onPress}
+      {...props}>
+      <ActivityIndicator />
+    </TouchableOpacity>
+  ) : (
+    <TouchableOpacity
+      activeOpacity={0.8}
+      style={[Buttons, style, rounded ? roundedstyle : null]}
+      onPress={onPress}
+      {...props}>
       {children}
     </TouchableOpacity>
   );
@@ -32,7 +50,7 @@ const styles = StyleSheet.create({
     height: responsiveHeight(6),
   },
   roundedstyle: {
-    borderRadius:33
+    borderRadius: 33,
   },
 });
 

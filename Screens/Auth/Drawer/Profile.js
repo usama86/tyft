@@ -18,6 +18,7 @@ import AsyncStorage from '@react-native-community/async-storage'
 import Modal from '../../../Component/Modal';
 const TruckInfo = ({navigation, route}) => {
   const [check, SetCheck] = React.useState(false);
+  const [loading,setLoading] =React.useState(null);
   const [update, setUpdated] = React.useState(null);
   const [truckName, SetTruckName] = React.useState({
     name: null,
@@ -78,7 +79,7 @@ const TruckInfo = ({navigation, route}) => {
   };
   const Navigate =async () => {
     let TruckId = await AsyncStorage.getItem('TruckID');
-
+setLoading(true);
     axios
       .post(url + '/api/supplier/updatetruckinfo', {
         _id: TruckId,
@@ -96,11 +97,13 @@ const TruckInfo = ({navigation, route}) => {
           console.log('Updated');
           setUpdated(true);
           setTimeout(() => {
+            setLoading(false)
             setUpdated(false);
           }, 2000);
         }
       })
       .catch(error => {
+        setLoading(false)
         console.log(error);
       });
   };
@@ -113,6 +116,7 @@ const TruckInfo = ({navigation, route}) => {
         TextViewStyle={styles.TextViewStyle}
         TextValue={"Your food truck's info"}
         ButtonText={'Done'}
+        isLoading={loading}
         ContentStyle={{height: null}}
         buttonStyle={{marginVertical: responsiveHeight(1)}}
         onPressButton={Navigate}>
