@@ -29,11 +29,11 @@ export default class ContactUs extends Component {
           </View>
           <View style={Styles.RightContent}>
             <Text style={Styles.textBold}>{'Facing Issues?'}</Text>
-            <Text style={Styles.textthin}>{'support@TYFT.com'}</Text>
+            <Text style={Styles.textthin}>{'support@trackyourfoodtruck.com'}</Text>
           </View>
         </View>
 
-        <View style={Styles.MainContainer}>
+        {/* <View style={Styles.MainContainer}>
           <View style={Styles.LeftIcon}>
             <Ionicons
               name={'ios-mail'}
@@ -45,7 +45,7 @@ export default class ContactUs extends Component {
             <Text style={Styles.textBold}>{'For Legal Terms'}</Text>
             <Text style={Styles.textthin}>{'legal@TYFT.com'}</Text>
           </View>
-        </View>
+        </View> */}
         {/* <View style ={{width:'85%',height:1,backgroundColor:"#9aa69f",alignSelf:'flex-end'}} /> */}
         <View style={Styles.MainContainer}>
           <View style={Styles.LeftIcon}>
@@ -57,7 +57,7 @@ export default class ContactUs extends Component {
           </View>
           <View style={Styles.RightContent}>
             <Text style={Styles.textBold}>{'Phone'}</Text>
-            <Text style={Styles.textthin}>{'( 123 ) 123 456 789'}</Text>
+            <Text style={Styles.textthin}>{'( 209 ) 565-1332'}</Text>
           </View>
         </View>
 
