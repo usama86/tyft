@@ -46,6 +46,7 @@ const MenuSetting = ({navigation, route}) => {
   const [showDeleteModal, setDeleteModal] = useState(false);
   const [selected, setSelected] = useState(0);
   const [edit, setEdit] = useState(false);
+  const [editIndex,setEditIndex] = useState(0);
   const [name, setName] = React.useState({
     value: null,
     Error: false,
@@ -99,19 +100,42 @@ const MenuSetting = ({navigation, route}) => {
         if (ERROR === 'ABT0000') {
           let Menu = Response.data.MenuData;
           setData(Menu);
-          let modifiedArray = [];
-          for (let i = 0; i < Menu.length; i++) {
-            modifiedArray.push({
-              label: Menu[i].category,
-              value: Menu[i].category,
+        
+
+          let TruckId = await AsyncStorage.getItem('TruckID');
+          axios
+            .post(url + '/api/supplier/getcategory', {
+              _id: TruckId,
+            })
+            .then(async Response => {
+              const ERROR = Response.data.code;
+              console.log('Ctageogory',Response.data)
+              if (ERROR !== 'ABT0001') {
+
+                let modifiedArray = [];
+                for (let i = 0; i < Response.data.length; i++) {
+                  modifiedArray.push({
+                    label: Response.data[i],
+                    value: Response.data[i],
+                  });
+                }
+                let unique = modifiedArray.filter(
+                  (item, indexOfItem, myArray) =>
+                    myArray.findIndex(t => t.label === item.label) === indexOfItem,
+                );
+
+                setCategories(unique);
+                setSelectedValue(unique[0].label);
+                //unique[0].label
+              } else {
+  
+              }
+            })
+            .catch(error => {
+              console.log(error);
             });
-          }
-          let unique = modifiedArray.filter(
-            (item, indexOfItem, myArray) =>
-              myArray.findIndex(t => t.label === item.label) === indexOfItem,
-          );
-          setCategories(unique);
-          setSelectedValue(unique[0].label);
+
+         
         }
       })
       .catch(error => {
@@ -128,11 +152,20 @@ const MenuSetting = ({navigation, route}) => {
   };
   const UpdateMenu = async val => {
     setIndicator(true);
+    let DataCopy = [...Data];
+
+    DataCopy[editIndex].name= name.value;
+    DataCopy[editIndex].description= description.value;
+    DataCopy[editIndex].price=Number(price.value);
+
+
+
+
     let MenuID = await AsyncStorage.getItem('MenuID');
     axios
       .post(url + '/api/menu/updatemenu', {
         _id: MenuID,
-        Menu: Data,
+        Menu: DataCopy,
       })
       .then(async Response => {
         const ERROR = Response.data.code;
@@ -140,6 +173,7 @@ const MenuSetting = ({navigation, route}) => {
           console.log('Updated');
           setUpdated(true);
           setIndicator(false);
+          getMenuOfSupplier();
           setTimeout(() => {
             setUpdated(false);
           }, 500);
@@ -209,13 +243,39 @@ const MenuSetting = ({navigation, route}) => {
       setAddItem(false);
     }
   };
-  const closeModal = () => {
+  const closeModal = async () => {
     let newArr = [...Categories];
     if (category) {
+
       newArr.unshift({label: category, value: category});
       setSelectedValue(category);
+      let categoryArray=[];
+      for(let i=0;i<newArr.length;i++)
+      {
+        categoryArray.push(newArr[i].value)
+      }
+      
+    let TruckId = await AsyncStorage.getItem('TruckID');
+    axios
+      .post(url + '/api/supplier/updateCategory', {
+        _id: TruckId,
+        categoryArrays: categoryArray,
+      })
+      .then(async Response => {
+        const ERROR = Response.data.code;
+        if (ERROR === 'ABT0000') {
+          console.log('Updated');
+          setCategories(newArr);     
+        } else {
+          // setIndicator(false);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+      
     }
-    setCategories(newArr);
+    
     setShowModal(false);
   };
   const PrintCard = (item, index) => (
@@ -258,6 +318,7 @@ const MenuSetting = ({navigation, route}) => {
               size={responsiveFontSize(3.2)}
               onPress={() => {
                 setShowModal2(true);
+                setEditIndex(index);
                 setName({value: item.name, Error: null, ErrorText: null});
                 setDescription({
                   value: item.description,

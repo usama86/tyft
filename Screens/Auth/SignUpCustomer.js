@@ -35,6 +35,7 @@ const SignUp = ({navigation}) => {
     confirmPasswordErrorText,
     setConfirmPasswordErrorText,
   ] = React.useState(null);
+  const [confirmPasswordErrors,setConfirmPasswordErrors] = React.useState(null);
   const [languge, setLanguage] = React.useState('English');
   const changeEmail = val => {
     let EmailRegix = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -139,7 +140,12 @@ const SignUp = ({navigation}) => {
             setisLoading(false);
             console.log('Customer Added');
             navigation.navigate(Route.SIGNIN);
-          } else {
+          } 
+          else if(Code === 'Email Address already exist') {
+            setConfirmPasswordErrors(true);
+            setisLoading(false);
+          }      
+          else {
             console.log('NOT ADDEED');
             setisLoading(false);
           }
@@ -234,6 +240,9 @@ const SignUp = ({navigation}) => {
           />
           <Text value={'Spanish'} style={{marginLeft: responsiveWidth(2)}} />
         </View>
+        {confirmPasswordErrors ? (
+            <ErrorView>{'Email Address already exist'}</ErrorView>
+          ) : null}
       </Ui>
     </View>
   );

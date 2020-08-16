@@ -53,13 +53,16 @@ const CustomerSupplier = ({navigation, route}) => {
   const getFavorite = async () => {
     let userID = await AsyncStorage.getItem('userID');
     axios
-      .post(url + '/api/supplier/getfavorite', {
+      .post(url + '/api/supplier/getfavoritetruck', {
         _id: userID,
       })
       .then(async Response => {
-        if (Response.data.code === 'ABT0000') {
-          console.log('Get Fav', Response.data);
-          setFavoriteSwitch(true);
+        if (Response.data && Response.data.records) {
+          for(let x=0;x<Response.data.records.length;x++)
+          {
+            if(Response.data.records[x]._id === route.params.TruckInfo._id)
+              setFavoriteSwitch(true);
+          }  
         }
       })
       .catch(error => {

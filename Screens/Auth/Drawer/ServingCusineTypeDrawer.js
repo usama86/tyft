@@ -61,12 +61,15 @@ const FindFoodTruck = ({navigation, route}) => {
       });
   };
   const getCusine = async () => {
+    let TruckId = await AsyncStorage.getItem('TruckID');
     axios
-      .get(url + '/api/servingcusine/getcusines')
+      .post(url + '/api/supplier/getservingcusine', {
+        _id: TruckId,
+      })
       .then(async Response => {
         if (Response) {
           if (Response.data.length > 0) {
-            let res = Response.data[0].cusine;
+            let res = Response.data;
             setData(res);
           } else {
             setData(null);
@@ -91,7 +94,7 @@ const FindFoodTruck = ({navigation, route}) => {
       })
       .then(async Response => {
         console.log('Dataaa',Data)
-        let ERROR = Response.code;
+        let ERROR = Response.data.code;
         let Trucks = Response;
         if (ERROR !== 'ABT0001') {
           setUpdated(true);

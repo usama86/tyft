@@ -11,6 +11,7 @@ import Ui from '../../../Component/Ui';
 import * as RouteName from './../../../Constants/RouteName';
 import Header from '../../../Component/Header';
 import ErrorView from '../../../Component/ErrorField';
+import axios from 'axios';
 const SignUpSupplier = ({navigation}) => {
   const [isLoading, setisLoading] = React.useState(false);
   const [check, SetCheck] = React.useState(false);
@@ -39,6 +40,7 @@ const SignUpSupplier = ({navigation}) => {
     confirmPassError: null,
     confirmPassErrorText: null,
   });
+  const [confirmPasswordErrors,setConfirmPasswordErrors] = React.useState(null);
   const changeEmail = e => {
     let EmailRegix = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (EmailRegix.test(e)) {
@@ -141,13 +143,29 @@ const SignUpSupplier = ({navigation}) => {
       !confirmpass.confirmPassError&&
       check
     ) {
-      console.log('com',confirmpass.confirmPassError)
-      navigation.navigate(RouteName.TRUCKLOGO, {
-        Name: name.name,
-        Email: email.email,
-        Phone: phone.phone,
-        Password: password.password,
+      axios
+      .post(url + '/api/users/getuser', {
+        email: email.email,
+      })
+      .then(async Response => {
+        if(Response.data.length<1)
+        {
+          console.log('com',confirmpass.confirmPassError)
+          navigation.navigate(RouteName.TRUCKLOGO, {
+            Name: name.name,
+            Email: email.email,
+            Phone: phone.phone,
+            Password: password.password,
+          });
+        }
+        else
+          setConfirmPasswordErrors(true);
+
+      })
+      .catch(error => {
+        console.log(error);
       });
+  
     }
   };
   return (
@@ -231,6 +249,9 @@ const SignUpSupplier = ({navigation}) => {
             TextVal={'By signing up, I agree to'}
           />
         </View>
+        {confirmPasswordErrors ? (
+            <ErrorView>{'Email Address already exist'}</ErrorView>
+          ) : null}
       </Ui>
     </View>
   );

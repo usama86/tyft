@@ -230,9 +230,7 @@ const ItemCategory = ({navigation}) => {
     // } else
     
     if (name.value) {
-      newArray.push({
-        name: name.value,
-      });
+      newArray.push( name.value);
       // setData(newArray);
       AddCategory(newArray);
     }
