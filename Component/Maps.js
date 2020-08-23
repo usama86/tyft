@@ -239,11 +239,6 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
       </View>
     );
   };
-  React.memo(mapComp, (props, nextProps) => {
-    if (Trucks.length !== nextProps.Trucks.length) {
-      return true;
-    }
-  });
 };
 
 Maps.propTypes = {
@@ -310,4 +305,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Maps;
+export default React.memo(Maps , (prevProps, nextProps) => {
+  if (prevProps.Trucks !== nextProps.Trucks) {
+    return true;
+  }
+});;
