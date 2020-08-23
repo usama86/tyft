@@ -149,16 +149,16 @@ const FindFoodTruck = ({navigation, route}) => {
         'Mon 03-Jul-2017, ' + matchedDay[0].closing.toString(),
       ).getHours();
 
-      console.log('Start Time', startTime);
-      console.log('End Time', endTime);
+      // console.log('Start Time', startTime);
+      // console.log('End Time', endTime);
       // console.log('Matched Day', matchedDay);
       var currentTime = new Date().getHours();
-      console.log('Current Time ', currentTime);
+      // console.log('Current Time ', currentTime);
       if (startTime <= currentTime && currentTime <= endTime) {
-        console.log('Between');
+        // console.log('Between');
         return 'Open';
       } else {
-        console.log('No Between');
+        // console.log('No Between');
         return 'Close';
       }
     } else {
@@ -268,6 +268,7 @@ const FindFoodTruck = ({navigation, route}) => {
     );
   };
   const PrintCard = (item, index) => {
+    console.log('Item is here',item)
     return (
       <TouchableOpacity
         activeOpacity={0.8}
@@ -287,6 +288,7 @@ const FindFoodTruck = ({navigation, route}) => {
             value={item.truckName}
           />
           <CountButton
+          navigation = {navigation}
             button={item.selectedServingCusines}
             buttonProp={{
               width: '30%',

@@ -9,22 +9,23 @@ import {
   responsiveFontSize,
 } from 'react-native-responsive-dimensions';
 import theme from './../Screens/theme';
-const CountButton = ({button, tabProp, buttonProp, buttonText}) => {
+const CountButton = ({button, tabProp, buttonProp, buttonText,navigation}) => {
   const [count, setCount] = useState(null);
+  const [dupArray,setdupArray] = useState([]);
   useEffect(() => {
-    let count;
-    for (let i = 0; i < button.length; i++) {
-      if (button[i].checked) {
-        ++count;
-      }
-    }
-    setCount(count);
+    navigation.addListener('focus',()=>{
+      let newArray = [];
+      button.map((item,index)=>{
+           item.checked? newArray.push({...item}):null
+      })
+      setdupArray(newArray);
+    })
   }, []);
   return (
     <View style={[styles.TabView, tabProp]}>
-      {button.map((item, index) => (
+      {dupArray.map((item, index) => (
         <>
-          {index < 2 && item.checked ? (
+          {index < 2 ? (
             <Button style={[styles.Button, buttonProp]}>
               <Text
                 numberOfLines={1}
@@ -35,7 +36,7 @@ const CountButton = ({button, tabProp, buttonProp, buttonText}) => {
           ) : null}
         </>
       ))}
-      {count > 0 ? (
+      {dupArray.length > 0 ? (
         <Button
           style={[
             styles.Button,
@@ -51,7 +52,7 @@ const CountButton = ({button, tabProp, buttonProp, buttonText}) => {
                 fontSize: responsiveFontSize(2),
               },
             ]}
-            value={'+ ' + count}
+            value={'+ ' + dupArray.length}
           />
         </Button>
       ) : null}

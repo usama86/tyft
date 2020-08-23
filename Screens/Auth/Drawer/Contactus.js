@@ -89,7 +89,7 @@ const Styles = StyleSheet.create({
   },
   RightContent: {
     justifyContent: 'center',
-    width:'50%',
+    width:'60%',
   },
   textBold: {
     fontWeight: 'bold',

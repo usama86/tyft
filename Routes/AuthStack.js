@@ -1,4 +1,5 @@
 import React from 'react';
+import {Alert} from 'react-native'
 import Text from './../Component/Text';
 import {TouchableOpacity} from 'react-native';
 import HomeScreen from './../Screens/Auth/Home';
@@ -36,189 +37,222 @@ const StackNearMe = createStackNavigator();
 const StackSearch = createStackNavigator();
 const StackFavourite = createStackNavigator();
 
-const NearMeStack = () => (
-  <StackNearMe.Navigator screenOptions={{headerShown: false}}>
-    <StackNearMe.Screen
-      name={RouteName.SEARCHTRUCK}
-      options={{title: 'Search Truck'}}
-      component={SearchTruck}
-    />
-    <StackSearch.Screen
-      name={RouteName.SERVINGCUSINETYPE}
-      component={ServingCusinetype}
-    />
-  </StackNearMe.Navigator>
-);
-const SearchStack = () => (
-  <StackSearch.Navigator screenOptions={{headerShown: false}}>
-    <StackSearch.Screen
-      name={RouteName.FINDFOODTRUCK}
-      component={FindFoodTruck}
-    />
-    <StackSearch.Screen
-      name={RouteName.CUSTOMERSUPPLIER}
-      component={CustomerSupplier}
-    />
+const FunOfAuthStack = ({navigation, route}) => {
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('tabPress', e => {
+      // Prevent default behavior
+      e.preventDefault();
+      navigation.popToTop();
+      navigation.navigate(route.name);
+      // Do something manually
+      // ...
+    });
 
-    <StackSearch.Screen
-      name={RouteName.SERVINGCUSINETYPE}
-      component={ServingCusinetype}
-    />
-    <StackSearch.Screen
-      options={{headerShown: false}}
-      name={RouteName.PROFILE}
-      component={Profile}
-    />
-    <StackSearch.Screen name={RouteName.MENU} component={Menu} />
-    <StackSearch.Screen
-      name={RouteName.CUSTOMERREVIEWS}
-      component={CustomerReviews}
-    />
-  </StackSearch.Navigator>
-);
-const FavouriteStack = () => (
-  <StackFavourite.Navigator screenOptions={{headerShown: false}}>
-    <StackFavourite.Screen name={'Favourite'} component={Favourite} />
-    <StackSearch.Screen
-      name={RouteName.CUSTOMERSUPPLIER}
-      component={CustomerSupplier}
-    />
-    
+    return unsubscribe;
+  }, [navigation]);
+  const NearMeStack = () => (
+    <StackNearMe.Navigator screenOptions={{headerShown: false}}>
+      <StackNearMe.Screen
+        name={RouteName.SEARCHTRUCK}
+        options={{title: 'Search Truck'}}
+        component={SearchTruck}
+      />
+      <StackSearch.Screen
+        name={RouteName.SERVINGCUSINETYPE}
+        component={ServingCusinetype}
+      />
+    </StackNearMe.Navigator>
+  );
+  const SearchStack = () => (
+    <StackSearch.Navigator screenOptions={{headerShown: false}}>
+      <StackSearch.Screen
+        name={RouteName.FINDFOODTRUCK}
+        component={FindFoodTruck}
+      />
+      <StackSearch.Screen
+        name={RouteName.CUSTOMERSUPPLIER}
+        component={CustomerSupplier}
+      />
 
-    <StackSearch.Screen
-      name={RouteName.SERVINGCUSINETYPE}
-      component={ServingCusinetype}
-    />
-        <StackSearch.Screen
-      name={RouteName.SERVINGCUSINETYPE2}
-      component={ServingCusineType2}
-    />
-    <StackSearch.Screen
-      options={{headerShown: false}}
-      name={RouteName.PROFILE}
-      component={Profile}
-    />
-    <StackSearch.Screen name={RouteName.MENU} component={Menu} />
-    <StackSearch.Screen
-      name={RouteName.CUSTOMERREVIEWS}
-      component={CustomerReviews}
-    />
-  </StackFavourite.Navigator>
-);
-const AccountStack = () => (
-  <StackFavourite.Navigator screenOptions={{headerShown: false}}>
-    <StackFavourite.Screen name={'AccountInfo'} component={AccountInfo} />
-    <StackFavourite.Screen name={'Account'} component={Account} />
-  </StackFavourite.Navigator>
-);
-const AppTab = () => (
-  <Tabs.Navigator
-    screenOptions={({route}) => ({
-      tabBarIcon: ({focused, color, size}) => {
-        let iconName;
-        if (route.name === 'NearMe') {
-          iconName = 'map-marker';
-          return <FA name={iconName} color={color} size={size} />;
-        } else if (route.name === 'Search') {
-          iconName = 'search';
-          return <FA name={iconName} color={color} size={size} />;
-        } else if (route.name === 'FavouriteStack') {
-          iconName = 'heart';
-          return <FA name={iconName} color={color} size={size} />;
-        } else if (route.name === 'AccountStack') {
-          iconName = 'user-circle';
-          return <FA name={iconName} color={color} size={size} />;
-        }
-      },
-    })}
-    tabBarOptions={{
-      activeTintColor: theme.default.colors.primary,
-      inactiveTintColor: 'gray',
-    }}>
-    <Tabs.Screen
-      options={{title: 'Near Me'}}
-      name={'NearMe'}
-      children={NearMeStack}
-    />
-    <Tabs.Screen name={'Search'} children={SearchStack} />
-    <Tabs.Screen
-      options={{title: 'Favourite'}}
-      name={'FavouriteStack'}
-      children={FavouriteStack}
-    />
-    <Tabs.Screen
-      options={{title: 'Account'}}
-      name={'AccountStack'}
-      children={AccountStack}
-    />
-  </Tabs.Navigator>
-);
-const AuthStack = () => (
-  <StackAuth.Navigator
-    headerBackTitle="Back"
-    headerTitle="Back"
-    initialRouteName={RouteName.HOME}>
-    <StackAuth.Screen
-      name={RouteName.HOME}
-      component={HomeScreen}
-      options={{headerShown: false}}
-    />
-    <StackAuth.Screen
-      name={RouteName.SIGNUPSELECTION}
-      component={SignUpSelection}
-      options={{headerShown: false}}
-    />
-    <StackAuth.Screen name={RouteName.SIGNIN} component={SignIn} />
-    <StackAuth.Screen
-      name={RouteName.SIGNUP}
-      component={SignUp}
-      options={{headerShown: false}}
-    />
-    <StackAuth.Screen
-      name={RouteName.SIGNUPSUPPLIER}
-      component={SignUpSupplier}
-      options={{headerShown: false}}
-    />
-    <StackAuth.Screen
-      name={RouteName.TRUCKLOGO}
-      component={TruckLogo}
-      options={{headerShown: false}}
-    />
-    <StackAuth.Screen
-      name={RouteName.TRUCKINFO}
-      component={TruckInfo}
-      options={{headerShown: false}}
-    />
-    <StackAuth.Screen
-      name={RouteName.BUSINESSHOUR}
-      component={BusinessHour}
-      options={{headerShown: false}}
-    />
-    <StackAuth.Screen
-      name={RouteName.SERVINGCUSINE}
-      component={ServingCusine}
-      options={{headerShown: false}}
-    />
-    <StackAuth.Screen
-      name={RouteName.SOCIALMEDIADETAILS}
-      component={SocialMedia}
-      options={{headerShown: false}}
-    />
-    <StackAuth.Screen
-      name={RouteName.MENUSETTING}
-      component={MenuSetting}
-      options={{headerShown: false}}
-    />
-    <StackAuth.Screen
-      name={RouteName.COVERPHOTO}
-      component={CoverPhoto}
-      options={{headerShown: false}}
-    />
-    <StackAuth.Screen
-      options={{headerShown: false}}
-      name={RouteName.TABS}
-      children={AppTab}
-    />
-  </StackAuth.Navigator>
-);
-export default AuthStack;
+      <StackSearch.Screen
+        name={RouteName.SERVINGCUSINETYPE}
+        component={ServingCusinetype}
+      />
+      <StackSearch.Screen
+        options={{headerShown: false}}
+        name={RouteName.PROFILE}
+        component={Profile}
+      />
+      <StackSearch.Screen name={RouteName.MENU} component={Menu} />
+      <StackSearch.Screen
+        name={RouteName.CUSTOMERREVIEWS}
+        component={CustomerReviews}
+      />
+    </StackSearch.Navigator>
+  );
+
+  // SearchStack.navigationOptions = ({ navigation,route }) => {
+  //   let tabBarVisible = true;
+  //   if (route.name === "CUSTOMERSUPPLIER") {
+  //     tabBarVisible = false;
+  //   }
+
+  //   return {
+  //     tabBarVisible,
+  //   };
+  // };
+  const FavouriteStack = () => (
+    <StackFavourite.Navigator screenOptions={{headerShown: false}}>
+      <StackFavourite.Screen name={'Favourite'} component={Favourite} />
+      <StackSearch.Screen
+        name={RouteName.CUSTOMERSUPPLIER}
+        component={CustomerSupplier}
+      />
+
+      <StackSearch.Screen
+        name={RouteName.SERVINGCUSINETYPE}
+        component={ServingCusinetype}
+      />
+      <StackSearch.Screen
+        name={RouteName.SERVINGCUSINETYPE2}
+        component={ServingCusineType2}
+      />
+      <StackSearch.Screen
+        options={{headerShown: false}}
+        name={RouteName.PROFILE}
+        component={Profile}
+      />
+      <StackSearch.Screen name={RouteName.MENU} component={Menu} />
+      <StackSearch.Screen
+        name={RouteName.CUSTOMERREVIEWS}
+        component={CustomerReviews}
+      />
+    </StackFavourite.Navigator>
+  );
+  const AccountStack = () => (
+    <StackFavourite.Navigator screenOptions={{headerShown: false}}>
+      <StackFavourite.Screen name={'AccountInfo'} component={AccountInfo} />
+      <StackFavourite.Screen name={'Account'} component={Account} />
+    </StackFavourite.Navigator>
+  );
+
+  const AppTab = () => (
+    <Tabs.Navigator
+      screenOptions={({route}) => ({
+        tabBarIcon: ({focused, color, size}) => {
+          let iconName;
+          if (route.name === 'NearMe') {
+            iconName = 'map-marker';
+            return <FA name={iconName} color={color} size={size} />;
+          } else if (route.name === 'Search') {
+            iconName = 'search';
+            return <FA name={iconName} color={color} size={size} />;
+          } else if (route.name === 'FavouriteStack') {
+            iconName = 'heart';
+            return <FA name={iconName} color={color} size={size} />;
+          } else if (route.name === 'AccountStack') {
+            iconName = 'user-circle';
+            return <FA name={iconName} color={color} size={size} />;
+          }
+        },
+      })}
+      tabBarOptions={{
+        activeTintColor: theme.default.colors.primary,
+        inactiveTintColor: 'gray',
+      }}>
+      <Tabs.Screen
+        options={{title: 'Near Me'}}
+        name={'NearMe'}
+        children={NearMeStack}
+      />
+      <Tabs.Screen name={'Search'} children={SearchStack} />
+      <Tabs.Screen
+        options={{title: 'Favourite'}}
+        name={'FavouriteStack'}
+        children={FavouriteStack}
+      />
+      <Tabs.Screen
+        options={{title: 'Account'}}
+        name={'AccountStack'}
+        children={AccountStack}
+        // listeners = {({navigation,route})=>({
+        //   tabPress=({navigation,route})=>{
+        //       navigation.popToTop();
+        //       navigation.navigate(route.name);
+        //   }
+        // })}
+      />
+    </Tabs.Navigator>
+  );
+  const AuthStack = () => (
+    <StackAuth.Navigator
+      headerBackTitle="Back"
+      headerTitle="Back"
+      initialRouteName={RouteName.HOME}>
+      <StackAuth.Screen
+        name={RouteName.HOME}
+        component={HomeScreen}
+        options={{headerShown: false}}
+      />
+      <StackAuth.Screen
+        name={RouteName.SIGNUPSELECTION}
+        component={SignUpSelection}
+        options={{headerShown: false}}
+      />
+      <StackAuth.Screen name={RouteName.SIGNIN} component={SignIn} />
+      <StackAuth.Screen
+        name={RouteName.SIGNUP}
+        component={SignUp}
+        options={{headerShown: false}}
+      />
+      <StackAuth.Screen
+        name={RouteName.SIGNUPSUPPLIER}
+        component={SignUpSupplier}
+        options={{headerShown: false}}
+      />
+      <StackAuth.Screen
+        name={RouteName.TRUCKLOGO}
+        component={TruckLogo}
+        options={{headerShown: false}}
+      />
+      <StackAuth.Screen
+        name={RouteName.TRUCKINFO}
+        component={TruckInfo}
+        options={{headerShown: false}}
+      />
+      <StackAuth.Screen
+        name={RouteName.BUSINESSHOUR}
+        component={BusinessHour}
+        options={{headerShown: false}}
+      />
+      <StackAuth.Screen
+        name={RouteName.SERVINGCUSINE}
+        component={ServingCusine}
+        options={{headerShown: false}}
+      />
+      <StackAuth.Screen
+        name={RouteName.SOCIALMEDIADETAILS}
+        component={SocialMedia}
+        options={{headerShown: false}}
+      />
+      <StackAuth.Screen
+        name={RouteName.MENUSETTING}
+        component={MenuSetting}
+        options={{headerShown: false}}
+      />
+      <StackAuth.Screen
+        name={RouteName.COVERPHOTO}
+        component={CoverPhoto}
+        options={{headerShown: false}}
+      />
+      <StackAuth.Screen
+        options={{headerShown: false}}
+        name={RouteName.TABS}
+        children={AppTab}
+      />
+    </StackAuth.Navigator>
+  );
+  return AuthStack();
+};
+
+export default FunOfAuthStack;

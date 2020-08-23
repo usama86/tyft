@@ -29,14 +29,13 @@ const Profile = ({navigation}) => {
           rounded
           placeholder="Business Description"
           multiline={true}
-          style={[
-            styles.Input,
+          style={
             {
               height: responsiveHeight(19),
               marginTop: responsiveHeight(2),
               width: '90%',
-            },
-          ]}
+            }
+          }
         />
         <Input rounded placeholder="Contact" style={styles.Input} />
         <Input rounded placeholder="Email" style={styles.Input} />

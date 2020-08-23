@@ -35,19 +35,19 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
   const LATITUDE_DELTA = 0.015;
   const LONGITUDE_DELTA = 0.0121;
 
-  const setRegionInMap = async region => {
-    console.log('in SET REgin\n\n\n');
+  // const setRegionInMap = async region => {
+  //   console.log('in SET REgin\n\n\n');
 
-    if (mapReady) {
-      console.log('map is ready', region);
+  //   if (mapReady) {
+  //     console.log('map is ready', region);
 
-      setTimeout(() => {
-        mapView.current.animateToRegion(region), 30;
-      });
-    } else {
-      console.log('NOOO');
-    }
-  };
+  //     setTimeout(() => {
+  //       mapView.current.animateToRegion(region), 30;
+  //     });
+  //   } else {
+  //     console.log('NOOO');
+  //   }
+  // };
   useEffect(() => {
     // navigation.addListener('focus',()=>{
     getCurrentLocation();
@@ -100,6 +100,19 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
       },
     );
   };
+  const setRegionInMap = region => {
+    if (mapReady) {
+      setMapReady(false);
+      console.log('map is ready', region);
+      try {
+        setTimeout(() => mapView.current.animateToRegion(region), 30);
+      } catch (error) {
+        Alert('Cannot Access Current Location Please Try Again.');
+      }
+    } else {
+      console.log('NOOO');
+    }
+  };
   const getStatus = (item, index) => {
     let day = moment(new Date()).format('dddd');
     let matchedDay = item.schedule.filter(data => day === data.day);
@@ -117,110 +130,120 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
       // console.log('Matched Day', matchedDay);
       var currentTime = new Date().getHours();
       console.log('Current Time ', currentTime);
-       if(startTime<=currentTime && currentTime <=endTime){
-            console.log('Between')
-            return 'Open'
-       }
-       else{
-        console.log('No Between')
-         return 'Close'
-       }
+      if (startTime <= currentTime && currentTime <= endTime) {
+        console.log('Between');
+        return 'Open';
+      } else {
+        console.log('No Between');
+        return 'Close';
+      }
     } else {
       return 'Close';
     }
 
     // return currentTime.toString();
   };
-  return (
-    <View style={[styles.mapcon, MapContainerStyle]}>
-      <MapView
-        showsBuildings={true}
-        showsCompass={true}
-        showsTraffic={true}
-        provider={PROVIDER_GOOGLE} // remove if not using Google Maps
-        style={styles.map}
-        initialRegion={initialRegion}
-        onMapReady={() => {
-          setMapReady(true);
-        }}
-        ref={mapView}>
-        {Trucks ? (
-          Trucks.map((item, index) => {
-            console.log('item=>>>', item);
-            if (item.latitude && item.longitude) {
-              return (
-                <Marker
-                  coordinate={{
-                    latitude: parseFloat(item.latitude),
-                    longitude: parseFloat(item.longitude),
-                  }}>
-                  <Image
-                    resizeMode={'contain'}
-                    style={{
-                      width: responsiveWidth(15),
-                      height: responsiveHeight(5),
-                    }}
-                    source={require('../images/delivery-truck.png')}
-                  />
-                  <Callout
-                    onPress={() =>
-                      navigation.navigate('Search', {
-                        screen: RouteName.CUSTOMERSUPPLIER,
-                        params: {TruckInfo: item, openMap: openMap},
-                      })
-                    }
-                    tooltip={true}>
-                    <View style={styles.BOX}>
-                      <Text style={{paddingBottom: responsiveHeight(10)}}>
-                        <Image
-                          style={{
-                            height: responsiveHeight(15),
-                            width: responsiveWidth(30),
-                          }}
-                          source={{uri: item.coverPhoto}}
-                          resizeMode={'contain'}
-                        />
-                      </Text>
-                      <View
-                        style={{
-                          width: responsiveWidth(40),
-                          paddingLeft: responsiveWidth(2),
-                        }}>
-                        <Text style={styles.TruckName}>{item.truckName}</Text>
-                        <Text
-                          style={[
-                            item.status === 'Close'
-                              ? {color: 'red'}
-                              : {color: 'green'},
-                          ]}>
-                          {getStatus(item, index)}
+  const mapComp = () => {
+    return (
+      <View style={[styles.mapcon, MapContainerStyle]}>
+        <MapView
+          showsBuildings={true}
+          showsCompass={true}
+          showsTraffic={true}
+          showsUserLocation={true}
+          provider={PROVIDER_GOOGLE} // remove if not using Google Maps
+          style={styles.map}
+          initialRegion={initialRegion}
+          zoomEnabled={true}
+          followUserLocation={true}
+          onMapReady={() => {
+            setMapReady(true);
+          }}
+          ref={mapView}>
+          {Trucks ? (
+            Trucks.map((item, index) => {
+              console.log('item=>>>', item);
+              if (item.latitude && item.longitude) {
+                return (
+                  <Marker
+                    coordinate={{
+                      latitude: parseFloat(item.latitude),
+                      longitude: parseFloat(item.longitude),
+                    }}>
+                    <Image
+                      resizeMode={'contain'}
+                      style={{
+                        width: responsiveWidth(15),
+                        height: responsiveHeight(5),
+                      }}
+                      source={require('../images/TYFTLogo.png')}
+                    />
+                    <Callout
+                      onPress={() =>
+                        navigation.navigate('Search', {
+                          screen: RouteName.CUSTOMERSUPPLIER,
+                          params: {TruckInfo: item, openMap: openMap},
+                        })
+                      }
+                      tooltip={true}>
+                      <View style={styles.BOX}>
+                        <Text style={{paddingBottom: responsiveHeight(10)}}>
+                          <Image
+                            style={{
+                              height: responsiveHeight(15),
+                              width: responsiveWidth(30),
+                            }}
+                            // source={{uri: item.coverPhoto}}
+                            source={require('../images/Logo.jpg')}
+                            resizeMode={'contain'}
+                          />
                         </Text>
+                        <View
+                          style={{
+                            width: responsiveWidth(40),
+                            paddingLeft: responsiveWidth(2),
+                          }}>
+                          <Text style={styles.TruckName}>{item.truckName}</Text>
+                          <Text
+                            style={[
+                              item.status === 'Close'
+                                ? {color: 'red'}
+                                : {color: 'green'},
+                            ]}>
+                            {getStatus(item, index)}
+                          </Text>
+                        </View>
                       </View>
-                    </View>
-                  </Callout>
-                </Marker>
-              );
-            }
-          })
-        ) : (
-          <Text style={styles.NoTruckText}>{'No Trucks Available'}</Text>
-        )}
-      </MapView>
-      {LoadingMap ? (
-        <View style={styles.LoadingView}>
-          <ActivityIndicator
-            animating={LoadingMap}
-            style={styles.indicator}
-            color={'red'}
-            size={'small'}
-          />
-          <Text style={{marginTop: responsiveHeight(7)}}>
-            {'Fetching Current Location Please Wait.'}
-          </Text>
-        </View>
-      ) : null}
-    </View>
-  );
+                    </Callout>
+                  </Marker>
+                );
+              }
+            })
+          ) : (
+            <Text style={styles.NoTruckText}>{'No Trucks Available'}</Text>
+          )}
+        </MapView>
+        {LoadingMap ? (
+          <View style={styles.LoadingView}>
+            <ActivityIndicator
+              animating={LoadingMap}
+              style={styles.indicator}
+              color={'red'}
+              size={'small'}
+            />
+            <Text style={{marginTop: responsiveHeight(7)}}>
+              {'Fetching Current Location Please Wait.'}
+            </Text>
+          </View>
+        ) : null}
+      </View>
+    );
+  };
+  React.memo(mapComp, (props, nextProps) => {
+    if (Trucks.length !== nextProps.Trucks.length) {
+      return true;
+    }
+  });
 };
 
 Maps.propTypes = {
