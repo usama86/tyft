@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   ScrollView,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import Map from '../../../Component/Maps';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
@@ -163,4 +164,9 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SearchTruck;
+export default  React.memo(SearchTruck,(prevProps,nextProps)=>{
+  if(prevProps.Truck!== nextProps.Truck){
+    Alert.alert('hi')
+       return true;
+  }
+});
