@@ -267,6 +267,19 @@ const FindFoodTruck = ({navigation, route}) => {
       },
     );
   };
+  const getRating = (customerReview) => {
+    console.log('in get rating');
+    let RatingVal = 0;
+    let len = customerReview.length;
+    if (customerReview !== [] && len > 0) {
+      for (var i = 0; i < len; i++) {
+        RatingVal += customerReview[i].Rating;
+      }
+      RatingVal = RatingVal / customerReview.length;
+      // setRatingVal(RatingVal);
+      return RatingVal
+    }
+  };
   const PrintCard = (item, index) => {
     console.log('Item is here',item)
     return (
@@ -374,13 +387,13 @@ const FindFoodTruck = ({navigation, route}) => {
                 }}
               />
             </TouchableOpacity>
-            {item.rating ? (
+     
               <Rating
                 readonly={true}
-                startingValue={item.rating}
+                startingValue={getRating(item.customerReview)}
                 imageSize={responsiveFontSize(2.8)}
               />
-            ) : null}
+     
           </View>
         </View>
       </TouchableOpacity>
