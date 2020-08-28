@@ -48,6 +48,7 @@ const SignIn = ({navigation}) => {
         .then(async Response => {
           console.log('response of login', Response.data);
           let token = Response.data.token;
+          console.log('Token',token)
           if (token) {
             let usertoken = await decode(token);
             console.log('TOKEN', usertoken);
@@ -87,20 +88,12 @@ const SignIn = ({navigation}) => {
             await setLoading(false);
             if (usertoken.userType === 'Supplier') {
               console.log('inn Supplier')
-              navigation.navigate('App');
+              navigation.navigate('App',{screen:RouteName.VEGGIEWISPER});
             } else if (usertoken.userType === 'Customer') {
               console.log('inn Customer')
               navigation.navigate('Auth', {screen: 'Tabs'});
             }
-            //  await navigation.dispatch(
-            //     CommonActions.reset({
-            //       index: 0,
-            //       routes: [
-            //         { name: RouteName.VEGGIEWISPER },hn btata jao ma dekh ra hu though cLL Pa HU EK MIN BAS EK MIN BAS
-            //       ],
-            //     })
-            //   );
-            // await navigation.navigate('App');
+
           } else {
             setPasswordErrorMessage('Your Email or Password is incorrect');
             setLoading(false);
