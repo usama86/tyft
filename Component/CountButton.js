@@ -13,13 +13,13 @@ const CountButton = ({button, tabProp, buttonProp, buttonText,navigation}) => {
   const [count, setCount] = useState(null);
   const [dupArray,setdupArray] = useState([]);
   useEffect(() => {
-    navigation.addListener('focus',()=>{
+    // navigation.addListener('focus',()=>{
       let newArray = [];
       button.map((item,index)=>{
            item.checked? newArray.push({...item}):null
       })
       setdupArray(newArray);
-    })
+    // })
   }, []);
   return (
     <View style={[styles.TabView, tabProp]}>

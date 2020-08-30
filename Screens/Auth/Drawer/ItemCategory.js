@@ -171,7 +171,7 @@ const ItemCategory = ({navigation}) => {
       <View style={styles.Left}>
         <Text
           style={{fontWeight: 'bold', fontSize: responsiveFontSize(2)}}
-          value={item}
+          value={item.name}
         />
         {/* <Text
           style={{
@@ -267,7 +267,7 @@ const ItemCategory = ({navigation}) => {
       ) : (
         <FlatList
           data={Data}
-          keyExtractor={item => item.id}
+          keyExtractor={item => item.name}
           contentContainerStyle={{
             paddingVertical: responsiveHeight(2),
           }}
