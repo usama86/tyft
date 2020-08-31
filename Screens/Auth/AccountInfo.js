@@ -47,7 +47,7 @@ const AccountInfo = ({navigation}) => {
     navigation.dispatch(
       CommonActions.reset({
         index: 0,
-        routes: [{name: Route.SIGNIN}],
+        routes: [{name: Route.HOME}],
       }),
     );
     setisLogout(false);

@@ -171,7 +171,7 @@ const ItemCategory = ({navigation}) => {
       <View style={styles.Left}>
         <Text
           style={{fontWeight: 'bold', fontSize: responsiveFontSize(2)}}
-          value={item.name}
+          value={item}
         />
         {/* <Text
           style={{

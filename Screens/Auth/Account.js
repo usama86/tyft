@@ -97,11 +97,14 @@ const Account = ({navigation, route}) => {
           if (Code === 'ABT0000') {
             setisLoading(false);
             console.log('Customer Updated');
+            console.log('name is ',name.value)
+            await AsyncStorage.setItem('userName' + '', name.value);   
+      
             setUpdated(true);
             setTimeout(() => {
               setUpdated(false);
             }, 500);
-            // navigation.navigate(Route.SIGNIN);
+             navigation.navigate('AccountInfo');
           } else {
             console.log('NOT ADDEED');
             setisLoading(false);

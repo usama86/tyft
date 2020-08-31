@@ -402,10 +402,11 @@ const FindFoodTruck = ({navigation, route}) => {
   const onClear = () => {
     getAllTrucks();
     setIsMsg(false);
+    setuniqueProps([])
   };
   return (
     <SafeAreaView style={styles.parent}>
-      <Header Clear onClearPress={onClear}  NoIcon nothing onPress={() => navigation.goBack()}>
+      <Header Clear onClearPress={onClear}  NoIcon nothing onPress={() => navigation.navigate(RouteName.SEARCHTRUCK)}>
         {'Find Food Truck'}
       </Header>
       <View style={styles.seacrhbarContainter}>
