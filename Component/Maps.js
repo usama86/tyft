@@ -172,7 +172,7 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
                   <Image
                     resizeMode={'contain'}
                     style={{
-                      width: responsiveWidth(15),
+                      width: responsiveWidth(10),
                       height: responsiveHeight(5),
                     }}
                     source={require('../images/TYFTLogo.png')}
@@ -189,8 +189,8 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
                       <Text style={{paddingBottom: responsiveHeight(10)}}>
                         <Image
                           style={{
-                            height: responsiveHeight(15),
-                            width: responsiveWidth(30),
+                            height: responsiveHeight(12.5),
+                            width: responsiveWidth(25),
                           }}
                           // source={{uri: item.coverPhoto}}
                           source={require('../images/Logo.jpg')}
