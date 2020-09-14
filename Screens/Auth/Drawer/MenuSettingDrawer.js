@@ -32,10 +32,7 @@ import AddItemModal from '../../../Component/Modal';
 import Entypo from 'react-native-vector-icons/Entypo';
 const MenuSetting = ({navigation, route}) => {
   const [addItem, setAddItem] = React.useState(false);
-  const [Categories, setCategories] = React.useState([
-    {label: 'Italian Food', value: 'Italian Food'},
-    {label: 'Thai', value: 'Thai'},
-  ]);
+  const [Categories, setCategories] = React.useState([]);
   const [indicator, setIndicator] = React.useState(false);
   const [Data, setData] = React.useState([]);
   const [SelectedValue, setSelectedValue] = React.useState(null);
@@ -228,6 +225,14 @@ const MenuSetting = ({navigation, route}) => {
             console.log('Updated');
             setUpdated(true);
             setIndicator(false);
+            setName({value: null, Error: null, ErrorText: null});
+            setDescription({
+              value: null,
+              Error: null,
+              ErrorText: null,
+            });
+            setPrice({value: null, Error: null, ErrorText: null});
+            getMenuOfSupplier();
             setTimeout(() => {
               setUpdated(false);
             }, 500);

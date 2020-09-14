@@ -38,10 +38,7 @@ const ItemCategory = ({navigation}) => {
   const [showModalAddCatgory, setShowModalAddCategory] = useState(false);
   const [category, setCategory] = React.useState(null);
   const [EditCategory, setEditCategory] = useState(null);
-  const [Categories, setCategories] = React.useState([
-    {label: 'Italian Food', value: 'Italian Food'},
-    {label: 'Thai', value: 'Thai'},
-  ]);
+  const [Categories, setCategories] = React.useState([]);
   const [name, setName] = React.useState({
     value: null,
     Error: false,
@@ -154,7 +151,7 @@ const ItemCategory = ({navigation}) => {
       })
       .then(async Response => {
         const ERROR = Response.data.code;
-        console.log('Ctageogory',Response.data)
+        console.log('Category',Response.data)
         if (ERROR !== 'ABT0001') {
           setIndicator(false);
           setData(Response.data);

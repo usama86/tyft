@@ -28,10 +28,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 
 const MenuSetting = ({navigation, route}) => {
   const [addItem, setAddItem] = React.useState(false);
-  const [Categories, setCategories] = React.useState([
-    {label: 'Italian Food', value: 'Italian Food'},
-    {label: 'Thai', value: 'Thai'},
-  ]);
+  const [Categories, setCategories] = React.useState([]);
   const [Data, setData] = React.useState([]);
   const [SelectedValue, setSelectedValue] = React.useState('Italian Food');
   const [showModal, setShowModal] = React.useState(false);
@@ -110,6 +107,13 @@ const MenuSetting = ({navigation, route}) => {
       setCategoryArray(copy);
       setData(newArray);
       setAddItem(false);
+      setName({value: null, Error: null, ErrorText: null});
+      setDescription({
+        value: null,
+        Error: null,
+        ErrorText: null,
+      });
+      setPrice({value: null, Error: null, ErrorText: null});
     }
   };
   const closeModal = () => {

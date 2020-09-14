@@ -107,6 +107,7 @@ const CustomerSupplier = ({navigation, route}) => {
             // console.log(route.params.TruckInfo.MenuID);
             navigation.navigate(RouteName.MENU, {
               Menu: route.params.TruckInfo.MenuID,
+              TruckID:route.params.TruckInfo._id,
             });
           }}
           style={[styles.Button, {backgroundColor: 'white'}]}>

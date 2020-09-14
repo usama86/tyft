@@ -21,6 +21,7 @@ const Menu = ({navigation,route}) => {
   const [menuItem, setMenuItem] = useState();
   const [isMsg, setIsMsg] = useState(false);
   const [isLoading, setisLoading] =useState(true);
+  const [category,setCategory] =useState([]);
   const [Data, setData] = useState([
     // {
     //   id: 0,
@@ -31,9 +32,28 @@ const Menu = ({navigation,route}) => {
    
   ]);
   React.useEffect(()=>{
+    getCategoryOfSupplier();
     getMenu();
   },[]);
-  
+
+  const getCategoryOfSupplier = async () => {
+    let TruckId = route.params.TruckID;
+    axios
+      .post(url + '/api/supplier/getcategory', {
+        _id: TruckId,
+      })
+      .then(async Response => {
+        const ERROR = Response.data.code;
+        console.log('Ctageogory',Response.data)
+        if (ERROR !== 'ABT0001') {
+          setCategory(Response.data);
+        } else {
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
   const onChangeSearch = val => {
     setMenuItem(val);
     if (val == '') {
@@ -91,6 +111,14 @@ const Menu = ({navigation,route}) => {
             marginTop: responsiveHeight(1),
           }}
           value={item.description}
+        />
+        <Text
+          style={{
+            fontSize: responsiveFontSize(1.6),
+            color: '#A6A6A6',
+            marginTop: responsiveHeight(1),
+          }}
+          value={item.category}
         />
       </View>
       <View style={styles.Right}>
