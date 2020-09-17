@@ -65,7 +65,6 @@ const SearchTruck = ({navigation}) => {
       .get(url + '/api/servingcusine/getcusines')
       .then(async Response => {
         if (Response) {
-          console.log(Response);
           if (Response.data.length > 0) {
             let res = await Response.data[0].cusine;
             await setButtonData(res);

@@ -27,22 +27,6 @@ const MenuSetting = ({navigation, route}) => {
     Error: null,
     ErrorText: null,
   });
-  useEffect(() => {
-    console.log(
-      'DATSAAAAAAAAAAAAAAAAAA=???',
-      route.params.Schedule,
-      route.params.Name,
-      route.params.Email,
-      route.params.Phone,
-      route.params.Password,
-      route.params.TruckName,
-      route.params.BusinessDescription,
-      route.params.TruckContact,
-      route.params.TruckEmail,
-      route.params.City,
-      route.params.Website,
-    );
-  }, []);
   const Navigate = () => {
     if (!facebook.id) {
       setFacebook({

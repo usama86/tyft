@@ -60,9 +60,7 @@ const VeggieWisper = ({navigation, route}) => {
   const LATITUDE_DELTA = 0.015;
   const LONGITUDE_DELTA = 0.0121;
   useEffect(() => {
-    navigation.addListener('focus',()=>{
       getUserDetails();
-    })
   }, []);
   const setLocation = async () => {
     let TruckId = await AsyncStorage.getItem('TruckID');
@@ -224,13 +222,12 @@ const VeggieWisper = ({navigation, route}) => {
                   imgUrl: result.url
                 })
                 .then(async Response => {
-                  console.log('Responsessss', Response.data.code);
                   let Code = Response.data.code;
                   if (Code === 'ABT0000') {
                     setUrl(img); //
                     // navigation.navigate(Route.SIGNIN);
                   } else {
-                    console.log('NOT ADDEED');
+                 
                     // setisLoading(false);
                   }
                 })

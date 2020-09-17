@@ -47,7 +47,6 @@ const Account = ({navigation, route}) => {
     setisLogout(false);
   };
   const checkUserStatus = async () => {
-    console.log('Params in account=>..', route.params);
     let userType = await AsyncStorage.getItem('userType');
     if (userType !== null) {
       setLoggedin(true);
@@ -92,12 +91,9 @@ const Account = ({navigation, route}) => {
         })
         .then(async Response => {
           await AsyncStorage.setItem('language' + '', Language);
-          console.log('Responsessss', Response.data.code);
           let Code = Response.data.code;
           if (Code === 'ABT0000') {
             setisLoading(false);
-            console.log('Customer Updated');
-            console.log('name is ',name.value)
             await AsyncStorage.setItem('userName' + '', name.value);   
       
             setUpdated(true);
@@ -105,8 +101,8 @@ const Account = ({navigation, route}) => {
               setUpdated(false);
             }, 500);
              navigation.navigate('AccountInfo');
-          } else {
-            console.log('NOT ADDEED');
+          } 
+          else {
             setisLoading(false);
           }
         })

@@ -71,8 +71,6 @@ const CustomDrawer = ({navigation, route}) => {
           )
             .then(response => response.json())
             .then(async result => {
-              console.log(result);
-
               let TruckId = await AsyncStorage.getItem('TruckID');
               axios
                 .post(url + '/api/supplier/updatetrucklogo', {
@@ -80,21 +78,15 @@ const CustomDrawer = ({navigation, route}) => {
                   imgUrl: result.url,
                 })
                 .then(async Response => {
-                  console.log('Responsessss', Response.data.code);
                   let Code = Response.data.code;
                   if (Code === 'ABT0000') {
                     setUrl(img); //
                     // navigation.navigate(Route.SIGNIN);
-                  } else {
-                    console.log('NOT ADDEED');
-                    // setisLoading(false);
-                  }
+                  } 
                 })
                 .catch(error => {
                   console.log(error);
                 });
-              // setImageUrl(result.url); updatetruckimage
-              // setIsLoading(false);
             })
             .catch(error => {
               console.log('error', error);
@@ -120,7 +112,6 @@ const CustomDrawer = ({navigation, route}) => {
           setEmail(res.Supplier[0].email);
           setTruckData(res.TruckInfo);
           setUrl(res.TruckInfo[0].truckLogo);
-          console.log(res.TruckInfo[0].truckLogo);
           await AsyncStorage.setItem('TruckID' + '', res.TruckInfo[0]._id);
         }
       })

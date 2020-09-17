@@ -106,7 +106,6 @@ const AccountInfo = ({navigation}) => {
           )
             .then(response => response.json())
             .then(async result => {
-              console.log(result);
               let userId = await AsyncStorage.getItem('userID');
               axios
                 .post(url + '/api/users/updateprofileimage', {
@@ -114,15 +113,11 @@ const AccountInfo = ({navigation}) => {
                   imgUrl: result.url,
                 })
                 .then(async Response => {
-                  console.log('Responsessss', Response.data.code);
                   let Code = Response.data.code;
                   if (Code === 'ABT0000') {
                     setUrl(img); //
                     // navigation.navigate(Route.SIGNIN);
-                  } else {
-                    console.log('NOT ADDEED');
-                    // setisLoading(false);
-                  }
+                  } 
                 })
                 .catch(error => {
                   console.log(error);
@@ -150,32 +145,15 @@ const AccountInfo = ({navigation}) => {
     let language = await AsyncStorage.getItem('language');
     setPhoto(photo);
     setLanguage(language)
-    //  let Language = await AsyncStorage.getItem('Language');
-    //  setLanguage(Language)
-    console.log(id);
-    console.log(name);
-    console.log(emails);
-    console.log(phones);
-
     SetName(name);
     setEmail(emails);
     setPhone(phones);
-    // axios
-    //   .get(url + '/api/users/getuser', {
-    //     email: emails,
-    //   })
-    //   .then(async Response => {
-    //     console.log('Response of Get User', Response.data);
-    //     setLanguage(Response.data[0].Language);
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //   });
   };
   return (
     <View style={{height: '100%', width: '100%'}}>
       {LoggedIn ? (
         <Header
+        NoIcon
           logout
           Logout={() => setisLogout(true)}
           navigation={navigation}

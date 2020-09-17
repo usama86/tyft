@@ -56,7 +56,6 @@ const SignUpSupplier = ({navigation}) => {
     }
   };
   const changePassword = e => {
-    console.log(e);
     let PasswordRegix = /^(?=.*\d).{8,100}$/;
     if (PasswordRegix.test(e)) {
       setPassword({
@@ -77,7 +76,6 @@ const SignUpSupplier = ({navigation}) => {
         passwordErrorText:
           'Password must be atleast 8 digits long and include atleast one numeric digit',
       });
-      console.log(password.pass);
     }
   };
   const Navigate = () => {
@@ -117,7 +115,6 @@ const SignUpSupplier = ({navigation}) => {
       });
     }
     if (password.password !== confirmpass.confirmpass) {
-      console.log('in not equal')
       setConfirmPass({
         confirmpass: null,
         confirmPassError: true,
@@ -150,7 +147,6 @@ const SignUpSupplier = ({navigation}) => {
       .then(async Response => {
         if(Response.data.length<1)
         {
-          console.log('com',confirmpass.confirmPassError)
           navigation.navigate(RouteName.TRUCKLOGO, {
             Name: name.name,
             Email: email.email,

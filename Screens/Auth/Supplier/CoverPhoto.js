@@ -40,11 +40,9 @@ const CoverPhoto = ({navigation, route}) => {
       fetch("https://api.cloudinary.com/v1_1/hmrzthc6f/image/upload", requestOptions)
         .then(response => response.json())
         .then(result => {
-          console.log(result)
           setImageUrl(result.url);
           // setImg(val);
           setisLoading(false);
-         
           
         }
           )
@@ -96,13 +94,10 @@ const CoverPhoto = ({navigation, route}) => {
         )
         .then(async Response => {
           let Code = Response.data.code;
-          console.log('Response', Code);
           if (Code === 'ABT0000') {
             setisLoading(false);
-            console.log('Customer Added');
             navigation.navigate(RouteName.HOME);
           } else {
-            console.log('NOT ADDEED');
             setisLoading(false);
           }
         })

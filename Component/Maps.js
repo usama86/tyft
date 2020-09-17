@@ -55,10 +55,6 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
     // })
   }, []);
   const openMap = (sourceLat, sourceLong) => {
-    console.log('source lat', sourceLat);
-    console.log('sorce long', sourceLong);
-    console.log('Lat', Lat);
-    console.log('Long', Long);
     showLocation({
       latitude: Lat,
       longitude: Long,
@@ -104,15 +100,12 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
   const setRegionInMap = region => {
     if (mapReady) {
       setMapReady(false);
-      console.log('map is ready', region);
       try {
         setTimeout(() => mapView.current.animateToRegion(region), 30);
       } catch (error) {
         Alert('Cannot Access Current Location Please Try Again.');
       }
-    } else {
-      console.log('NOOO');
-    }
+    } 
   };
   const getStatus = (item, index) => {
     let day = moment(new Date()).format('dddd');
@@ -125,17 +118,10 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
       let endTime = new Date(
         'Mon 03-Jul-2017, ' + matchedDay[0].closing.toString(),
       ).getHours();
-
-      console.log('Start Time', startTime);
-      console.log('End Time', endTime);
-      // console.log('Matched Day', matchedDay);
       var currentTime = new Date().getHours();
-      console.log('Current Time ', currentTime);
       if (startTime <= currentTime && currentTime <= endTime) {
-        console.log('Between');
         return 'Open';
       } else {
-        console.log('No Between');
         return 'Close';
       }
     } else {

@@ -54,7 +54,6 @@ const MenuSetting = ({navigation, route}) => {
       setCategory(null);
     } else if (e) {
       setCategory(e);
-      console.log('Category is here', category);
     }
   };
   const Navigate = () => {
@@ -222,14 +221,14 @@ const MenuSetting = ({navigation, route}) => {
                 setDescription({value: e, Error: false, ErrorText: null})
               }
               value={description.value}
-              style={[
-                styles.Input,
+              style={
+                // styles.Input,
                 {
                   height: responsiveHeight(19),
                   marginTop: responsiveHeight(2),
                   width: '90%',
-                },
-              ]}
+                }
+              }
             />
             {description.Error ? (
               <ErrorView>{description.ErrorText}</ErrorView>

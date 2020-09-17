@@ -22,9 +22,6 @@ const TruckLogo = ({navigation, route}) => {
   const changeInputHandler = () => {
     SetCheck(!check);
   };
-  // useEffect(()=>{
-  // console.log('params',route.params)
-  // },[])
   const SendUri = async val => {
     setImg(val);
     try {
@@ -52,12 +49,10 @@ const TruckLogo = ({navigation, route}) => {
       )
         .then(response => response.json())
         .then(result => {
-          console.log(result);
           setImageUrl(result.url);
           setIsLoading(false);
         })
         .catch(error => {
-          console.log('error', error);
           setIsLoading(false);
         });
     } catch (e) {

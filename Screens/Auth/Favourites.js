@@ -239,7 +239,7 @@ const [uniqueProps,setuniqueProps] =useState([])
   }
   return (
     <SafeAreaView style={styles.parent}>
-      <Header Clear onClearPress={onClear} onPress={() => navigation.goBack()}>{'Favourite'}</Header>
+      <Header NoIcon Clear onClearPress={onClear} onPress={() => navigation.goBack()}>{'Favourite'}</Header>
       <View style={styles.seacrhbarContainter}>
         <SearchBar
           placeholder="Type something..."

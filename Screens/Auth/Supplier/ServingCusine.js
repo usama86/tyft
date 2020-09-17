@@ -37,12 +37,11 @@ const ServingCusine = ({navigation, route}) => {
       .get(url + '/api/servingcusine/getcusines')
       .then(async Response => {
         if (Response) {
-          console.log(Response);
+      
           if (Response.data.length > 0) {
             let res = Response.data[0].cusine;
             setData(res);
-            console.log('hi');
-            console.log(res);
+         
           }
           // let newArr = [{...res.Supplier[0], TruckInfo: res.TruckInfo}];
           // setUserInfo(newArr);
@@ -87,7 +86,6 @@ const ServingCusine = ({navigation, route}) => {
       setVisible(true);
       setisLoading(false);
     } else if (newArray.length > 0) {
-      console.log(newArray);
       setisLoading(false);
       navigation.navigate(RouteName.MENUSETTING, {
         Schedule: route.params.Schedule,

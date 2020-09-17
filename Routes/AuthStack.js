@@ -159,6 +159,10 @@ const FunOfAuthStack = ({navigation, route}) => {
       tabBarOptions={{
         activeTintColor: theme.default.colors.primary,
         inactiveTintColor: 'gray',
+        keyboardHidesTabBar: true,
+        style: {
+          position: 'absolute',
+        },
       }}>
       <Tabs.Screen
         options={{title: 'Near Me'}}

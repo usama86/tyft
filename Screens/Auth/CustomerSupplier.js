@@ -93,7 +93,7 @@ const CustomerSupplier = ({navigation, route}) => {
         <ImageBackground
           style={styles.image}
           source={{uri: route.params.TruckInfo.coverPhoto}}>
-          <Header onPress={() => navigation.goBack()}>
+          <Header NoIcon onPress={() => navigation.goBack()}>
             {route.params.TruckInfo.truckName}
           </Header>
         </ImageBackground>
