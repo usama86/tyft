@@ -16,6 +16,7 @@ import {
 } from 'react-native-responsive-dimensions';
 import Header from '../../Component/Header';
 import axios from 'axios';
+import Modal from '../../Component/Modal';
 import FuzzySearch from 'fuzzy-search';
 const Menu = ({navigation,route}) => {
   const [menuItem, setMenuItem] = useState();
@@ -167,7 +168,15 @@ const Menu = ({navigation,route}) => {
       /> 
       )
     }
-    
+          <Modal ModalContainer={styles.modalView} showModal={update}>
+        <View style={styles.IconView}>
+          <Image
+            style={{width: '100%', height: '100%', resizeMode: 'contain'}}
+            source={require('../../images/button.png')}
+          />
+        </View>
+        <Text style={styles.UpdatedText} value={'Updated'} />
+      </Modal>
     </SafeAreaView>
   );
 };
@@ -182,7 +191,7 @@ const styles = StyleSheet.create({
   MainView: {
     width: '95%',
     paddingVertical: responsiveHeight(2),
-    borderBottomColor: '#212121',
+    borderBottomColor: '#A6A6A6',
     borderBottomWidth: 0.3,
     justifyContent:'center',
     marginLeft: responsiveWidth(2),
