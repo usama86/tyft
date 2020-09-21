@@ -43,7 +43,8 @@ const MenuSetting = ({navigation, route}) => {
   const [showDeleteModal, setDeleteModal] = useState(false);
   const [selected, setSelected] = useState(0);
   const [edit, setEdit] = useState(false);
-  const [editIndex,setEditIndex] = useState(0);
+  const [editIndex, setEditIndex] = useState(0);
+  const [duplicate, setDup] = useState(null);
   const [name, setName] = React.useState({
     value: null,
     Error: false,
@@ -96,8 +97,8 @@ const MenuSetting = ({navigation, route}) => {
         const ERROR = Response.data.code;
         if (ERROR === 'ABT0000') {
           let Menu = Response.data.MenuData;
+          console.log('MENU', Menu);
           setData(Menu);
-        
 
           let TruckId = await AsyncStorage.getItem('TruckID');
           axios
@@ -106,9 +107,8 @@ const MenuSetting = ({navigation, route}) => {
             })
             .then(async Response => {
               const ERROR = Response.data.code;
-              console.log('Ctageogory',Response.data)
+              console.log('Ctageogory', Response.data);
               if (ERROR !== 'ABT0001') {
-
                 let modifiedArray = [];
                 for (let i = 0; i < Response.data.length; i++) {
                   modifiedArray.push({
@@ -118,21 +118,19 @@ const MenuSetting = ({navigation, route}) => {
                 }
                 let unique = modifiedArray.filter(
                   (item, indexOfItem, myArray) =>
-                    myArray.findIndex(t => t.label === item.label) === indexOfItem,
+                    myArray.findIndex(t => t.label === item.label) ===
+                    indexOfItem,
                 );
 
                 setCategories(unique);
                 setSelectedValue(unique[0].label);
                 //unique[0].label
               } else {
-  
               }
             })
             .catch(error => {
               console.log(error);
             });
-
-         
         }
       })
       .catch(error => {
@@ -151,13 +149,18 @@ const MenuSetting = ({navigation, route}) => {
     setIndicator(true);
     let DataCopy = [...Data];
 
-    DataCopy[editIndex].name= name.value;
-    DataCopy[editIndex].description= description.value;
-    DataCopy[editIndex].price=Number(price.value);
+    DataCopy[editIndex].name = name.value;
+    DataCopy[editIndex].description = description.value;
+    DataCopy[editIndex].price = Number(price.value);
 
-
-
-
+    let index = Data.findIndex(a => a.name === name.value);
+    if (index !== -1) {
+      setDup(true);
+      setTimeout(() => {
+        setDup(false)
+      }, 1500);
+      return;
+    }
     let MenuID = await AsyncStorage.getItem('MenuID');
     axios
       .post(url + '/api/menu/updatemenu', {
@@ -214,6 +217,15 @@ const MenuSetting = ({navigation, route}) => {
       });
       setIndicator(true);
       let MenuID = await AsyncStorage.getItem('MenuID');
+      let index = Data.findIndex(a => a.name === name.value);
+      if (index !== -1) {
+        setDup(true)
+        setTimeout(() => {
+          setDup(false)
+        }, (1500));
+        return;
+      }
+
       axios
         .post(url + '/api/menu/updatemenu', {
           _id: MenuID,
@@ -251,36 +263,33 @@ const MenuSetting = ({navigation, route}) => {
   const closeModal = async () => {
     let newArr = [...Categories];
     if (category) {
-
       newArr.unshift({label: category, value: category});
       setSelectedValue(category);
-      let categoryArray=[];
-      for(let i=0;i<newArr.length;i++)
-      {
-        categoryArray.push(newArr[i].value)
+      let categoryArray = [];
+      for (let i = 0; i < newArr.length; i++) {
+        categoryArray.push(newArr[i].value);
       }
-      
-    let TruckId = await AsyncStorage.getItem('TruckID');
-    axios
-      .post(url + '/api/supplier/updateCategory', {
-        _id: TruckId,
-        categoryArrays: categoryArray,
-      })
-      .then(async Response => {
-        const ERROR = Response.data.code;
-        if (ERROR === 'ABT0000') {
-          console.log('Updated');
-          setCategories(newArr);     
-        } else {
-          // setIndicator(false);
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
-      
+
+      let TruckId = await AsyncStorage.getItem('TruckID');
+      axios
+        .post(url + '/api/supplier/updateCategory', {
+          _id: TruckId,
+          categoryArrays: categoryArray,
+        })
+        .then(async Response => {
+          const ERROR = Response.data.code;
+          if (ERROR === 'ABT0000') {
+            console.log('Updated');
+            setCategories(newArr);
+          } else {
+            // setIndicator(false);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
-    
+
     setShowModal(false);
   };
   const PrintCard = (item, index) => (
@@ -385,7 +394,7 @@ const MenuSetting = ({navigation, route}) => {
             showModal={addItem}>
             {/* <View style={{height: responsiveHeight(33),paddingVertical:responsiveHeight(2),paddingHorizontal:responsiveWidth(2)}}> */}
             {/* <ScrollView> */}
-            <View style={[styles.CrossView,{width:'95%'}]}>
+            <View style={[styles.CrossView, {width: '95%'}]}>
               <Entypo
                 name={'circle-with-cross'}
                 color={'black'}
@@ -437,7 +446,11 @@ const MenuSetting = ({navigation, route}) => {
                 setDescription({value: e, Error: false, ErrorText: null})
               }
               value={description.value}
-              style={{height:responsiveHeight(19),marginTop:responsiveHeight(2),width:'90%'}}
+              style={{
+                height: responsiveHeight(19),
+                marginTop: responsiveHeight(2),
+                width: '90%',
+              }}
             />
             {description.Error ? (
               <ErrorView>{description.ErrorText}</ErrorView>
@@ -474,7 +487,7 @@ const MenuSetting = ({navigation, route}) => {
                 paddingHorizontal: responsiveWidth(2),
                 borderRadius: 8,
               }}>
-              <View style={[styles.CrossView,{width:'95%'}]}>
+              <View style={[styles.CrossView, {width: '95%'}]}>
                 <Entypo
                   name={'circle-with-cross'}
                   color={'black'}
@@ -556,7 +569,7 @@ const MenuSetting = ({navigation, route}) => {
           paddingVertical: responsiveHeight(2),
           paddingHorizontal: responsiveWidth(2),
         }}>
-        <View style={[styles.CrossView,{width:'95%'}]}>
+        <View style={[styles.CrossView, {width: '95%'}]}>
           <Entypo
             name={'circle-with-cross'}
             color={'black'}
@@ -580,7 +593,11 @@ const MenuSetting = ({navigation, route}) => {
             setDescription({value: e, Error: false, ErrorText: null})
           }
           value={description.value}
-          style={{height:responsiveHeight(19),marginTop:responsiveHeight(2),width:'90%'}}
+          style={{
+            height: responsiveHeight(19),
+            marginTop: responsiveHeight(2),
+            width: '90%',
+          }}
         />
         {description.Error ? (
           <ErrorView>{description.ErrorText}</ErrorView>
@@ -665,6 +682,15 @@ const MenuSetting = ({navigation, route}) => {
           </View>
         </View>
       </Modal>
+      <Modal ModalContainer={styles.modalView} showModal={duplicate}>
+        <View style={styles.IconView}>
+          <Image
+            style={{width: '100%', height: '100%', resizeMode: 'contain'}}
+            source={require('../../../images/button.png')}
+          />
+        </View>
+        <Text style={styles.UpdatedText} value={'Cannot add duplicate Menu'} />
+      </Modal>
     </View>
   );
 };
@@ -747,7 +773,14 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     width: '50%',
     alignSelf: 'center',
-    
+  },
+  IconView: {
+    width: '90%',
+    alignSelf: 'center',
+    height: responsiveHeight(20),
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: responsiveHeight(2),
   },
 });
 export default MenuSetting;

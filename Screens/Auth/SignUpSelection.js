@@ -6,7 +6,7 @@ import {
   Platform,
   SafeAreaView,
 } from 'react-native';
-import { Text, Icon } from 'react-native-elements';
+import {Text, Icon} from 'react-native-elements';
 import theme from './../theme';
 
 import RoundButton from './../../Component/Button';
@@ -19,74 +19,76 @@ import {
 } from 'react-native-responsive-dimensions';
 import Header from '../../Component/Header';
 const SignUpSelection = props => {
-  const { navigation } = props;
+  const {navigation} = props;
 
   return (
-    <View style={{height:'100%',width:'100%'}}>
-      <Header  onPress={() => navigation.goBack()}>{'Sign Up'}</Header>
- 
-    <SafeAreaView style={styles.container}>
-      
-      <Text style={styles.signUpHeader}>{'SIGN UP'}</Text>
-      <TouchableHighlight
-        activeOpacity={1}
-        underlayColor="#f7f7f5"
-        style={styles.item}
-        onPress={() => {
-          navigation.navigate(RouteName.SIGNUP);
-        }}>
-        <View>
-          <View style={styles.itemHeader}>
-            <View style={styles.leftIcon}>
-              <Icon
-                name="shopping-cart"
-                color={theme.colors.primary}
-                size={33}
-              />
+    <View style={{height: '100%', width: '100%'}}>
+      <Header onPress={() => navigation.goBack()}>{'Sign Up'}</Header>
+
+      <SafeAreaView style={styles.container}>
+        <Text style={styles.signUpHeader}>{'SIGN UP'}</Text>
+        <TouchableHighlight
+          activeOpacity={1}
+          underlayColor="#f7f7f5"
+          style={styles.item}
+          onPress={() => {
+            navigation.navigate(RouteName.SIGNUP);
+          }}>
+          <View>
+            <View style={styles.itemHeader}>
+              <View style={styles.leftIcon}>
+                <Icon
+                  name="shopping-cart"
+                  color={theme.colors.primary}
+                  size={33}
+                />
+              </View>
+              <Text style={styles.itemTitle}>{'As Customer'}</Text>
             </View>
-            <Text style={styles.itemTitle}>{'As Customer'}</Text>
+            <Text style={styles.itemText}>
+              Search and track your favorite food truck in your area and mark
+              them for later use
+            </Text>
           </View>
-          <Text style={styles.itemText}>
-            Search the propane and oil venders in your area, with GASLIO you can
-            search and place order easily
-          </Text>
-        </View>
-      </TouchableHighlight>
-      <TouchableHighlight
-        activeOpacity={1}
-        underlayColor="#f7f7f5"
-        style={styles.item}
-        onPress={() => {
-          navigation.navigate(RouteName.SIGNUPSUPPLIER);
-        }}>
-        <View>
-          <View style={styles.itemHeader}>
-            <View style={styles.leftIcon}>
-              <Icon
-                name="truck-delivery"
-                type="material-community"
-                color={theme.colors.primary}
-                size={33}
-              />
+        </TouchableHighlight>
+        <TouchableHighlight
+          activeOpacity={1}
+          underlayColor="#f7f7f5"
+          style={styles.item}
+          onPress={() => {
+            navigation.navigate(RouteName.SIGNUPSUPPLIER);
+          }}>
+          <View>
+            <View style={styles.itemHeader}>
+              <View style={styles.leftIcon}>
+                <Icon
+                  name="truck-delivery"
+                  type="material-community"
+                  color={theme.colors.primary}
+                  size={33}
+                />
+              </View>
+              <Text style={styles.itemTitle}>{'As Supplier'}</Text>
             </View>
-            <Text style={styles.itemTitle}>{'As Supplier'}</Text>
+            <Text style={styles.itemText}>
+              Create a part of TYFT vendor list and target the local audience
+              near you.It helps you to promote your business in your local are.
+            </Text>
           </View>
-          <Text style={styles.itemText}>
-            Create a part of TYFT vendor list and target the local audience
-            near you.It helps you to promote your business in your local are.
-          </Text>
-        </View>
-      </TouchableHighlight>
-      <RoundButton
+        </TouchableHighlight>
+        <RoundButton
           style={styles.buttonStyle2}
-          onPress={()=>{navigation.goBack()}} rounded>
+          onPress={() => {
+            navigation.goBack();
+          }}
+          rounded>
           <Texts
             uppercase={false}
             style={styles.TextStyle1}
-            value={"Back to login"}
+            value={'Back to login'}
           />
-      </RoundButton>
-    </SafeAreaView>
+        </RoundButton>
+      </SafeAreaView>
     </View>
   );
 };
@@ -149,8 +151,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: '73%',
-    marginTop:responsiveHeight(22),
-    marginLeft:responsiveWidth(14),
+    marginTop: responsiveHeight(22),
+    marginLeft: responsiveWidth(14),
     height: responsiveHeight(6),
     // borderStyle: 'solid',
     // borderWidth: 1,

@@ -23,6 +23,7 @@ const Animation = ({
     <Animatable.View
       style={container}
       animation={animate}
+      duration={3000}
       easing="ease-out"
       {...props}>
       {children}

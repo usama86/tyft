@@ -20,7 +20,7 @@ const SplashScreen = ({navigation}) => {
     }, 2000);
   },[])
   return (
-    <Animation container={styles.container} navigation={navigation} animationsIn={'zoomInDown'}  animationOut={val}>
+    <Animation container={styles.container} duration ={2000} navigation={navigation}>
       <Image
         style={styles.logoStyle}
         source={require('./../images/MainLogo.png')}

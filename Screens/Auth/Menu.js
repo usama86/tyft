@@ -102,7 +102,7 @@ const Menu = ({navigation,route}) => {
       <View style={styles.Left}>
         <Text
           style={{fontWeight: 'bold', fontSize: responsiveFontSize(2)}}
-          value={item.name}
+          value={item.category}
         />
         <Text
           style={{
@@ -118,11 +118,11 @@ const Menu = ({navigation,route}) => {
             color: '#A6A6A6',
             marginTop: responsiveHeight(1),
           }}
-          value={item.category}
+          value={item.name}
         />
-      </View>
-      <View style={styles.Right}>
+             <View style={styles.Right}>
         <Text value={'$ ' + item.price} />
+      </View>
       </View>
     </TouchableOpacity>
   );
@@ -184,9 +184,7 @@ const styles = StyleSheet.create({
     paddingVertical: responsiveHeight(2),
     borderBottomColor: '#212121',
     borderBottomWidth: 0.3,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    justifyContent:'center',
     marginLeft: responsiveWidth(2),
   },
   input: {
@@ -199,9 +197,11 @@ const styles = StyleSheet.create({
     fontSize: responsiveFontSize(2),
   },
   Left: {
-    width: '70%',
+    width: '90%',
+    alignSelf:'center'
   },
   Right: {
+    marginTop:responsiveHeight(2),
     width: '15%',
   },
   parent: {

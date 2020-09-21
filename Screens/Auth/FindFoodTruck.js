@@ -43,7 +43,7 @@ const FindFoodTruck = ({navigation, route}) => {
   const [cusineName, setCusineName] = useState(null);
   const [Lat, setLat] = React.useState(0.0);
   const [Long, setLong] = React.useState(0.0);
-  const [uniqueProps,setuniqueProps] =useState([])
+  const [uniqueProps, setuniqueProps] = useState([]);
   const onChangeSearch = val => {
     setSearchVal(val);
     if (val == '') {
@@ -267,7 +267,7 @@ const FindFoodTruck = ({navigation, route}) => {
       },
     );
   };
-  const getRating = (customerReview) => {
+  const getRating = customerReview => {
     console.log('in get rating');
     let RatingVal = 0;
     let len = customerReview.length;
@@ -277,11 +277,11 @@ const FindFoodTruck = ({navigation, route}) => {
       }
       RatingVal = RatingVal / customerReview.length;
       // setRatingVal(RatingVal);
-      return RatingVal
+      return RatingVal;
     }
   };
   const PrintCard = (item, index) => {
-    console.log('Item is here',item)
+    console.log('Item is here', item);
     return (
       <TouchableOpacity
         activeOpacity={0.8}
@@ -301,7 +301,7 @@ const FindFoodTruck = ({navigation, route}) => {
             value={item.truckName}
           />
           <CountButton
-          navigation = {navigation}
+            navigation={navigation}
             button={item.selectedServingCusines}
             buttonProp={{
               width: '30%',
@@ -387,13 +387,12 @@ const FindFoodTruck = ({navigation, route}) => {
                 }}
               />
             </TouchableOpacity>
-     
-              <Rating
-                readonly={true}
-                startingValue={getRating(item.customerReview)}
-                imageSize={responsiveFontSize(2.8)}
-              />
-     
+
+            <Rating
+              readonly={true}
+              startingValue={getRating(item.customerReview)}
+              imageSize={responsiveFontSize(2.8)}
+            />
           </View>
         </View>
       </TouchableOpacity>
@@ -402,11 +401,16 @@ const FindFoodTruck = ({navigation, route}) => {
   const onClear = () => {
     getAllTrucks();
     setIsMsg(false);
-    setuniqueProps([])
+    setuniqueProps([]);
   };
   return (
     <SafeAreaView style={styles.parent}>
-      <Header Clear onClearPress={onClear}  NoIcon nothing onPress={() => navigation.navigate(RouteName.SEARCHTRUCK)}>
+      <Header
+        Clear
+        onClearPress={onClear}
+        NoIcon
+        nothing
+        onPress={() => navigation.navigate(RouteName.SEARCHTRUCK)}>
         {'Find Food Truck'}
       </Header>
       <View style={styles.seacrhbarContainter}>
@@ -452,7 +456,7 @@ const FindFoodTruck = ({navigation, route}) => {
           onPress={() => {
             navigation.navigate(RouteName.SERVINGCUSINETYPE, {
               onFilterSearch: onFilterSearch,
-              uniqueProps:uniqueProps
+              uniqueProps: uniqueProps,
             });
             // getAllTrucks();
           }}
@@ -483,11 +487,14 @@ const FindFoodTruck = ({navigation, route}) => {
           }}
         />
       ) : Data.length > 0 && Data !== [undefined] ? (
-        <FlatList
-          data={Data !== [undefined] && Data !== undefined ? Data : []}
-          keyExtractor={item => item._id}
-          renderItem={({item, index}) => PrintCard(item, index)}
-        />
+        <View style={{flex: 1}}>
+          <FlatList
+            data={Data !== [undefined] && Data !== undefined ? Data : []}
+            keyExtractor={item => item._id}
+            contentContainerStyle={{paddingBottom:responsiveHeight(8)}}
+            renderItem={({item, index}) => PrintCard(item, index)}
+          />
+        </View>
       ) : (
         <Text
           value={'No Truck Found'}

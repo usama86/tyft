@@ -45,7 +45,6 @@ const FindFoodTruck = ({navigation, route}) => {
 
   const [Data, setData] = useState([]);
   const getAllTrucks = () => {
-    console.log('in trucks');
     axios
       .get(url + '/api/supplier/getalltruck')
       .then(async Response => {
@@ -62,30 +61,55 @@ const FindFoodTruck = ({navigation, route}) => {
   };
   const getCusine = async () => {
     let TruckId = await AsyncStorage.getItem('TruckID');
+
     axios
-      .post(url + '/api/supplier/getservingcusine', {
-        _id: TruckId,
-      })
+      .get(url + '/api/servingcusine/getcusines')
       .then(async Response => {
         if (Response) {
           if (Response.data.length > 0) {
-            let res = Response.data;
-            setData(res);
-          } else {
-            setData(null);
+            let AllCusines = Response.data[0].cusine;
+            axios
+              .post(url + '/api/supplier/getservingcusine', {
+                _id: TruckId,
+              })
+              .then(async Response => {
+                if (Response) {
+                  if (Response.data.length > 0) {
+                    let res = Response.data;
+                    console.log('Selected Cusines', res);
+                    // setData(res);
+                    res.map(a => {
+                      AllCusines.map(b => {
+                        if (a.cusineName === b.cusineName && a.checked) {
+                          b.checked = true;
+                        }
+                      });
+                      setData(AllCusines);
+                    });
+                  } else {
+                    setData(null);
+                  }
+                  setIndicator(false);
+                } else {
+                  setIndicator(false);
+                }
+              })
+              .catch(error => {
+                console.log(error);
+                setIndicator(false);
+              });
+
+            console.log('All Cusines after update', AllCusines);
+            setData(AllCusines);
           }
-          setIndicator(false);
-        } else {
-          setIndicator(false);
         }
       })
       .catch(error => {
         console.log(error);
-        setIndicator(false);
       });
   };
   const saveServingCusine = async () => {
-    setLoading(true)
+    setLoading(true);
     let TruckId = await AsyncStorage.getItem('TruckID');
     axios
       .post(url + '/api/supplier/updateservingcusine', {
@@ -93,19 +117,19 @@ const FindFoodTruck = ({navigation, route}) => {
         selectedServingCusines: Data,
       })
       .then(async Response => {
-        console.log('Dataaa',Data)
+        console.log('Dataaa', Data);
         let ERROR = Response.data.code;
         let Trucks = Response;
         if (ERROR !== 'ABT0001') {
           setUpdated(true);
           setTimeout(() => {
-            setLoading(false)
+            setLoading(false);
             setUpdated(false);
           }, 2000);
         }
       })
       .catch(error => {
-        setLoading(false)
+        setLoading(false);
         console.log(error);
       });
   };

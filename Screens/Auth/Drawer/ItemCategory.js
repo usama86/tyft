@@ -39,6 +39,7 @@ const ItemCategory = ({navigation}) => {
   const [category, setCategory] = React.useState(null);
   const [EditCategory, setEditCategory] = useState(null);
   const [Categories, setCategories] = React.useState([]);
+  const [addingItem,setAddingItem] = useState(null);
   const [name, setName] = React.useState({
     value: null,
     Error: false,
@@ -118,6 +119,7 @@ const ItemCategory = ({navigation}) => {
   const AddCategory = async(array)=>{
     console.log('ADDD A')
     setIndicator(true);
+    setAddingItem(true);
     let TruckId = await AsyncStorage.getItem('TruckID');
     axios
       .post(url + '/api/supplier/updateCategory', {
@@ -130,14 +132,24 @@ const ItemCategory = ({navigation}) => {
           console.log('Updated');
           setShowModal(false)
           setIndicator(false);
+          let dupData = [...Data];
+          dupData.push(name.value);
+          setData(dupData);
           setTimeout(() => {
             setShowModal(false)
+            setAddingItem(false);
+            setAddItem(false)
+            
           }, 500);
         } else {
           setIndicator(false);
+          setAddingItem(false)
+          setAddItem(false)
         }
       })
       .catch(error => {
+        setAddingItem(false)
+        setAddItem(false)
         console.log(error);
       });
     // if (val) setShowModal2(false);
@@ -170,18 +182,7 @@ const ItemCategory = ({navigation}) => {
           style={{fontWeight: 'bold', fontSize: responsiveFontSize(2)}}
           value={item}
         />
-        {/* <Text
-          style={{
-            fontSize: responsiveFontSize(1.6),
-            color: '#A6A6A6',
-            marginTop: responsiveHeight(1),
-          }}
-          value={item.description}
-        /> */}
       </View>
-      {/* <View style={styles.Right}>
-        <Text value={'$ ' + item.price} />
-      </View> */}
       <View style={styles.CrossView}>
         <Entypo
           name={'pencil'}
@@ -307,59 +308,9 @@ const ItemCategory = ({navigation}) => {
             style={{width:'100%'}}
           />
           {name.Error ? <ErrorView>{name.ErrorText}</ErrorView> : null}
-          {/* <Select
-            itemList={Categories}
-            value={SelectedValue}
-            onChange={e => setSelectedValue(e)}
-            containerStyle={{width: '100%'}}
-            style={[styles.Input, {width: '100%'}]}
-          /> */}
-          {/* <TouchableOpacity
-            onPress={() => setShowModalAddCategory(true)}
-            style={{left: responsiveWidth(7)}}>
-            <AntDesign
-              name={'pluscircle'}
-              color={'rgb(193, 32, 38)'}
-              size={responsiveFontSize(3)}
-            />
-          </TouchableOpacity> */}
         </View>
-
-        {/* <Input
-          rounded
-          placeholder="Name"
-          onChangeText={e => setName({value: e, Error: false, ErrorText: null})}
-          value={name.value}
-          style={[styles.Input, {marginTop: responsiveHeight(3), width: '90%'}]}
-        />
-        {name.Error ? <ErrorView>{name.ErrorText}</ErrorView> : null}
-        <Input
-          rounded
-          placeholder="Description"
-          onChangeText={e =>
-            setDescription({value: e, Error: false, ErrorText: null})
-          }
-          value={description.value}
-          style={[styles.Input, {marginTop: responsiveHeight(3), width: '90%'}]}
-        />
-        {description.Error ? (
-          <ErrorView>{description.ErrorText}</ErrorView>
-        ) : null}
-        <Input
-          rounded
-          placeholder="Price"
-          keyboardType={'number-pad'}
-          onChangeText={e =>
-            setPrice({value: e, Error: false, ErrorText: null})
-          }
-          value={price.value}
-          style={[styles.Input, {marginTop: responsiveHeight(3), width: '90%'}]}
-        />
-        {price.Error ? <ErrorView>{price.ErrorText}</ErrorView> : null} */}
-        {/* </ScrollView> */}
-        {/* </View> */}
         <View style={styles.TextView}>
-          <Button style={styles.buttonStyle2} onPress={AddToList}>
+          <Button loading={addingItem} style={styles.buttonStyle2} onPress={AddToList}>
             <Text
               uppercase={true}
               value={'Add to List'}

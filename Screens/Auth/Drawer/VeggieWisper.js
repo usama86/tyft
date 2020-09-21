@@ -277,7 +277,7 @@ const VeggieWisper = ({navigation, route}) => {
         </View>
         <CountButton button={TruckInfo.selectedServingCusines} />
         <View style={styles.flexView}>
-          <Text bold style={{color: 'blue'}} value={TruckInfo.truckName} />
+          <Text bold style={{color: '#212121'}} value={TruckInfo.truckName} />
         </View>
         <View style={[styles.flexView, {marginTop: 0}]}>
           <Rating

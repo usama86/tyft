@@ -40,15 +40,11 @@ const ServingCusine = ({navigation, route}) => {
       
           if (Response.data.length > 0) {
             let res = Response.data[0].cusine;
+            console.log('Cusines',res)
             setData(res);
          
           }
-          // let newArr = [{...res.Supplier[0], TruckInfo: res.TruckInfo}];
-          // setUserInfo(newArr);
-          // setTruckInfo(res.TruckInfo[0]);
           setIndicator(false);
-          // await AsyncStorage.setItem('TruckID'+'',res.TruckInfo[0]._id);
-          // await AsyncStorage.setItem('MenuID'+'',res.TruckInfo[0].MenuID);
         } else {
           setIndicator(false);
         }
