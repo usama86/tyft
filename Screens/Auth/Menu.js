@@ -23,6 +23,7 @@ const Menu = ({navigation,route}) => {
   const [isMsg, setIsMsg] = useState(false);
   const [isLoading, setisLoading] =useState(true);
   const [category,setCategory] =useState([]);
+  const [update, setUpdated] = React.useState(null);
   const [Data, setData] = useState([
     // {
     //   id: 0,
