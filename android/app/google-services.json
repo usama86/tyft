@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "374587781671-vv69j1okoim8slj58r57e8fjrjr8s5bp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tyft",
+            "certificate_hash": "d4d78d93bc027f2f9bd3ed895e8af3330092c390"
+          }
+        },
+        {
           "client_id": "374587781671-79ghv0e9ludfrmmcn9updt491rv92eol.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
