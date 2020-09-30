@@ -76,7 +76,7 @@ const SignUp = ({navigation}) => {
     }
   };
   const AddCustomer = () => {
-    console.log(languge)
+    // console.log(languge)
     if (name === null) {
       SetNameError(true);
       SetNameErrorText('Please Enter Your Name');
@@ -115,7 +115,7 @@ const SignUp = ({navigation}) => {
       !confirmPasswordError
     ) {
       setisLoading(true);
-      console.log(languge)
+      // console.log(languge)
       // const data = {
       //   email: email,
       //   password: password,
@@ -131,7 +131,7 @@ const SignUp = ({navigation}) => {
           profileName: name,
           phoneNumber: phone,
           userType: 'Customer',
-          Language: languge,
+          Language: "English",
         })
         .then(async Response => {
           console.log('Responsessss', Response.data.code);
@@ -226,7 +226,7 @@ const SignUp = ({navigation}) => {
           ) : null}
         </View>
 
-        <View style={styles.radioView}>
+        {/* <View style={styles.radioView}>
           <Radio
             selected={languge === 'English' ? true : false}
             onPress={() => {setLanguage('English');}}
@@ -239,7 +239,7 @@ const SignUp = ({navigation}) => {
             onPress={() => {setLanguage('Spanish')}}
           />
           <Text value={'Spanish'} style={{marginLeft: responsiveWidth(2)}} />
-        </View>
+        </View> */}
         {confirmPasswordErrors ? (
             <ErrorView>{'Email Address already exist'}</ErrorView>
           ) : null}

@@ -71,11 +71,15 @@ const Home = ({navigation}) => {
             await AsyncStorage.setItem('email' + '', res.data[0].email);
             await AsyncStorage.setItem('profileName' + '', res.data[0].profileName);
             await AsyncStorage.setItem('phoneNumber' + '', res.data[0].phoneNumber);     
-            navigation.navigate('Auth', {screen: 'Tabs'});
+            if(res.data[0].userType ==='Customer')
+              navigation.navigate('Auth', {screen: 'Tabs'});
+            else
+              navigation.navigate('App',{screen:RouteName.VEGGIEWISPER});  
           }
           else{
             axios
-            .post(url + '/api/users/signup', {
+            .post(url + '/api/users/signup', 
+            {
               email: result.user.email,
               password: '',
               profileName: result.user.name,
