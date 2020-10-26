@@ -5,6 +5,7 @@ import {
   View,
   ActivityIndicator,
   Platform,
+  TouchableOpacity,
 } from 'react-native';
 import {
   responsiveHeight,
@@ -37,7 +38,7 @@ const SignIn = ({navigation}) => {
     if (!password) {
       setPasswordErrorMessage('Password must not be empty');
     } else if (email && password) {
-      console.log('in login')
+      console.log('in login');
       setLoading(true);
       let credentials = {
         email: email,
@@ -48,34 +49,31 @@ const SignIn = ({navigation}) => {
         .then(async Response => {
           console.log('response of login', Response.data);
           let token = Response.data.token;
-          console.log('Token',token)
+          console.log('Token', token);
           if (token) {
             let usertoken = await decode(token);
             console.log('TOKEN', usertoken);
-            if(usertoken.userId)
+            if (usertoken.userId)
               await AsyncStorage.setItem('userID' + '', usertoken.userId);
-            else 
-              await AsyncStorage.setItem('userID' + '', ''); 
-            if(usertoken.userType)
+            else await AsyncStorage.setItem('userID' + '', '');
+            if (usertoken.userType)
               await AsyncStorage.setItem('userType' + '', usertoken.userType);
-            else 
-              await AsyncStorage.setItem('userType' + '', ''); 
-            if(usertoken.userName)
+            else await AsyncStorage.setItem('userType' + '', '');
+            if (usertoken.userName)
               await AsyncStorage.setItem('userName' + '', usertoken.userName);
-            else 
-              await AsyncStorage.setItem('userName' + '', ''); 
-            if(usertoken.email)
+            else await AsyncStorage.setItem('userName' + '', '');
+            if (usertoken.email)
               await AsyncStorage.setItem('email' + '', usertoken.email);
-            else 
-              await AsyncStorage.setItem('email' + '', '');  
-            if(usertoken.profilePhoto)
-              await AsyncStorage.setItem('profilePhoto' + '', usertoken.profilePhoto);
-            else 
-              await AsyncStorage.setItem('profilePhoto' + '', '');
-            if(usertoken.Language)
+            else await AsyncStorage.setItem('email' + '', '');
+            if (usertoken.profilePhoto)
+              await AsyncStorage.setItem(
+                'profilePhoto' + '',
+                usertoken.profilePhoto,
+              );
+            else await AsyncStorage.setItem('profilePhoto' + '', '');
+            if (usertoken.Language)
               await AsyncStorage.setItem('language' + '', usertoken.Language);
-            else  
-              await AsyncStorage.setItem('language' + '', '');
+            else await AsyncStorage.setItem('language' + '', '');
             await AsyncStorage.setItem(
               'profileName' + '',
               usertoken.profileName,
@@ -87,13 +85,12 @@ const SignIn = ({navigation}) => {
 
             await setLoading(false);
             if (usertoken.userType === 'Supplier') {
-              console.log('inn Supplier')
-              navigation.navigate('App',{screen:RouteName.VEGGIEWISPER});
+              console.log('inn Supplier');
+              navigation.navigate('App', {screen: RouteName.VEGGIEWISPER});
             } else if (usertoken.userType === 'Customer') {
-              console.log('inn Customer')
+              console.log('inn Customer');
               navigation.navigate('Auth', {screen: 'Tabs'});
             }
-
           } else {
             setPasswordErrorMessage('Your Email or Password is incorrect');
             setLoading(false);
@@ -151,25 +148,17 @@ const SignIn = ({navigation}) => {
         )}
       </View>
       <Divider />
-      <Text
-        style={styles.forgotPasswordText}
-        onPress={() => {
-          // navigation.navigate(Screens.FORGOT_PASSWORD)}
-        }}>
-        Don't remember your password?
-      </Text>
+      <TouchableOpacity style={{height:responsiveHeight(5)}} onPress={()=>navigation.navigate('Forgotpassword')} >
+        <Text
+          style={styles.forgotPasswordText}
+          onPress={() => {
+            // navigation.navigate(Screens.FORGOT_PASSWORD)}
+          }}>
+          Don't remember your password?
+          <Text style={{fontWeight: 'bold'}}>{'  Forgot password?'}</Text>
+        </Text>
+      </TouchableOpacity>
       <Divider />
-      {/* {false && (
-          <Overlay
-            isVisible
-            width="auto"
-            height="auto"
-            onBackdropPress={() => {
-              // dispatch(userActions.signInUserError(null));
-            }}>
-            <Text>{signInUserError.message}</Text>
-          </Overlay>
-        )} */}
     </View>
   );
 };

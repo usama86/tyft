@@ -13,51 +13,57 @@ import ImagePicker from '../../../Component/ImagePicker';
 import Header from '../../../Component/Header';
 import url from '../Constants/constants';
 import axios from 'axios';
+import {Snackbar} from 'react-native-paper';
 const CoverPhoto = ({navigation, route}) => {
   const [img, setImg] = React.useState(null);
   const [isLoading, setisLoading] = React.useState(false);
-  const [imageUrl,setImageUrl] = React.useState('');
+  const [imageUrl, setImageUrl] = React.useState('');
+  const [visible, setVisible] = React.useState({value: null, text: null});
+  const onDismissSnackBar = () => {
+    setVisible({value: null, text: null});
+  };
   const SendUri = val => {
     setImg(val);
-    try
-    {
-      setisLoading(true)
+    try {
+      setisLoading(true);
       var myHeaders = new Headers();
-      myHeaders.append("Content-Type", "multipart/form-data");
-      myHeaders.append("Accept", "application/json");
+      myHeaders.append('Content-Type', 'multipart/form-data');
+      myHeaders.append('Accept', 'application/json');
       // let file = await uriToBlob(val.uri)
       var formdata = new FormData();
-      formdata.append("file", {uri:val.uri, type:'image/jpeg',name:val.fileName});
-      formdata.append("upload_preset", "tyftBackend");
+      formdata.append('file', {
+        uri: val.uri,
+        type: 'image/jpeg',
+        name: val.fileName,
+      });
+      formdata.append('upload_preset', 'tyftBackend');
 
       var requestOptions = {
         method: 'POST',
         headers: myHeaders,
         body: formdata,
-        redirect: 'follow'
+        redirect: 'follow',
       };
 
-      fetch("https://api.cloudinary.com/v1_1/hmrzthc6f/image/upload", requestOptions)
+      fetch(
+        'https://api.cloudinary.com/v1_1/hmrzthc6f/image/upload',
+        requestOptions,
+      )
         .then(response => response.json())
         .then(result => {
           setImageUrl(result.url);
           // setImg(val);
           setisLoading(false);
-          
-        }
-          )
+        })
         .catch(error => {
-          console.log('error', error)
+          console.log('error', error);
           // setIsLoading(false);
         });
-        
-    }
-    catch(e)
-    {
-      console.log("error => ", e)
+    } catch (e) {
+      console.log('error => ', e);
     }
   };
-  const Navigate = async() => {
+  const Navigate = async () => {
     if (img) {
       setisLoading(true);
       let data = {
@@ -80,23 +86,26 @@ const CoverPhoto = ({navigation, route}) => {
         twitter: route.params.TwitterID,
         selectedServingCusines: route.params.ServingCusine,
         Menu: route.params.Menu,
-        categoryArray:route.params.categoryArray
+        categoryArray: route.params.categoryArray,
       };
       axios
         .post(
           url + '/api/users/signup',
-          // {
-          //   headers: {
-          //     'Content-Type': 'multipart/form-data',
-          //   },
-          // }, 
           data,
         )
         .then(async Response => {
           let Code = Response.data.code;
+          console.log('Response is here')
           if (Code === 'ABT0000') {
-            setisLoading(false);
-            navigation.navigate(RouteName.HOME);
+            setVisible({
+              value: true,
+              text:
+                'Your TYFT Vendor account has been created successfully!You will not be able to login until TYFT team review your registration.\nYou will receive a confirmation email once everything is ready to go.Your TYFT Vendor account has been created successfully!You will not be able to login until TYFT team review your registration.\nYou will receive a confirmation email once everything is ready to go.',
+            });
+            setTimeout(() => {
+              navigation.replace(RouteName.HOME);
+              setisLoading(false);
+            }, 3000);
           } else {
             setisLoading(false);
           }
@@ -104,9 +113,8 @@ const CoverPhoto = ({navigation, route}) => {
         .catch(error => {
           console.log(error);
         });
-    }
-    else{
-      Alert.alert('Please Select Cover Photo First')
+    } else {
+      Alert.alert('Please Select Cover Photo First');
     }
   };
   return (
@@ -133,6 +141,12 @@ const CoverPhoto = ({navigation, route}) => {
           style={styles.ImageContainer}
         />
       </Ui>
+      <Snackbar
+          style={{top: responsiveHeight(-70)}}
+          visible={visible.value}
+          onDismiss={onDismissSnackBar}>
+          {visible.text}
+        </Snackbar>
     </View>
   );
 };

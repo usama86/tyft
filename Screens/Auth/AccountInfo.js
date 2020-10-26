@@ -1,7 +1,7 @@
-import React, {useEffect} from 'react';
-import {View, StyleSheet, Image, Alert} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, StyleSheet, Image, ScrollView, Text} from 'react-native';
 import Input from '../../Component/Input';
-import Text from '../../Component/Text';
+import Text1 from '../../Component/Text';
 import {
   responsiveHeight,
   responsiveWidth,
@@ -17,18 +17,22 @@ import * as Route from '../../Constants/RouteName';
 import url from './Constants/constants';
 import axios from 'axios';
 import Modal from '../../Component/Modal';
-import {Avatar, Icon, ListItem} from 'react-native-elements';
+import {Avatar, Icon} from 'react-native-elements';
 import {CommonActions} from '@react-navigation/native';
 import ImagePicker from 'react-native-image-picker';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Entypo from 'react-native-vector-icons/Entypo';
+import Modal1 from 'react-native-modal';
+import {List, ListItem} from 'native-base';
 const AccountInfo = ({navigation}) => {
   const [name, SetName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [phone, setPhone] = React.useState('');
+  const [showModal, setShowModal] = useState(false);
   const [profileName, setProfileName] = React.useState('');
   const [Language, setLanguage] = React.useState('');
   const [urls, setUrl] = React.useState('');
-  const [photo,setPhoto] =React.useState('')
+  const [photo, setPhoto] = React.useState('');
   const [password, setPassword] = React.useState({
     value: null,
     errorText: null,
@@ -50,6 +54,7 @@ const AccountInfo = ({navigation}) => {
         routes: [{name: Route.HOME}],
       }),
     );
+    setShowModal(false);
     setisLogout(false);
   };
   const checkUserStatus = async () => {
@@ -61,10 +66,10 @@ const AccountInfo = ({navigation}) => {
     }
   };
   useEffect(() => {
-    navigation.addListener('focus',()=>{
+    navigation.addListener('focus', () => {
       checkUserStatus();
       getData();
-    })
+    });
   }, []);
   const SelectImage = () => {
     const options = {
@@ -117,7 +122,7 @@ const AccountInfo = ({navigation}) => {
                   if (Code === 'ABT0000') {
                     setUrl(img); //
                     // navigation.navigate(Route.SIGNIN);
-                  } 
+                  }
                 })
                 .catch(error => {
                   console.log(error);
@@ -144,7 +149,7 @@ const AccountInfo = ({navigation}) => {
     let photo = await AsyncStorage.getItem('profilePhoto');
     let language = await AsyncStorage.getItem('language');
     setPhoto(photo);
-    setLanguage(language)
+    setLanguage(language);
     SetName(name);
     setEmail(emails);
     setPhone(phones);
@@ -153,9 +158,11 @@ const AccountInfo = ({navigation}) => {
     <View style={{height: '100%', width: '100%'}}>
       {LoggedIn ? (
         <Header
-        NoIcon
-          logout
-          Logout={() => setisLogout(true)}
+          NoIcon
+          // logout
+          // Logout={() => setisLogout(true)}
+          settings
+          onSettingsPress={() => setShowModal(true)}
           navigation={navigation}
           onPress={() => navigation.goBack()}>
           {'Account'}
@@ -185,7 +192,7 @@ const AccountInfo = ({navigation}) => {
             <View style={styles.header}>
               <View style={styles.rowView}>
                 <Avatar
-                  source={img ? {uri: img.uri} : {uri:photo}}
+                  source={img ? {uri: img.uri} : {uri: photo}}
                   icon={{name: 'user', type: 'font-awesome'}}
                   showEditButton
                   rounded
@@ -194,7 +201,7 @@ const AccountInfo = ({navigation}) => {
                 />
                 {/* imageProps={{uri:truckData.truckLogo}} */}
                 <View style={{marginLeft: 20}}>
-                  <Text style={styles.whiteText} bold value={name} />
+                  <Text style={styles.whiteText1} bold value={name} />
                 </View>
               </View>
             </View>
@@ -213,12 +220,12 @@ const AccountInfo = ({navigation}) => {
                 marginLeft: responsiveWidth(-21),
                 marginTop: responsiveHeight(3),
               }}>
-              <Text
+              <Text1
                 value={'Personal Details'}
                 style={{color: '#B40E33'}}
                 bold
               />
-              <Text
+              <Text1
                 value={email}
                 style={{
                   color: 'black',
@@ -226,7 +233,7 @@ const AccountInfo = ({navigation}) => {
                   marginTop: responsiveHeight(2),
                 }}
               />
-              <Text
+              <Text1
                 value={phone}
                 style={{
                   color: 'black',
@@ -234,7 +241,7 @@ const AccountInfo = ({navigation}) => {
                   marginTop: responsiveHeight(1),
                 }}
               />
-              <Text
+              <Text1
                 value={Language}
                 style={{
                   color: 'black',
@@ -252,7 +259,7 @@ const AccountInfo = ({navigation}) => {
                 size={responsiveFontSize(10)}
               />
             </View>
-            <Text
+            <Text1
               style={{
                 textAlign: 'center',
                 fontWeight: 'bold',
@@ -273,7 +280,7 @@ const AccountInfo = ({navigation}) => {
                   marginTop: responsiveHeight(4),
                 }}
                 rounded>
-                <Text
+                <Text1
                   uppercase={false}
                   value={'Yes'}
                   style={{color: '#fff', fontWeight: 'bold'}}
@@ -291,7 +298,7 @@ const AccountInfo = ({navigation}) => {
                   marginTop: responsiveHeight(4),
                 }}
                 rounded>
-                <Text
+                <Text1
                   uppercase={false}
                   value={'No'}
                   style={{color: '#fff', fontWeight: 'bold'}}
@@ -299,6 +306,118 @@ const AccountInfo = ({navigation}) => {
               </Button>
             </View>
           </Modal>
+          <Modal1
+            onBackButtonPress={() => setShowModal(false)}
+            onSwipeComplete={() => setShowModal(false)}
+            swipeDirection={'down'}
+            isVisible={showModal}
+            backdropColor="rgba(0,0,0,0.8)"
+            animationIn="slideInUp"
+            animationOut="slideInDown"
+            animationInTiming={200}
+            animationOutTiming={200}
+            backdropTransitionInTiming={200}
+            backdropTransitionOutTiming={200}>
+            <View style={[styles.ModalConatiner]}>
+              <View style={styles.ClosingBar} />
+              <ScrollView style={{marginTop: responsiveHeight(2)}}>
+                <List>
+                  <ListItem
+                    style={{justifyContent: 'center', alignItems: 'center'}}
+                    onPress={() => setisLogout(true)}>
+                    {/* <AntDesign
+                  name={'edit'}
+                  color={'grey'}
+                  size={responsiveFontSize(2.5)}
+                /> */}
+                    <Text
+                      style={{
+                        color: 'grey',
+                        fontWeight: 'bold',
+                        fontSize: responsiveFontSize(1.2),
+                      }}>
+                      {'Account Options'}
+                    </Text>
+                  </ListItem>
+                  <ListItem
+                    style={{justifyContent: 'center', alignItems: 'center'}}
+                    onPress={() => {
+                      setShowModal(false);
+                      navigation.navigate('ChangePassword');
+                    }}>
+                    {/* <AntDesign
+                  name={'edit'}
+                  color={'grey'}
+                  size={responsiveFontSize(2.5)}
+                /> */}
+                    <Text
+                      style={{
+                        color: 'grey',
+                        fontWeight: 'bold',
+                      }}>
+                      {'Change Password'}
+                    </Text>
+                  </ListItem>
+                  <ListItem
+                    style={{justifyContent: 'center', alignItems: 'center'}}
+                    onPress={() => {
+                      setShowModal(false);
+                      navigation.navigate('Account', {
+                        name: name,
+                        email: email,
+                        phone: phone,
+                        Language: Language,
+                      });
+                    }}>
+                    {/* <AntDesign
+                  name={'edit'}
+                  color={'grey'}
+                  size={responsiveFontSize(2.5)}
+                /> */}
+                    <Text
+                      style={{
+                        color: 'grey',
+                        fontWeight: 'bold',
+                      }}>
+                      {'Update Profile'}
+                    </Text>
+                  </ListItem>
+                  <ListItem
+                    onPress={() => setisLogout(true)}
+                    style={{justifyContent: 'center', alignItems: 'center'}}>
+                    {/* <Entypo
+                  name={'trash'}
+                  color={'red'}
+                  size={responsiveFontSize(2.5)}
+                /> */}
+                    <Text
+                      style={{
+                        color: 'red',
+                        fontWeight: 'bold',
+                      }}>
+                      {'Log Out'}
+                    </Text>
+                  </ListItem>
+                  <ListItem
+                    style={{justifyContent: 'center', alignItems: 'center'}}
+                    onPress={() => setShowModal(false)}>
+                    {/* <Entypo
+                  name={'cross'}
+                  color={'grey'}
+                  size={responsiveFontSize(2.5)}
+                /> */}
+                    <Text
+                      style={{
+                        color: 'grey',
+                        fontWeight: 'bold',
+                      }}>
+                      {'Cancel'}
+                    </Text>
+                  </ListItem>
+                </List>
+              </ScrollView>
+            </View>
+          </Modal1>
         </Ui>
       ) : (
         <View
@@ -426,6 +545,29 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  ModalConatiner: {
+    top: responsiveHeight(35),
+    width: responsiveWidth(100),
+    height: responsiveHeight(50),
+    backgroundColor: '#fff',
+    alignSelf: 'center',
+    borderRadius: 8,
+  },
+  ClosingBar: {
+    height: responsiveHeight(1),
+    width: responsiveWidth(15),
+    borderRadius: 5,
+    backgroundColor: 'grey',
+    alignSelf: 'center',
+    marginTop: responsiveHeight(1.5),
+  },
+  ImageContainer: {
+    width: responsiveWidth(80),
+    height: responsiveHeight(50),
+    backgroundColor: '#fff',
+    alignSelf: 'center',
+    borderRadius: 8,
   },
 });
 export default AccountInfo;

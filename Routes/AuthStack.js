@@ -1,5 +1,5 @@
 import React from 'react';
-import {Alert} from 'react-native'
+import {Alert} from 'react-native';
 import Text from './../Component/Text';
 import {TouchableOpacity} from 'react-native';
 import HomeScreen from './../Screens/Auth/Home';
@@ -31,6 +31,8 @@ import {responsiveWidth} from 'react-native-responsive-dimensions';
 import Account from './../Screens/Auth/Account';
 import AccountInfo from './../Screens/Auth/AccountInfo';
 import ServingCusineType2 from '../Screens/Auth/ServingCusineType2';
+import Forgotpassword from '../Screens/Auth/ForgotPassword';
+import ChangePassword from '../Screens/Auth/Changepassword';
 const Tabs = createBottomTabNavigator();
 const StackAuth = createStackNavigator();
 const StackNearMe = createStackNavigator();
@@ -56,6 +58,10 @@ const FunOfAuthStack = ({navigation, route}) => {
         name={RouteName.SEARCHTRUCK}
         options={{title: 'Search Truck'}}
         component={SearchTruck}
+      />
+            <StackNearMe.Screen
+        name={RouteName.CUSTOMERSUPPLIER}
+        component={CustomerSupplier}
       />
       <StackSearch.Screen
         name={RouteName.SERVINGCUSINETYPE}
@@ -133,6 +139,7 @@ const FunOfAuthStack = ({navigation, route}) => {
     <StackFavourite.Navigator screenOptions={{headerShown: false}}>
       <StackFavourite.Screen name={'AccountInfo'} component={AccountInfo} />
       <StackFavourite.Screen name={'Account'} component={Account} />
+      <StackFavourite.Screen name={'ChangePassword'} component={ChangePassword} />
     </StackFavourite.Navigator>
   );
 
@@ -204,6 +211,11 @@ const FunOfAuthStack = ({navigation, route}) => {
         options={{headerShown: false}}
       />
       <StackAuth.Screen name={RouteName.SIGNIN} component={SignIn} />
+      <StackAuth.Screen
+        name={'Forgotpassword'}
+        options={{headerTitle: 'Back'}}
+        component={Forgotpassword}
+      />
       <StackAuth.Screen
         name={RouteName.SIGNUP}
         component={SignUp}

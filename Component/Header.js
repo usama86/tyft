@@ -6,6 +6,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import AsyncStorage from '@react-native-community/async-storage';
 import Ionicon from 'react-native-vector-icons/Ionicons';
+import Feather from 'react-native-vector-icons/Feather'
 
 import {
   responsiveHeight,
@@ -26,6 +27,8 @@ const Header = ({
   nothing,
   Clear,
   onClearPress,
+  settings,
+  onSettingsPress,
 }) => {
   return (
     <View>
@@ -59,8 +62,20 @@ const Header = ({
           />
         </TouchableOpacity>
       ) : null}
+
+      {settings ? (
+        <TouchableOpacity onPress={onSettingsPress} style={styles.switch}>
+          <Feather
+            name={'settings'}
+            size={responsiveFontSize(3.2)}
+            color={'black'}
+          />
+        </TouchableOpacity>
+      ) : null}
       {Clear ? (
-        <TouchableOpacity onPress={onClearPress} style={[styles.switch,{marginTop:responsiveHeight(0.5)}]}>
+        <TouchableOpacity
+          onPress={onClearPress}
+          style={[styles.switch, {marginTop: responsiveHeight(0.5)}]}>
           <Text style={{fontSize: responsiveFontSize(2), fontWeight: 'bold'}}>
             {'Clear'}
           </Text>

@@ -129,6 +129,7 @@ const CustomDrawer = ({navigation, route}) => {
               onPress={SelectImage}
               icon={{name: 'user', type: 'font-awesome'}}
               showEditButton
+              onEditPress={SelectImage}
               source={urls.uri ? {uri: urls.uri} : {uri: urls}}
               rounded
               size="large"

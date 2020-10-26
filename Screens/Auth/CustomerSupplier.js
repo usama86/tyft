@@ -37,6 +37,14 @@ const CustomerSupplier = ({navigation, route}) => {
     console.log('Params in=>', route.params.TruckInfo.socialMedia);
     getRating();
     getFavorite();
+    navigation.dangerouslyGetParent().setOptions({
+      tabBarVisible: false,
+    });
+    return () => {
+      navigation.dangerouslyGetParent().setOptions({
+        tabBarVisible: true,
+      });
+    };
   }, []);
   const getRating = () => {
     console.log('in get rating');
@@ -93,7 +101,7 @@ const CustomerSupplier = ({navigation, route}) => {
         <ImageBackground
           style={styles.image}
           source={{uri: route.params.TruckInfo.coverPhoto}}>
-          <Header NoIcon onPress={() => navigation.goBack()}>
+          <Header  onPress={() => navigation.goBack()}>
             {route.params.TruckInfo.truckName}
           </Header>
         </ImageBackground>
@@ -127,7 +135,7 @@ const CustomerSupplier = ({navigation, route}) => {
       <View style={styles.flexView1}>
         <Text
           bold
-          style={{color: 'blue'}}
+          style={{color: '#212121'}}
           value={route.params.TruckInfo.truckName}
         />
 
