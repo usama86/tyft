@@ -14,6 +14,7 @@ import Header from '../../../Component/Header';
 import url from '../Constants/constants';
 import axios from 'axios';
 import {Snackbar} from 'react-native-paper';
+import ImageResizer from 'react-native-image-resizer';
 const CoverPhoto = ({navigation, route}) => {
   const [img, setImg] = React.useState(null);
   const [isLoading, setisLoading] = React.useState(false);
@@ -26,39 +27,43 @@ const CoverPhoto = ({navigation, route}) => {
     setImg(val);
     try {
       setisLoading(true);
-      var myHeaders = new Headers();
-      myHeaders.append('Content-Type', 'multipart/form-data');
-      myHeaders.append('Accept', 'application/json');
-      // let file = await uriToBlob(val.uri)
-      var formdata = new FormData();
-      formdata.append('file', {
-        uri: val.uri,
-        type: 'image/jpeg',
-        name: val.fileName,
-      });
-      formdata.append('upload_preset', 'tyftBackend');
-
-      var requestOptions = {
-        method: 'POST',
-        headers: myHeaders,
-        body: formdata,
-        redirect: 'follow',
-      };
-
-      fetch(
-        'https://api.cloudinary.com/v1_1/hmrzthc6f/image/upload',
-        requestOptions,
-      )
-        .then(response => response.json())
-        .then(result => {
-          setImageUrl(result.url);
-          // setImg(val);
-          setisLoading(false);
-        })
-        .catch(error => {
-          console.log('error', error);
-          // setIsLoading(false);
+      ImageResizer.createResizedImage(val.uri, val.height, val.width, 'JPEG', 100)
+      .then(async(responses) => {
+        let getResponse = await responses;
+        var myHeaders = new Headers();
+        myHeaders.append('Content-Type', 'multipart/form-data');
+        myHeaders.append('Accept', 'application/json');
+        // let file = await uriToBlob(val.uri)
+        var formdata = new FormData();
+        formdata.append('file', {
+          uri: getResponse.uri,
+          type: 'image/jpeg',
+          name: val.fileName,
         });
+        formdata.append('upload_preset', 'tyftBackend');
+
+        var requestOptions = {
+          method: 'POST',
+          headers: myHeaders,
+          body: formdata,
+          redirect: 'follow',
+        };
+
+        fetch(
+          'https://api.cloudinary.com/v1_1/hmrzthc6f/image/upload',
+          requestOptions,
+        )
+          .then(response => response.json())
+          .then(result => {
+            setImageUrl(result.url);
+            // setImg(val);
+            setisLoading(false);
+          })
+          .catch(error => {
+            console.log('error', error);
+            // setIsLoading(false);
+          });
+      })  
     } catch (e) {
       console.log('error => ', e);
     }

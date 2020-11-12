@@ -29,7 +29,9 @@ import url from '../Constants/constants';
 import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
 import Modal from '../../../Component/Modal';
+let count=0;
 const FindFoodTruck = ({navigation, route}) => {
+ 
   const [indicator, setIndicator] = useState(true);
   const [CusineName, setCusinename] = useState([]);
   const [Datas, setDatas] = useState([]);
@@ -37,10 +39,10 @@ const FindFoodTruck = ({navigation, route}) => {
   const [loading, setLoading] = React.useState(null);
   const [update, setUpdated] = React.useState(null);
   useEffect(() => {
-    navigation.addListener('focus', () => {
+    // navigation.addListener('focus', () => {
       getCusine();
       getAllTrucks();
-    });
+    // });
   }, []);
 
   const [Data, setData] = useState([]);
@@ -61,7 +63,7 @@ const FindFoodTruck = ({navigation, route}) => {
   };
   const getCusine = async () => {
     let TruckId = await AsyncStorage.getItem('TruckID');
-
+    count=0;
     axios
       .get(url + '/api/servingcusine/getcusines')
       .then(async Response => {
@@ -82,7 +84,10 @@ const FindFoodTruck = ({navigation, route}) => {
                       AllCusines.map(b => {
                         if (a.cusineName === b.cusineName && a.checked) {
                           b.checked = true;
+                          count=count + 1;
+                          console.log(count);
                         }
+                        
                       });
                       setData(AllCusines);
                     });
@@ -99,7 +104,8 @@ const FindFoodTruck = ({navigation, route}) => {
                 setIndicator(false);
               });
 
-            console.log('All Cusines after update', AllCusines);
+            // console.log('All Cusines after update', AllCusines);
+            console.log('count is',count);
             setData(AllCusines);
           }
         }
@@ -135,11 +141,33 @@ const FindFoodTruck = ({navigation, route}) => {
   };
 
   const Checked = (item, index) => {
-    let newArr = [...Data];
-    //  let dupSelected = [...selectedItems];
-    newArr[index].checked = !newArr[index].checked;
-    setData(newArr);
-    // if (newArr[index].checked) {
+    console.log(count);
+    if(count<=5)
+    {  
+
+      if (count === 5) {
+				// count--;
+				let newArr = [ ...Data ];
+				if (newArr[index].checked === true) {
+					newArr[index].checked = false;
+					count--;
+					setData(newArr);
+				}
+
+				// console.log('heheh',count)
+      }
+      else{
+
+        let newArr = [ ...Data ];
+				newArr[index].checked = !newArr[index].checked;
+				if (newArr[index].checked) {
+					console.log('hi');
+					count++;
+				} else count--;
+				setData(newArr);
+    }
+  }
+      // if (newArr[index].checked) {
     //   dupSelected.push(newArr[index].cusineName);
     // } else {
     //   dupSelected.splice(index, 1);

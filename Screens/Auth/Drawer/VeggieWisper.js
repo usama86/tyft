@@ -263,7 +263,7 @@ const VeggieWisper = ({navigation, route}) => {
           resizeMode={'contain'}
             style={styles.image}
             source={{uri: urls? urls.uri : TruckInfo.coverPhoto}}>
-            <Header isHome onPress={() => navigation.openDrawer()}>
+            <Header isHome settings onPress={() => navigation.openDrawer()}>
               {'Home'}
             </Header>
             <Entypo

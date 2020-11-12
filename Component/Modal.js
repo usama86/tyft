@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import Entypo from 'react-native-vector-icons/Entypo';
-import {View, SafeAreaView, StyleSheet} from 'react-native';
+import {View, SafeAreaView, StyleSheet,ScrollView} from 'react-native';
 import {
   responsiveWidth,
   responsiveHeight,
@@ -18,7 +18,9 @@ const Modals = ({ModalContainer, showModal, children}) => {
       animationOutTiming={600}
       backdropTransitionInTiming={600}
       backdropTransitionOutTiming={600}>
-      <View style={[Styles.container, ModalContainer]}>{children}</View>
+      <ScrollView>
+        <View style={[Styles.container, ModalContainer]}>{children}</View>
+      </ScrollView>
     </Modal>
   );
 };
@@ -28,7 +30,7 @@ const Styles = StyleSheet.create({
     width: '90%',
     backgroundColor: '#fff',
     alignSelf:'center',
-    borderRadius:8
+    borderRadius:8,
   },
 });
 export default Modals;
