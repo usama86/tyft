@@ -28,6 +28,8 @@ export const CUSTOMERREVIEWD = 'CustomerReviewD';
 export const ITEMCATEGORYD = 'ItemCategoryD';
 export const PROFILED = 'ProfileD';
 
+export const SUPPLIERPROFILE = 'SUPPLIERPROFILE';
+
 
 
 

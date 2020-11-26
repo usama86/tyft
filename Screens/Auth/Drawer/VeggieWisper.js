@@ -173,6 +173,24 @@ const VeggieWisper = ({navigation, route}) => {
         console.log(error);
       });
   };
+  const getFacebookVal = () =>{
+    if(TruckInfo.socialMedia.facebook.includes('facebook.com'))
+      return TruckInfo.socialMedia.facebook;
+    else
+      return String("https://www.facebook.com/" + TruckInfo.socialMedia.facebook +'/');; 
+  }
+  const getInstaVal = () =>{
+    if(TruckInfo.socialMedia.instagram.includes('instagram.com'))
+      return TruckInfo.socialMedia.instagram;
+    else
+      return String("https://www.instagram.com/" + TruckInfo.socialMedia.instagram +'/');; 
+  }
+  const getTwitterVal = () =>{
+    if(TruckInfo.socialMedia.twitter.includes('twitter.com'))
+      return TruckInfo.socialMedia.twitter;
+    else
+      return String("https://twitter.com/" + TruckInfo.socialMedia.twitter +'/');; 
+  }
   const SelectImage = () => {
     const options = {
       title: 'Select or Capture Your Image',
@@ -263,7 +281,7 @@ const VeggieWisper = ({navigation, route}) => {
           resizeMode={'contain'}
             style={styles.image}
             source={{uri: urls? urls.uri : TruckInfo.coverPhoto}}>
-            <Header isHome settings onPress={() => navigation.openDrawer()}>
+            <Header isHome settings onSettingsPress={()=>navigation.navigate(RouteName.SUPPLIERPROFILE)} onPress={() => navigation.openDrawer()}>
               {'Home'}
             </Header>
             <Entypo
@@ -383,7 +401,7 @@ const VeggieWisper = ({navigation, route}) => {
           {TruckInfo.socialMedia && TruckInfo.socialMedia.twitter ? (
             <TouchableOpacity
               style={{width: responsiveWidth(10), height: responsiveHeight(5)}}
-              onPress={() => Linking.openURL(TruckInfo.socialMedia.twitter)}>
+              onPress={() => Linking.openURL(getTwitterVal())}>
               <Image
                 style={{width: '100%', height: '100%'}}
                 resizeMode={'contain'}
@@ -394,7 +412,7 @@ const VeggieWisper = ({navigation, route}) => {
           {TruckInfo.socialMedia && TruckInfo.socialMedia.instagram ? (
             <TouchableOpacity
               style={{width: responsiveWidth(10), height: responsiveHeight(5)}}
-              onPress={() => Linking.openURL(TruckInfo.socialMedia.instagram)}>
+              onPress={() => Linking.openURL(getInstaVal())}>
               <Image
                 style={{width: '100%', height: '100%'}}
                 resizeMode={'contain'}
@@ -405,7 +423,7 @@ const VeggieWisper = ({navigation, route}) => {
           {TruckInfo.socialMedia && TruckInfo.socialMedia.facebook ? (
             <TouchableOpacity
               style={{width: responsiveWidth(10), height: responsiveHeight(5)}}
-              onPress={() => Linking.openURL(TruckInfo.socialMedia.facebook)}>
+              onPress={() => Linking.openURL(getFacebookVal())}>
               <Image
                 style={{width: '100%', height: '100%'}}
                 resizeMode={'contain'}

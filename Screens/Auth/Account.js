@@ -18,7 +18,8 @@ import url from './Constants/constants';
 import axios from 'axios';
 import Modal from '../../Component/Modal';
 import {CommonActions} from '@react-navigation/native';
-
+import {Avatar} from 'react-native-elements';
+import ImagePicker from 'react-native-image-picker';
 const Account = ({navigation, route}) => {
   const [name, SetName] = React.useState({value: null, errorText: null});
   const [email, setEmail] = React.useState({value: null, errorText: null});
@@ -36,6 +37,8 @@ const Account = ({navigation, route}) => {
   const [isLoading, setisLoading] = React.useState(false);
   const [update, setUpdated] = React.useState(null);
   const [islogout, setisLogout] = React.useState(null);
+  const [img, setImage] = React.useState(null);
+  const [photo, setPhoto] = React.useState('');
   const Logout = async () => {
     await AsyncStorage.clear();
     navigation.dispatch(
@@ -48,6 +51,8 @@ const Account = ({navigation, route}) => {
   };
   const checkUserStatus = async () => {
     let userType = await AsyncStorage.getItem('userType');
+    let photo = await AsyncStorage.getItem('profilePhoto');
+    setPhoto(photo);
     if (userType !== null) {
       setLoggedin(true);
       SetName({value: route.params.name, errorText: null});
@@ -57,6 +62,75 @@ const Account = ({navigation, route}) => {
     } else {
       setLoggedin(false);
     }
+  };
+  const SelectImage = () => {
+    const options = {
+      title: 'Select or Capture Your Image',
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+    ImagePicker.showImagePicker(options, response => {
+      if (response.didCancel) {
+      } else if (response.error) {
+      } else {
+        setImage(response);
+        const img = response;
+        // TruckID: route.params.ID,
+        try {
+          // setIsLoading(true);
+          var myHeaders = new Headers();
+          myHeaders.append('Content-Type', 'multipart/form-data');
+          myHeaders.append('Accept', 'application/json');
+          // let file = await uriToBlob(val.uri)
+          var formdata = new FormData();
+          formdata.append('file', {
+            uri: img.uri,
+            type: 'image/jpeg',
+            name: img.fileName,
+          });
+          formdata.append('upload_preset', 'tyftBackend');
+          var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: formdata,
+            redirect: 'follow',
+          };
+          fetch(
+            'https://api.cloudinary.com/v1_1/hmrzthc6f/image/upload',
+            requestOptions,
+          )
+            .then(response => response.json())
+            .then(async result => {
+              let userId = await AsyncStorage.getItem('userID');
+              axios
+                .post(url + '/api/users/updateprofileimage', {
+                  _id: userId,
+                  imgUrl: result.url,
+                })
+                .then(async Response => {
+                  let Code = Response.data.code;
+                  if (Code === 'ABT0000') {
+                    setUrl(img); //
+                    // navigation.navigate(Route.SIGNIN);
+                  }
+                })
+                .catch(error => {
+                  console.log(error);
+                });
+              // setImageUrl(result.url); updatetruckimage
+              // setIsLoading(false);
+            })
+            .catch(error => {
+              console.log('error', error);
+              // setIsLoading(false);
+            });
+        } catch (e) {
+          console.log('error => ', e);
+        }
+      }
+    });
   };
   const updateUser = async () => {
     if (!name.value) {
@@ -71,19 +145,20 @@ const Account = ({navigation, route}) => {
     if (!phone.value) {
       setPhone({value: null, errorText: 'Please Enter Phone Number'});
     }
-    if (password.value !== confirmPassword.value) {
-      setConfirmPassword({
-        value: confirmPassword.value,
-        errorText: 'Confirm Password Does not matched with current Password',
-      });
-    } else if (name.value && email.value && password.value && phone.value) {
+    // if (password.value !== confirmPassword.value) {
+    //   setConfirmPassword({
+    //     value: confirmPassword.value,
+    //     errorText: 'Confirm Password Does not matched with current Password',
+    //   });
+    // } 
+    else if (name.value && email.value  && phone.value) {
       await setisLoading(true);
       let userID = await AsyncStorage.getItem('userID');
       axios
         .post(url + '/api/users/updateuser', {
           _id: userID,
           email: email.value,
-          password: password.value,
+          // password: password.value,
           profileName: name.value,
           phoneNumber: phone.value,
           userType: 'Customer',
@@ -155,12 +230,27 @@ const Account = ({navigation, route}) => {
       {true ? (
         <Ui
           onPressButton={updateUser}
-          isLoading={isLoading}
-          TextValue={'Your Customer Account'}
+          isLoading={isLoading}         
           ButtonText={'Done'}
+          TextShow={false}
           TextSpace={styles.TextSpace}
           TextViewStyle={styles.TextViewStyle}>
           <View style={styles.InputMainView}>
+          <View style={styles.rowView}>
+                <Avatar
+                  source={img ? {uri: img.uri} : {uri: photo}}
+                  // style={{marginLeft:2}}
+                  icon={{name: 'user', type: 'font-awesome'}}
+                  showEditButton
+                  rounded
+                  onPress={SelectImage}
+                  size={responsiveFontSize(13)}
+                />
+                {/* imageProps={{uri:truckData.truckLogo}} */}
+                {/* <View style={{marginLeft: 20}}>
+                  <Text style={styles.whiteText1} bold value={name} />
+                </View> */}
+        </View>
             <Input
               rounded
               placeholder="Name"
@@ -187,7 +277,7 @@ const Account = ({navigation, route}) => {
               errorText={phone.errorText ? phone.errorText : null}
               style={styles.Input}
             />
-            <Input
+            {/* <Input
               secureTextEntry={true}
               rounded
               placeholder="Password"
@@ -208,10 +298,10 @@ const Account = ({navigation, route}) => {
               }
               placeholder="Re-enter Password"
               style={styles.Input}
-            />
+            /> */}
           </View>
 
-          <View style={styles.radioView}>
+          {/* <View style={styles.radioView}>
             <Radio
               selected={Language === 'English' ? true : false}
               onPress={e => {
@@ -228,7 +318,7 @@ const Account = ({navigation, route}) => {
               style={{marginLeft: responsiveWidth(8)}}
             />
             <Text value={'Spanish'} style={{marginLeft: responsiveWidth(2)}} />
-          </View>
+          </View> */}
           <Modal ModalContainer={styles.modalView} showModal={update}>
             <View style={styles.IconView}>
               <Image
@@ -298,7 +388,12 @@ const styles = StyleSheet.create({
     // width: responsiveWidth(60)
   },
   Input: {
-    marginTop: responsiveHeight(3),
+    marginTop: responsiveHeight(5),
+  },
+  rowView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft:responsiveWidth(24)
   },
   radioView: {
     marginLeft: responsiveWidth(15),

@@ -21,6 +21,7 @@ import {
 } from 'react-native-responsive-dimensions';
 import {showLocation} from 'react-native-map-link';
 import moment from 'moment';
+import { getDistance } from 'geolib';
 const Maps = ({MapContainerStyle, Trucks, navigation}) => {
   const [mapReady, setMapReady] = React.useState(true);
   const [Lat, setLat] = React.useState(0.0);
@@ -130,6 +131,22 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
 
     // return currentTime.toString();
   };
+
+  const calculateDistance=(markerLat, markerLon) =>{
+
+    let distance =  getDistance(
+        {latitude: Lat, longitude: Long},
+        {latitude: markerLat, longitude: markerLon}
+      );
+    if(distance && distance<=16093.4)  
+      return true
+    else 
+      return false
+    // return getDistance(
+    //   {latitude: origLat, longitude: origLon},
+    //   {latitude: markerLat, longitude: markerLon}
+    // );
+  }
   return (
     <View style={[styles.mapcon, MapContainerStyle]}>
       <MapView
@@ -150,7 +167,17 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
           Trucks.map((item, index) => {
             if (item.latitude && item.longitude) {
               return (
-                <Marker
+                <React.Fragment> 
+              <MapView.Circle
+                // key = { (parseFloat(item.latitude) + parseFloat(item.longitude)).toString() }
+                center = { {latitude:parseFloat(Lat),longitude:parseFloat(Long)} }
+                radius = { 16093.4 }
+                strokeWidth = { 1 }
+                strokeColor = { '#1a66ff' }
+                fillColor = { 'rgba(230,238,255,0.5)' }
+                // onRegionChangeComplete = { this.onRegionChangeComplete.bind(this) }
+                />
+               {calculateDistance(parseFloat(item.latitude),parseFloat(item.longitude)) ?   <Marker
                   coordinate={{
                     latitude: parseFloat(item.latitude),
                     longitude: parseFloat(item.longitude),
@@ -200,7 +227,8 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
                       </View>
                     </View>
                   </Callout>
-                </Marker>
+                </Marker>:null}
+                </React.Fragment>
               );
             }
           })

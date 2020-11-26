@@ -152,7 +152,7 @@ const SignIn = ({navigation}) => {
         <Text
           style={styles.forgotPasswordText}
           onPress={() => {
-            // navigation.navigate(Screens.FORGOT_PASSWORD)}
+            navigation.navigate('Forgotpassword')
           }}>
           Don't remember your password?
           <Text style={{fontWeight: 'bold'}}>{'  Forgot password?'}</Text>

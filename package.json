@@ -23,6 +23,7 @@
     "add": "^2.0.6",
     "axios": "^0.19.2",
     "fuzzy-search": "^3.2.1",
+    "geolib": "^3.3.1",
     "jwt-decode": "^2.2.0",
     "moment": "^2.25.3",
     "native-base": "^2.13.12",

@@ -14,11 +14,12 @@ import Schedule from './../Screens/Auth/Drawer/Schedule';
 import CustomerReview from './../Screens/Auth/Drawer/CustomerReview';
 import ItemCategory from './../Screens/Auth/Drawer/ItemCategory';
 import Profile from './../Screens/Auth/Drawer/Profile';
+import SuppProfile from './../Screens/Auth/Drawer/SupplierProfile';
 import Animated from 'react-native-reanimated';
 import SocialMediaDrawer from '../Screens/Auth/Drawer/SocailMediaDrawer';
 import ServingCusineDrawer from '../Screens/Auth/Drawer/ServingCusineTypeDrawer';
 import ContactUs from '../Screens/Auth/Drawer/Contactus';
-
+const StackAuth = createStackNavigator();
 const AppStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 console.disableYellowBox = true;
@@ -74,6 +75,11 @@ const AppDrawer = () => {
         <Drawer.Screen
           name={RouteName.ITEMCATEGORYD}
           component={ItemCategory}
+        />
+        <StackAuth.Screen
+        name={RouteName.SUPPLIERPROFILE}
+        component={SuppProfile}
+        // options={{headerShown: false}}
         />
         <Drawer.Screen name={RouteName.PROFILED} component={Profile} />
         <Drawer.Screen name={'SocialMediaDrawer'} component={SocialMediaDrawer} />

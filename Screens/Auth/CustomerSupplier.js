@@ -95,6 +95,24 @@ const CustomerSupplier = ({navigation, route}) => {
         console.log(error);
       });
   };
+  const getFacebookVal = () =>{
+    if(route.params.TruckInfo.socialMedia.facebook.includes('facebook.com'))
+      return route.params.TruckInfo.socialMedia.facebook;
+    else
+      return String("https://www.facebook.com/" + route.params.TruckInfo.socialMedia.facebook +'/');; 
+  }
+  const getInstaVal = () =>{
+    if(route.params.TruckInfo.socialMedia.instagram.includes('instagram.com'))
+      return route.params.TruckInfo.socialMedia.instagram;
+    else
+      return String("https://www.instagram.com/" + route.params.TruckInfo.socialMedia.instagram +'/');; 
+  }
+  const getTwitterVal = () =>{
+    if(route.params.TruckInfo.socialMedia.twitter.includes('twitter.com'))
+      return route.params.TruckInfo.socialMedia.twitter;
+    else
+      return String("https://twitter.com/" + route.params.TruckInfo.socialMedia.twitter +'/');; 
+  };
   return (
     <Container>
       <View style={styles.HeaderContainer}>
@@ -291,7 +309,7 @@ const CustomerSupplier = ({navigation, route}) => {
           <TouchableOpacity
           style={{width:responsiveWidth(10),height:responsiveHeight(5)}}
             onPress={() =>
-              Linking.openURL(route.params.TruckInfo.socialMedia.twitter)
+              Linking.openURL(getTwitterVal())
             }>
             <Image
               style={{width: '100%', height: '100%'}}
@@ -312,7 +330,7 @@ const CustomerSupplier = ({navigation, route}) => {
                    <TouchableOpacity
                    style={{width:responsiveWidth(10),height:responsiveHeight(5)}}
                    onPress={() =>
-                     Linking.openURL(route.params.TruckInfo.socialMedia.instagram)
+                     Linking.openURL(getInstaVal())
                    }>
                    <Image
                      style={{width: '100%', height: '100%'}}
@@ -333,7 +351,7 @@ const CustomerSupplier = ({navigation, route}) => {
                       <TouchableOpacity
                       style={{width:responsiveWidth(10),height:responsiveHeight(5)}}
                       onPress={() =>
-                        Linking.openURL(route.params.TruckInfo.socialMedia.facebook)
+                        Linking.openURL(getFacebookVal())
                       }>
                       <Image
                         style={{width: '100%', height: '100%'}}

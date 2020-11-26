@@ -142,15 +142,16 @@ const AccountInfo = ({navigation}) => {
   };
   const getData = async () => {
     let id = await AsyncStorage.getItem('userID');
-    let name = await AsyncStorage.getItem('userName');
+    let names = await AsyncStorage.getItem('profileName');
     let emails = await AsyncStorage.getItem('email');
     //  await AsyncStorage.setItem('profileName' + '', usertoken.profileName);
     let phones = await AsyncStorage.getItem('phoneNumber');
     let photo = await AsyncStorage.getItem('profilePhoto');
     let language = await AsyncStorage.getItem('language');
+    console.log(names);
     setPhoto(photo);
     setLanguage(language);
-    SetName(name);
+    SetName(names);
     setEmail(emails);
     setPhone(phones);
   };
@@ -174,18 +175,19 @@ const AccountInfo = ({navigation}) => {
       )}
       {LoggedIn ? (
         <Ui
-          onPressButton={() => {
-            navigation.navigate('Account', {
-              name: name,
-              email: email,
-              phone: phone,
-              Language: Language,
-            });
-          }}
+          // onPressButton={() => {
+          //   navigation.navigate('Account', {
+          //     name: name,
+          //     email: email,
+          //     phone: phone,
+          //     Language: Language,
+          //   });
+          // }}
           isLoading={isLoading}
           ContainerStyle={styles.ContainerStyle}
           TextShow
-          ButtonText={'Edit Profile'}
+          noShowButton
+          // ButtonText={'Edit Profile'}
           TextSpace={styles.TextSpace}
           TextViewStyle={styles.TextViewStyle}>
           <View style={styles.InputMainView}>
@@ -193,15 +195,15 @@ const AccountInfo = ({navigation}) => {
               <View style={styles.rowView}>
                 <Avatar
                   source={img ? {uri: img.uri} : {uri: photo}}
-                  icon={{name: 'user', type: 'font-awesome'}}
-                  showEditButton
+                  // icon={{name: 'user', type: 'font-awesome'}}
+                  // showEditButton
                   rounded
-                  onPress={SelectImage}
+                  // onPress={SelectImage}
                   size={responsiveFontSize(13)}
                 />
                 {/* imageProps={{uri:truckData.truckLogo}} */}
                 <View style={{marginLeft: 20}}>
-                  <Text style={styles.whiteText1} bold value={name} />
+                  <Text1 style={styles.whiteText1} bold value={name} />
                 </View>
               </View>
             </View>
@@ -229,7 +231,7 @@ const AccountInfo = ({navigation}) => {
                 value={email}
                 style={{
                   color: 'black',
-                  fontSize: responsiveFontSize(1.8),
+                  fontSize: responsiveFontSize(2.8),
                   marginTop: responsiveHeight(2),
                 }}
               />
@@ -237,7 +239,7 @@ const AccountInfo = ({navigation}) => {
                 value={phone}
                 style={{
                   color: 'black',
-                  fontSize: responsiveFontSize(1.8),
+                  fontSize: responsiveFontSize(2.8),
                   marginTop: responsiveHeight(1),
                 }}
               />
@@ -245,7 +247,7 @@ const AccountInfo = ({navigation}) => {
                 value={Language}
                 style={{
                   color: 'black',
-                  fontSize: responsiveFontSize(1.8),
+                  fontSize: responsiveFontSize(2.8),
                   marginTop: responsiveHeight(1),
                 }}
               />
@@ -360,8 +362,9 @@ const AccountInfo = ({navigation}) => {
                   </ListItem>
                   <ListItem
                     style={{justifyContent: 'center', alignItems: 'center'}}
-                    onPress={() => {
+                    onPress={(e) => {
                       setShowModal(false);
+                      e.stopPropagation();
                       navigation.navigate('Account', {
                         name: name,
                         email: email,
@@ -436,7 +439,7 @@ const AccountInfo = ({navigation}) => {
               width: responsiveWidth(82),
               marginLeft: responsiveWidth(14),
             }}>
-            <Text
+            <Text1
               style={{
                 color: '#696969',
                 fontSize: responsiveFontSize(2),
@@ -446,7 +449,7 @@ const AccountInfo = ({navigation}) => {
                 'A TYFT Account allows you to bookmark truck, review about them and make'
               }
             />
-            <Text
+            <Text1
               style={{
                 color: '#696969',
                 fontSize: responsiveFontSize(2),
@@ -462,7 +465,7 @@ const AccountInfo = ({navigation}) => {
                 navigation.navigate('Home');
               }}
               style={styles.button1}>
-              <Text style={{color: '#fff'}} value={'SIGN IN NOW'} />
+              <Text1 style={{color: '#fff'}} value={'SIGN IN NOW'} />
             </Button>
           </View>
         </View>

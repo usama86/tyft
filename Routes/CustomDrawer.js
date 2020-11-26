@@ -182,7 +182,7 @@ const CustomDrawer = ({navigation, route}) => {
             onPress={() => navigation.navigate(Screens.ITEMCATEGORYD)}
           />
           <ListItem
-            title={'Profile'}
+            title={'Truck Profile'}
             leftAvatar={<ProfileIcon name={'user'} size={25} />}
             onPress={() =>
               navigation.navigate(Screens.PROFILED, {truckData: truckData})
