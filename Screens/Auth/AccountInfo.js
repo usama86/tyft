@@ -59,8 +59,8 @@ const AccountInfo = ({navigation,route}) => {
   };
   const checkUserStatus = async () => {
     let userType = await AsyncStorage.getItem('userType');
-    // let photo = await AsyncStorage.getItem('profilePhoto');
-    // setPhoto(photo);
+    let photo = await AsyncStorage.getItem('profilePhoto');
+    setPhoto(photo);
     if (userType !== null) {
       setLoggedin(true);
     } else {
@@ -68,10 +68,11 @@ const AccountInfo = ({navigation,route}) => {
     }
   };
   useEffect(() => {
-    navigation.addListener('focus', () => {
+    const _unsubscribe = navigation.addListener('focus', () => {
       checkUserStatus();
       getData();
     });
+    return _unsubscribe;
   }, []);
   // useEffect(() => {
   //   navigation.addListener('focus', () => {

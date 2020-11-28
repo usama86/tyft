@@ -115,6 +115,7 @@ const Account = ({navigation, route}) => {
                   let Code = Response.data.code;
                   if (Code === 'ABT0000') {
                     setUrl(img); //
+                    await AsyncStorage.setItem('profilePhoto' + '', result.url); 
                     // navigation.navigate(Route.SIGNIN);
                   }
                 })
@@ -172,8 +173,9 @@ const Account = ({navigation, route}) => {
           let Code = Response.data.code;
           if (Code === 'ABT0000') {
             setisLoading(false);
-            await AsyncStorage.setItem('userName' + '', name.value);   
-      
+            await AsyncStorage.setItem('profileName' + '', name.value);   
+            await AsyncStorage.setItem('email' + '', email.value);   
+            await AsyncStorage.setItem('phoneNumber' + '',  phone.value);
             setUpdated(true);
             setTimeout(() => {
               setUpdated(false);
