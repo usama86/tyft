@@ -79,10 +79,11 @@ const MenuSetting = ({ navigation, route }) => {
 			<Header isHome onPress={() => navigation.openDrawer()}>
 				{'Social Media'}
 			</Header>
-			<Ui TextValue={'Social Media Details'} ButtonText={'Save'} onPressButton={onSaveSocialMedia}>
+			<Ui TextShow={false} ButtonText={'Save'} onPressButton={onSaveSocialMedia}>
 				<View style={styles.InputMainView}>
+				<Text value='Social Media' style={{marginLeft:responsiveWidth(3),fontSize:responsiveFontSize(2.5),fontWeight:'bold'}}/>
 					<View style={styles.Time}>
-						
+					<Text value='FACEBOOK' style={{marginLeft:responsiveWidth(3),fontSize:responsiveFontSize(2),marginTop:responsiveHeight(5),color:'grey'}}/>
 						<Input
 							rounded
 							placeholder="Facebook"
@@ -93,6 +94,7 @@ const MenuSetting = ({ navigation, route }) => {
 						{/* {facebook.Error ? (
               <ErrorView>{facebook.ErrorText}</ErrorView>
             ) : null} */}
+						<Text value='INSTAGRAM' style={{marginLeft:responsiveWidth(3),fontSize:responsiveFontSize(2),marginTop:responsiveHeight(2),color:'grey'}}/>
 						<Input
 							rounded
 							placeholder="Instagram"
@@ -103,6 +105,7 @@ const MenuSetting = ({ navigation, route }) => {
 						{/* {instagram.Error ? (
               <ErrorView>{instagram.ErrorText}</ErrorView>
             ) : null} */}
+						<Text value='TWITTER' style={{marginLeft:responsiveWidth(3),fontSize:responsiveFontSize(2),marginTop:responsiveHeight(2),color:'grey'}}/>
 						<Input
 							rounded
 							placeholder="Twitter"
@@ -128,10 +131,10 @@ const MenuSetting = ({ navigation, route }) => {
 };
 const styles = StyleSheet.create({
 	InputMainView: {
-		marginVertical: responsiveHeight(6)
+		marginVertical: responsiveHeight(0)
 	},
 	Input: {
-		marginTop: responsiveHeight(5)
+		marginTop: responsiveHeight(1)
 	},
 
 	TextView: {

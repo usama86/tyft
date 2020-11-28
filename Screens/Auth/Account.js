@@ -20,6 +20,7 @@ import Modal from '../../Component/Modal';
 import {CommonActions} from '@react-navigation/native';
 import {Avatar} from 'react-native-elements';
 import ImagePicker from 'react-native-image-picker';
+
 const Account = ({navigation, route}) => {
   const [name, SetName] = React.useState({value: null, errorText: null});
   const [email, setEmail] = React.useState({value: null, errorText: null});
@@ -39,6 +40,7 @@ const Account = ({navigation, route}) => {
   const [islogout, setisLogout] = React.useState(null);
   const [img, setImage] = React.useState(null);
   const [photo, setPhoto] = React.useState('');
+  const [urls, setUrl] = React.useState('');
   const Logout = async () => {
     await AsyncStorage.clear();
     navigation.dispatch(
@@ -161,11 +163,12 @@ const Account = ({navigation, route}) => {
           // password: password.value,
           profileName: name.value,
           phoneNumber: phone.value,
-          userType: 'Customer',
+          // userType: 'Customer',
           Language: Language,
         })
         .then(async Response => {
-          await AsyncStorage.setItem('language' + '', Language);
+          // await AsyncStorage.setItem('language' + '', Language);
+          console.log(Response.data);
           let Code = Response.data.code;
           if (Code === 'ABT0000') {
             setisLoading(false);
@@ -183,6 +186,7 @@ const Account = ({navigation, route}) => {
         })
         .catch(error => {
           console.log(error);
+          setisLoading(false);
         });
     }
   };

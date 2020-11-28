@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, Alert} from 'react-native';
+import {View, StyleSheet, Alert,} from 'react-native';
 import Input from '../../../Component/Input';
 import Text from '../../../Component/Text';
 import {
@@ -27,7 +27,7 @@ const CoverPhoto = ({navigation, route}) => {
     setImg(val);
     try {
       setisLoading(true);
-      ImageResizer.createResizedImage(val.uri, val.height, val.width, 'JPEG', 100)
+      ImageResizer.createResizedImage(val.uri, val.height, val.width, 'JPEG', 0)
       .then(async(responses) => {
         let getResponse = await responses;
         var myHeaders = new Headers();

@@ -27,7 +27,7 @@ const TruckLogo = ({navigation, route}) => {
     setImg(val);
     try {
       setIsLoading(true);
-      ImageResizer.createResizedImage(val.uri, val.height, val.width, 'JPEG', 100)
+      ImageResizer.createResizedImage(val.uri, val.height, val.width, 'JPEG', 0)
       .then(async(responses) => {
         let getResponse = await responses;
         myHeaders.append('Content-Type', 'multipart/form-data');

@@ -9,6 +9,7 @@ import MC from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import SLI from 'react-native-vector-icons/SimpleLineIcons'
 import Entypo from 'react-native-vector-icons/Entypo';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
   responsiveFontSize,
   responsiveHeight,
@@ -197,6 +198,11 @@ const CustomDrawer = ({navigation, route}) => {
             title={'Serving Cusines'}
             leftAvatar={<Entypo name={'bowl'} size={25} />}
             onPress={() => navigation.navigate('ServingCusineDrawer')}
+          />
+          <ListItem
+            title={'Change Password'}
+            leftAvatar={<MaterialCommunityIcons name={'onepassword'} size={25} />}
+            onPress={() => navigation.navigate('ChangePasswords')}
           />
           <ListItem
             title={'Contact Us'}

@@ -108,34 +108,34 @@ const SignUpSupplier = ({ navigation }) => {
 			});
 		}
 	};
-	const checkPassword = async (e) => {
-		let getEmail = await AsyncStorage.getItem('email');
-		console.log(getEmail);
-		// console.log(e.currentTarget.value)
-		axios
-			.post(url + '/api/users/checkpassword', { email: getEmail, password: password.password })
-			.then(async (Response) => {
-				if (Response.data.code !== 'ABT0001') {
-					let res = Response.data;
-					console.log(res);
-					if (res && res.message === 'correct') console.log('coorect');
-					else
-						setPassword({
-							password: password.password,
-							passwordError: true,
-							passwordErrorText:
-								'Old Password is incorrect'
-						});
-				} else {
-					// setIndicator(false);
-				}
-			})
-			.catch((error) => {
-				// console.log(error);
-				Alert.alert(error.toString());
-				// setIndicator(false);
-			});
-	};
+	// const checkPassword = async (e) => {
+	// 	let getEmail = await AsyncStorage.getItem('email');
+	// 	console.log(getEmail);
+	// 	// console.log(e.currentTarget.value)
+	// 	axios
+	// 		.post(url + '/api/users/checkpassword', { email: getEmail, password: password.password })
+	// 		.then(async (Response) => {
+	// 			if (Response.data.code !== 'ABT0001') {
+	// 				let res = Response.data;
+	// 				console.log(res);
+	// 				if (res && res.message === 'correct') console.log('coorect');
+	// 				else
+	// 					setPassword({
+	// 						password: password.password,
+	// 						passwordError: true,
+	// 						passwordErrorText:
+	// 							'Old Password is incorrect'
+	// 					});
+	// 			} else {
+	// 				// setIndicator(false);
+	// 			}
+	// 		})
+	// 		.catch((error) => {
+	// 			// console.log(error);
+	// 			Alert.alert(error.toString());
+	// 			// setIndicator(false);
+	// 		});
+	// };
 	const updateProfile = async() => {
 		if (!name.name) {
 			SetName({
@@ -158,20 +158,20 @@ const SignUpSupplier = ({ navigation }) => {
 				phoneErrorText: 'Phone must not be empty'
 			});
 		}
-		if (!password.password) {
-			setPassword({
-				password: null,
-				passwordError: true,
-				passwordErrorText: 'Password must not be empty'
-			});
-		}
-		if (!confirmpass.confirmpass) {
-			setConfirmPass({
-				confirmpass: null,
-				confirmPassError: true,
-				confirmPassErrorText: 'Confirm password must not be empty'
-			});
-		}
+		// if (!password.password) {
+		// 	setPassword({
+		// 		password: null,
+		// 		passwordError: true,
+		// 		passwordErrorText: 'Password must not be empty'
+		// 	});
+		// }
+		// if (!confirmpass.confirmpass) {
+		// 	setConfirmPass({
+		// 		confirmpass: null,
+		// 		confirmPassError: true,
+		// 		confirmPassErrorText: 'Confirm password must not be empty'
+		// 	});
+		// }
 		// if (password.password !== confirmpass.confirmpass) {
 		// 	setConfirmPass({
 		// 		confirmpass: null,
@@ -183,11 +183,11 @@ const SignUpSupplier = ({ navigation }) => {
 			name.name &&
 			email.email &&
 			!email.emailError &&
-			phone.phone &&
-			password.password &&
-			!password.passwordError &&
-			confirmpass.confirmpass &&
-      !confirmpass.confirmPassError 
+			phone.phone
+			// password.password &&
+			// !password.passwordError &&
+			// confirmpass.confirmpass &&
+    //   !confirmpass.confirmPassError 
       // &&
 			// check
 		) {
@@ -197,7 +197,7 @@ const SignUpSupplier = ({ navigation }) => {
         .post(url + '/api/users/updateuser', {
           _id: userID,
           email: email.email,
-          password: confirmpass.confirmpass,
+        //   password: confirmpass.confirmpass,
           profileName: name.name,
           phoneNumber: phone.phone,          
         })
@@ -265,7 +265,7 @@ const SignUpSupplier = ({ navigation }) => {
 							style={styles.Input}
 						/>
 						{phone.phoneError ? <ErrorView>{phone.phoneErrorText}</ErrorView> : null}
-						<Input
+						{/* <Input
 							secured
 							rounded
 							placeholder="Old Password"
@@ -290,7 +290,7 @@ const SignUpSupplier = ({ navigation }) => {
 						/>
 						{confirmpass.confirmPassError ? (
 							<ErrorView>{confirmpass.confirmPassErrorText}</ErrorView>
-						) : null}
+						) : null} */}
 					</View>
 					{/* 
         <View style={styles.radioView}>
@@ -308,7 +308,7 @@ const SignUpSupplier = ({ navigation }) => {
 };
 const styles = StyleSheet.create({
 	InputMainView: {
-		marginVertical: responsiveHeight(2)
+		marginVertical: responsiveHeight(5)
 	},
 	TextViewStyle: {
 		// width: responsiveWidth(60),

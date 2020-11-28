@@ -29,11 +29,13 @@ const styles = StyleSheet.create({
 	TextStyle: {
         // color: 'rgb(0, 0, 0)'
         //set font stuff for default, font family etc
-        fontSize:responsiveFontSize(1.7)
+        fontSize:responsiveFontSize(1.7),
+        fontFamily:'notoserif'//Nunito Sans,sans-serif'
     },
     boldStyle:{
         fontSize:responsiveFontSize(3),
-        fontWeight:'bold'
+        fontWeight:'bold',
+        fontFamily:'notoserif'
     }
 });
 

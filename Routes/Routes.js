@@ -19,6 +19,8 @@ import Animated from 'react-native-reanimated';
 import SocialMediaDrawer from '../Screens/Auth/Drawer/SocailMediaDrawer';
 import ServingCusineDrawer from '../Screens/Auth/Drawer/ServingCusineTypeDrawer';
 import ContactUs from '../Screens/Auth/Drawer/Contactus';
+import ChangePassword from '../Screens/Auth/Changepassword';
+
 const StackAuth = createStackNavigator();
 const AppStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -85,6 +87,8 @@ const AppDrawer = () => {
         <Drawer.Screen name={'SocialMediaDrawer'} component={SocialMediaDrawer} />
         <Drawer.Screen name={'ServingCusineDrawer'} component={ServingCusineDrawer} />
         <Drawer.Screen name={'ContactUs'} component={ContactUs} />
+        <Drawer.Screen name={'ChangePasswords'} component={ChangePassword} />
+        
       </Drawer.Navigator>
     </Animated.View>
   );

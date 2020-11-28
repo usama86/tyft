@@ -24,7 +24,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Modal1 from 'react-native-modal';
 import {List, ListItem} from 'native-base';
-const AccountInfo = ({navigation}) => {
+const AccountInfo = ({navigation,route}) => {
   const [name, SetName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [phone, setPhone] = React.useState('');
@@ -59,6 +59,8 @@ const AccountInfo = ({navigation}) => {
   };
   const checkUserStatus = async () => {
     let userType = await AsyncStorage.getItem('userType');
+    // let photo = await AsyncStorage.getItem('profilePhoto');
+    // setPhoto(photo);
     if (userType !== null) {
       setLoggedin(true);
     } else {
@@ -71,6 +73,13 @@ const AccountInfo = ({navigation}) => {
       getData();
     });
   }, []);
+  // useEffect(() => {
+  //   navigation.addListener('focus', () => {
+  //     checkUserStatus();
+  //     getData();
+  //   });
+  // }, [route.name]);
+  
   const SelectImage = () => {
     const options = {
       title: 'Select or Capture Your Image',
@@ -141,18 +150,22 @@ const AccountInfo = ({navigation}) => {
     });
   };
   const getData = async () => {
-    let id = await AsyncStorage.getItem('userID');
     let names = await AsyncStorage.getItem('profileName');
     let emails = await AsyncStorage.getItem('email');
     //  await AsyncStorage.setItem('profileName' + '', usertoken.profileName);
     let phones = await AsyncStorage.getItem('phoneNumber');
-    let photo = await AsyncStorage.getItem('profilePhoto');
+    // let photos = await AsyncStorage.getItem('profilePhoto');
     let language = await AsyncStorage.getItem('language');
-    console.log(names);
-    setPhoto(photo);
+    // console.log(photos);
+    // setPhoto(photos);
+    // setImage(photos);
+    if(language)
     setLanguage(language);
+    if(names)
     SetName(names);
+    if(emails)
     setEmail(emails);
+    if(phones)
     setPhone(phones);
   };
   return (
@@ -193,8 +206,9 @@ const AccountInfo = ({navigation}) => {
           <View style={styles.InputMainView}>
             <View style={styles.header}>
               <View style={styles.rowView}>
-                <Avatar
+              <Avatar
                   source={img ? {uri: img.uri} : {uri: photo}}
+                  // style={{marginLeft:2}}
                   // icon={{name: 'user', type: 'font-awesome'}}
                   // showEditButton
                   rounded
@@ -203,7 +217,7 @@ const AccountInfo = ({navigation}) => {
                 />
                 {/* imageProps={{uri:truckData.truckLogo}} */}
                 <View style={{marginLeft: 20}}>
-                  <Text1 style={styles.whiteText1} bold value={name} />
+                  <Text1 style={{}} bold value={name} />
                 </View>
               </View>
             </View>
@@ -224,7 +238,7 @@ const AccountInfo = ({navigation}) => {
               }}>
               <Text1
                 value={'Personal Details'}
-                style={{color: '#B40E33'}}
+                style={{color: '#B40E33',}}
                 bold
               />
               <Text1
@@ -233,6 +247,7 @@ const AccountInfo = ({navigation}) => {
                   color: 'black',
                   fontSize: responsiveFontSize(2.8),
                   marginTop: responsiveHeight(2),
+                  
                 }}
               />
               <Text1
@@ -241,6 +256,7 @@ const AccountInfo = ({navigation}) => {
                   color: 'black',
                   fontSize: responsiveFontSize(2.8),
                   marginTop: responsiveHeight(1),
+                  
                 }}
               />
               <Text1
@@ -249,6 +265,7 @@ const AccountInfo = ({navigation}) => {
                   color: 'black',
                   fontSize: responsiveFontSize(2.8),
                   marginTop: responsiveHeight(1),
+                  
                 }}
               />
             </View>
@@ -285,7 +302,7 @@ const AccountInfo = ({navigation}) => {
                 <Text1
                   uppercase={false}
                   value={'Yes'}
-                  style={{color: '#fff', fontWeight: 'bold'}}
+                  style={{color: '#fff', fontWeight: 'bold',}}
                 />
               </Button>
               <Button
@@ -303,7 +320,7 @@ const AccountInfo = ({navigation}) => {
                 <Text1
                   uppercase={false}
                   value={'No'}
-                  style={{color: '#fff', fontWeight: 'bold'}}
+                  style={{color: '#fff', fontWeight: 'bold',}}
                 />
               </Button>
             </View>
@@ -444,6 +461,7 @@ const AccountInfo = ({navigation}) => {
                 color: '#696969',
                 fontSize: responsiveFontSize(2),
                 fontWeight: 'bold',
+                
               }}
               value={
                 'A TYFT Account allows you to bookmark truck, review about them and make'
@@ -455,6 +473,7 @@ const AccountInfo = ({navigation}) => {
                 fontSize: responsiveFontSize(2),
                 fontWeight: 'bold',
                 marginLeft: responsiveWidth(22),
+                
               }}
               value={'payment faster'}
             />
@@ -490,6 +509,9 @@ const styles = StyleSheet.create({
   },
   TextSpace: {
     // paddingLeft:responsiveWidth(18)
+  },
+  TextFont:{
+    fontFamily:'Nunito Sans,sans-serif'
   },
   button: {
     width: responsiveWidth(50),
@@ -573,4 +595,4 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
 });
-export default AccountInfo;
+export default AccountInfo
