@@ -14,7 +14,7 @@ import Button from '../../Component/Button';
 import AsyncStorage from '@react-native-community/async-storage';
 import theme from '../theme';
 import * as Route from '../../Constants/RouteName';
-import url from './Constants/constants';
+import url, {bold, normal} from './Constants/constants';
 import axios from 'axios';
 import Modal from '../../Component/Modal';
 import {CommonActions} from '@react-navigation/native';
@@ -115,7 +115,7 @@ const Account = ({navigation, route}) => {
                   let Code = Response.data.code;
                   if (Code === 'ABT0000') {
                     setUrl(img); //
-                    await AsyncStorage.setItem('profilePhoto' + '', result.url); 
+                    await AsyncStorage.setItem('profilePhoto' + '', result.url);
                     // navigation.navigate(Route.SIGNIN);
                   }
                 })
@@ -153,8 +153,8 @@ const Account = ({navigation, route}) => {
     //     value: confirmPassword.value,
     //     errorText: 'Confirm Password Does not matched with current Password',
     //   });
-    // } 
-    else if (name.value && email.value  && phone.value) {
+    // }
+    else if (name.value && email.value && phone.value) {
       await setisLoading(true);
       let userID = await AsyncStorage.getItem('userID');
       axios
@@ -173,16 +173,15 @@ const Account = ({navigation, route}) => {
           let Code = Response.data.code;
           if (Code === 'ABT0000') {
             setisLoading(false);
-            await AsyncStorage.setItem('profileName' + '', name.value);   
-            await AsyncStorage.setItem('email' + '', email.value);   
-            await AsyncStorage.setItem('phoneNumber' + '',  phone.value);
+            await AsyncStorage.setItem('profileName' + '', name.value);
+            await AsyncStorage.setItem('email' + '', email.value);
+            await AsyncStorage.setItem('phoneNumber' + '', phone.value);
             setUpdated(true);
             setTimeout(() => {
               setUpdated(false);
             }, 500);
-             navigation.navigate('AccountInfo');
-          } 
-          else {
+            navigation.navigate('AccountInfo');
+          } else {
             setisLoading(false);
           }
         })
@@ -236,27 +235,27 @@ const Account = ({navigation, route}) => {
       {true ? (
         <Ui
           onPressButton={updateUser}
-          isLoading={isLoading}         
+          isLoading={isLoading}
           ButtonText={'Done'}
           TextShow={false}
           TextSpace={styles.TextSpace}
           TextViewStyle={styles.TextViewStyle}>
           <View style={styles.InputMainView}>
-          <View style={styles.rowView}>
-                <Avatar
-                  source={img ? {uri: img.uri} : {uri: photo}}
-                  // style={{marginLeft:2}}
-                  icon={{name: 'user', type: 'font-awesome'}}
-                  showEditButton
-                  rounded
-                  onPress={SelectImage}
-                  size={responsiveFontSize(13)}
-                />
-                {/* imageProps={{uri:truckData.truckLogo}} */}
-                {/* <View style={{marginLeft: 20}}>
+            <View style={styles.rowView}>
+              <Avatar
+                source={img ? {uri: img.uri} : {uri: photo}}
+                // style={{marginLeft:2}}
+                icon={{name: 'user', type: 'font-awesome'}}
+                showEditButton
+                rounded
+                onPress={SelectImage}
+                size={responsiveFontSize(13)}
+              />
+              {/* imageProps={{uri:truckData.truckLogo}} */}
+              {/* <View style={{marginLeft: 20}}>
                   <Text style={styles.whiteText1} bold value={name} />
                 </View> */}
-        </View>
+            </View>
             <Input
               rounded
               placeholder="Name"
@@ -356,7 +355,7 @@ const Account = ({navigation, route}) => {
               style={{
                 color: '#696969',
                 fontSize: responsiveFontSize(2),
-                fontWeight: 'bold',
+                fontFamily:normal
               }}
               value={
                 'A TYFT Account allows you to bookmark truck, review about them and make'
@@ -366,7 +365,7 @@ const Account = ({navigation, route}) => {
               style={{
                 color: '#696969',
                 fontSize: responsiveFontSize(2),
-                fontWeight: 'bold',
+                fontFamily: bold,
                 marginLeft: responsiveWidth(22),
               }}
               value={'payment faster'}
@@ -399,7 +398,7 @@ const styles = StyleSheet.create({
   rowView: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft:responsiveWidth(24)
+    marginLeft: responsiveWidth(24),
   },
   radioView: {
     marginLeft: responsiveWidth(15),
@@ -427,7 +426,7 @@ const styles = StyleSheet.create({
     paddingVertical: responsiveHeight(2),
   },
   UpdatedText: {
-    fontWeight: 'bold',
+    fontFamily: bold,
     fontSize: responsiveFontSize(2.5),
     color: '#1AB975',
     textAlign: 'center',

@@ -25,7 +25,7 @@ import {
 } from 'react-native-responsive-dimensions';
 import * as RouteName from '../../../Constants/RouteName';
 import Header from '../../../Component/Header';
-import url from '../Constants/constants';
+import url, { bold } from '../Constants/constants';
 import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
 import Modal from '../../../Component/Modal';
@@ -314,7 +314,7 @@ const styles = StyleSheet.create({
     // borderColor: 'rgb(0, 0, 0)'
   },
   UpdatedText: {
-    fontWeight: 'bold',
+    fontFamily: bold,
     fontSize: responsiveFontSize(2.5),
     color: '#1AB975',
     textAlign: 'center',

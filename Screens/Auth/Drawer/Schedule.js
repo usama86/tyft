@@ -20,7 +20,7 @@ import {
 import * as Screens from './../../../Constants/RouteName';
 import Header from '../../../Component/Header';
 import AsyncStorage from '@react-native-community/async-storage';
-import url from './../Constants/constants';
+import url, { bold } from './../Constants/constants';
 import axios from 'axios';
 import Modal from '../../../Component/Modal';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -333,7 +333,7 @@ const styles = StyleSheet.create({
     paddingVertical: responsiveHeight(2),
   },
   UpdatedText: {
-    fontWeight: 'bold',
+    fontFamily: bold,
     fontSize: responsiveFontSize(2.5),
     color: '#1AB975',
     textAlign: 'center',

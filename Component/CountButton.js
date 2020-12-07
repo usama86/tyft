@@ -9,6 +9,7 @@ import {
   responsiveFontSize,
 } from 'react-native-responsive-dimensions';
 import theme from './../Screens/theme';
+import { bold } from '../Screens/Auth/Constants/constants';
 const CountButton = ({button, tabProp, buttonProp, buttonText,navigation}) => {
   const [count, setCount] = useState(null);
   const [dupArray,setdupArray] = useState([]);
@@ -48,8 +49,9 @@ const CountButton = ({button, tabProp, buttonProp, buttonText,navigation}) => {
               styles.Btntext,
               {
                 color: 'white',
-                fontWeight: 'bold',
+                // fontWeight: 'bold',
                 fontSize: responsiveFontSize(2),
+                fontFamily:bold
               },
             ]}
             value={'+ ' + dupArray.length}

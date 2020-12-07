@@ -10,9 +10,10 @@ import {
   ActivityIndicator,
   Alert,
   Linking,
+  Text
 } from 'react-native';
 import Container from '../../../Component/Container';
-import Text from '../../../Component/Text';
+import Text1 from '../../../Component/Text';
 import theme from '../../theme';
 import {SearchBar, Rating, colors} from 'react-native-elements';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -22,6 +23,7 @@ import {Switch} from 'react-native-switch';
 import Button from '../../../Component/Button';
 import CountButton from '../../../Component/CountButton';
 import Modal from '../../../Component/Modal';
+import Modal1 from 'react-native-modal'
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import {
@@ -32,10 +34,11 @@ import {
 import * as RouteName from '../../../Constants/RouteName';
 import Header from '../../../Component/Header';
 import AsyncStorage from '@react-native-community/async-storage';
-import url from './../Constants/constants';
+import url, { bold } from './../Constants/constants';
 import axios from 'axios';
 import Feather from 'react-native-vector-icons/Feather';
 import ImagePicker from 'react-native-image-picker';
+import {List, ListItem} from 'native-base';
 // import Button from '../../../Component/Button'
 const VeggieWisper = ({navigation, route}) => {
   const [ToggleSwitch, setToggleSwitch] = useState(false);
@@ -49,6 +52,7 @@ const VeggieWisper = ({navigation, route}) => {
   const [mapReady, setMapReady] = React.useState(true);
   const [Lat, setLat] = React.useState(0.0);
   const [Long, setLong] = React.useState(0.0);
+  const [showModal, setShowModal] = useState(false);
   const [urls, setUrl] = useState(null);
   const mapView = useRef();
   const initialRegion = {
@@ -191,6 +195,10 @@ const VeggieWisper = ({navigation, route}) => {
     else
       return String("https://twitter.com/" + TruckInfo.socialMedia.twitter +'/');; 
   }
+  const Logout = async () => {
+    await AsyncStorage.clear();
+    navigation.replace('Auth', {screen: 'Auth'});
+  };
   const SelectImage = () => {
     const options = {
       title: 'Select or Capture Your Image',
@@ -281,7 +289,7 @@ const VeggieWisper = ({navigation, route}) => {
           resizeMode={'contain'}
             style={styles.image}
             source={{uri: urls? urls.uri : TruckInfo.coverPhoto}}>
-            <Header isHome settings onSettingsPress={()=>navigation.navigate(RouteName.SUPPLIERPROFILE)} onPress={() => navigation.openDrawer()}>
+            <Header isHome settings onSettingsPress={()=>setShowModal(true)} onPress={() => navigation.openDrawer()}>
               {'Home'}
             </Header>
             <Entypo
@@ -295,7 +303,7 @@ const VeggieWisper = ({navigation, route}) => {
         </View>
         <CountButton button={TruckInfo.selectedServingCusines} />
         <View style={styles.flexView}>
-          <Text bold style={{color: '#212121'}} value={TruckInfo.truckName} />
+          <Text1 bold style={{color: '#212121'}} value={TruckInfo.truckName} />
         </View>
         <View style={[styles.flexView, {marginTop: 0}]}>
           <Rating
@@ -309,12 +317,12 @@ const VeggieWisper = ({navigation, route}) => {
               width: '30%',
               justifyContent: 'space-between',
             }}>
-            <Text
+            <Text1
               style={[
                 {
                   color: 'green',
-                  fontWeight: 'bold',
                   fontSize: responsiveFontSize(2),
+                  fontFamily:bold
                 },
                 TruckInfo.status === 'Close' ? {color: 'red'} : null,
               ]}
@@ -348,7 +356,7 @@ const VeggieWisper = ({navigation, route}) => {
             paddingVertical: responsiveHeight(5),
             marginLeft: responsiveWidth(3),
           }}>
-          <Text value={TruckInfo.businessDesc} />
+          <Text1 value={TruckInfo.businessDesc} />
         </View>
         <View style={styles.iconView}>
           <AntDesign
@@ -357,7 +365,7 @@ const VeggieWisper = ({navigation, route}) => {
             color={'#212121'}
             size={responsiveFontSize(2.5)}
           />
-          <Text
+          <Text1
             style={{
               fontSize: responsiveFontSize(1.8),
               color: '#212121',
@@ -374,7 +382,7 @@ const VeggieWisper = ({navigation, route}) => {
             color={'#212121'}
             size={responsiveFontSize(2.5)}
           />
-          <Text
+          <Text1
             style={{
               fontSize: responsiveFontSize(1.8),
               color: '#212121',
@@ -389,7 +397,7 @@ const VeggieWisper = ({navigation, route}) => {
             color={'#212121'}
             size={responsiveFontSize(2.5)}
           />
-          <Text
+          <Text1
             style={{
               fontSize: responsiveFontSize(1.8),
               color: '#212121',
@@ -472,17 +480,126 @@ const VeggieWisper = ({navigation, route}) => {
             </MapView>
           </View>
           <View style={styles.InstructionView}>
-            <Text
+            <Text1
               style={styles.InstructionText}
               value={'Please Drag the Marker to Select Your Current Location.'}
             />
           </View>
           <View style={styles.ButtonView}>
             <Button onPress={setLocation} style={styles.Button}>
-              <Text style={{color: '#fff'}} value={'Save'} />
+              <Text1 style={{color: '#fff'}} value={'Save'} />
             </Button>
           </View>
         </Modal>
+        <Modal1
+            onBackButtonPress={() => setShowModal(false)}
+            onSwipeComplete={() => setShowModal(false)}
+            swipeDirection={'down'}
+            isVisible={showModal}
+            backdropColor="rgba(0,0,0,0.8)"
+            animationIn="slideInUp"
+            animationOut="slideInDown"
+            animationInTiming={200}
+            animationOutTiming={200}
+            backdropTransitionInTiming={200}
+            backdropTransitionOutTiming={200}>
+            <View style={[styles.ModalConatiner]}>
+              <View style={styles.ClosingBar} />
+              <ScrollView style={{marginTop: responsiveHeight(2)}}>
+                <List>
+                  <ListItem
+                    style={{justifyContent: 'center', alignItems: 'center'}}
+                    >
+                    {/* <AntDesign
+                  name={'edit'}
+                  color={'grey'}
+                  size={responsiveFontSize(2.5)}
+                /> */}
+                    <Text
+                      style={{
+                        color: 'grey',
+                        fontSize: responsiveFontSize(1.2),
+                        fontFamily: bold,
+                      }}>
+                      {'Account Options'}
+                    </Text>
+                  </ListItem>
+                  <ListItem
+                    style={{justifyContent: 'center', alignItems: 'center'}}
+                    onPress={() => {
+                      setShowModal(false);
+                      navigation.navigate('ChangePasswords');
+                    }}
+                    >
+                    {/* <AntDesign
+                  name={'edit'}
+                  color={'grey'}
+                  size={responsiveFontSize(2.5)}
+                /> */}
+                    <Text
+                      style={{
+                        color: 'grey',
+                        fontFamily: bold,
+                      }}>
+                      {'Change Password'}
+                    </Text>
+                  </ListItem>
+                  <ListItem
+                    style={{justifyContent: 'center', alignItems: 'center'}}
+                    onPress={e => {
+                      setShowModal(false);
+                      e.stopPropagation();
+                      navigation.navigate(RouteName.SUPPLIERPROFILE);
+                    }}>
+                    {/* <AntDesign
+                  name={'edit'}
+                  color={'grey'}
+                  size={responsiveFontSize(2.5)}
+                /> */}
+                    <Text
+                      style={{
+                        color: 'grey',
+                        fontFamily: bold,
+                      }}>
+                      {'Update Profile'}
+                    </Text>
+                  </ListItem>
+                  <ListItem
+                    onPress={Logout}
+                    style={{justifyContent: 'center', alignItems: 'center'}}>
+                    {/* <Entypo
+                  name={'trash'}
+                  color={'red'}
+                  size={responsiveFontSize(2.5)}
+                /> */}
+                    <Text
+                      style={{
+                        color: 'red',
+                        fontFamily: bold,
+                      }}>
+                      {'Log Out'}
+                    </Text>
+                  </ListItem>
+                  <ListItem
+                    style={{justifyContent: 'center', alignItems: 'center'}}
+                    onPress={() => setShowModal(false)}>
+                    {/* <Entypo
+                  name={'cross'}
+                  color={'grey'}
+                  size={responsiveFontSize(2.5)}
+                /> */}
+                    <Text
+                      style={{
+                        color: 'grey',
+                        fontFamily: bold,
+                      }}>
+                      {'Cancel'}
+                    </Text>
+                  </ListItem>
+                </List>
+              </ScrollView>
+            </View>
+          </Modal1>
       </Container>
     );
   }
@@ -578,6 +695,22 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  ClosingBar: {
+    height: responsiveHeight(1),
+    width: responsiveWidth(15),
+    borderRadius: 5,
+    backgroundColor: 'grey',
+    alignSelf: 'center',
+    marginTop: responsiveHeight(1.5),
+  },
+  ModalConatiner: {
+    top: responsiveHeight(35),
+    width: responsiveWidth(100),
+    height: responsiveHeight(50),
+    backgroundColor: '#fff',
+    alignSelf: 'center',
+    borderRadius: 8,
   },
 });
 

@@ -14,7 +14,7 @@ import Button from '../../Component/Button';
 import AsyncStorage from '@react-native-community/async-storage';
 import theme from '../theme';
 import * as Route from '../../Constants/RouteName';
-import url from './Constants/constants';
+import url, {bold} from './Constants/constants';
 import axios from 'axios';
 import Modal from '../../Component/Modal';
 import {Avatar, Icon} from 'react-native-elements';
@@ -24,7 +24,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Modal1 from 'react-native-modal';
 import {List, ListItem} from 'native-base';
-const AccountInfo = ({navigation,route}) => {
+const AccountInfo = ({navigation, route}) => {
   const [name, SetName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [phone, setPhone] = React.useState('');
@@ -80,7 +80,7 @@ const AccountInfo = ({navigation,route}) => {
   //     getData();
   //   });
   // }, [route.name]);
-  
+
   const SelectImage = () => {
     const options = {
       title: 'Select or Capture Your Image',
@@ -160,14 +160,10 @@ const AccountInfo = ({navigation,route}) => {
     // console.log(photos);
     // setPhoto(photos);
     // setImage(photos);
-    if(language)
-    setLanguage(language);
-    if(names)
-    SetName(names);
-    if(emails)
-    setEmail(emails);
-    if(phones)
-    setPhone(phones);
+    if (language) setLanguage(language);
+    if (names) SetName(names);
+    if (emails) setEmail(emails);
+    if (phones) setPhone(phones);
   };
   return (
     <View style={{height: '100%', width: '100%'}}>
@@ -207,7 +203,7 @@ const AccountInfo = ({navigation,route}) => {
           <View style={styles.InputMainView}>
             <View style={styles.header}>
               <View style={styles.rowView}>
-              <Avatar
+                <Avatar
                   source={img ? {uri: img.uri} : {uri: photo}}
                   // style={{marginLeft:2}}
                   // icon={{name: 'user', type: 'font-awesome'}}
@@ -218,7 +214,7 @@ const AccountInfo = ({navigation,route}) => {
                 />
                 {/* imageProps={{uri:truckData.truckLogo}} */}
                 <View style={{marginLeft: 20}}>
-                  <Text1 style={{}} bold value={name} />
+                  <Text1 style={{fontSize:responsiveFontSize(2)}} value={name} />
                 </View>
               </View>
             </View>
@@ -239,34 +235,30 @@ const AccountInfo = ({navigation,route}) => {
               }}>
               <Text1
                 value={'Personal Details'}
-                style={{color: '#B40E33',}}
-                bold
+                style={{color: '#B40E33',fontWeight:'bold',fontSize:responsiveFontSize(2.8)}}
               />
               <Text1
                 value={email}
                 style={{
                   color: 'black',
-                  fontSize: responsiveFontSize(2.8),
+                  fontSize: responsiveFontSize(2),
                   marginTop: responsiveHeight(2),
-                  
                 }}
               />
               <Text1
                 value={phone}
                 style={{
                   color: 'black',
-                  fontSize: responsiveFontSize(2.8),
+                  fontSize: responsiveFontSize(2),
                   marginTop: responsiveHeight(1),
-                  
                 }}
               />
               <Text1
                 value={Language}
                 style={{
                   color: 'black',
-                  fontSize: responsiveFontSize(2.8),
+                  fontSize: responsiveFontSize(2),
                   marginTop: responsiveHeight(1),
-                  
                 }}
               />
             </View>
@@ -282,7 +274,7 @@ const AccountInfo = ({navigation,route}) => {
             <Text1
               style={{
                 textAlign: 'center',
-                fontWeight: 'bold',
+                fontFamily: bold,
                 fontSize: responsiveFontSize(2),
               }}
               value={'Are you sure you wanna Signout?'}
@@ -303,7 +295,7 @@ const AccountInfo = ({navigation,route}) => {
                 <Text1
                   uppercase={false}
                   value={'Yes'}
-                  style={{color: '#fff', fontWeight: 'bold',}}
+                  style={{color: '#fff',fontSize:responsiveFontSize(2),fontWeight:'bold'}}
                 />
               </Button>
               <Button
@@ -321,7 +313,8 @@ const AccountInfo = ({navigation,route}) => {
                 <Text1
                   uppercase={false}
                   value={'No'}
-                  style={{color: '#fff', fontWeight: 'bold',}}
+                  
+                  style={{color: '#fff',fontSize:responsiveFontSize(2),fontWeight:'bold'}}
                 />
               </Button>
             </View>
@@ -353,8 +346,8 @@ const AccountInfo = ({navigation,route}) => {
                     <Text
                       style={{
                         color: 'grey',
-                        fontWeight: 'bold',
                         fontSize: responsiveFontSize(1.2),
+                        fontFamily: bold,
                       }}>
                       {'Account Options'}
                     </Text>
@@ -373,14 +366,14 @@ const AccountInfo = ({navigation,route}) => {
                     <Text
                       style={{
                         color: 'grey',
-                        fontWeight: 'bold',
+                        fontFamily: bold,
                       }}>
                       {'Change Password'}
                     </Text>
                   </ListItem>
                   <ListItem
                     style={{justifyContent: 'center', alignItems: 'center'}}
-                    onPress={(e) => {
+                    onPress={e => {
                       setShowModal(false);
                       e.stopPropagation();
                       navigation.navigate('Account', {
@@ -398,7 +391,7 @@ const AccountInfo = ({navigation,route}) => {
                     <Text
                       style={{
                         color: 'grey',
-                        fontWeight: 'bold',
+                        fontFamily: bold,
                       }}>
                       {'Update Profile'}
                     </Text>
@@ -414,7 +407,7 @@ const AccountInfo = ({navigation,route}) => {
                     <Text
                       style={{
                         color: 'red',
-                        fontWeight: 'bold',
+                        fontFamily: bold,
                       }}>
                       {'Log Out'}
                     </Text>
@@ -430,7 +423,7 @@ const AccountInfo = ({navigation,route}) => {
                     <Text
                       style={{
                         color: 'grey',
-                        fontWeight: 'bold',
+                        fontFamily: bold,
                       }}>
                       {'Cancel'}
                     </Text>
@@ -461,8 +454,7 @@ const AccountInfo = ({navigation,route}) => {
               style={{
                 color: '#696969',
                 fontSize: responsiveFontSize(2),
-                fontWeight: 'bold',
-                
+                fontFamily:bold
               }}
               value={
                 'A TYFT Account allows you to bookmark truck, review about them and make'
@@ -474,7 +466,6 @@ const AccountInfo = ({navigation,route}) => {
                 fontSize: responsiveFontSize(2),
                 fontWeight: 'bold',
                 marginLeft: responsiveWidth(22),
-                
               }}
               value={'payment faster'}
             />
@@ -511,8 +502,8 @@ const styles = StyleSheet.create({
   TextSpace: {
     // paddingLeft:responsiveWidth(18)
   },
-  TextFont:{
-    fontFamily:'Nunito Sans,sans-serif'
+  TextFont: {
+    fontFamily: 'Nunito Sans,sans-serif',
   },
   button: {
     width: responsiveWidth(50),
@@ -532,7 +523,7 @@ const styles = StyleSheet.create({
     paddingVertical: responsiveHeight(2),
   },
   UpdatedText: {
-    fontWeight: 'bold',
+    fontFamily:bold,
     fontSize: responsiveFontSize(2.5),
     color: '#1AB975',
     textAlign: 'center',
@@ -596,4 +587,4 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
 });
-export default AccountInfo
+export default AccountInfo;

@@ -180,11 +180,11 @@ const [uniqueProps,setuniqueProps] =useState([])
           ]}>
           <TouchableOpacity>
             <Text
+            bold
               value={getStatus(item, index)}
               style={{
                 color: 'green',
                 fontSize: responsiveFontSize(2),
-                fontWeight: 'bold',
               }}
             />
           </TouchableOpacity>

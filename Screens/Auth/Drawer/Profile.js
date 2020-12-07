@@ -16,6 +16,7 @@ import ErrorView from '../../../Component/ErrorField';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage'
 import Modal from '../../../Component/Modal';
+import { bold } from '../Constants/constants';
 const TruckInfo = ({navigation, route}) => {
   const [check, SetCheck] = React.useState(false);
   const [loading,setLoading] =React.useState(null);
@@ -219,7 +220,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   UpdatedText: {
-    fontWeight: 'bold',
+fontFamily:bold,
     fontSize: responsiveFontSize(2.5),
     color: '#1AB975',
     textAlign: 'center',

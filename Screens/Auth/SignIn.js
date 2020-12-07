@@ -17,7 +17,7 @@ import theme from './../theme';
 import RoundButton from '../../Component/Button';
 import Divider from './../../Component/Divider';
 import Texts from './../../Component/Text';
-import url from './Constants/constants';
+import url, { bold } from './Constants/constants';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -155,7 +155,7 @@ const SignIn = ({navigation}) => {
             navigation.navigate('Forgotpassword')
           }}>
           Don't remember your password?
-          <Text style={{fontWeight: 'bold'}}>{'  Forgot password?'}</Text>
+          <Text style={{fontFamily:bold}}>{'  Forgot password?'}</Text>
         </Text>
       </TouchableOpacity>
       <Divider />
@@ -185,10 +185,9 @@ const styles = StyleSheet.create({
   },
   signInHeader: {
     fontSize: 23,
-    fontWeight: 'bold',
     ...Platform.select({
       android: {
-        fontFamily: 'Roboto',
+        fontFamily: bold,
       },
     }),
     marginTop: 20,

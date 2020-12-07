@@ -18,6 +18,7 @@ import {
   responsiveFontSize,
 } from 'react-native-responsive-dimensions';
 import Header from '../../Component/Header';
+import { bold } from './Constants/constants';
 const SignUpSelection = props => {
   const {navigation} = props;
 
@@ -128,7 +129,7 @@ const styles = StyleSheet.create({
   itemTitle: {
     flex: 2,
     fontSize: 15,
-    fontWeight: 'bold',
+ fontFamily:bold,
     paddingLeft: 20,
   },
   itemText: {

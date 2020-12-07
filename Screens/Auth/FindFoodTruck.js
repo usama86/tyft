@@ -96,8 +96,9 @@ const FindFoodTruck = ({navigation, route}) => {
         console.log('NOT MATCHED');
         setIsMsg(true);
       } else {
+        let filtered = matched.filter((v,i,a)=>a.findIndex(t=>(t._id === v._id))===i)
         setIsMsg(false);
-        await setData(matched);
+        await setData(filtered);
       }
     }
   };
@@ -379,11 +380,12 @@ const FindFoodTruck = ({navigation, route}) => {
             ]}>
             <TouchableOpacity>
               <Text
+          
                 value={getStatus(item, index)}
                 style={{
                   color: 'green',
                   fontSize: responsiveFontSize(2),
-                  fontWeight: 'bold',
+                  fontWeight:"bold"
                 }}
               />
             </TouchableOpacity>

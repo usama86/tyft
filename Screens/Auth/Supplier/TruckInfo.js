@@ -11,6 +11,7 @@ import Ui from '../../../Component/Ui';
 import * as RouteName from './../../../Constants/RouteName';
 import Header from '../../../Component/Header';
 import ErrorView from '../../../Component/ErrorField';
+import { normal } from '../Constants/constants';
 const TruckInfo = ({navigation, route}) => {
   const [check, SetCheck] = React.useState(false);
   const [truckName, SetTruckName] = React.useState({
@@ -216,6 +217,7 @@ const styles = StyleSheet.create({
   },
   Input: {
     marginTop: responsiveHeight(3),
+    fontFamily:normal
   },
   TextViewStyle: {
     //  width: responsiveWidth(60),

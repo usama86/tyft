@@ -200,19 +200,9 @@ const CustomDrawer = ({navigation, route}) => {
             onPress={() => navigation.navigate('ServingCusineDrawer')}
           />
           <ListItem
-            title={'Change Password'}
-            leftAvatar={<MaterialCommunityIcons name={'onepassword'} size={25} />}
-            onPress={() => navigation.navigate('ChangePasswords')}
-          />
-          <ListItem
             title={'Contact Us'}
             leftAvatar={<ProfileIcon name={'contacts'} size={25} />}
              onPress={() => navigation.navigate('ContactUs')}
-          />
-          <ListItem
-            title={'Signout'}
-            leftAvatar={<SignoutIcon name={'sign-out'} size={25} />}
-            onPress={Logout}
           />
         </View>
       </ScrollView>

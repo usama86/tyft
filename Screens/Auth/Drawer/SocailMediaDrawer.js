@@ -9,7 +9,7 @@ import * as RouteName from './../../../Constants/RouteName';
 import Header from '../../../Component/Header';
 import ErrorView from '../../../Component/ErrorField';
 import AsyncStorage from '@react-native-community/async-storage';
-import url from '../Constants/constants';
+import url, { bold } from '../Constants/constants';
 import axios from 'axios';
 import Modal from '../../../Component/Modal';
 const MenuSetting = ({ navigation, route }) => {
@@ -81,7 +81,7 @@ const MenuSetting = ({ navigation, route }) => {
 			</Header>
 			<Ui TextShow={false} ButtonText={'Save'} onPressButton={onSaveSocialMedia}>
 				<View style={styles.InputMainView}>
-				<Text value='Social Media' style={{marginLeft:responsiveWidth(3),fontSize:responsiveFontSize(2.5),fontWeight:'bold'}}/>
+				<Text bold value='Social Media' style={{marginLeft:responsiveWidth(3),fontSize:responsiveFontSize(2.5)}}/>
 					<View style={styles.Time}>
 					<Text value='FACEBOOK' style={{marginLeft:responsiveWidth(3),fontSize:responsiveFontSize(2),marginTop:responsiveHeight(5),color:'grey'}}/>
 						<Input
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
 		height: responsiveHeight(20)
 	},
 	UpdatedText: {
-		fontWeight: 'bold',
+		fontFamily: bold,
 		fontSize: responsiveFontSize(2.5),
 		color: '#1AB975',
 		textAlign: 'center'

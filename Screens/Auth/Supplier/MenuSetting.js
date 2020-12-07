@@ -25,6 +25,7 @@ import Modal from '../../../Component/Modal';
 import AddItemModal from '../../../Component/Modal';
 import ErrorView from '../../../Component/ErrorField';
 import Entypo from 'react-native-vector-icons/Entypo';
+import { bold } from '../Constants/constants';
 
 const MenuSetting = ({navigation, route}) => {
   const [addItem, setAddItem] = React.useState(false);
@@ -128,7 +129,8 @@ const MenuSetting = ({navigation, route}) => {
     <TouchableOpacity activeOpacity={0.8} style={styles.MainView}>
       <View style={styles.Left}>
         <Text
-          style={{fontWeight: 'bold', fontSize: responsiveFontSize(2)}}
+        bold
+          style={{fontSize: responsiveFontSize(2)}}
           value={item.name}
         />
         <Text
@@ -300,7 +302,8 @@ const MenuSetting = ({navigation, route}) => {
                 <Text
                   uppercase={false}
                   value={'Add'}
-                  style={{color: '#fff', fontWeight: 'bold'}}
+                  bold
+                  style={{color: '#fff'}}
                 />
               </Button>
             </View>
@@ -350,7 +353,7 @@ const styles = StyleSheet.create({
   },
   TextStyle: {
     fontSize: responsiveFontSize(2.4),
-    fontWeight: 'bold',
+fontFamily:bold,
     width: '60%',
   },
   TextView: {
@@ -394,7 +397,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   BoldText: {
-    fontWeight: 'bold',
+ fontFamily:bold,
     fontSize: responsiveFontSize(3),
   },
   CrossView: {

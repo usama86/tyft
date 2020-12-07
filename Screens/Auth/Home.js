@@ -15,6 +15,7 @@ import * as RouteName from '../../Constants/RouteName';
 import Animation from './../../Component/Animation';
 import Container from './../../Component/Container';
 import axios from 'axios';
+import url,{bold} from '../Auth/Constants/constants'
 import AsyncStorage from '@react-native-community/async-storage';
 import {
   AccessToken,
@@ -402,7 +403,7 @@ const styles = StyleSheet.create({
   },
   Underline: {
     textDecorationLine: 'underline',
-    fontWeight: 'bold',
+    fontFamily:bold,
     marginLeft: responsiveWidth(1),
   },
 });

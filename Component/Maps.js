@@ -21,7 +21,8 @@ import {
 } from 'react-native-responsive-dimensions';
 import {showLocation} from 'react-native-map-link';
 import moment from 'moment';
-import { getDistance } from 'geolib';
+import {getDistance} from 'geolib';
+import {bold} from '../Screens/Auth/Constants/constants';
 const Maps = ({MapContainerStyle, Trucks, navigation}) => {
   const [mapReady, setMapReady] = React.useState(true);
   const [Lat, setLat] = React.useState(0.0);
@@ -106,7 +107,7 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
       } catch (error) {
         Alert('Cannot Access Current Location Please Try Again.');
       }
-    } 
+    }
   };
   const getStatus = (item, index) => {
     let day = moment(new Date()).format('dddd');
@@ -132,21 +133,24 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
     // return currentTime.toString();
   };
 
-  const calculateDistance=(markerLat, markerLon) =>{
-
-    let distance =  getDistance(
-        {latitude: Lat, longitude: Long},
-        {latitude: markerLat, longitude: markerLon}
-      );
-    if(distance && distance<=16093.4)  
-      return true
-    else 
-      return false
+  const calculateDistance = (markerLat, markerLon) => {
+    let distance = getDistance(
+      {latitude: Lat, longitude: Long},
+      {latitude: markerLat, longitude: markerLon},
+    );
+    if (distance && distance <= 16093.4) return true;
+    else return false;
     // return getDistance(
     //   {latitude: origLat, longitude: origLon},
     //   {latitude: markerLat, longitude: markerLon}
     // );
-  }
+  };
+  const getTimings = item => {
+    let day = moment(new Date()).format('dddd');
+    let timings = item.schedule.find(a => a.day === day);
+    if (timings !== undefined) return timings.opening + ' - ' + timings.closing;
+    else '';
+  };
   return (
     <View style={[styles.mapcon, MapContainerStyle]}>
       <MapView
@@ -167,67 +171,78 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
           Trucks.map((item, index) => {
             if (item.latitude && item.longitude) {
               return (
-                <React.Fragment> 
-              <MapView.Circle
-                // key = { (parseFloat(item.latitude) + parseFloat(item.longitude)).toString() }
-                center = { {latitude:parseFloat(Lat),longitude:parseFloat(Long)} }
-                radius = { 16093.4 }
-                strokeWidth = { 1 }
-                strokeColor = { '#1a66ff' }
-                fillColor = { 'rgba(230,238,255,0.5)' }
-                // onRegionChangeComplete = { this.onRegionChangeComplete.bind(this) }
-                />
-               {calculateDistance(parseFloat(item.latitude),parseFloat(item.longitude)) ?   <Marker
-                  coordinate={{
-                    latitude: parseFloat(item.latitude),
-                    longitude: parseFloat(item.longitude),
-                  }}>
-                  <Image
-                    resizeMode={'contain'}
-                    style={{
-                      width: responsiveWidth(10),
-                      height: responsiveHeight(5),
+                <React.Fragment>
+                  <MapView.Circle
+                    // key = { (parseFloat(item.latitude) + parseFloat(item.longitude)).toString() }
+                    center={{
+                      latitude: parseFloat(Lat),
+                      longitude: parseFloat(Long),
                     }}
-                    source={require('../images/TYFTLogo.png')}
+                    radius={16093.4}
+                    strokeWidth={1}
+                    strokeColor={'#1a66ff'}
+                    fillColor={'rgba(230,238,255,0.5)'}
+                    // onRegionChangeComplete = { this.onRegionChangeComplete.bind(this) }
                   />
-                  <Callout
-                    onPress={() =>
-                      navigation.navigate('Search', {
-                        screen: RouteName.CUSTOMERSUPPLIER,
-                        params: {TruckInfo: item, openMap: openMap},
-                      })
-                    }
-                    tooltip={true}>
-                    <View style={styles.BOX}>
-                      <Text style={{paddingBottom: responsiveHeight(10)}}>
-                        <Image
-                          style={{
-                            height: responsiveHeight(12.5),
-                            width: responsiveWidth(25),
-                          }}
-                          // source={{uri: item.coverPhoto}}
-                          source={require('../images/Logo.jpg')}
-                          resizeMode={'contain'}
-                        />
-                      </Text>
-                      <View
+                  {calculateDistance(
+                    parseFloat(item.latitude),
+                    parseFloat(item.longitude),
+                  ) ? (
+                    <Marker
+                      coordinate={{
+                        latitude: parseFloat(item.latitude),
+                        longitude: parseFloat(item.longitude),
+                      }}>
+                      <Image
+                        resizeMode={'contain'}
                         style={{
-                          width: responsiveWidth(40),
-                          paddingLeft: responsiveWidth(2),
-                        }}>
-                        <Text style={styles.TruckName}>{item.truckName}</Text>
-                        <Text
-                          style={[
-                            item.status === 'Close'
-                              ? {color: 'red'}
-                              : {color: 'green'},
-                          ]}>
-                          {getStatus(item, index)}
-                        </Text>
-                      </View>
-                    </View>
-                  </Callout>
-                </Marker>:null}
+                          width: responsiveWidth(10),
+                          height: responsiveHeight(5),
+                        }}
+                        source={require('../images/TYFTLogo.png')}
+                      />
+                      <Callout
+                        onPress={() =>
+                          navigation.navigate('Search', {
+                            screen: RouteName.CUSTOMERSUPPLIER,
+                            params: {TruckInfo: item, openMap: openMap},
+                          })
+                        }
+                        tooltip={true}>
+                        <View style={styles.BOX}>
+                          <Text style={{paddingBottom: responsiveHeight(10)}}>
+                            <Image
+                              style={{
+                                height: responsiveHeight(9),
+                                width: responsiveWidth(18),
+                              }}
+                              // source={{uri: item.coverPhoto}}
+                              source={require('../images/Logo.jpg')}
+                              resizeMode={'contain'}
+                            />
+                          </Text>
+                          <View
+                            style={{
+                              width: responsiveWidth(40),
+                              paddingLeft: responsiveWidth(2),
+                            }}>
+                            <Text style={styles.TruckName}>
+                              {item.truckName}
+                            </Text>
+                            <Text>{getTimings(item)}</Text>
+                            <Text
+                              style={[
+                                item.status === 'Close'
+                                  ? {color: 'red'}
+                                  : {color: 'green'},
+                              ]}>
+                              {getStatus(item, index)}
+                            </Text>
+                          </View>
+                        </View>
+                      </Callout>
+                    </Marker>
+                  ) : null}
                 </React.Fragment>
               );
             }
@@ -285,7 +300,7 @@ const styles = StyleSheet.create({
   },
   TruckName: {
     fontSize: responsiveFontSize(2),
-    fontWeight: 'bold',
+    fontFamily: bold,
   },
   NoTruckText: {
     position: 'absolute',
@@ -296,7 +311,7 @@ const styles = StyleSheet.create({
     elevation: 5,
     textAlign: 'center',
     marginTop: responsiveHeight(30),
-    fontWeight: 'bold',
+    fontFamily: bold,
     fontSize: responsiveFontSize(3),
   },
   indicator: {
@@ -319,7 +334,7 @@ const styles = StyleSheet.create({
 
 export default React.memo(Maps, (prevProps, nextProps) => {
   if (prevProps.Trucks.coverPhoto !== nextProps.Trucks.coverPhoto) {
-   console.log('hi')
+    console.log('hi');
     return true;
   }
 });

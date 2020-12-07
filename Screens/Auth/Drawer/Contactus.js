@@ -8,6 +8,7 @@ import {
 import Header from '../../../Component/Header'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import { bold } from '../Constants/constants';
 export default class ContactUs extends Component {
   componentDidMount (){
     StatusBar.setBarStyle("dark-content")
@@ -17,7 +18,7 @@ export default class ContactUs extends Component {
       <SafeAreaView style={Styles.contianer}>
      <Header isHome onPress={()=>this.props.navigation.openDrawer()} >{'Contact Us'}</Header>
           <View style={{width:'90%',alignSelf:'center',marginVertical:responsiveHeight(2)}} >
-        <Text style={[Styles.textthin,{color:'black',fontSize:responsiveFontSize(2.5),fontWeight:'bold'}]}>{'Get in touch with us.'}</Text>
+        <Text style={[Styles.textthin,{color:'black',fontSize:responsiveFontSize(2.5),fontFamily:bold}]}>{'Get in touch with us.'}</Text>
         </View>
         <View style={Styles.MainContainer}>
           <View style={Styles.LeftIcon}>
@@ -92,7 +93,7 @@ const Styles = StyleSheet.create({
     width:'60%',
   },
   textBold: {
-    fontWeight: 'bold',
+ fontFamily:bold,
     fontSize: responsiveFontSize(2.3),
     color: 'black',
   },

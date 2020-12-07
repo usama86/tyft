@@ -17,7 +17,7 @@ import theme from './../theme';
 import RoundButton from '../../Component/Button';
 import Divider from './../../Component/Divider';
 import Texts from './../../Component/Text';
-import url from './Constants/constants';
+import url, { bold } from './Constants/constants';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -89,10 +89,9 @@ const styles = StyleSheet.create({
   },
   signInHeader: {
     fontSize: 23,
-    fontWeight: 'bold',
     ...Platform.select({
       android: {
-        fontFamily: 'Roboto',
+        fontFamily: bold,
       },
     }),
     marginTop: 20,

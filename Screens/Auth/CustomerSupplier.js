@@ -210,9 +210,9 @@ const CustomerSupplier = ({navigation, route}) => {
           marginLeft: responsiveWidth(3),
         }}>
         <Text
+        bold
           style={{
             color: 'green',
-            fontWeight: 'bold',
             fontSize: responsiveFontSize(2),
           }}
           value={''}

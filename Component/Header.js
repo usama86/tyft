@@ -6,13 +6,14 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import AsyncStorage from '@react-native-community/async-storage';
 import Ionicon from 'react-native-vector-icons/Ionicons';
-import Feather from 'react-native-vector-icons/Feather'
+import Feather from 'react-native-vector-icons/Feather';
 
 import {
   responsiveHeight,
   responsiveWidth,
   responsiveFontSize,
 } from 'react-native-responsive-dimensions';
+import {bold} from '../Screens/Auth/Constants/constants';
 const Header = ({
   isHome,
   style,
@@ -116,7 +117,7 @@ const styles = StyleSheet.create({
   text: {
     color: 'black',
     fontSize: responsiveFontSize(2.2),
-    fontWeight: 'bold',
+    fontFamily: bold,
   },
   homeIcon: {
     position: 'absolute',
