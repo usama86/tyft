@@ -183,7 +183,8 @@ const SignUp = ({navigation}) => {
             // lower
             rounded
             placeholder="Email Address"
-            onChangeText={val => changeEmail(val)}
+            onChangeText={val => changeEmail(val.toLowerCase())}
+            keyboardType={'email-address'}
             value={email}
             style={styles.Input}
           />

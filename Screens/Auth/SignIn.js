@@ -114,7 +114,7 @@ const SignIn = ({navigation}) => {
         placeholder="Email"
         inputStyle={[styles.inputStyle]}
         onChangeText={text => {
-          setEmail(text);
+          setEmail(text.toLowerCase());
           setEmailErrorMessage(null);
         }}
         keyboardType={'email-address'}

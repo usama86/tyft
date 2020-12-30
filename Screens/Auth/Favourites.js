@@ -180,11 +180,12 @@ const [uniqueProps,setuniqueProps] =useState([])
           ]}>
           <TouchableOpacity>
             <Text
-            bold
+            // bold
               value={getStatus(item, index)}
               style={{
                 color: 'green',
                 fontSize: responsiveFontSize(2),
+                fontWeight:'bold'
               }}
             />
           </TouchableOpacity>
@@ -283,7 +284,7 @@ const [uniqueProps,setuniqueProps] =useState([])
               uniqueProps:uniqueProps
             })
           }>
-          <SettingIcon name={'sound-mix'} size={40} />
+          <SettingIcon name={'sound-mix'} color={'grey'} size={40} />
         </TouchableOpacity>
       </View>
       <View

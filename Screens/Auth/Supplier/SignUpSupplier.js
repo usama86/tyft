@@ -188,7 +188,8 @@ const SignUpSupplier = ({navigation}) => {
             rounded
             value={email.email}
             //  
-            onChangeText={e => changeEmail(e)}
+            onChangeText={e => changeEmail(e.toLowerCase())}
+            keyboardType={'email-address'}
             placeholder="Email Address"
             style={styles.Input}
           />
