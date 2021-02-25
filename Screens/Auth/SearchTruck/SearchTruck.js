@@ -25,6 +25,7 @@ import SettingIcon from 'react-native-vector-icons/Entypo';
 import axios from 'axios';
 import moment from 'moment';
 import url from '../Constants/constants';
+import { Language } from '../../../Constants/LanguageChangeFunc';
 const SearchTruck = ({navigation}) => {
   const [buttonData, setButtonData] = React.useState([]);
   const [Truck, setTruck] = React.useState([]);
@@ -83,7 +84,7 @@ const SearchTruck = ({navigation}) => {
   return (
     // <Container containerStyle={styles.ContainerStyles}>
     <SafeAreaView style={styles.parent}>
-      <Header NoIcon onPress={() => navigation.goBack()}>{'Search Truck'}</Header>
+      <Header NoIcon onPress={() => navigation.goBack()}>{Language['Search Truck']}</Header>
       {indicator ? (
         <ActivityIndicator
           size={'large'}

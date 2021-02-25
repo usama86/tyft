@@ -17,6 +17,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage'
 import Modal from '../../../Component/Modal';
 import { bold } from '../Constants/constants';
+import { Language } from '../../../Constants/LanguageChangeFunc';
 const TruckInfo = ({navigation, route}) => {
   const [check, SetCheck] = React.useState(false);
   const [loading,setLoading] =React.useState(null);
@@ -116,7 +117,7 @@ setLoading(true);
       <Ui
         TextViewStyle={styles.TextViewStyle}
         TextValue={"Your food truck's info"}
-        ButtonText={'Done'}
+        ButtonText={Language['Done']}
         isLoading={loading}
         ContentStyle={{height: null}}
         buttonStyle={{marginVertical: responsiveHeight(1)}}

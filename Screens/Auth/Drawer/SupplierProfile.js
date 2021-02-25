@@ -11,6 +11,7 @@ import ErrorView from '../../../Component/ErrorField';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 import url from './../Constants/constants';
+import { Language } from '../../../Constants/LanguageChangeFunc';
 
 const SignUpSupplier = ({ navigation }) => {
 	const [ isLoading, setisLoading ] = React.useState(false);
@@ -252,7 +253,7 @@ const SignUpSupplier = ({ navigation }) => {
 							value={email.email}
 							//
 							onChangeText={(e) => changeEmail(e)}
-							placeholder="Email Address"
+							placeholder={Language['Email Address']}
 							style={styles.Input}
 						/>
 						{email.emailError ? <ErrorView>{email.emailErrorText}</ErrorView> : null}
@@ -261,7 +262,7 @@ const SignUpSupplier = ({ navigation }) => {
 							value={phone.phone}
 							onChangeText={(e) => setPhone({ phone: e, phoneError: false, phoneErrorText: null })}
 							keyboardType={'number-pad'}
-							placeholder="Cell Phone"
+							placeholder={Language['Cell Phone']}
 							style={styles.Input}
 						/>
 						{phone.phoneError ? <ErrorView>{phone.phoneErrorText}</ErrorView> : null}

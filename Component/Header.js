@@ -14,6 +14,7 @@ import {
   responsiveFontSize,
 } from 'react-native-responsive-dimensions';
 import {bold} from '../Screens/Auth/Constants/constants';
+import { Language } from '../Constants/LanguageChangeFunc';
 const Header = ({
   isHome,
   style,
@@ -78,7 +79,7 @@ const Header = ({
           onPress={onClearPress}
           style={[styles.switch, {marginTop: responsiveHeight(0.5)}]}>
           <Text style={{fontSize: responsiveFontSize(2), fontWeight: 'bold'}}>
-            {'Clear'}
+            {Language['Clear']}
           </Text>
         </TouchableOpacity>
       ) : null}

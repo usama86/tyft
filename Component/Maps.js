@@ -172,7 +172,7 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
             if (item.latitude && item.longitude) {
               return (
                 <React.Fragment>
-                  <MapView.Circle
+                  {/* <MapView.Circle
                     // key = { (parseFloat(item.latitude) + parseFloat(item.longitude)).toString() }
                     center={{
                       latitude: parseFloat(Lat),
@@ -183,7 +183,7 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
                     strokeColor={'#1a66ff'}
                     fillColor={'rgba(230,238,255,0.5)'}
                     // onRegionChangeComplete = { this.onRegionChangeComplete.bind(this) }
-                  />
+                  /> */}
                   {calculateDistance(
                     parseFloat(item.latitude),
                     parseFloat(item.longitude),
@@ -217,7 +217,7 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
                                 width: responsiveWidth(18),
                               }}
                               // source={{uri: item.coverPhoto}}
-                              source={require('../images/Logo.jpg')}
+                              source={{uri:item.truckLogo}}
                               resizeMode={'contain'}
                             />
                           </Text>

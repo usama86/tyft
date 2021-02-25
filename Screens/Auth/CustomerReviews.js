@@ -33,6 +33,7 @@ import axios from 'axios';
 import url from './Constants/constants';
 import {Textarea} from 'native-base';
 import moment from 'moment';
+import { Language } from '../../Constants/LanguageChangeFunc';
 const CustomerReviews = ({navigation, route}) => {
   const [menuItem, setMenuItem] = useState('Mexican');
   const [showModal, setShowModal] = useState(false);
@@ -114,7 +115,7 @@ const CustomerReviews = ({navigation, route}) => {
     }
   };
   const AddReviewHandler = async () => {
-    if (review !== '') {
+    if (review !== '' && rating !== 0) {
       setAddCommentLoader(true);
       console.log(review);
       console.log(rating);
@@ -144,7 +145,7 @@ const CustomerReviews = ({navigation, route}) => {
           setAddCommentLoader(false);
           console.log(error);
         });
-    } else Alert.alert('Please type Review');
+    } else Alert.alert('Please give ratings and type review');
   };
   const PrintCard = (item, index) => (
     <TouchableOpacity activeOpacity={0.8} style={styles.MainView}>
@@ -152,6 +153,7 @@ const CustomerReviews = ({navigation, route}) => {
         <Rating
           startingValue={item.Rating}
           imageSize={responsiveFontSize(2.8)}
+          readonly
         />
         <Text style={{color: '#A6A6A6'}} value={item.Name} />
         <Text style={{color: '#A6A6A6'}} value={CalculateTime(item.date)} />
@@ -186,7 +188,7 @@ const CustomerReviews = ({navigation, route}) => {
                 <Text
                   uppercase={false}
                   style={[styles.TextStyle1]}
-                  value={'Add a Review'}
+                  value={Language['Add a Review']}
                 />
               </Button>
             </View>
@@ -204,7 +206,7 @@ const CustomerReviews = ({navigation, route}) => {
         <TouchableOpacity activeOpacity={0.8} style={styles.MainView}>
           {alreadyReviewed ? (
             <>
-              <View style={{alignSelf:'flex-end'}}>
+              <View style={{alignSelf: 'flex-end'}}>
                 <Text
                   style={{color: '#A6A6A6'}}
                   bold
@@ -256,7 +258,7 @@ const CustomerReviews = ({navigation, route}) => {
                 <Textarea
                   rowSpan={5}
                   bordered
-                  placeholder="Write your Review here"
+                  placeholder={Language['Write your Review here']}
                   onChangeText={val => setReview(val)}
                 />
               </View>
@@ -282,7 +284,7 @@ const CustomerReviews = ({navigation, route}) => {
                     <Text
                       uppercase={false}
                       style={[styles.TextStyle1]}
-                      value={'Add Review'}
+                      value={Language['Add Review']}
                     />
                   </Button>
                 )}

@@ -12,6 +12,7 @@ import * as RouteName from './../../../Constants/RouteName';
 import Header from '../../../Component/Header';
 import ErrorView from '../../../Component/ErrorField';
 import axios from 'axios';
+import { Language } from '../../../Constants/LanguageChangeFunc';
 const SignUpSupplier = ({navigation}) => {
   const [isLoading, setisLoading] = React.useState(false);
   const [check, SetCheck] = React.useState(false);
@@ -40,7 +41,9 @@ const SignUpSupplier = ({navigation}) => {
     confirmPassError: null,
     confirmPassErrorText: null,
   });
-  const [confirmPasswordErrors,setConfirmPasswordErrors] = React.useState(null);
+  const [confirmPasswordErrors, setConfirmPasswordErrors] = React.useState(
+    null,
+  );
   const changeEmail = e => {
     let EmailRegix = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (EmailRegix.test(e)) {
@@ -118,8 +121,7 @@ const SignUpSupplier = ({navigation}) => {
       setConfirmPass({
         confirmpass: null,
         confirmPassError: true,
-        confirmPassErrorText:
-          'Confirm Password does not matches with password',
+        confirmPassErrorText: 'Confirm Password does not matches with password',
       });
     }
     if (!check) {
@@ -136,32 +138,27 @@ const SignUpSupplier = ({navigation}) => {
       phone.phone &&
       password.password &&
       !password.passwordError &&
-       confirmpass.confirmpass &&
-      !confirmpass.confirmPassError&&
+      confirmpass.confirmpass &&
+      !confirmpass.confirmPassError &&
       check
     ) {
       axios
-      .post(url + '/api/users/getuser', {
-        email: email.email,
-      })
-      .then(async Response => {
-        if(Response.data.length<1)
-        {
-          navigation.navigate(RouteName.TRUCKLOGO, {
-            Name: name.name,
-            Email: email.email,
-            Phone: phone.phone,
-            Password: password.password,
-          });
-        }
-        else
-          setConfirmPasswordErrors(true);
-
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  
+        .post(url + '/api/users/getuser', {
+          email: email.email,
+        })
+        .then(async Response => {
+          if (Response.data.length < 1) {
+            navigation.navigate(RouteName.TRUCKLOGO, {
+              Name: name.name,
+              Email: email.email,
+              Phone: phone.phone,
+              Password: password.password,
+            });
+          } else setConfirmPasswordErrors(true);
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   };
   return (
@@ -169,7 +166,7 @@ const SignUpSupplier = ({navigation}) => {
       <Header onPress={() => navigation.goBack()}>{'Sign Up'}</Header>
       <Ui
         isLoading={isLoading}
-        TextValue={"Let's Create your Supplier account"}
+        TextValue={Language['Let’s Create your Customer Account']}
         ButtonText={'Next'}
         onPressButton={Navigate}
         TextViewStyle={styles.TextViewStyle}>
@@ -187,10 +184,14 @@ const SignUpSupplier = ({navigation}) => {
           <Input
             rounded
             value={email.email}
-            //  
-            onChangeText={e => changeEmail(e.toLowerCase())}
-            keyboardType={'email-address'}
-            placeholder="Email Address"
+            //
+            onChangeText={e => changeEmail(e)}
+            onBlur ={()=>    setEmail({
+              email: email.email.toLowerCase(),
+              emailError: true,
+              emailErrorText: null,
+            })}
+            placeholder={Language['Email Address']}
             style={styles.Input}
           />
           {email.emailError ? (
@@ -203,7 +204,7 @@ const SignUpSupplier = ({navigation}) => {
               setPhone({phone: e, phoneError: false, phoneErrorText: null})
             }
             keyboardType={'number-pad'}
-            placeholder="Cell Phone"
+            placeholder={Language['Cell Phone']}
             style={styles.Input}
           />
           {phone.phoneError ? (
@@ -223,7 +224,7 @@ const SignUpSupplier = ({navigation}) => {
           <Input
             secured
             rounded
-            placeholder="Re-enter Password"
+            placeholder={Language['Re-enter Password']}
             value={confirmpass.confirmpass}
             onChangeText={e =>
               setConfirmPass({
@@ -247,8 +248,8 @@ const SignUpSupplier = ({navigation}) => {
           />
         </View>
         {confirmPasswordErrors ? (
-            <ErrorView>{'Email Address already exist'}</ErrorView>
-          ) : null}
+          <ErrorView>{'Email Address already exist'}</ErrorView>
+        ) : null}
       </Ui>
     </View>
   );

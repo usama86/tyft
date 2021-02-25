@@ -9,6 +9,7 @@ import Header from '../../../Component/Header'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { bold } from '../Constants/constants';
+import { Language } from '../../../Constants/LanguageChangeFunc';
 export default class ContactUs extends Component {
   componentDidMount (){
     StatusBar.setBarStyle("dark-content")
@@ -16,7 +17,7 @@ export default class ContactUs extends Component {
   render() {
     return (
       <SafeAreaView style={Styles.contianer}>
-     <Header isHome onPress={()=>this.props.navigation.openDrawer()} >{'Contact Us'}</Header>
+     <Header isHome onPress={()=>this.props.navigation.openDrawer()} >{Language['Contact Us']}</Header>
           <View style={{width:'90%',alignSelf:'center',marginVertical:responsiveHeight(2)}} >
         <Text style={[Styles.textthin,{color:'black',fontSize:responsiveFontSize(2.5),fontFamily:bold}]}>{'Get in touch with us.'}</Text>
         </View>

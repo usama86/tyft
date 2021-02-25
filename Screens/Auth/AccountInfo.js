@@ -24,6 +24,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Modal1 from 'react-native-modal';
 import {List, ListItem} from 'native-base';
+import {Language as Lan} from '../../Constants/LanguageChangeFunc';
 const AccountInfo = ({navigation, route}) => {
   const [name, SetName] = React.useState('');
   const [email, setEmail] = React.useState('');
@@ -176,11 +177,11 @@ const AccountInfo = ({navigation, route}) => {
           onSettingsPress={() => setShowModal(true)}
           navigation={navigation}
           onPress={() => navigation.goBack()}>
-          {'Account'}
+          {Lan['Account']}
         </Header>
       ) : (
         <Header navigation={navigation} onPress={() => navigation.goBack()}>
-          {'Account'}
+          {Lan['Account']}
         </Header>
       )}
       {LoggedIn ? (
@@ -214,7 +215,10 @@ const AccountInfo = ({navigation, route}) => {
                 />
                 {/* imageProps={{uri:truckData.truckLogo}} */}
                 <View style={{marginLeft: 20}}>
-                  <Text1 style={{fontSize:responsiveFontSize(2)}} value={name} />
+                  <Text1
+                    style={{fontSize: responsiveFontSize(2)}}
+                    value={name}
+                  />
                 </View>
               </View>
             </View>
@@ -234,8 +238,12 @@ const AccountInfo = ({navigation, route}) => {
                 marginTop: responsiveHeight(3),
               }}>
               <Text1
-                value={'Personal Details'}
-                style={{color: '#B40E33',fontWeight:'bold',fontSize:responsiveFontSize(2.8)}}
+                value={Lan['Personal Details']}
+                style={{
+                  color: '#B40E33',
+                  fontWeight: 'bold',
+                  fontSize: responsiveFontSize(2.8),
+                }}
               />
               <Text1
                 value={email}
@@ -277,7 +285,7 @@ const AccountInfo = ({navigation, route}) => {
                 fontFamily: bold,
                 fontSize: responsiveFontSize(2),
               }}
-              value={'Are you sure you wanna Signout?'}
+              value={Lan['Are you sure you want to Sign-out?']}
             />
             <View style={styles.ButtonView}>
               <Button
@@ -294,8 +302,12 @@ const AccountInfo = ({navigation, route}) => {
                 rounded>
                 <Text1
                   uppercase={false}
-                  value={'Yes'}
-                  style={{color: '#fff',fontSize:responsiveFontSize(2),fontWeight:'bold'}}
+                  value={Lan['Yes']}
+                  style={{
+                    color: '#fff',
+                    fontSize: responsiveFontSize(2),
+                    fontWeight: 'bold',
+                  }}
                 />
               </Button>
               <Button
@@ -312,9 +324,12 @@ const AccountInfo = ({navigation, route}) => {
                 rounded>
                 <Text1
                   uppercase={false}
-                  value={'No'}
-                  
-                  style={{color: '#fff',fontSize:responsiveFontSize(2),fontWeight:'bold'}}
+                  value={Lan['No']}
+                  style={{
+                    color: '#fff',
+                    fontSize: responsiveFontSize(2),
+                    fontWeight: 'bold',
+                  }}
                 />
               </Button>
             </View>
@@ -425,7 +440,7 @@ const AccountInfo = ({navigation, route}) => {
                         color: 'grey',
                         fontFamily: bold,
                       }}>
-                      {'Cancel'}
+                      {Lan['Cancel']}
                     </Text>
                   </ListItem>
                 </List>
@@ -454,7 +469,7 @@ const AccountInfo = ({navigation, route}) => {
               style={{
                 color: '#696969',
                 fontSize: responsiveFontSize(2),
-                fontFamily:bold
+                fontFamily: bold,
               }}
               value={
                 'A TYFT Account allows you to bookmark truck, review about them and make'
@@ -523,7 +538,7 @@ const styles = StyleSheet.create({
     paddingVertical: responsiveHeight(2),
   },
   UpdatedText: {
-    fontFamily:bold,
+    fontFamily: bold,
     fontSize: responsiveFontSize(2.5),
     color: '#1AB975',
     textAlign: 'center',

@@ -25,6 +25,7 @@ import axios from 'axios';
 import Modal from '../../../Component/Modal';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
+import { Language } from '../../../Constants/LanguageChangeFunc';
 function Schedule({navigation, route}) {
   const [setting, setSetting] = useState([
     {
@@ -131,7 +132,7 @@ function Schedule({navigation, route}) {
   return (
     <SafeAreaView style={styles.container}>
       <Header isHome onPress={() => navigation.openDrawer()}>
-        {'Schedule'}
+        {Language['Schedule']}
       </Header>
       <ScrollView>
         <View style={styles.formContainer}>
@@ -222,7 +223,7 @@ function Schedule({navigation, route}) {
         ) : (
           <RoundButton style={styles.buttonStyle2} onPress={updateSchedule}>
             <Text uppercase={false} style={styles.TextStyle1}>
-              Done
+              {Language['Done']}
             </Text>
           </RoundButton>
         )}

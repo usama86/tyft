@@ -19,6 +19,7 @@ import axios from 'axios';
 import Modal from '../../Component/Modal';
 import FuzzySearch from 'fuzzy-search';
 import { bold, normal } from './Constants/constants';
+import { Language } from '../../Constants/LanguageChangeFunc';
 const Menu = ({navigation, route}) => {
   const [menuItem, setMenuItem] = useState();
   const [isMsg, setIsMsg] = useState(false);
@@ -183,7 +184,7 @@ const Menu = ({navigation, route}) => {
       <View style={styles.HeadingContainer}>
         {/* <Text style={{textTransform: 'uppercase'}} bold value={'Menu'} /> */}
         <TextInput
-          placeholder={'Search'}
+          placeholder={Language['Search']}
           value={menuItem}
           onChangeText={onChangeSearch}
           style={styles.input}

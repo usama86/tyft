@@ -20,7 +20,7 @@ import Modal from '../../Component/Modal';
 import {CommonActions} from '@react-navigation/native';
 import {Avatar} from 'react-native-elements';
 import ImagePicker from 'react-native-image-picker';
-
+import {Language as Lan} from '../../Constants/LanguageChangeFunc'
 const Account = ({navigation, route}) => {
   const [name, SetName] = React.useState({value: null, errorText: null});
   const [email, setEmail] = React.useState({value: null, errorText: null});
@@ -67,7 +67,7 @@ const Account = ({navigation, route}) => {
   };
   const SelectImage = () => {
     const options = {
-      title: 'Select or Capture Your Image',
+      title: Lan['Select or Capture Your Image'],
       storageOptions: {
         skipBackup: true,
         path: 'images',
@@ -224,11 +224,11 @@ const Account = ({navigation, route}) => {
     <View style={{height: '100%', width: '100%'}}>
       {LoggedIn ? (
         <Header navigation={navigation} onPress={() => navigation.goBack()}>
-          {'Update Account'}
+          {Lan['Update Account']}
         </Header>
       ) : (
         <Header navigation={navigation} onPress={() => navigation.goBack()}>
-          {'Update Account'}
+          {Lan['Update Account']}
         </Header>
       )}
 
@@ -236,7 +236,7 @@ const Account = ({navigation, route}) => {
         <Ui
           onPressButton={updateUser}
           isLoading={isLoading}
-          ButtonText={'Done'}
+          ButtonText={Lan['Done']}
           TextShow={false}
           TextSpace={styles.TextSpace}
           TextViewStyle={styles.TextViewStyle}>
@@ -266,7 +266,7 @@ const Account = ({navigation, route}) => {
             />
             <Input
               rounded
-              placeholder="Email Address"
+              placeholder={Lan['Email Address']}
               keyboardType={'email-address'}
               value={email.value}
               onChangeText={e => changeEmail(e)}
@@ -275,7 +275,7 @@ const Account = ({navigation, route}) => {
             />
             <Input
               rounded
-              placeholder="Cell Phone"
+              placeholder={Lan['Cell Phone']}
               keyboardType={'phone-pad'}
               onChangeText={e => setPhone({value: e, errorText: null})}
               value={phone.value}

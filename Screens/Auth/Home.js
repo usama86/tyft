@@ -1,5 +1,11 @@
-import React, {useEffect} from 'react';
-import {View, Image, StyleSheet, TouchableOpacity} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  View,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Text as Text1,
+} from 'react-native';
 import {
   responsiveHeight,
   responsiveWidth,
@@ -15,7 +21,8 @@ import * as RouteName from '../../Constants/RouteName';
 import Animation from './../../Component/Animation';
 import Container from './../../Component/Container';
 import axios from 'axios';
-import url,{bold} from '../Auth/Constants/constants'
+import url, {bold} from '../Auth/Constants/constants';
+import {CheckBox} from 'native-base';
 import AsyncStorage from '@react-native-community/async-storage';
 import {
   AccessToken,
@@ -24,6 +31,11 @@ import {
   GraphRequestManager,
 } from 'react-native-fbsdk';
 import {GoogleSignin, statusCodes} from '@react-native-community/google-signin';
+import theme from '../theme';
+//Langauge
+import {LanguageSelect, Language} from '../../Constants/LanguageChangeFunc';
+import English from '../../Constants/en.json';
+import Spanish from '../../Constants/sp.json';
 const Home = ({navigation}) => {
   const {
     container,
@@ -38,7 +50,11 @@ const Home = ({navigation}) => {
     logoStyle1,
     TouchStyle,
   } = styles;
+  const [language, setLanguage] = useState('English');
   useEffect(() => {
+    navigation.addListener('focus', () => {
+      LanguageSelect(English);
+    });
     GoogleSignin.configure({
       scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile
       webClientId:
@@ -56,80 +72,99 @@ const Home = ({navigation}) => {
     try {
       await GoogleSignin.hasPlayServices();
       const result = await GoogleSignin.signIn();
-      console.log('User INFO',result)
+      console.log('User INFO', result);
 
       axios
-      .post(url + '/api/users/getuser', {
-        email: result.user.email,
-      })
-      .then(async res => {
-          if(res.data.length>0)
-          {
-            
+        .post(url + '/api/users/getuser', {
+          email: result.user.email,
+        })
+        .then(async res => {
+          if (res.data.length > 0) {
             await AsyncStorage.setItem('userID' + '', res.data[0]._id);
             await AsyncStorage.setItem('userType' + '', res.data[0].userType);
-            await AsyncStorage.setItem('userName' + '', res.data[0].profileName);
+            await AsyncStorage.setItem(
+              'userName' + '',
+              res.data[0].profileName,
+            );
             await AsyncStorage.setItem('email' + '', res.data[0].email);
-            await AsyncStorage.setItem('profileName' + '', res.data[0].profileName);
-            await AsyncStorage.setItem('phoneNumber' + '', res.data[0].phoneNumber);     
-            if(res.data[0].userType ==='Customer')
+            await AsyncStorage.setItem(
+              'profileName' + '',
+              res.data[0].profileName,
+            );
+            await AsyncStorage.setItem(
+              'phoneNumber' + '',
+              res.data[0].phoneNumber,
+            );
+            if (res.data[0].userType === 'Customer')
               navigation.navigate('Auth', {screen: 'Tabs'});
-            else
-              navigation.navigate('App',{screen:RouteName.VEGGIEWISPER});  
-          }
-          else{
+            else navigation.navigate('App', {screen: RouteName.VEGGIEWISPER});
+          } else {
             axios
-            .post(url + '/api/users/signup', 
-            {
-              email: result.user.email,
-              password: '',
-              profileName: result.user.name,
-              phoneNumber: '',
-              userType: 'Customer',
-              Language: 'English',
-              social:true
-            })
-            .then(async Response => {
-              console.log('Responsessss', Response.data.code);
-              let Code = Response.data.code;
-              if (Code === 'ABT0000') {
-                // setisLoading(false);
-                console.log('Customer Added');
+              .post(url + '/api/users/signup', {
+                email: result.user.email,
+                password: '',
+                profileName: result.user.name,
+                phoneNumber: '',
+                userType: 'Customer',
+                Language: 'English',
+                social: true,
+              })
+              .then(async Response => {
+                console.log('Responsessss', Response.data.code);
+                let Code = Response.data.code;
+                if (Code === 'ABT0000') {
+                  // setisLoading(false);
+                  console.log('Customer Added');
 
-                axios
-                .post(url + '/api/users/getuser', {
-                  email: result.user.email,
-                })
-                .then(async res => {
-                    if(res.data.length>0)
-                    {
-                          await AsyncStorage.setItem('userID' + '', res.data[0]._id);
-                          await AsyncStorage.setItem('userType' + '', res.data[0].userType);
-                          await AsyncStorage.setItem('userName' + '', res.data[0].profileName);
-                          await AsyncStorage.setItem('email' + '', res.data[0].email);
-                          await AsyncStorage.setItem('profileName' + '', res.data[0].profileName);
-                          await AsyncStorage.setItem('phoneNumber' + '', res.data[0].phoneNumber);     
-                          navigation.navigate('Auth', {screen: 'Tabs'});
-                    }          
-                  })
-                  .catch(error => {
-                    console.log(error);
-                  });
-              } else {
-                console.log('NOT ADDEED');
-                // setisLoading(false);
-              }
-            })
-            .catch(error => {
-              console.log(error);
-            });
-
+                  axios
+                    .post(url + '/api/users/getuser', {
+                      email: result.user.email,
+                    })
+                    .then(async res => {
+                      if (res.data.length > 0) {
+                        await AsyncStorage.setItem(
+                          'userID' + '',
+                          res.data[0]._id,
+                        );
+                        await AsyncStorage.setItem(
+                          'userType' + '',
+                          res.data[0].userType,
+                        );
+                        await AsyncStorage.setItem(
+                          'userName' + '',
+                          res.data[0].profileName,
+                        );
+                        await AsyncStorage.setItem(
+                          'email' + '',
+                          res.data[0].email,
+                        );
+                        await AsyncStorage.setItem(
+                          'profileName' + '',
+                          res.data[0].profileName,
+                        );
+                        await AsyncStorage.setItem(
+                          'phoneNumber' + '',
+                          res.data[0].phoneNumber,
+                        );
+                        navigation.navigate('Auth', {screen: 'Tabs'});
+                      }
+                    })
+                    .catch(error => {
+                      console.log(error);
+                    });
+                } else {
+                  console.log('NOT ADDEED');
+                  // setisLoading(false);
+                }
+              })
+              .catch(error => {
+                console.log(error);
+              });
           }
-      })
-      .catch(error => {
-        console.log(error);
-      });
-
+        })
+        .catch(error => {
+          console.log(error);
+        });
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         console.log('User', error);
@@ -161,78 +196,107 @@ const Home = ({navigation}) => {
                 console.log(error);
               } else {
                 console.log(result);
-              //  navigation.navigate('Auth', {screen: 'Tabs'});
+                //  navigation.navigate('Auth', {screen: 'Tabs'});
 
-              axios
-              .post(url + '/api/users/getuser', {
-                email: result.email,
-              })
-              .then(async res => {
-                  if(res.data.length>0)
-                  {
-                    
-                    await AsyncStorage.setItem('userID' + '', res.data[0]._id);
-                    await AsyncStorage.setItem('userType' + '', res.data[0].userType);
-                    await AsyncStorage.setItem('userName' + '', res.data[0].profileName);
-                    await AsyncStorage.setItem('email' + '', res.data[0].email);
-                    await AsyncStorage.setItem('profileName' + '', res.data[0].profileName);
-                    await AsyncStorage.setItem('phoneNumber' + '', res.data[0].phoneNumber);     
-                    navigation.navigate('Auth', {screen: 'Tabs'});
-                  }
-                  else{
-                    axios
-                    .post(url + '/api/users/signup', {
-                      email: result.email,
-                      password: '',
-                      profileName: result.first_name + result.last_name,
-                      phoneNumber: '',
-                      userType: 'Customer',
-                      Language: 'English',
-                      social:true
-                    })
-                    .then(async Response => {
-                      console.log('Responsessss', Response.data.code);
-                      let Code = Response.data.code;
-                      if (Code === 'ABT0000') {
-                        // setisLoading(false);
-                        console.log('Customer Added');
-
-                        axios
-                        .post(url + '/api/users/getuser', {
+                axios
+                  .post(url + '/api/users/getuser', {
+                    email: result.email,
+                  })
+                  .then(async res => {
+                    if (res.data.length > 0) {
+                      await AsyncStorage.setItem(
+                        'userID' + '',
+                        res.data[0]._id,
+                      );
+                      await AsyncStorage.setItem(
+                        'userType' + '',
+                        res.data[0].userType,
+                      );
+                      await AsyncStorage.setItem(
+                        'userName' + '',
+                        res.data[0].profileName,
+                      );
+                      await AsyncStorage.setItem(
+                        'email' + '',
+                        res.data[0].email,
+                      );
+                      await AsyncStorage.setItem(
+                        'profileName' + '',
+                        res.data[0].profileName,
+                      );
+                      await AsyncStorage.setItem(
+                        'phoneNumber' + '',
+                        res.data[0].phoneNumber,
+                      );
+                      navigation.navigate('Auth', {screen: 'Tabs'});
+                    } else {
+                      axios
+                        .post(url + '/api/users/signup', {
                           email: result.email,
+                          password: '',
+                          profileName: result.first_name + result.last_name,
+                          phoneNumber: '',
+                          userType: 'Customer',
+                          Language: 'English',
+                          social: true,
                         })
-                        .then(async res => {
-                            if(res.data.length>0)
-                            {
-                                  await AsyncStorage.setItem('userID' + '', res.data[0]._id);
-                                  await AsyncStorage.setItem('userType' + '', res.data[0].userType);
-                                  await AsyncStorage.setItem('userName' + '', res.data[0].profileName);
-                                  await AsyncStorage.setItem('email' + '', res.data[0].email);
-                                  await AsyncStorage.setItem('profileName' + '', res.data[0].profileName);
-                                  await AsyncStorage.setItem('phoneNumber' + '', res.data[0].phoneNumber);     
+                        .then(async Response => {
+                          console.log('Responsessss', Response.data.code);
+                          let Code = Response.data.code;
+                          if (Code === 'ABT0000') {
+                            // setisLoading(false);
+                            console.log('Customer Added');
+
+                            axios
+                              .post(url + '/api/users/getuser', {
+                                email: result.email,
+                              })
+                              .then(async res => {
+                                if (res.data.length > 0) {
+                                  await AsyncStorage.setItem(
+                                    'userID' + '',
+                                    res.data[0]._id,
+                                  );
+                                  await AsyncStorage.setItem(
+                                    'userType' + '',
+                                    res.data[0].userType,
+                                  );
+                                  await AsyncStorage.setItem(
+                                    'userName' + '',
+                                    res.data[0].profileName,
+                                  );
+                                  await AsyncStorage.setItem(
+                                    'email' + '',
+                                    res.data[0].email,
+                                  );
+                                  await AsyncStorage.setItem(
+                                    'profileName' + '',
+                                    res.data[0].profileName,
+                                  );
+                                  await AsyncStorage.setItem(
+                                    'phoneNumber' + '',
+                                    res.data[0].phoneNumber,
+                                  );
                                   navigation.navigate('Auth', {screen: 'Tabs'});
-                            }          
-                          })
-                          .catch(error => {
-                            console.log(error);
-                          });
-                      } else {
-                        console.log('NOT ADDEED');
-                        // setisLoading(false);
-                      }
-                    })
-                    .catch(error => {
-                      console.log(error);
-                    });
-
-                  }
-              })
-              .catch(error => {
-                console.log(error);
-              });
-          
-
-              } 
+                                }
+                              })
+                              .catch(error => {
+                                console.log(error);
+                              });
+                          } else {
+                            console.log('NOT ADDEED');
+                            // setisLoading(false);
+                          }
+                        })
+                        .catch(error => {
+                          console.log(error);
+                        });
+                    }
+                  })
+                  .catch(error => {
+                    console.log(error);
+                  });
+              }
             };
             const infoRequest = new GraphRequest(
               '/me',
@@ -280,7 +344,7 @@ const Home = ({navigation}) => {
           <Entypo name="chevron-thin-right" size={15} color="white" />
         </Button>
 
-        <Button onPress={signInGoogle}  style={buttonStyle1} rounded>
+        <Button onPress={signInGoogle} style={buttonStyle1} rounded>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Iconss name="google" size={25} color="white" />
             <Text
@@ -312,10 +376,43 @@ const Home = ({navigation}) => {
           <Entypo name="chevron-thin-right" size={15} color="rgb(0, 0, 0)" />
         </Button>
       </View>
+      <View
+        style={{
+          marginTop: responsiveHeight(3),
+          width: '50%',
+          alignSelf: 'center',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}>
+        <View>
+          <CheckBox
+            style={{width: responsiveWidth(4.5), height: responsiveHeight(2.3)}}
+            color={theme.colors.primary}
+            checked={language === 'English'}
+            onPress={() => {
+              setLanguage('English');
+              LanguageSelect(English);
+            }}
+          />
+          <Text1>{'English'}</Text1>
+        </View>
+        <View>
+          <CheckBox
+            style={{width: responsiveWidth(4.5), height: responsiveHeight(2.3)}}
+            color={theme.colors.primary}
+            checked={language === 'Spanish'}
+            onPress={() => {
+              setLanguage('Spanish');
+              LanguageSelect(Spanish);
+            }}
+          />
+          <Text1>{'Spanish'}</Text1>
+        </View>
+      </View>
 
       <View style={FooterText}>
         <View style={{flexDirection: 'row', marginBottom: responsiveHeight(5)}}>
-          <Text value={'Already have an account?'} />
+          <Text value={Language['hi']} />
           <Text
             style={Underline}
             onPress={() => {
@@ -399,11 +496,11 @@ const styles = StyleSheet.create({
   },
   FooterText: {
     alignItems: 'center',
-    marginTop: responsiveHeight(6),
+    marginTop: responsiveHeight(3),
   },
   Underline: {
     textDecorationLine: 'underline',
-    fontFamily:bold,
+    fontFamily: bold,
     marginLeft: responsiveWidth(1),
   },
 });

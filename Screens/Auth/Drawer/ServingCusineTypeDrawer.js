@@ -29,6 +29,7 @@ import url, { bold } from '../Constants/constants';
 import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
 import Modal from '../../../Component/Modal';
+import { Language } from '../../../Constants/LanguageChangeFunc';
 let count=0;
 const FindFoodTruck = ({navigation, route}) => {
  
@@ -224,7 +225,7 @@ const FindFoodTruck = ({navigation, route}) => {
               style={[styles.buttonStyle2]}
               rounded
               onPress={saveServingCusine}>
-              <Text style={{color: '#fff'}} uppercase={false} value={'Save'} />
+              <Text style={{color: '#fff'}} uppercase={false} value={Language['Save']} />
             </Button>
           </View>
         </>

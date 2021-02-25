@@ -30,6 +30,7 @@ import url, {bold, normal} from './../Constants/constants';
 import axios from 'axios';
 import AddItemModal from '../../../Component/Modal';
 import Entypo from 'react-native-vector-icons/Entypo';
+import { Language } from '../../../Constants/LanguageChangeFunc';
 const MenuSetting = ({navigation, route}) => {
   const [addItem, setAddItem] = React.useState(false);
   const [Categories, setCategories] = React.useState([]);
@@ -212,7 +213,7 @@ const MenuSetting = ({navigation, route}) => {
       newArray.push({
         name: name.value,
         price: price.value,
-        description: description.value,
+        description: description.value.trim(),
         category: SelectedValue,
       });
       setIndicator(true);
@@ -433,7 +434,7 @@ const MenuSetting = ({navigation, route}) => {
           setPrice({value: null, Error: false, ErrorText: null});
         }}
         onPress={() => navigation.openDrawer()}>
-        {'Menu'}
+        {Language['Menu']}
       </Header>
       <View
         // isLoading={indicator}
@@ -493,7 +494,7 @@ const MenuSetting = ({navigation, route}) => {
 
             <Input
               rounded
-              placeholder="Name"
+              placeholder={Language['Name']}
               onChangeText={e =>
                 setName({value: e, Error: false, ErrorText: null})
               }
@@ -607,6 +608,7 @@ const MenuSetting = ({navigation, route}) => {
                 keyExtractor={item => item.id}
                 contentContainerStyle={{
                   paddingVertical: responsiveHeight(1),
+                  paddingBottom:responsiveHeight(5)
                 }}
                 renderItem={({item, index}) => PrintCard(item, index)}
               />
@@ -643,7 +645,7 @@ const MenuSetting = ({navigation, route}) => {
         </View>
         <Input
           rounded
-          placeholder="Name"
+          placeholder={Language['Name']}
           onChangeText={e => setName({value: e, Error: false, ErrorText: null})}
           value={name.value}
           style={styles.Input}
@@ -722,7 +724,7 @@ const MenuSetting = ({navigation, route}) => {
               <Text
                 bold
                 uppercase={false}
-                value={'Yes'}
+                value={Language['Yes']}
                 style={{color: '#fff'}}
               />
             </Button>
@@ -741,7 +743,7 @@ const MenuSetting = ({navigation, route}) => {
               <Text
                 bold
                 uppercase={false}
-                value={'No'}
+                value={Language['No']}
                 style={{color: '#fff'}}
               />
             </Button>

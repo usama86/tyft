@@ -12,6 +12,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import url, { bold } from '../Constants/constants';
 import axios from 'axios';
 import Modal from '../../../Component/Modal';
+import { Language } from '../../../Constants/LanguageChangeFunc';
 const MenuSetting = ({ navigation, route }) => {
 	const [ facebook, setFacebook ] = React.useState('');
 	const [ instagram, setInstagram ] = React.useState('');
@@ -77,9 +78,9 @@ const MenuSetting = ({ navigation, route }) => {
 	return (
 		<View style={{ height: '100%', width: '100%' }}>
 			<Header isHome onPress={() => navigation.openDrawer()}>
-				{'Social Media'}
+				{Language['Social Media']}
 			</Header>
-			<Ui TextShow={false} ButtonText={'Save'} onPressButton={onSaveSocialMedia}>
+			<Ui TextShow={false} ButtonText={Language['Save']} onPressButton={onSaveSocialMedia}>
 				<View style={styles.InputMainView}>
 				<Text bold value='Social Media' style={{marginLeft:responsiveWidth(3),fontSize:responsiveFontSize(2.5)}}/>
 					<View style={styles.Time}>

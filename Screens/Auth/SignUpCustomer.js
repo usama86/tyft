@@ -15,6 +15,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 import ErrorView from '../../Component/ErrorField';
 import * as Route from '../../Constants/RouteName';
+import { Language } from '../../Constants/LanguageChangeFunc';
 const SignUp = ({navigation}) => {
   const [name, SetName] = React.useState(null);
   const [nameError, SetNameError] = React.useState(false);
@@ -79,23 +80,23 @@ const SignUp = ({navigation}) => {
     // console.log(languge)
     if (name === null) {
       SetNameError(true);
-      SetNameErrorText('Please Enter Your Name');
+      SetNameErrorText(Language['Please enter your Name']);
     }
     if (email === null) {
       setEmailError(true);
-      setEmailErrorText('Please Enter Your Email');
+      setEmailErrorText(Language['Please enter your Email']);
     }
     if (phone === null) {
       setPhoneError(true);
-      setPhoneErrorText('Please Enter Your Phone Number');
+      setPhoneErrorText(Language['Please enter your Phone Number']);
     }
     if (password === null) {
       setPasswordError(true);
-      setPasswordErrorText('Please Enter Your Password');
+      setPasswordErrorText(Language['Please enter your Password']);
     }
     if (confirmPassword === null) {
       setConfirmPasswordError(true);
-      setConfirmPasswordErrorText('Please Enter Your Confirm Password');
+      setConfirmPasswordErrorText(Language['Please enter your Confirm Password']);
     }
     if (confirmPassword !== password) {
       setConfirmPasswordError(true);
@@ -162,8 +163,8 @@ const SignUp = ({navigation}) => {
       <Ui
         isLoading={isLoading}
         onPressButton={AddCustomer}
-        TextValue={"Let's Create your Customer account"}
-        ButtonText={'Get Started'}
+        TextValue={Language['Let’s Create your Customer Account']}
+        ButtonText={Language['Get Started']}
         TextSpace={styles.TextSpace}
         TextViewStyle={styles.TextViewStyle}>
         <View style={styles.InputMainView}>
@@ -182,16 +183,16 @@ const SignUp = ({navigation}) => {
           <Input
             // lower
             rounded
-            placeholder="Email Address"
-            onChangeText={val => changeEmail(val.toLowerCase())}
-            keyboardType={'email-address'}
+            placeholder={Language['Email Address']}
+            onChangeText={val => changeEmail(val)}
+            onBlur={()=>setEmail(e=>e.toLowerCase())}
             value={email}
             style={styles.Input}
           />
           {emailError ? <ErrorView>{emailErrorText}</ErrorView> : null}
           <Input
             rounded
-            placeholder="Cell Phone"
+            placeholder={Language['Cell Phone']}
             onChangeText={val => {
               setPhone(val);
               setPhoneError(false);
@@ -213,7 +214,7 @@ const SignUp = ({navigation}) => {
           <Input
             rounded
             secured
-            placeholder="Re-enter Password"
+            placeholder={Language['Re-enter Password']}
             onChangeText={val => {
               setConfirmPassword(val);
               setConfirmPasswordError(false);

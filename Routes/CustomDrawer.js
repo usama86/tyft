@@ -18,6 +18,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import url from '../Screens/Auth/Constants/constants';
 import axios from 'axios';
 import ImagePicker from 'react-native-image-picker';
+import { Language } from '../Constants/LanguageChangeFunc';
 const CustomDrawer = ({navigation, route}) => {
   const Logout = async () => {
     await AsyncStorage.clear();
@@ -34,7 +35,7 @@ const CustomDrawer = ({navigation, route}) => {
   }, []);
   const SelectImage = () => {
     const options = {
-      title: 'Select or Capture Your Image',
+      title: Language['Select or Capture Your Image'],
       storageOptions: {
         skipBackup: true,
         path: 'images',
@@ -151,12 +152,12 @@ const CustomDrawer = ({navigation, route}) => {
 
         <View style={styles.content}>
           <ListItem
-            title={'Home'}
+            title={Language['Home']}
             leftAvatar={<SignoutIcon name={'home'} size={25} />}
             onPress={() => navigation.navigate(Screens.VEGGIEWISPER)}
           />
           <ListItem
-            title={'Schedule'}
+            title={Language['Schedule']}
             leftAvatar={<AntDesign name={'clockcircle'} size={25} />}
             onPress={() =>
               navigation.navigate(Screens.SCHEDULED, {
@@ -165,13 +166,13 @@ const CustomDrawer = ({navigation, route}) => {
             }
           />
           <ListItem
-            title={'Customer Reviews'}
+            title={Language['Customer Reviews']}
             leftAvatar={<Icon name="comment" type="fontAwesome" size={25} />}
             onPress={() => navigation.navigate(Screens.CUSTOMERREVIEWD)}
           />
 
           <ListItem
-            title={'Menu'}
+            title={Language['Menu']}
             leftAvatar={
               <Icon name="restaurant-menu" type="MaterialIcons" size={25} />
             }
@@ -190,7 +191,7 @@ const CustomDrawer = ({navigation, route}) => {
             }
           />
           <ListItem
-            title={'Social Media'}
+            title={Language['Social Media']}
             leftAvatar={<SLI name={'social-stumbleupon'} size={25} />}
             onPress={() => navigation.navigate('SocialMediaDrawer')}
           />
@@ -200,7 +201,7 @@ const CustomDrawer = ({navigation, route}) => {
             onPress={() => navigation.navigate('ServingCusineDrawer')}
           />
           <ListItem
-            title={'Contact Us'}
+            title={Language['Contact Us']}
             leftAvatar={<ProfileIcon name={'contacts'} size={25} />}
              onPress={() => navigation.navigate('ContactUs')}
           />

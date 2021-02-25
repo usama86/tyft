@@ -26,6 +26,7 @@ import * as RouteName from '../../Constants/RouteName';
 import Header from '../../Component/Header';
 import url from './Constants/constants';
 import axios from 'axios';
+import { Language } from '../../Constants/LanguageChangeFunc';
 const FindFoodTruck = ({navigation, route}) => {
   const [indicator, setIndicator] = useState(true);
   const [CusineName, setCusinename] = useState([]);
@@ -187,7 +188,7 @@ const FindFoodTruck = ({navigation, route}) => {
               }}
               style={[styles.buttonStyle2]}
               rounded>
-              <Text style={{color: '#fff'}} uppercase={false} value={'Apply'} />
+              <Text style={{color: '#fff'}} uppercase={false} value={Language['Apply']} />
             </Button>
           </View>
         </>

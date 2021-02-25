@@ -32,6 +32,7 @@ import FuzzySearch from 'fuzzy-search'; // Or: var FuzzySearch = require('fuzzy-
 import Geolocation from '@react-native-community/geolocation';
 import {showLocation} from 'react-native-map-link';
 import FA5 from 'react-native-vector-icons/FontAwesome5';
+import {Language} from '../../Constants/LanguageChangeFunc';
 const FindFoodTruck = ({navigation, route}) => {
   const [Data, setData] = useState([]);
   const [day, setDay] = useState(null);
@@ -96,7 +97,9 @@ const FindFoodTruck = ({navigation, route}) => {
         console.log('NOT MATCHED');
         setIsMsg(true);
       } else {
-        let filtered = matched.filter((v,i,a)=>a.findIndex(t=>(t._id === v._id))===i)
+        let filtered = matched.filter(
+          (v, i, a) => a.findIndex(t => t._id === v._id) === i,
+        );
         setIsMsg(false);
         await setData(filtered);
       }
@@ -140,7 +143,9 @@ const FindFoodTruck = ({navigation, route}) => {
   // };
   const getStatus = (item, index) => {
     let day = moment(new Date()).format('dddd');
+    console.log('day', day);
     let matchedDay = item.schedule.filter(data => day === data.day);
+    console.log('schedule', matchedDay);
     if (matchedDay.length > 0) {
       let startTime = new Date(
         'Mon 03-Jul-2017, ' + matchedDay[0].opening.toString(),
@@ -155,7 +160,10 @@ const FindFoodTruck = ({navigation, route}) => {
       // console.log('Matched Day', matchedDay);
       var currentTime = new Date().getHours();
       // console.log('Current Time ', currentTime);
-      if (startTime <= currentTime && currentTime <= endTime) {
+      if (
+        (startTime <= currentTime && currentTime <= endTime) ||
+        item.status === 'Open'
+      ) {
         // console.log('Between');
         return 'Open';
       } else {
@@ -339,7 +347,7 @@ const FindFoodTruck = ({navigation, route}) => {
               />
               <Text
                 style={{marginLeft: responsiveWidth(2)}}
-                value={'Get Directions'}
+                value={Language['Get Directions']}
               />
               {/* <Text
                             style={[
@@ -380,12 +388,11 @@ const FindFoodTruck = ({navigation, route}) => {
             ]}>
             <TouchableOpacity>
               <Text
-          
                 value={getStatus(item, index)}
                 style={{
                   color: 'green',
                   fontSize: responsiveFontSize(2),
-                  fontWeight:"bold"
+                  fontWeight: 'bold',
                 }}
               />
             </TouchableOpacity>
@@ -413,11 +420,11 @@ const FindFoodTruck = ({navigation, route}) => {
         NoIcon
         nothing
         onPress={() => navigation.navigate(RouteName.SEARCHTRUCK)}>
-        {'Find Food Truck'}
+        {Language['Find Food Truck']}
       </Header>
       <View style={styles.seacrhbarContainter}>
         <SearchBar
-          placeholder="Type something..."
+          placeholder={Language['Type something']}
           round
           value={searchVal}
           lightTheme
@@ -481,7 +488,7 @@ const FindFoodTruck = ({navigation, route}) => {
         />
       ) : isMsg ? (
         <Text
-          value={'No Truck Found'}
+          value={Language['No Truck Found']}
           bold
           style={{
             marginTop: responsiveHeight(25),
@@ -493,13 +500,13 @@ const FindFoodTruck = ({navigation, route}) => {
           <FlatList
             data={Data !== [undefined] && Data !== undefined ? Data : []}
             keyExtractor={item => item._id}
-            contentContainerStyle={{paddingBottom:responsiveHeight(8)}}
+            contentContainerStyle={{paddingBottom: responsiveHeight(8)}}
             renderItem={({item, index}) => PrintCard(item, index)}
           />
         </View>
       ) : (
         <Text
-          value={'No Truck Found'}
+          value={Language['No Truck Found']}
           bold
           style={{
             marginTop: responsiveHeight(25),

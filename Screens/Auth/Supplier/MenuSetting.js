@@ -26,6 +26,7 @@ import AddItemModal from '../../../Component/Modal';
 import ErrorView from '../../../Component/ErrorField';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { bold } from '../Constants/constants';
+import { Language } from '../../../Constants/LanguageChangeFunc';
 
 const MenuSetting = ({navigation, route}) => {
   const [addItem, setAddItem] = React.useState(false);
@@ -153,7 +154,7 @@ const MenuSetting = ({navigation, route}) => {
         Add
         onAddPress={() => setAddItem(true)}
         onPress={() => navigation.goBack()}>
-        {'Menu'}
+        {Language['Menu']}
       </Header>
       <Ui
         ContainerStyle={{marginTop: responsiveHeight(4)}}

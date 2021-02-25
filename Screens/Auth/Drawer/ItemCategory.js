@@ -26,6 +26,7 @@ import Button from '../../../Component/Button';
 import AddItemModal from '../../../Component/Modal';
 import Select from '../../../Component/Select';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import { Language } from '../../../Constants/LanguageChangeFunc';
 const ItemCategory = ({navigation}) => {
   const [menuItem, setMenuItem] = useState();
   const [showModal, setShowModal] = React.useState(false);
@@ -477,7 +478,7 @@ const ItemCategory = ({navigation}) => {
               rounded>
               <Text
                 uppercase={false}
-                value={'No'}
+                value={Language['No']}
                 style={{color: '#fff',fontFamily:bold}}
               />
             </Button>

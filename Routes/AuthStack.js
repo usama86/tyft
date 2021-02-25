@@ -33,6 +33,7 @@ import AccountInfo from './../Screens/Auth/AccountInfo';
 import ServingCusineType2 from '../Screens/Auth/ServingCusineType2';
 import Forgotpassword from '../Screens/Auth/ForgotPassword';
 import ChangePassword from '../Screens/Auth/Changepassword';
+import { Language } from '../Constants/LanguageChangeFunc';
 const Tabs = createBottomTabNavigator();
 const StackAuth = createStackNavigator();
 const StackNearMe = createStackNavigator();
@@ -43,9 +44,11 @@ const FunOfAuthStack = ({navigation, route}) => {
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('tabPress', e => {
       // Prevent default behavior
+      console.log('pressed');
       e.preventDefault();
-      navigation.popToTop();
-      navigation.navigate(route.name);
+
+      // navigation.popToTop();
+      // navigation.navigate(route.name);
       // Do something manually
       // ...
     });
@@ -59,7 +62,7 @@ const FunOfAuthStack = ({navigation, route}) => {
         options={{title: 'Search Truck'}}
         component={SearchTruck}
       />
-            <StackNearMe.Screen
+      <StackNearMe.Screen
         name={RouteName.CUSTOMERSUPPLIER}
         component={CustomerSupplier}
       />
@@ -139,7 +142,10 @@ const FunOfAuthStack = ({navigation, route}) => {
     <StackFavourite.Navigator screenOptions={{headerShown: false}}>
       <StackFavourite.Screen name={'AccountInfo'} component={AccountInfo} />
       <StackFavourite.Screen name={'Account'} component={Account} />
-      <StackFavourite.Screen name={'ChangePassword'} component={ChangePassword} />
+      <StackFavourite.Screen
+        name={'ChangePassword'}
+        component={ChangePassword}
+      />
     </StackFavourite.Navigator>
   );
 
@@ -172,7 +178,7 @@ const FunOfAuthStack = ({navigation, route}) => {
         },
       }}>
       <Tabs.Screen
-        options={{title: 'Near Me'}}
+        options={{title: Language['Near Me']}}
         name={'NearMe'}
         children={NearMeStack}
       />

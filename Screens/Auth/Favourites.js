@@ -31,13 +31,14 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 import moment from 'moment';
 import FuzzySearch from 'fuzzy-search';
+import { Language } from '../../Constants/LanguageChangeFunc';
 const Favorite = ({navigation}) => {
   const [Data, setData] = useState([]);
   const [day, setDay] = useState(null);
   const [isLoading, setisLoading] = useState(true);
   const [isMsg, setIsMsg] = useState(false);
   const [searchVal, setSearchVal] = useState('');
-const [uniqueProps,setuniqueProps] =useState([])
+  const [uniqueProps, setuniqueProps] = useState([]);
   const onChangeSearch = val => {
     setSearchVal(val);
     if (val == '') {
@@ -136,7 +137,12 @@ const [uniqueProps,setuniqueProps] =useState([])
         />
         <CountButton
           button={item.selectedServingCusines}
-          buttonProp={{width: responsiveWidth(17), height: responsiveHeight(3)}}
+          buttonProp={{
+            width: '30%',
+            marginRight: responsiveWidth(2),
+            right: responsiveWidth(1),
+            paddingHorizontal: responsiveWidth(2),
+          }}
           tabProp={{
             marginTop: responsiveHeight(-18),
             left: responsiveWidth(-2),
@@ -180,12 +186,12 @@ const [uniqueProps,setuniqueProps] =useState([])
           ]}>
           <TouchableOpacity>
             <Text
-            // bold
+              // bold
               value={getStatus(item, index)}
               style={{
                 color: 'green',
                 fontSize: responsiveFontSize(2),
-                fontWeight:'bold'
+                fontWeight: 'bold',
               }}
             />
           </TouchableOpacity>
@@ -234,16 +240,22 @@ const [uniqueProps,setuniqueProps] =useState([])
       }
     }
   };
-  const onClear = ()=>{
+  const onClear = () => {
     getFavouriteRestaurants();
     setIsMsg(false);
-  }
+  };
   return (
     <SafeAreaView style={styles.parent}>
-      <Header NoIcon Clear onClearPress={onClear} onPress={() => navigation.goBack()}>{'Favourite'}</Header>
+      <Header
+        NoIcon
+        Clear
+        onClearPress={onClear}
+        onPress={() => navigation.goBack()}>
+        {Language['Favorite']}
+      </Header>
       <View style={styles.seacrhbarContainter}>
         <SearchBar
-          placeholder="Type something..."
+          placeholder={Language['Type something']}
           onChangeText={onChangeSearch}
           value={searchVal}
           round
@@ -281,7 +293,7 @@ const [uniqueProps,setuniqueProps] =useState([])
           onPress={() =>
             navigation.navigate(RouteName.SERVINGCUSINETYPE2, {
               onFilterSearch: onFilterSearch,
-              uniqueProps:uniqueProps
+              uniqueProps: uniqueProps,
             })
           }>
           <SettingIcon name={'sound-mix'} color={'grey'} size={40} />
@@ -332,7 +344,7 @@ const [uniqueProps,setuniqueProps] =useState([])
         />
       ) : isMsg ? (
         <Text
-          value={'No Truck Found'}
+          value={Language['No Truck Found']}
           bold
           style={{
             marginTop: responsiveHeight(25),

@@ -10,7 +10,7 @@ import {
   ActivityIndicator,
   Alert,
   Linking,
-  Text
+  Text,
 } from 'react-native';
 import Container from '../../../Component/Container';
 import Text1 from '../../../Component/Text';
@@ -23,7 +23,7 @@ import {Switch} from 'react-native-switch';
 import Button from '../../../Component/Button';
 import CountButton from '../../../Component/CountButton';
 import Modal from '../../../Component/Modal';
-import Modal1 from 'react-native-modal'
+import Modal1 from 'react-native-modal';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import {
@@ -34,11 +34,12 @@ import {
 import * as RouteName from '../../../Constants/RouteName';
 import Header from '../../../Component/Header';
 import AsyncStorage from '@react-native-community/async-storage';
-import url, { bold } from './../Constants/constants';
+import url, {bold} from './../Constants/constants';
 import axios from 'axios';
 import Feather from 'react-native-vector-icons/Feather';
 import ImagePicker from 'react-native-image-picker';
 import {List, ListItem} from 'native-base';
+import {Language} from '../../../Constants/LanguageChangeFunc';
 // import Button from '../../../Component/Button'
 const VeggieWisper = ({navigation, route}) => {
   const [ToggleSwitch, setToggleSwitch] = useState(false);
@@ -64,7 +65,7 @@ const VeggieWisper = ({navigation, route}) => {
   const LATITUDE_DELTA = 0.015;
   const LONGITUDE_DELTA = 0.0121;
   useEffect(() => {
-      getUserDetails();
+    getUserDetails();
   }, []);
   const setLocation = async () => {
     let TruckId = await AsyncStorage.getItem('TruckID');
@@ -177,31 +178,37 @@ const VeggieWisper = ({navigation, route}) => {
         console.log(error);
       });
   };
-  const getFacebookVal = () =>{
-    if(TruckInfo.socialMedia.facebook.includes('facebook.com'))
+  const getFacebookVal = () => {
+    if (TruckInfo.socialMedia.facebook.includes('facebook.com'))
       return TruckInfo.socialMedia.facebook;
     else
-      return String("https://www.facebook.com/" + TruckInfo.socialMedia.facebook +'/');; 
-  }
-  const getInstaVal = () =>{
-    if(TruckInfo.socialMedia.instagram.includes('instagram.com'))
+      return String(
+        'https://www.facebook.com/' + TruckInfo.socialMedia.facebook + '/',
+      );
+  };
+  const getInstaVal = () => {
+    if (TruckInfo.socialMedia.instagram.includes('instagram.com'))
       return TruckInfo.socialMedia.instagram;
     else
-      return String("https://www.instagram.com/" + TruckInfo.socialMedia.instagram +'/');; 
-  }
-  const getTwitterVal = () =>{
-    if(TruckInfo.socialMedia.twitter.includes('twitter.com'))
+      return String(
+        'https://www.instagram.com/' + TruckInfo.socialMedia.instagram + '/',
+      );
+  };
+  const getTwitterVal = () => {
+    if (TruckInfo.socialMedia.twitter.includes('twitter.com'))
       return TruckInfo.socialMedia.twitter;
     else
-      return String("https://twitter.com/" + TruckInfo.socialMedia.twitter +'/');; 
-  }
+      return String(
+        'https://twitter.com/' + TruckInfo.socialMedia.twitter + '/',
+      );
+  };
   const Logout = async () => {
     await AsyncStorage.clear();
     navigation.replace('Auth', {screen: 'Auth'});
   };
   const SelectImage = () => {
     const options = {
-      title: 'Select or Capture Your Image',
+      title: Language['Select or Capture Your Image'],
       storageOptions: {
         skipBackup: true,
         path: 'images',
@@ -237,15 +244,14 @@ const VeggieWisper = ({navigation, route}) => {
             requestOptions,
           )
             .then(response => response.json())
-            .then(async(result) => {
+            .then(async result => {
               console.log(result);
-             
 
               let TruckId = await AsyncStorage.getItem('TruckID');
               axios
                 .post(url + '/api/supplier/updatecoverimage', {
                   _id: TruckId,
-                  imgUrl: result.url
+                  imgUrl: result.url,
                 })
                 .then(async Response => {
                   let Code = Response.data.code;
@@ -253,7 +259,6 @@ const VeggieWisper = ({navigation, route}) => {
                     setUrl(img); //
                     // navigation.navigate(Route.SIGNIN);
                   } else {
-                 
                     // setisLoading(false);
                   }
                 })
@@ -286,11 +291,15 @@ const VeggieWisper = ({navigation, route}) => {
       <Container>
         <View style={styles.HeaderContainer}>
           <ImageBackground
-          resizeMode={'contain'}
+            resizeMode={'contain'}
             style={styles.image}
-            source={{uri: urls? urls.uri : TruckInfo.coverPhoto}}>
-            <Header isHome settings onSettingsPress={()=>setShowModal(true)} onPress={() => navigation.openDrawer()}>
-              {'Home'}
+            source={{uri: urls ? urls.uri : TruckInfo.coverPhoto}}>
+            <Header
+              isHome
+              settings
+              onSettingsPress={() => setShowModal(true)}
+              onPress={() => navigation.openDrawer()}>
+              {Language['Home']}
             </Header>
             <Entypo
               style={{alignSelf: 'flex-end', marginRight: responsiveWidth(4)}}
@@ -322,7 +331,7 @@ const VeggieWisper = ({navigation, route}) => {
                 {
                   color: 'green',
                   fontSize: responsiveFontSize(2),
-                  fontFamily:bold
+                  fontFamily: bold,
                 },
                 TruckInfo.status === 'Close' ? {color: 'red'} : null,
               ]}
@@ -487,119 +496,118 @@ const VeggieWisper = ({navigation, route}) => {
           </View>
           <View style={styles.ButtonView}>
             <Button onPress={setLocation} style={styles.Button}>
-              <Text1 style={{color: '#fff'}} value={'Save'} />
+              <Text1 style={{color: '#fff'}} value={Language['Save']} />
             </Button>
           </View>
         </Modal>
         <Modal1
-            onBackButtonPress={() => setShowModal(false)}
-            onSwipeComplete={() => setShowModal(false)}
-            swipeDirection={'down'}
-            isVisible={showModal}
-            backdropColor="rgba(0,0,0,0.8)"
-            animationIn="slideInUp"
-            animationOut="slideInDown"
-            animationInTiming={200}
-            animationOutTiming={200}
-            backdropTransitionInTiming={200}
-            backdropTransitionOutTiming={200}>
-            <View style={[styles.ModalConatiner]}>
-              <View style={styles.ClosingBar} />
-              <ScrollView style={{marginTop: responsiveHeight(2)}}>
-                <List>
-                  <ListItem
-                    style={{justifyContent: 'center', alignItems: 'center'}}
-                    >
-                    {/* <AntDesign
+          onBackButtonPress={() => setShowModal(false)}
+          onSwipeComplete={() => setShowModal(false)}
+          swipeDirection={'down'}
+          isVisible={showModal}
+          backdropColor="rgba(0,0,0,0.8)"
+          animationIn="slideInUp"
+          onBackdropPress={() => setShowModal(false)}
+          // animationOut="slideInDown"
+          animationInTiming={200}
+          animationOutTiming={200}
+          backdropTransitionInTiming={200}
+          backdropTransitionOutTiming={200}>
+          <View style={[styles.ModalConatiner]}>
+            <View style={styles.ClosingBar} />
+            <ScrollView style={{marginTop: responsiveHeight(2)}}>
+              <List>
+                <ListItem
+                  style={{justifyContent: 'center', alignItems: 'center'}}>
+                  {/* <AntDesign
                   name={'edit'}
                   color={'grey'}
                   size={responsiveFontSize(2.5)}
                 /> */}
-                    <Text
-                      style={{
-                        color: 'grey',
-                        fontSize: responsiveFontSize(1.2),
-                        fontFamily: bold,
-                      }}>
-                      {'Account Options'}
-                    </Text>
-                  </ListItem>
-                  <ListItem
-                    style={{justifyContent: 'center', alignItems: 'center'}}
-                    onPress={() => {
-                      setShowModal(false);
-                      navigation.navigate('ChangePasswords');
-                    }}
-                    >
-                    {/* <AntDesign
-                  name={'edit'}
-                  color={'grey'}
-                  size={responsiveFontSize(2.5)}
-                /> */}
-                    <Text
-                      style={{
-                        color: 'grey',
-                        fontFamily: bold,
-                      }}>
-                      {'Change Password'}
-                    </Text>
-                  </ListItem>
-                  <ListItem
-                    style={{justifyContent: 'center', alignItems: 'center'}}
-                    onPress={e => {
-                      setShowModal(false);
-                      e.stopPropagation();
-                      navigation.navigate(RouteName.SUPPLIERPROFILE);
+                  <Text
+                    style={{
+                      color: 'grey',
+                      fontSize: responsiveFontSize(1.2),
+                      fontFamily: bold,
                     }}>
-                    {/* <AntDesign
+                    {'Account Options'}
+                  </Text>
+                </ListItem>
+                <ListItem
+                  style={{justifyContent: 'center', alignItems: 'center'}}
+                  onPress={() => {
+                    setShowModal(false);
+                    navigation.navigate('ChangePasswords');
+                  }}>
+                  {/* <AntDesign
                   name={'edit'}
                   color={'grey'}
                   size={responsiveFontSize(2.5)}
                 /> */}
-                    <Text
-                      style={{
-                        color: 'grey',
-                        fontFamily: bold,
-                      }}>
-                      {'Update Profile'}
-                    </Text>
-                  </ListItem>
-                  <ListItem
-                    onPress={Logout}
-                    style={{justifyContent: 'center', alignItems: 'center'}}>
-                    {/* <Entypo
+                  <Text
+                    style={{
+                      color: 'grey',
+                      fontFamily: bold,
+                    }}>
+                    {'Change Password'}
+                  </Text>
+                </ListItem>
+                <ListItem
+                  style={{justifyContent: 'center', alignItems: 'center'}}
+                  onPress={e => {
+                    setShowModal(false);
+                    e.stopPropagation();
+                    navigation.navigate(RouteName.SUPPLIERPROFILE);
+                  }}>
+                  {/* <AntDesign
+                  name={'edit'}
+                  color={'grey'}
+                  size={responsiveFontSize(2.5)}
+                /> */}
+                  <Text
+                    style={{
+                      color: 'grey',
+                      fontFamily: bold,
+                    }}>
+                    {'Update Profile'}
+                  </Text>
+                </ListItem>
+                <ListItem
+                  onPress={Logout}
+                  style={{justifyContent: 'center', alignItems: 'center'}}>
+                  {/* <Entypo
                   name={'trash'}
                   color={'red'}
                   size={responsiveFontSize(2.5)}
                 /> */}
-                    <Text
-                      style={{
-                        color: 'red',
-                        fontFamily: bold,
-                      }}>
-                      {'Log Out'}
-                    </Text>
-                  </ListItem>
-                  <ListItem
-                    style={{justifyContent: 'center', alignItems: 'center'}}
-                    onPress={() => setShowModal(false)}>
-                    {/* <Entypo
+                  <Text
+                    style={{
+                      color: 'red',
+                      fontFamily: bold,
+                    }}>
+                    {'Log Out'}
+                  </Text>
+                </ListItem>
+                <ListItem
+                  style={{justifyContent: 'center', alignItems: 'center'}}
+                  onPress={() => setShowModal(false)}>
+                  {/* <Entypo
                   name={'cross'}
                   color={'grey'}
                   size={responsiveFontSize(2.5)}
                 /> */}
-                    <Text
-                      style={{
-                        color: 'grey',
-                        fontFamily: bold,
-                      }}>
-                      {'Cancel'}
-                    </Text>
-                  </ListItem>
-                </List>
-              </ScrollView>
-            </View>
-          </Modal1>
+                  <Text
+                    style={{
+                      color: 'grey',
+                      fontFamily: bold,
+                    }}>
+                    {Language['Cancel']}
+                  </Text>
+                </ListItem>
+              </List>
+            </ScrollView>
+          </View>
+        </Modal1>
       </Container>
     );
   }

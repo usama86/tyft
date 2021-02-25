@@ -29,6 +29,7 @@ import url from './Constants/constants';
 import axios from 'axios';
 import FA5 from 'react-native-vector-icons/FontAwesome5';
 import Feather from 'react-native-vector-icons/Feather';
+import { Language } from '../../Constants/LanguageChangeFunc';
 const CustomerSupplier = ({navigation, route}) => {
   const [ToggleSwitch, setToggleSwitch] = useState(false);
   const [favoriteSwitch, setFavoriteSwitch] = useState(false);
@@ -146,7 +147,7 @@ const CustomerSupplier = ({navigation, route}) => {
             })
           }
           style={[styles.Button, {backgroundColor: 'white'}]}>
-          <Text style={[styles.Btntext, {color: 'black'}]} value={'Reviews'} />
+          <Text style={[styles.Btntext, {color: 'black'}]} value={Language['Reviews']} />
         </Button>
       </View>
 
@@ -239,7 +240,7 @@ const CustomerSupplier = ({navigation, route}) => {
           />
           <Text
             style={{marginLeft: responsiveWidth(2)}}
-            value={'Get Directions'}
+            value={Language['Get Directions']}
           />
           {/* <Text
                             style={[

@@ -19,15 +19,16 @@ import {
 } from 'react-native-responsive-dimensions';
 import Header from '../../Component/Header';
 import { bold } from './Constants/constants';
+import { Language } from '../../Constants/LanguageChangeFunc';
 const SignUpSelection = props => {
   const {navigation} = props;
 
   return (
     <View style={{height: '100%', width: '100%'}}>
-      <Header onPress={() => navigation.goBack()}>{'Sign Up'}</Header>
+      <Header onPress={() => navigation.goBack()}>{Language['SIGN UP']}</Header>
 
       <SafeAreaView style={styles.container}>
-        <Text style={styles.signUpHeader}>{'SIGN UP'}</Text>
+        <Text style={styles.signUpHeader}>{Language['SIGN UP']}</Text>
         <TouchableHighlight
           activeOpacity={1}
           underlayColor="#f7f7f5"
@@ -44,11 +45,10 @@ const SignUpSelection = props => {
                   size={33}
                 />
               </View>
-              <Text style={styles.itemTitle}>{'As Customer'}</Text>
+              <Text style={styles.itemTitle}>{Language['As Customer']}</Text>
             </View>
             <Text style={styles.itemText}>
-              Search and track your favorite food truck in your area and mark
-              them for later use
+             {Language['search and track your favorite food truck in your area and mark them for later use']}
             </Text>
           </View>
         </TouchableHighlight>
@@ -69,11 +69,10 @@ const SignUpSelection = props => {
                   size={33}
                 />
               </View>
-              <Text style={styles.itemTitle}>{'As Supplier'}</Text>
+              <Text style={styles.itemTitle}>{'As Truck'}</Text>
             </View>
             <Text style={styles.itemText}>
-              Create a part of TYFT vendor list and target the local audience
-              near you.It helps you to promote your business in your local are.
+          {Language['Become a part of TYFT vendor list and target the local Foodies near you. It helps you to promote your business in your local area']}
             </Text>
           </View>
         </TouchableHighlight>

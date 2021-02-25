@@ -90,6 +90,7 @@ const CustomerReview = ({navigation}) => {
         <Rating
           startingValue={item.Rating}
           imageSize={responsiveFontSize(2.8)}
+          readonly
         />
         <Text style={{color: '#A6A6A6'}} value={item.Name} />
         <Text style={{color: '#A6A6A6'}} value={CalculateTime(item.date)} />

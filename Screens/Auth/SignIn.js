@@ -114,10 +114,10 @@ const SignIn = ({navigation}) => {
         placeholder="Email"
         inputStyle={[styles.inputStyle]}
         onChangeText={text => {
-          setEmail(text.toLowerCase());
+          setEmail(text);
           setEmailErrorMessage(null);
         }}
-        keyboardType={'email-address'}
+        onBlur={()=>setEmail(e=>e.toLowerCase())}
         returnKeyType={'next'}
         errorMessage={emailErrorMessage}
       />
