@@ -43,7 +43,7 @@ const SearchTruck = ({navigation}) => {
       .then(async Response => {
         let ERROR = Response.data.code;
         let Trucks = Response.data.TruckInfo;
-        if (ERROR !== 'ABT0001') {
+        if ( ERROR && ERROR !== 'ABT0001') {
           let filtered = Trucks.filter(item => item.status === 'Open');
           if (filtered.length > 0) {
             let currentDate = moment();
