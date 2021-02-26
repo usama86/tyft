@@ -23,6 +23,7 @@ import Container from './../../Component/Container';
 import axios from 'axios';
 import url, {bold} from '../Auth/Constants/constants';
 import {CheckBox} from 'native-base';
+import Radio from './../../Component/Radio';
 import AsyncStorage from '@react-native-community/async-storage';
 import {
   AccessToken,
@@ -384,29 +385,32 @@ const Home = ({navigation}) => {
           flexDirection: 'row',
           justifyContent: 'space-between',
         }}>
-        <View>
-          <CheckBox
-            style={{width: responsiveWidth(4.5), height: responsiveHeight(2.3)}}
-            color={theme.colors.primary}
-            checked={language === 'English'}
+        <View style={{flexDirection:'row',alignSelf:'center'}}>
+        
+          <Radio
+            style={{width: responsiveWidth(5.4), height: responsiveHeight(3.4)}}
+            // color={theme.colors.primary}
+            selected={language === 'English'}
             onPress={() => {
               setLanguage('English');
               LanguageSelect(English);
             }}
           />
-          <Text1>{'English'}</Text1>
+          <Text1 style={{marginTop:responsiveHeight(0.3),marginLeft:responsiveWidth(3)}}>{'English'}</Text1>
         </View>
-        <View>
-          <CheckBox
-            style={{width: responsiveWidth(4.5), height: responsiveHeight(2.3)}}
-            color={theme.colors.primary}
-            checked={language === 'Spanish'}
+        <View style={{flexDirection:'row',alignSelf:'center'}}>
+       
+          <Radio
+            style={{width: responsiveWidth(5.4), height: responsiveHeight(3.4)}}
+            // color={theme.colors.primary}
+            selected={language === 'Spanish'}
             onPress={() => {
               setLanguage('Spanish');
               LanguageSelect(Spanish);
             }}
           />
-          <Text1>{'Spanish'}</Text1>
+           <Text1 style={{marginTop:responsiveHeight(0.3),marginLeft:responsiveWidth(3)}}>{'Spanish'}</Text1>
+         
         </View>
       </View>
 
