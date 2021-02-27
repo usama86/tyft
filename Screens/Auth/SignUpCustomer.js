@@ -16,10 +16,12 @@ import AsyncStorage from '@react-native-community/async-storage';
 import ErrorView from '../../Component/ErrorField';
 import * as Route from '../../Constants/RouteName';
 import { Language } from '../../Constants/LanguageChangeFunc';
+import Checkbox from './../../Component/Checkbox';
 const SignUp = ({navigation}) => {
   const [name, SetName] = React.useState(null);
   const [nameError, SetNameError] = React.useState(false);
   const [nameErrorText, SetNameErrorText] = React.useState(null);
+  const [check, SetCheck] = React.useState(false);
   const [email, setEmail] = React.useState(null);
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorText, setEmailErrorText] = React.useState(null);
@@ -38,6 +40,7 @@ const SignUp = ({navigation}) => {
   ] = React.useState(null);
   const [confirmPasswordErrors,setConfirmPasswordErrors] = React.useState(null);
   const [languge, setLanguage] = React.useState('English');
+  const [errorTerm,setErrorTerm] = React.useState(false);
   const changeEmail = val => {
     let EmailRegix = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (EmailRegix.test(val)) {
@@ -103,7 +106,12 @@ const SignUp = ({navigation}) => {
       setConfirmPasswordErrorText(
         'Password Does not matches with Confirm Password',
       );
-    } else if (
+    }
+    if(!check)
+    {
+      setErrorTerm(true);
+    } 
+    else if (
       name &&
       !nameError &&
       email &&
@@ -114,6 +122,7 @@ const SignUp = ({navigation}) => {
       !passwordError &&
       confirmPassword &&
       !confirmPasswordError
+      && check
     ) {
       setisLoading(true);
       // console.log(languge)
@@ -245,6 +254,17 @@ const SignUp = ({navigation}) => {
         {confirmPasswordErrors ? (
             <ErrorView>{'Email Address already exist'}</ErrorView>
           ) : null}
+         
+        <View style={styles.radioView1}>
+          <Checkbox
+            checked={check}
+            onPress={() => SetCheck(!check)}
+            TextVal={'By signing up, I agree to'}
+          />
+        </View>
+        {errorTerm ? (
+            <ErrorView>{'Please accept the term and policy.'}</ErrorView>
+          ) : null} 
       </Ui>
     </View>
   );
@@ -263,6 +283,10 @@ const styles = StyleSheet.create({
   radioView: {
     alignSelf: 'center',
     height: responsiveHeight(5),
+    flexDirection: 'row',
+  },
+  radioView1: {
+    marginTop: responsiveHeight(3),
     flexDirection: 'row',
   },
   TextSpace: {
