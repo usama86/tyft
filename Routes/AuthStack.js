@@ -182,14 +182,18 @@ const FunOfAuthStack = ({navigation, route}) => {
         name={'NearMe'}
         children={NearMeStack}
       />
-      <Tabs.Screen name={'Search'} children={SearchStack} />
+      <Tabs.Screen 
+        options={{title: Language['Search']}}
+        name={"Search"} 
+        children={SearchStack} 
+      />
       <Tabs.Screen
-        options={{title: 'Favourite'}}
+        options={{title: Language['favourite']}}
         name={'FavouriteStack'}
         children={FavouriteStack}
       />
       <Tabs.Screen
-        options={{title: 'Account'}}
+        options={{title: Language['Account']}}
         name={'AccountStack'}
         children={AccountStack}
         // listeners = {({navigation,route})=>({

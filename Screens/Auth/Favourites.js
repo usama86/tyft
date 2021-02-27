@@ -58,6 +58,14 @@ const Favorite = ({navigation}) => {
       }
     }
   };
+  const getMargin=()=>{
+    let x = Language['No Truck Found']; 
+    console.log(x.length);
+    if(x.length>14)
+      return responsiveWidth(25);
+    else
+      return responsiveWidth(32);  
+  }
 
   const getFavouriteRestaurants = async () => {
     let UserID = await AsyncStorage.getItem('userID');
@@ -251,7 +259,7 @@ const Favorite = ({navigation}) => {
         Clear
         onClearPress={onClear}
         onPress={() => navigation.goBack()}>
-        {Language['Favorite']}
+        {Language['favourite']}
       </Header>
       <View style={styles.seacrhbarContainter}>
         <SearchBar
@@ -345,10 +353,11 @@ const Favorite = ({navigation}) => {
       ) : isMsg ? (
         <Text
           value={Language['No Truck Found']}
-          bold
           style={{
             marginTop: responsiveHeight(25),
-            marginLeft: responsiveWidth(25),
+            marginLeft: getMargin(),
+            fontSize:responsiveFontSize(2),
+            fontFamily:'NunitoSans-Bold' 
           }}
         />
       ) : Data.length > 0 ? (
@@ -359,11 +368,12 @@ const Favorite = ({navigation}) => {
         />
       ) : (
         <Text
-          value={'No Truck Found'}
-          bold
+          value={Language['No Truck Found']}
           style={{
             marginTop: responsiveHeight(25),
-            marginLeft: responsiveWidth(25),
+            marginLeft: getMargin(),
+            fontSize:responsiveFontSize(2),
+            fontFamily:'NunitoSans-Bold' 
           }}
         />
       )}
