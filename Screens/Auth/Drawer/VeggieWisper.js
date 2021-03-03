@@ -41,7 +41,7 @@ import ImagePicker from 'react-native-image-picker';
 import {List, ListItem} from 'native-base';
 import {Language} from '../../../Constants/LanguageChangeFunc';
 // import Button from '../../../Component/Button'
-const VeggieWisper = ({navigation, route}) => {
+const VeggieWisper = ({navigation, route,...props}) => {
   const [ToggleSwitch, setToggleSwitch] = useState(false);
   const [button, setButton] = useState([1, 2, 3, 4, 5, 6, 7, 8]);
   const [userInfo, setUserInfo] = useState([]);

@@ -64,7 +64,7 @@ const AppDrawer = () => {
           backgroundColor: 'rgba(0,0,0,0)',
         }}
         drawerType={'slide'}>
-        <Drawer.Screen name={RouteName.VEGGIEWISPER} component={VeggieWisper} />
+        <Drawer.Screen name={RouteName.VEGGIEWISPER} options={{unmountOnBlur:true}} component={VeggieWisper} />
         <Drawer.Screen name={RouteName.SCHEDULED} component={Schedule} />
         <Drawer.Screen
           name={RouteName.CUSTOMERREVIEWD}

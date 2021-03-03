@@ -40,9 +40,11 @@ const SignIn = ({navigation}) => {
     } else if (email && password) {
       console.log('in login');
       setLoading(true);
+
+      let pass = password.replace(/\s/g, '');
       let credentials = {
         email: email,
-        password: password,
+        password: pass,
       };
       axios
         .post(url + '/api/users/login', credentials)
