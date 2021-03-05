@@ -41,10 +41,10 @@ const SignIn = ({navigation}) => {
       console.log('in login');
       setLoading(true);
 
-      let pass = password.replace(/\s/g, '');
+      let emails = email.replace(/\s/g, '');
       let credentials = {
-        email: email,
-        password: pass,
+        email: emails,
+        password: password,
       };
       axios
         .post(url + '/api/users/login', credentials)
