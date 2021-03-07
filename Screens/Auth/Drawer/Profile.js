@@ -85,7 +85,7 @@ setLoading(true);
     axios
       .post(url + '/api/supplier/updatetruckinfo', {
         _id: TruckId,
-        truckName:truckName.name,
+        truckName:truckName.name.replace(/\s+$/, ''),
         businessDesc:businessDesc.description,
         truckContact:contact.contact,
         truckEmail:email.email,

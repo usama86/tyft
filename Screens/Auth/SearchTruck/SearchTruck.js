@@ -44,16 +44,16 @@ const SearchTruck = ({navigation}) => {
         let ERROR = Response.data.code;
         let Trucks = Response.data.TruckInfo;
         if ( ERROR===undefined && ERROR !== 'ABT0001') {
-          let filtered = Trucks.filter(item => item.status === 'Open');
-          if (filtered.length > 0) {
+          // let filtered = Trucks.filter(item => item.status === 'Open');
+          // if (filtered.length > 0) {
             let currentDate = moment();
             let day = currentDate.format('dddd');
             setDay(day);
-            setTruck(filtered);
-          } else {
-            console.log('in else of filter ');
-            setTruck(null);
-          }
+            setTruck(Trucks);
+          // } else {
+          //   console.log('in else of filter ');
+          //   setTruck(null);
+          // }
         }
       })
       .catch(error => {

@@ -140,8 +140,8 @@ const VeggieWisper = ({navigation, route,...props}) => {
           setIndicator(false);
           await AsyncStorage.setItem('TruckID' + '', res.TruckInfo[0]._id);
           await AsyncStorage.setItem('MenuID' + '', res.TruckInfo[0].MenuID);
-          await setVisibleModal(true);
-          await getCurrentLocation();
+          // await setVisibleModal(true);
+          // await getCurrentLocation();
         } else {
           setIndicator(false);
         }

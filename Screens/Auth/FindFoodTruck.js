@@ -161,7 +161,7 @@ const FindFoodTruck = ({navigation, route}) => {
       var currentTime = new Date().getHours();
       // console.log('Current Time ', currentTime);
       if (
-        (startTime <= currentTime && currentTime <= endTime) ||
+        (startTime <= currentTime && currentTime <= endTime) &&
         item.status === 'Open'
       ) {
         // console.log('Between');

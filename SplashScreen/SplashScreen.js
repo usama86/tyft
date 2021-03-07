@@ -5,6 +5,7 @@ import {
   StyleSheet,
   View,
   Image,
+  StatusBar
 } from 'react-native';
 import {
   responsiveHeight,
@@ -12,12 +13,36 @@ import {
 } from 'react-native-responsive-dimensions';
 import * as Animatable from 'react-native-animatable';
 import Animation from './../Component/Animation';
+import AsyncStorage from '@react-native-community/async-storage';
+import {CommonActions} from '@react-navigation/native';
 const SplashScreen = ({navigation}) => {
   const  [val,setVal] = React.useState('');
+  const Setting = async () => {
+    StatusBar.setBarStyle('dark-content');
+    StatusBar.setBackgroundColor('#fff');
+    let userType = await AsyncStorage.getItem('userType');
+    if (userType === 'Supplier') {
+        navigation.replace('App');
+    } else if (userType === 'Customer') {
+        navigation.replace('Auth', {screen: 'Tabs'});
+    } else if (userType === null) {
+        navigation.replace('Auth');
+    }
+  };
   React.useEffect(()=>{
-    setTimeout(() => {
+    setTimeout(async() => {
       setVal('zoomOutDown')
-    }, 2000);
+      StatusBar.setBarStyle('dark-content');
+      StatusBar.setBackgroundColor('#fff');
+      let userType = await AsyncStorage.getItem('userType');
+      if (userType === 'Supplier') {
+          navigation.replace('App');
+      } else if (userType === 'Customer') {
+          navigation.replace('Auth', {screen: 'Tabs'});
+      } else if (userType === null) {
+          navigation.replace('Auth');
+      }
+    }, 3000);
   },[])
   return (
     <Animation container={styles.container} duration ={2000} navigation={navigation}>

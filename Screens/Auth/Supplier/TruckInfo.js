@@ -114,7 +114,7 @@ const TruckInfo = ({navigation, route}) => {
         Phone: route.params.Phone,
         Password: route.params.Password,
         TruckLogo: route.params.TruckLogo,
-        TruckName: truckName.name,
+        TruckName: truckName.name.replace(/\s+$/, ''),
         BusinessDescription: businessDesc.description,
         TruckContact: contact.contact,
         TruckEmail: email.email,

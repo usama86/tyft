@@ -89,6 +89,8 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
         await setLong(position.coords.longitude);
         await setLoadingMap(false);
         await setRegionInMap(region);
+
+        
         // await console.log('CURRENT LOCATION IN GETLOCATION', region);
       },
       error => console.log('this is ERROR', error),
@@ -99,6 +101,30 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
       },
     );
   };
+  const calcCrow=(lat1, lon1, lat2, lon2)=> 
+  {
+    var R = 6371; // km
+    var dLat = toRad(lat2-lat1);
+    var dLon = toRad(lon2-lon1);
+    var lat1 = toRad(lat1);
+    var lat2 = toRad(lat2);
+
+    var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+    var d = R * c;
+    return d;
+  }
+
+  // Converts numeric degrees to radians
+  const toRad=(Value)=> 
+  {
+      return Value * Math.PI / 180;
+  }
+  const getDistanceFromPlace = (item)=>{
+    let getData = calcCrow(Lat,Long,item.latitude,item.longitude); 
+    return Math.round(getData * 10) / 10 + ' km away';
+  }
   const setRegionInMap = region => {
     if (mapReady) {
       setMapReady(false);
@@ -230,6 +256,11 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
                               {item.truckName}
                             </Text>
                             <Text>{getTimings(item)}</Text>
+                            <View
+                            style={{
+                            	flexDirection: 'row',
+                              justifyContent:'space-between'
+                            }}>
                             <Text
                               style={[
                                 item.status === 'Close'
@@ -238,6 +269,8 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
                               ]}>
                               {getStatus(item, index)}
                             </Text>
+                            <Text>{getDistanceFromPlace(item)}</Text>
+                            </View>
                           </View>
                         </View>
                       </Callout>
