@@ -131,17 +131,19 @@ const SignUpSupplier = ({navigation}) => {
         confirmPassErrorText:
           'Your should agree to terms and conditions to Join!',
       });
-    } else if (
-      name.name &&
-      email.email &&
-      !email.emailError &&
-      phone.phone &&
-      password.password &&
-      !password.passwordError &&
-      confirmpass.confirmpass &&
-      !confirmpass.confirmPassError &&
-      check
-    ) {
+    } else 
+    // if (
+    //   name.name &&
+    //   email.email &&
+    //   !email.emailError &&
+    //   phone.phone &&
+    //   password.password &&
+    //   !password.passwordError &&
+    //   confirmpass.confirmpass &&
+    //   !confirmpass.confirmPassError &&
+    //   check
+    // ) 
+    {
       axios
         .post(url + '/api/users/getuser', {
           email: email.email,
