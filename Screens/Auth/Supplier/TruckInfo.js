@@ -40,7 +40,7 @@ const TruckInfo = ({navigation, route}) => {
     ErrorText: null,
   });
   const [website, setWebsite] = React.useState({
-    website: null,
+    website: '',
     Error: null,
     ErrorText: null,
   });
@@ -93,20 +93,22 @@ const TruckInfo = ({navigation, route}) => {
         ErrorText: 'City name must not be empty',
       });
     }
-    if (!website.website) {
-      setWebsite({
-        website: null,
-        Error: true,
-        ErrorText: 'Website must not be empty',
-      });
-    } else if (
+    // if (!website.website) {
+    //   setWebsite({
+    //     website: null,
+    //     Error: true,
+    //     ErrorText: 'Website must not be empty',
+    //   });
+    // } 
+    else if (
       truckName.name &&
       businessDesc.description &&
       contact.contact &&
       email.email &&
       !email.Error &&
-      city.city &&
-      website.website
+      city.city 
+      // &&
+      // website.website
     ) {
       navigation.navigate(RouteName.BUSINESSHOUR, {
         Name: route.params.Name,
@@ -117,7 +119,7 @@ const TruckInfo = ({navigation, route}) => {
         TruckName: truckName.name.replace(/\s+$/, ''),
         BusinessDescription: businessDesc.description,
         TruckContact: contact.contact,
-        TruckEmail: email.email,
+        TruckEmail: email.email.replace(/\s+$/, ''),
         City: city.city,
         Website: website.website,
       });
