@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, Alert,} from 'react-native';
+import {View, StyleSheet, Alert,SafeAreaView} from 'react-native';
 import Input from '../../../Component/Input';
 import Text from '../../../Component/Text';
 import {
@@ -123,7 +123,7 @@ const CoverPhoto = ({navigation, route}) => {
     }
   };
   return (
-    <View style={{height: '100%', width: '100%'}}>
+    <SafeAreaView style={{height: '100%', width: '100%'}}>
       <Header onPress={() => navigation.goBack()}>{'Truck Cover'}</Header>
       <Ui
         isLoading={isLoading}
@@ -152,7 +152,7 @@ const CoverPhoto = ({navigation, route}) => {
           onDismiss={onDismissSnackBar}>
           {visible.text}
         </Snackbar>
-    </View>
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({

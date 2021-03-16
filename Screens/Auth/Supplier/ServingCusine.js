@@ -6,6 +6,7 @@ import {
   Image,
   FlatList,
   ActivityIndicator,
+  SafeAreaView
 } from 'react-native';
 import Text from '../../../Component/Text';
 import {
@@ -119,7 +120,7 @@ const ServingCusine = ({navigation, route}) => {
     }
   };
   return (
-    <View style={{height: '100%', width: '100%'}}>
+    <SafeAreaView style={{height: '100%', width: '100%'}}>
       <Header onPress={() => navigation.goBack()}>{'Serving Cusine'}</Header>
       {indicator ? (
         <ActivityIndicator
@@ -160,7 +161,7 @@ const ServingCusine = ({navigation, route}) => {
         duration={2000}>
         Please Select Serving Cusine
       </Snackbar>
-    </View>
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({

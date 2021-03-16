@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet,SafeAreaView} from 'react-native';
 import Input from '../../Component/Input';
 import Text from '../../Component/Text';
 import {
@@ -166,7 +166,7 @@ const SignUp = ({navigation}) => {
     }
   };
   return (
-    <View style={{height: '100%', width: '100%'}}>
+    <SafeAreaView style={{height: '100%', width: '100%'}}>
       <Header onPress={() => navigation.goBack()}>{'Sign Up'}</Header>
 
       <Ui
@@ -266,7 +266,7 @@ const SignUp = ({navigation}) => {
             <ErrorView>{'Please accept the term and policy.'}</ErrorView>
           ) : null} 
       </Ui>
-    </View>
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({

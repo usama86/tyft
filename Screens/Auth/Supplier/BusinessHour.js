@@ -103,7 +103,7 @@ function BusinessHour({navigation, route}) {
     }
   };
   return (
-    <View style={{height: '100%', width: '100%'}}>
+    <SafeAreaView style={{height: '100%', width: '100%'}}>
       <Header onPress={() => navigation.goBack()}>{'Business Hour'}</Header>
       <SafeAreaView style={styles.container}>
         <ScrollView>
@@ -218,7 +218,7 @@ function BusinessHour({navigation, route}) {
           Please Select Schedule
         </Snackbar>
       </SafeAreaView>
-    </View>
+    </SafeAreaView>
   );
 }
 

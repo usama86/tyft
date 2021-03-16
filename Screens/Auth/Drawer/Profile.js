@@ -1,6 +1,6 @@
 
 import React from 'react';
-import {View, StyleSheet,Alert,Image} from 'react-native';
+import {View, StyleSheet,Alert,Image,SafeAreaView} from 'react-native';
 import Input from '../../../Component/Input';
 import Text from '../../../Component/Text';
 import {
@@ -110,7 +110,7 @@ setLoading(true);
       });
   };
   return (
-    <View style={{height: '100%', width: '100%'}}>
+    <SafeAreaView style={{height: '100%', width: '100%'}}>
       <Header isHome onPress={() => navigation.openDrawer()}>
         {'Truck Info'}
       </Header>
@@ -168,7 +168,7 @@ setLoading(true);
           <Input
             rounded
             placeholder="Email"
-            onChangeText={e => changeEmail(e)}
+            onChangeText={e => changeEmail(e.trim())}
             value={email.email}
             style={styles.Input}
           />
@@ -204,7 +204,7 @@ setLoading(true);
         <Text style={styles.UpdatedText} value={'Updated'} />
       </Modal>
       </Ui>
-    </View>
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
