@@ -82,7 +82,7 @@ const CustomDrawer = ({navigation, route}) => {
                 .then(async Response => {
                   let Code = Response.data.code;
                   if (Code === 'ABT0000') {
-                    setUrl(img); //
+                    setUrl(img.uri); //
                     // navigation.navigate(Route.SIGNIN);
                   } 
                 })
@@ -132,7 +132,7 @@ const CustomDrawer = ({navigation, route}) => {
               icon={{name: 'user', type: 'font-awesome'}}
               showEditButton
               onEditPress={SelectImage}
-              source={urls.uri ? {uri: urls.uri} : {uri: urls}}
+              source={urls ? {uri: urls} : {uri:'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg'}}
               rounded
               size="large"
             />

@@ -24,7 +24,7 @@ const SignUpSelection = props => {
   const {navigation} = props;
 
   return (
-    <View style={{height: '100%', width: '100%'}}>
+    <SafeAreaView style={{height: '100%', width: '100%'}}>
       <Header onPress={() => navigation.goBack()}>{Language['SIGN UP']}</Header>
 
       <SafeAreaView style={styles.container}>
@@ -89,7 +89,7 @@ const SignUpSelection = props => {
           />
         </RoundButton>
       </SafeAreaView>
-    </View>
+    </SafeAreaView>
   );
 };
 

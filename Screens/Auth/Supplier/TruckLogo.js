@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {View, StyleSheet, ActivityIndicator} from 'react-native';
+import {View, StyleSheet, ActivityIndicator,SafeAreaView} from 'react-native';
 import Input from '../../../Component/Input';
 import Text from '../../../Component/Text';
 import {
@@ -75,7 +75,7 @@ const TruckLogo = ({navigation, route}) => {
     }
   };
   return (
-    <View style={{height: '100%', width: '100%'}}>
+    <SafeAreaView style={{height: '100%', width: '100%'}}>
       <Header onPress={() => navigation.goBack()}>{'Truck Logo'}</Header>
       <Ui
         TextValue={"Your food's truck logo"}
@@ -116,7 +116,7 @@ const TruckLogo = ({navigation, route}) => {
           />
         )}
       </Ui>
-    </View>
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({

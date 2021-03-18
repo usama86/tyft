@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {View, StyleSheet, Image, Alert} from 'react-native';
+import {View, StyleSheet, Image, Alert,SafeAreaView} from 'react-native';
 import Input from '../../Component/Input';
 import Text from '../../Component/Text';
 import {
@@ -20,7 +20,7 @@ import Modal from '../../Component/Modal';
 import {CommonActions} from '@react-navigation/native';
 import {Avatar} from 'react-native-elements';
 import ImagePicker from 'react-native-image-picker';
-import {Language as Lan} from '../../Constants/LanguageChangeFunc'
+import {Language as Lan} from '../../Constants/LanguageChangeFunc';
 const Account = ({navigation, route}) => {
   const [name, SetName] = React.useState({value: null, errorText: null});
   const [email, setEmail] = React.useState({value: null, errorText: null});
@@ -221,7 +221,7 @@ const Account = ({navigation, route}) => {
     }
   };
   return (
-    <View style={{height: '100%', width: '100%'}}>
+    <SafeAreaView style={{height: '100%', width: '100%'}}>
       {LoggedIn ? (
         <Header navigation={navigation} onPress={() => navigation.goBack()}>
           {Lan['Update Account']}
@@ -243,7 +243,7 @@ const Account = ({navigation, route}) => {
           <View style={styles.InputMainView}>
             <View style={styles.rowView}>
               <Avatar
-                source={img ? {uri: img.uri} : {uri: photo}}
+                source={img ? {uri: img.uri} : require('../../images/2.jpg')}
                 // style={{marginLeft:2}}
                 icon={{name: 'user', type: 'font-awesome'}}
                 showEditButton
@@ -355,7 +355,7 @@ const Account = ({navigation, route}) => {
               style={{
                 color: '#696969',
                 fontSize: responsiveFontSize(2),
-                fontFamily:normal
+                fontFamily: normal,
               }}
               value={
                 'A TYFT Account allows you to bookmark truck, review about them and make'
@@ -382,7 +382,7 @@ const Account = ({navigation, route}) => {
           </View>
         </View>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({

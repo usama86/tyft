@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet,SafeAreaView} from 'react-native';
 import Input from '../../../Component/Input';
 import Text from '../../../Component/Text';
 import {
@@ -127,7 +127,7 @@ const TruckInfo = ({navigation, route}) => {
     }
   };
   return (
-    <View style={{height: '100%', width: '100%'}}>
+    <SafeAreaView style={{height: '100%', width: '100%'}}>
       <Header onPress={() => navigation.goBack()}>{'Truck Info'}</Header>
       <Ui
         TextViewStyle={styles.TextViewStyle}
@@ -211,7 +211,7 @@ const TruckInfo = ({navigation, route}) => {
           {website.Error ? <ErrorView>{website.ErrorText}</ErrorView> : null}
         </View>
       </Ui>
-    </View>
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({

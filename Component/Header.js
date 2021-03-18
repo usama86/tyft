@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Text, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Text, StyleSheet, TouchableOpacity, View,SafeAreaView} from 'react-native';
 import {Button} from 'native-base';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -15,6 +15,7 @@ import {
 } from 'react-native-responsive-dimensions';
 import {bold} from '../Screens/Auth/Constants/constants';
 import { Language } from '../Constants/LanguageChangeFunc';
+import { Platform } from 'react-native';
 const Header = ({
   isHome,
   style,
@@ -33,10 +34,10 @@ const Header = ({
   onSettingsPress,
 }) => {
   return (
-    <View>
-      <View style={[styles.default, style]}>
+    <SafeAreaView >
+      <SafeAreaView style={[styles.default, style]}>
         <Text style={styles.text}>{children}</Text>
-      </View>
+      </SafeAreaView>
       {NoIcon ? null : isHome ? (
         <TouchableOpacity onPress={onPress} style={styles.homeIcon}>
           <Entypo
@@ -92,7 +93,7 @@ const Header = ({
           color={'black'}
         />
       ) : null}
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -108,6 +109,7 @@ Header.defaultProps = {
 };
 const styles = StyleSheet.create({
   default: {
+    // top:Platform.OS ==='ios' && responsiveHeight(2),
     width: '100%',
     paddingVertical: responsiveHeight(2),
     justifyContent: 'center',

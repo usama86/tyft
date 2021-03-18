@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>374587781671-8nmn378b6l762olkii8sd73gq5k6ngtq.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.374587781671-8nmn378b6l762olkii8sd73gq5k6ngtq</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>374587781671-79ghv0e9ludfrmmcn9updt491rv92eol.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAXkxPJLAHecHnd4HYRsqOdZRPFPpmb_gw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>374587781671</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.TyftApp</string>
+	<key>PROJECT_ID</key>
+	<string>perfect-day-272817</string>
+	<key>STORAGE_BUCKET</key>
+	<string>perfect-day-272817.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:374587781671:ios:cb354680d6f733dd415402</string>
+	<key>DATABASE_URL</key>
+	<string>https://perfect-day-272817.firebaseio.com</string>
+</dict>
+</plist>

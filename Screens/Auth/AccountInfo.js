@@ -1,5 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, Image, ScrollView, Text} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Image,
+  ScrollView,
+  Text,
+  SafeAreaView,
+  Alert
+} from 'react-native';
 import Input from '../../Component/Input';
 import Text1 from '../../Component/Text';
 import {
@@ -25,6 +33,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Modal1 from 'react-native-modal';
 import {List, ListItem} from 'native-base';
 import {Language as Lan} from '../../Constants/LanguageChangeFunc';
+import { Platform } from 'react-native';
 const AccountInfo = ({navigation, route}) => {
   const [name, SetName] = React.useState('');
   const [email, setEmail] = React.useState('');
@@ -167,7 +176,7 @@ const AccountInfo = ({navigation, route}) => {
     if (phones) setPhone(phones);
   };
   return (
-    <View style={{height: '100%', width: '100%'}}>
+    <SafeAreaView style={{height: '100%', width: '100%'}}>
       {LoggedIn ? (
         <Header
           NoIcon
@@ -204,15 +213,18 @@ const AccountInfo = ({navigation, route}) => {
           <View style={styles.InputMainView}>
             <View style={styles.header}>
               <View style={styles.rowView}>
-                <Avatar
-                  source={img ? {uri: img.uri} : {uri: photo}}
-                  // style={{marginLeft:2}}
-                  // icon={{name: 'user', type: 'font-awesome'}}
-                  // showEditButton
-                  rounded
-                  // onPress={SelectImage}
-                  size={responsiveFontSize(13)}
-                />
+             
+                  <Avatar
+                    source={ img ? {uri:img.uri}:require('../../images/2.jpg')}
+                    // style={{marginLeft:2}}
+                    // icon={{name: 'user', type: 'font-awesome'}}
+                    // showEditButton
+                    rounded
+                    // onPress={SelectImage}
+                    size={responsiveFontSize(13)}
+                  />
+           
+
                 {/* imageProps={{uri:truckData.truckLogo}} */}
                 <View style={{marginLeft: 20}}>
                   <Text1
@@ -341,7 +353,7 @@ const AccountInfo = ({navigation, route}) => {
             isVisible={showModal}
             backdropColor="rgba(0,0,0,0.8)"
             animationIn="slideInUp"
-            animationOut="slideInDown"
+            // animationOut="slideInDown"
             animationInTiming={200}
             animationOutTiming={200}
             backdropTransitionInTiming={200}
@@ -390,7 +402,7 @@ const AccountInfo = ({navigation, route}) => {
                     style={{justifyContent: 'center', alignItems: 'center'}}
                     onPress={e => {
                       setShowModal(false);
-                      e.stopPropagation();
+                      // e.stopPropagation();
                       navigation.navigate('Account', {
                         name: name,
                         email: email,
@@ -412,7 +424,18 @@ const AccountInfo = ({navigation, route}) => {
                     </Text>
                   </ListItem>
                   <ListItem
-                    onPress={() => setisLogout(true)}
+                    onPress={() => { Platform.OS ==='android'? setisLogout(true):    Alert.alert(
+                      Lan['Are you sure you want to Sign-out?'],
+                      "",
+                      [
+                        {
+                          text: Lan['No'],
+                          onPress: () => console.log("Cancel Pressed"),
+                          style: "cancel"
+                        },
+                        { text: Lan['Yes'], onPress: Logout }
+                      ]
+                    );}}
                     style={{justifyContent: 'center', alignItems: 'center'}}>
                     {/* <Entypo
                   name={'trash'}
@@ -496,7 +519,7 @@ const AccountInfo = ({navigation, route}) => {
           </View>
         </View>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({

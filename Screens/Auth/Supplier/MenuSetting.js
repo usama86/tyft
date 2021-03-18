@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
+  SafeAreaView
 } from 'react-native';
 import Input from '../../../Component/Input';
 import Text from '../../../Component/Text';
@@ -149,7 +150,7 @@ const MenuSetting = ({navigation, route}) => {
     </TouchableOpacity>
   );
   return (
-    <View style={{height: '100%', width: '100%'}}>
+    <SafeAreaView style={{height: '100%', width: '100%'}}>
       <Header
         Add
         onAddPress={() => setAddItem(true)}
@@ -336,7 +337,7 @@ const MenuSetting = ({navigation, route}) => {
           )}
         </View>
       </Ui>
-    </View>
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
