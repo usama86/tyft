@@ -264,7 +264,7 @@ const VeggieWisper = ({ navigation, route, ...props }) => {
 							let Code = Response.data.code;
 							let urls = Response.data.url;
 							if (Code === 'ABT0000') {
-								setUrl(img); //
+								// setUrl(img); //
 								let TruckId = await AsyncStorage.getItem('TruckID');
 								axios
 								  .post(url + '/api/supplier/updatecoverimage', {
@@ -274,7 +274,7 @@ const VeggieWisper = ({ navigation, route, ...props }) => {
 								  .then(async Response => {
 									let Code = Response.data.code;
 									if (Code === 'ABT0000') {
-									  setUrl(img); //
+									  setUrl(urls); //
 									  // navigation.navigate(Route.SIGNIN);
 									} else {
 									  // setisLoading(false);
