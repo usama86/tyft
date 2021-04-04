@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet,SafeAreaView} from 'react-native';
 import Input from '../../../Component/Input';
 import Text from '../../../Component/Text';
 import {
@@ -70,7 +70,7 @@ const MenuSetting = ({navigation, route}) => {
     
   };
   return ( 
-    <View style={{height: '100%', width: '100%'}}>
+    <SafeAreaView style={{height: '100%', width: '100%'}}>
       <Header onPress={() => navigation.goBack()}>{'Social Media'}</Header>
       <Ui
         TextViewStyle={styles.TextViewStyle} 
@@ -116,7 +116,7 @@ const MenuSetting = ({navigation, route}) => {
           </View>
         </View>
       </Ui>
-    </View>
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({

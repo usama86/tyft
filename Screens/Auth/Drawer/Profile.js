@@ -1,6 +1,6 @@
 
 import React from 'react';
-import {View, StyleSheet,Alert,Image,SafeAreaView} from 'react-native';
+import {View, StyleSheet,Alert,Image,SafeAreaView,ScrollView,KeyboardAvoidingView} from 'react-native';
 import Input from '../../../Component/Input';
 import Text from '../../../Component/Text';
 import {
@@ -114,6 +114,9 @@ setLoading(true);
       <Header isHome onPress={() => navigation.openDrawer()}>
         {'Truck Info'}
       </Header>
+
+      <KeyboardAvoidingView behavior={'padding'}>
+        <ScrollView>
       <Ui
         TextViewStyle={styles.TextViewStyle}
         TextValue={"Your food truck's info"}
@@ -204,6 +207,8 @@ setLoading(true);
         <Text style={styles.UpdatedText} value={'Updated'} />
       </Modal>
       </Ui>
+      </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

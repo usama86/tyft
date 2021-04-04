@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Alert, alert, Image } from 'react-native';
+import { View, StyleSheet, Alert, alert, Image,SafeAreaView } from 'react-native';
 import Input from '../../../Component/Input';
 import Text from '../../../Component/Text';
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
@@ -76,7 +76,7 @@ const MenuSetting = ({ navigation, route }) => {
 	};
 
 	return (
-		<View style={{ height: '100%', width: '100%' }}>
+		<SafeAreaView style={{ height: '100%', width: '100%' }}>
 			<Header isHome onPress={() => navigation.openDrawer()}>
 				{Language['Social Media']}
 			</Header>
@@ -127,7 +127,7 @@ const MenuSetting = ({ navigation, route }) => {
 					<Text style={styles.UpdatedText} value={'Updated'} />
 				</Modal>
 			</Ui>
-		</View>
+		</SafeAreaView>
 	);
 };
 const styles = StyleSheet.create({

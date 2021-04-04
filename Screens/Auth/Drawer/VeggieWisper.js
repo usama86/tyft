@@ -41,7 +41,7 @@ import ImagePicker from 'react-native-image-picker';
 import {List, ListItem} from 'native-base';
 import {Language} from '../../../Constants/LanguageChangeFunc';
 // import Button from '../../../Component/Button'
-const VeggieWisper = ({navigation, route,...props}) => {
+const VeggieWisper = ({navigation, route, ...props}) => {
   const [ToggleSwitch, setToggleSwitch] = useState(false);
   const [button, setButton] = useState([1, 2, 3, 4, 5, 6, 7, 8]);
   const [userInfo, setUserInfo] = useState([]);
@@ -55,6 +55,7 @@ const VeggieWisper = ({navigation, route,...props}) => {
   const [Long, setLong] = React.useState(0.0);
   const [showModal, setShowModal] = useState(false);
   const [urls, setUrl] = useState(null);
+  const [loading, setLoading] = useState(false);
   const mapView = useRef();
   const initialRegion = {
     latitude: 30.3753,
@@ -137,6 +138,7 @@ const VeggieWisper = ({navigation, route,...props}) => {
           let newArr = [{...res.Supplier[0], TruckInfo: res.TruckInfo}];
           setUserInfo(newArr);
           setTruckInfo(res.TruckInfo[0]);
+          console.log('TRUCK INFO', res.TruckInfo[0]);
           setIndicator(false);
           await AsyncStorage.setItem('TruckID' + '', res.TruckInfo[0]._id);
           await AsyncStorage.setItem('MenuID' + '', res.TruckInfo[0].MenuID);
@@ -152,49 +154,48 @@ const VeggieWisper = ({navigation, route,...props}) => {
       });
   };
   const openMap = (val, truckID) => {
-    let weekday = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][new Date().getDay()]
+    let weekday = [
+      'Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+    ][new Date().getDay()];
     let sched = TruckInfo.schedule;
-    let openingTime ='';
-    let closingTime = ''
-    for(let i =0; i<sched.length;i++)
-    {
-      if(sched[i].day===weekday)
-      {
-        openingTime= sched[i].opening;
+    let openingTime = '';
+    let closingTime = '';
+    for (let i = 0; i < sched.length; i++) {
+      if (sched[i].day === weekday) {
+        openingTime = sched[i].opening;
         closingTime = sched[i].closing;
       }
     }
-    if(openingTime!=='')
-    {
+    if (openingTime !== '') {
       let openHour = Number(openingTime.split(':')[0]);
       // let openMinute = Number(openingTime.split(':')[1].split(' ')[0])
-      if(openingTime.split(' ')[1]==='PM')
-      {
-        openHour += 12; 
+      if (openingTime.split(' ')[1] === 'PM') {
+        openHour += 12;
       }
 
       let closeHour = Number(closingTime.split(':')[0]);
       // let closeMinute = Number(closingTime.split(':')[1].split(' ')[0])
-      if(closingTime.split(' ')[1]==='PM')
-      {
-        closeHour += 12; 
+      if (closingTime.split(' ')[1] === 'PM') {
+        closeHour += 12;
       }
 
       var d = new Date(); // for now
-      if(d.getHours() >= openHour && d.getHours() <= closeHour)
-      {
+      if (d.getHours() >= openHour && d.getHours() <= closeHour) {
         updateStatus(val, truckID);
-      }
-      else{
+      } else {
         Alert.alert('Please set schedule first.');
       }
-    }
-    else {
+    } else {
       console.log(val);
       Alert.alert('Please set schedule first.');
     }
     // console.log(TruckInfo.schedule);
-   
   };
   const updateStatus = async (val, truckID) => {
     let Status = null;
@@ -260,6 +261,7 @@ const VeggieWisper = ({navigation, route,...props}) => {
       if (response.didCancel) {
       } else if (response.error) {
       } else {
+        setLoading(true);
         // console.log(response)
         const img = response;
         try {
@@ -285,9 +287,9 @@ const VeggieWisper = ({navigation, route,...props}) => {
             'https://api.cloudinary.com/v1_1/hmrzthc6f/image/upload',
             requestOptions,
           )
-            .then(response => response.json())
+            .then( async response => await response.json())
             .then(async result => {
-              console.log(result);
+              await console.log('Image upload result' +  JSON.stringify(result));
 
               let TruckId = await AsyncStorage.getItem('TruckID');
               axios
@@ -297,10 +299,13 @@ const VeggieWisper = ({navigation, route,...props}) => {
                 })
                 .then(async Response => {
                   let Code = Response.data.code;
+                  console.log('code',)
                   if (Code === 'ABT0000') {
-                    setUrl(img); //
+                    setLoading(false)
+                    setUrl({uri:result.url}); //
                     // navigation.navigate(Route.SIGNIN);
                   } else {
+                    setLoading(false)
                     // setisLoading(false);
                   }
                 })
@@ -312,9 +317,11 @@ const VeggieWisper = ({navigation, route,...props}) => {
             })
             .catch(error => {
               console.log('error', error);
+              setLoading(false);
               // setIsLoading(false);
             });
         } catch (e) {
+          setLoading(false);
           console.log('error => ', e);
         }
       }
@@ -332,25 +339,33 @@ const VeggieWisper = ({navigation, route,...props}) => {
     return (
       <Container>
         <View style={styles.HeaderContainer}>
-          <ImageBackground
-            resizeMode={'contain'}
-            style={styles.image}
-            source={{uri: urls ? urls.uri : TruckInfo.coverPhoto}}>
-            <Header
-              isHome
-              settings
-              onSettingsPress={() => setShowModal(true)}
-              onPress={() => navigation.openDrawer()}>
-              {Language['Home']}
-            </Header>
-            <Entypo
-              style={{alignSelf: 'flex-end', marginRight: responsiveWidth(4)}}
-              name={'pencil'}
-              onPress={SelectImage}
-              color={'#B40E33'}
-              size={responsiveFontSize(4)}
-            />
-          </ImageBackground>
+          {loading ? (
+            <ActivityIndicator color={'red'} size={'large'} />
+          ) : (
+            <ImageBackground
+              resizeMode={'contain'}
+              style={styles.image}
+              source={{
+                uri: TruckInfo.coverPhoto
+                  ? TruckInfo.coverPhoto
+                  : urls && urls.uri,
+              }}>
+              <Header
+                isHome
+                settings
+                onSettingsPress={() => setShowModal(true)}
+                onPress={() => navigation.openDrawer()}>
+                {Language['Home']}
+              </Header>
+              <Entypo
+                style={{alignSelf: 'flex-end', marginRight: responsiveWidth(4)}}
+                name={'pencil'}
+                onPress={SelectImage}
+                color={'#B40E33'}
+                size={responsiveFontSize(4)}
+              />
+            </ImageBackground>
+          )}
         </View>
         <CountButton button={TruckInfo.selectedServingCusines} />
         <View style={styles.flexView}>

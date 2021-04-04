@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Alert, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, Alert, ActivityIndicator,SafeAreaView } from 'react-native';
 import Input from '../../../Component/Input';
 import Text from '../../../Component/Text';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
@@ -227,7 +227,7 @@ const SignUpSupplier = ({ navigation }) => {
 		}
 	};
 	return (
-		<View style={{ height: '100%', width: '100%' }}>
+		<SafeAreaView style={{ height: '100%', width: '100%' }}>
 			<Header onPress={() => navigation.goBack()}>{'Supplier Profile'}</Header>
 			{indicator ? (
 				<ActivityIndicator color={'#fff'} size={'large'} />
@@ -304,7 +304,7 @@ const SignUpSupplier = ({ navigation }) => {
 					{confirmPasswordErrors ? <ErrorView>{'Email Address already exist'}</ErrorView> : null}
 				</Ui>
 			)}
-		</View>
+		</SafeAreaView>
 	);
 };
 const styles = StyleSheet.create({

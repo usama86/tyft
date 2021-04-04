@@ -385,8 +385,12 @@ const Home = ({navigation}) => {
           flexDirection: 'row',
           justifyContent: 'space-between',
         }}>
-        <View style={{flexDirection:'row',alignSelf:'center'}}>
-        
+        <TouchableOpacity
+          onPress={() => {
+            setLanguage('English');
+            LanguageSelect(English);
+          }}
+          style={{flexDirection: 'row', alignSelf: 'center'}}>
           <Radio
             style={{width: responsiveWidth(5.4), height: responsiveHeight(3.4)}}
             // color={theme.colors.primary}
@@ -396,10 +400,20 @@ const Home = ({navigation}) => {
               LanguageSelect(English);
             }}
           />
-          <Text1 style={{marginTop:responsiveHeight(0.3),marginLeft:responsiveWidth(3)}}>{'English'}</Text1>
-        </View>
-        <View style={{flexDirection:'row',alignSelf:'center'}}>
-       
+          <Text1
+            style={{
+              marginTop: responsiveHeight(0.3),
+              marginLeft: responsiveWidth(3),
+            }}>
+            {'English'}
+          </Text1>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            setLanguage('Spanish');
+            LanguageSelect(Spanish);
+          }}
+          style={{flexDirection: 'row', alignSelf: 'center'}}>
           <Radio
             style={{width: responsiveWidth(5.4), height: responsiveHeight(3.4)}}
             // color={theme.colors.primary}
@@ -409,9 +423,14 @@ const Home = ({navigation}) => {
               LanguageSelect(Spanish);
             }}
           />
-           <Text1 style={{marginTop:responsiveHeight(0.3),marginLeft:responsiveWidth(3)}}>{'Spanish'}</Text1>
-         
-        </View>
+          <Text1
+            style={{
+              marginTop: responsiveHeight(0.3),
+              marginLeft: responsiveWidth(3),
+            }}>
+            {'Spanish'}
+          </Text1>
+        </TouchableOpacity>
       </View>
 
       <View style={FooterText}>

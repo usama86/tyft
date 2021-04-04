@@ -3,7 +3,7 @@ import React from 'react';
 import {  StyleSheet } from 'react-native';
 import { Text } from 'native-base';
 import { responsiveFontSize } from 'react-native-responsive-dimensions';
-import { normal, bold } from '../Screens/Auth/Constants/constants';
+import { normal, bold as bolds } from '../Screens/Auth/Constants/constants';
 const tyftText = ({ style, bold, value, ...props }) => {
     const {
         TextStyle,
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     },
     boldStyle:{
         fontSize:responsiveFontSize(3),
-        fontFamily:bold
+        fontFamily:bolds
     }
 });
 

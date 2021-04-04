@@ -33,6 +33,7 @@ import Geolocation from '@react-native-community/geolocation';
 import {showLocation} from 'react-native-map-link';
 import FA5 from 'react-native-vector-icons/FontAwesome5';
 import {Language} from '../../Constants/LanguageChangeFunc';
+import {getDistance} from 'geolib';
 const FindFoodTruck = ({navigation, route}) => {
   const [Data, setData] = useState([]);
   const [day, setDay] = useState(null);
@@ -45,6 +46,14 @@ const FindFoodTruck = ({navigation, route}) => {
   const [Lat, setLat] = React.useState(0.0);
   const [Long, setLong] = React.useState(0.0);
   const [uniqueProps, setuniqueProps] = useState([]);
+  const calculateDistance = (markerLat, markerLon) => {
+    let distance = getDistance(
+      {latitude: Lat, longitude: Long},
+      {latitude: markerLat, longitude: markerLon},
+    );
+    if (distance && distance <= 16093.4) return true;
+    else return false;
+  };
   const onChangeSearch = val => {
     setSearchVal(val);
     if (val == '') {
@@ -105,42 +114,6 @@ const FindFoodTruck = ({navigation, route}) => {
       }
     }
   };
-  // const onFilterSearch = async (selectedItems, Trucks) => {
-  //   // getAllTrucks();
-  //   console.log('hheloooo', selectedItems);
-  //   console.log('Trucks', Trucks);
-  //   let unique = [...new Set(selectedItems)];
-  //   console.log('UNIQUE', unique);
-  //   if (unique.length === 0) {
-  //     getAllTrucks();
-  //     setIsMsg(false);
-  //   } else {
-  //     // console.log('\n\n\n\nDATA=>>>\n\n\n', Data);
-  //     let matched = [];
-  //     for (let i = 0; i < unique.length; i++) {
-  //       for (let j = 0; j < Trucks.length; j++) {
-  //         for (let k = 0; k < Trucks[j].selectedServingCusines.length; k++) {
-  //           // console.log('SELECTED', Data[j].selectedServingCusines[k]);
-  //           if (Trucks[j].selectedServingCusines[k].cusineName === unique[i]) {
-  //             matched.push(Trucks[j]);
-  //           }
-  //         }
-  //       }
-  //     }
-  //     console.log('MATCHED', matched.length);
-  //     if (matched.length == 0 || matched === undefined) {
-  //       console.log('NOT MATCHED');
-  //       setIsMsg(true);
-  //       setTimeout(() => {
-  //         setIsMsg(false);
-  //         getAllTrucks();
-  //       }, 1000);
-  //     } else {
-  //       setIsMsg(false);
-  //       await setData(matched);
-  //     }
-  //   }
-  // };
   const getStatus = (item, index) => {
     let day = moment(new Date()).format('dddd');
     console.log('day', day);
@@ -161,7 +134,8 @@ const FindFoodTruck = ({navigation, route}) => {
       var currentTime = new Date().getHours();
       // console.log('Current Time ', currentTime);
       if (
-        (startTime <= currentTime && currentTime <= endTime) &&
+        startTime <= currentTime &&
+        currentTime <= endTime &&
         item.status === 'Open'
       ) {
         // console.log('Between');
@@ -176,14 +150,12 @@ const FindFoodTruck = ({navigation, route}) => {
 
     // return currentTime.toString();
   };
-  const getMargin=()=>{
-    let x = Language['No Truck Found']; 
+  const getMargin = () => {
+    let x = Language['No Truck Found'];
     console.log(x.length);
-    if(x.length>14)
-      return responsiveWidth(25);
-    else
-      return responsiveWidth(32);  
-  }
+    if (x.length > 14) return responsiveWidth(25);
+    else return responsiveWidth(32);
+  };
   const getAllTrucks = () => {
     console.log('in trucks');
     axios
@@ -299,121 +271,127 @@ const FindFoodTruck = ({navigation, route}) => {
   };
   const PrintCard = (item, index) => {
     console.log('Item is here', item);
-    return (
-      <TouchableOpacity
-        activeOpacity={0.8}
-        style={styles.MainView}
-        onPress={() => {
-          navigation.navigate(RouteName.CUSTOMERSUPPLIER, {
-            TruckInfo: item,
-            openMap: openMap,
-          });
-        }}>
-        <View style={styles.LeftIcon}>
-          <Image style={styles.image} source={{uri: item.truckLogo}} />
-        </View>
-        <View style={styles.RightContent}>
-          <Text
-            style={{fontSize: responsiveFontSize(2), fontWeight: 'bold'}}
-            value={item.truckName}
-          />
-          <CountButton
-            navigation={navigation}
-            button={item.selectedServingCusines}
-            buttonProp={{
-              width: '30%',
-              marginRight: responsiveWidth(2),
-              right: responsiveWidth(1),
-              paddingHorizontal: responsiveWidth(2),
-            }}
-            tabProp={{
-              marginTop: responsiveHeight(-17.5),
-              flexDirection: 'row',
-              justifyContent: 'flex-start',
-            }}
-          />
-          <View style={[styles.flex, {marginTop: responsiveHeight(5)}]}>
-            <Entypo
-              name={'location-pin'}
-              color={'#212121'}
-              size={responsiveFontSize(2.3)}
+    if (
+      calculateDistance(parseFloat(item.latitude), parseFloat(item.longitude))
+    ) {
+      return (
+        <TouchableOpacity
+          activeOpacity={0.8}
+          style={styles.MainView}
+          onPress={() => {
+            navigation.navigate(RouteName.CUSTOMERSUPPLIER, {
+              TruckInfo: item,
+              openMap: openMap,
+            });
+          }}>
+          <View style={styles.LeftIcon}>
+            {item.truckLogo && (
+              <Image style={styles.image} source={{uri: item.truckLogo}} />
+            )}
+          </View>
+          <View style={styles.RightContent}>
+            <Text
+              style={{fontSize: responsiveFontSize(2), fontWeight: 'bold'}}
+              value={item.truckName}
             />
-            <Text value={item.truckCity} />
-            <TouchableOpacity
-              onPress={() => openMap(item.latitude, item.longitude)}
-              style={{
+            <CountButton
+              navigation={navigation}
+              button={item.selectedServingCusines}
+              buttonProp={{
+                width: '30%',
+                marginRight: responsiveWidth(2),
+                right: responsiveWidth(1),
+                paddingHorizontal: responsiveWidth(2),
+              }}
+              tabProp={{
+                marginTop: responsiveHeight(-17.5),
                 flexDirection: 'row',
-                width: '90%',
-                height: responsiveHeight(5),
-                alignItems: 'center',
-                marginLeft: responsiveWidth(3),
-              }}>
-              <FA5
-                name={'directions'}
-                color={'green'}
-                size={responsiveFontSize(3)}
-              />
-              <Text
-                style={{marginLeft: responsiveWidth(2)}}
-                value={Language['Get Directions']}
-              />
-              {/* <Text
-                            style={[
-                              {marginLeft: responsiveWidth(1)},
-                            ]}>
-                            {'Get Directions'}
-                          </Text> */}
-            </TouchableOpacity>
-          </View>
-          {item.schedule
-            ? item.schedule.map(item2 =>
-                item2.day === day ? (
-                  <View style={styles.flex}>
-                    <AntDesign
-                      style={{marginLeft: responsiveWidth(1)}}
-                      name={'clockcircleo'}
-                      color={'#212121'}
-                      size={responsiveFontSize(1.8)}
-                    />
-                    <Text
-                      style={{marginLeft: responsiveWidth(1)}}
-                      value={item2.opening}
-                    />
-
-                    <Text
-                      style={{marginLeft: responsiveWidth(1)}}
-                      value={item2.closing}
-                    />
-                  </View>
-                ) : null,
-              )
-            : null}
-
-          <View
-            style={[
-              styles.flex,
-              {justifyContent: 'space-between', height: responsiveHeight(5)},
-            ]}>
-            <TouchableOpacity>
-              <Text
-                value={getStatus(item, index)}
-                style={{
-                  color: 'green',
-                  fontSize: responsiveFontSize(2),
-                  fontWeight: 'bold',
-                }}
-              />
-            </TouchableOpacity>
-
-            <Rating
-              readonly={true}
-              startingValue={getRating(item.customerReview)}
-              imageSize={responsiveFontSize(2.8)}
+                justifyContent: 'flex-start',
+              }}
             />
+            <View style={[styles.flex, {marginTop: responsiveHeight(5)}]}>
+              <Entypo
+                name={'location-pin'}
+                color={'#212121'}
+                size={responsiveFontSize(2.3)}
+              />
+              <Text value={item.truckCity} />
+              <TouchableOpacity
+                onPress={() => openMap(item.latitude, item.longitude)}
+                style={{
+                  flexDirection: 'row',
+                  width: '90%',
+                  height: responsiveHeight(5),
+                  alignItems: 'center',
+                  marginLeft: responsiveWidth(3),
+                }}>
+                <FA5
+                  name={'directions'}
+                  color={'green'}
+                  size={responsiveFontSize(3)}
+                />
+                <Text
+                  style={{marginLeft: responsiveWidth(2)}}
+                  value={Language['Get Directions']}
+                />
+                {/* <Text
+                              style={[
+                                {marginLeft: responsiveWidth(1)},
+                              ]}>
+                              {'Get Directions'}
+                            </Text> */}
+              </TouchableOpacity>
+            </View>
+            {item.schedule
+              ? item.schedule.map(item2 =>
+                  item2.day === day ? (
+                    <View style={styles.flex}>
+                      <AntDesign
+                        style={{marginLeft: responsiveWidth(1)}}
+                        name={'clockcircleo'}
+                        color={'#212121'}
+                        size={responsiveFontSize(1.8)}
+                      />
+                      <Text
+                        style={{marginLeft: responsiveWidth(1)}}
+                        value={item2.opening}
+                      />
+
+                      <Text
+                        style={{marginLeft: responsiveWidth(1)}}
+                        value={item2.closing}
+                      />
+                    </View>
+                  ) : null,
+                )
+              : null}
+
+            <View
+              style={[
+                styles.flex,
+                {justifyContent: 'space-between', height: responsiveHeight(5)},
+              ]}>
+              <TouchableOpacity>
+                <Text
+                  value={getStatus(item, index)}
+                  style={{
+                    color: 'green',
+                    fontSize: responsiveFontSize(2),
+                    fontWeight: 'bold',
+                  }}
+                />
+              </TouchableOpacity>
+
+              <Rating
+                readonly={true}
+                startingValue={getRating(item.customerReview)}
+                imageSize={responsiveFontSize(2.8)}
+              />
+            </View>
           </View>
-        </View>
-      </TouchableOpacity>
-    );
+        </TouchableOpacity>
+      );
+    }
   };
   const onClear = () => {
     getAllTrucks();
@@ -500,8 +478,8 @@ const FindFoodTruck = ({navigation, route}) => {
           style={{
             marginTop: responsiveHeight(25),
             marginLeft: getMargin(),
-            fontSize:responsiveFontSize(2),
-            fontFamily:'NunitoSans-Bold' 
+            fontSize: responsiveFontSize(2),
+            fontFamily: 'NunitoSans-Bold',
           }}
         />
       ) : Data.length > 0 && Data !== [undefined] ? (
@@ -519,8 +497,8 @@ const FindFoodTruck = ({navigation, route}) => {
           style={{
             marginTop: responsiveHeight(25),
             marginLeft: getMargin(),
-            fontSize:responsiveFontSize(2),
-            fontFamily:'NunitoSans-Bold' 
+            fontSize: responsiveFontSize(2),
+            fontFamily: 'NunitoSans-Bold',
           }}
         />
       )}

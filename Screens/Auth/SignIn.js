@@ -225,9 +225,6 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   forgotPasswordText: {
-    marginTop: 10,
-    marginLeft: 10,
-    marginBottom: 50,
     fontSize: 12,
     textAlign: 'center',
   },

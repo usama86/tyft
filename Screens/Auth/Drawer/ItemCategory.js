@@ -17,7 +17,7 @@ import {
 } from 'react-native-responsive-dimensions';
 import Header from '../../../Component/Header';
 import AsyncStorage from '@react-native-community/async-storage';
-import url, { bold } from './../Constants/constants';
+import url, { bold as bolds } from './../Constants/constants';
 import axios from 'axios';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Modal from '../../../Component/Modal';
@@ -180,7 +180,7 @@ const ItemCategory = ({navigation}) => {
     <TouchableOpacity activeOpacity={0.8} style={styles.MainView}>
       <View style={styles.Left}>
         <Text
-          style={{ fontWeight:bold,fontSize: responsiveFontSize(1.6)}}
+          style={{ fontWeight:'bold',fontSize: responsiveFontSize(1.6)}}
           value={item}
         />
       </View>
@@ -249,7 +249,7 @@ const ItemCategory = ({navigation}) => {
         onAddPress={() => setAddItem(true)}
         isHome
         onPress={() => navigation.openDrawer()}>
-        {'Menu Category'}
+        {'Menu Categorys'}
       </Header>
       {/* <View style={styles.HeadingContainer}>
         <TextInput
@@ -391,7 +391,7 @@ const ItemCategory = ({navigation}) => {
               onPress={() => setShowModal(false)}
             />
           </View>
-          <Text style={{textAlign: 'center',fontWeight:bold,fontSize:responsiveFontSize(2.5)}} value={'Edit Category'}  />
+          <Text style={{textAlign: 'center',fontWeight:'bold',fontSize:responsiveFontSize(2.5)}} value={'Edit Category'}  />
           <Input
             rounded
             value={EditCategory}
@@ -401,7 +401,7 @@ const ItemCategory = ({navigation}) => {
               width: '90%',
               alignSelf: 'center',
               marginTop: responsiveHeight(2),
-              fontWeight:bold
+              fontWeight:'bold'
             }}
           />
           <Button
@@ -419,7 +419,7 @@ const ItemCategory = ({navigation}) => {
             <Text
               uppercase={false}
               value={'Update'}
-              style={{color: '#fff',fontWeight:bold}}
+              style={{color: '#fff',fontWeight:'bold'}}
             />
           </Button>
         </View>
@@ -461,7 +461,7 @@ const ItemCategory = ({navigation}) => {
               <Text
                 uppercase={false}
                 value={'Yes'}
-                style={{color: '#fff',fontFamily:bold}}
+                style={{color: '#fff',fontFamily:bolds}}
               />
             </Button>
             <Button
@@ -479,7 +479,7 @@ const ItemCategory = ({navigation}) => {
               <Text
                 uppercase={false}
                 value={Language['No']}
-                style={{color: '#fff',fontFamily:bold}}
+                style={{color: '#fff',fontFamily:bolds}}
               />
             </Button>
           </View>

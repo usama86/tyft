@@ -56,7 +56,7 @@ const FunOfAuthStack = ({navigation, route}) => {
     return unsubscribe;
   }, [navigation]);
   const NearMeStack = () => (
-    <StackNearMe.Navigator screenOptions={{headerShown: false}}>
+    <StackNearMe.Navigator  screenOptions={{headerShown: false}}>
       <StackNearMe.Screen
         name={RouteName.SEARCHTRUCK}
         options={{title: 'Search Truck'}}

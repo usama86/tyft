@@ -136,7 +136,11 @@ const Favorite = ({navigation}) => {
         })
       }>
       <View style={styles.LeftIcon}>
-        <Image style={styles.image} source={{uri: item.truckLogo}} />
+        {
+          item.truckLogo &&
+          <Image style={styles.image} source={{uri: item.truckLogo}} />
+        }
+
       </View>
       <View style={styles.RightContent}>
         <Text

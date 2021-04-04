@@ -27,18 +27,18 @@ const CountButton = ({button, tabProp, buttonProp, buttonText,navigation}) => {
       {dupArray.map((item, index) => (
         <>
           {index < 2 ? (
-            <Button style={[styles.Button, buttonProp]}>
+            <View style={[styles.Button, buttonProp]}>
               <Text
                 numberOfLines={1}
                 style={styles.Btntext}
                 value={item.cusineName}
               />
-            </Button>
+            </View>
           ) : null}
         </>
       ))}
       {dupArray.length > 0 ? (
-        <Button
+        <View
           style={[
             styles.Button,
             {backgroundColor: theme.colors.primary, width: responsiveWidth(20)},
@@ -56,7 +56,7 @@ const CountButton = ({button, tabProp, buttonProp, buttonText,navigation}) => {
             ]}
             value={'+ ' + dupArray.length}
           />
-        </Button>
+        </View>
       ) : null}
       {/* {button.length - 2 > 0 ? (
         <Button

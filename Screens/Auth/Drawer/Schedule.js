@@ -165,6 +165,7 @@ function Schedule({ navigation, route }) {
 									size={15}
 								/>
 								<DateTimePickerModal
+								
 									isVisible={item.isDatePickerVisible}
 									mode="time"
 									display="spinner"

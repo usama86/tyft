@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
-  SafeAreaView
+  SafeAreaView,
 } from 'react-native';
 import Input from '../../../Component/Input';
 import Text from '../../../Component/Text';
@@ -26,8 +26,8 @@ import Modal from '../../../Component/Modal';
 import AddItemModal from '../../../Component/Modal';
 import ErrorView from '../../../Component/ErrorField';
 import Entypo from 'react-native-vector-icons/Entypo';
-import { bold } from '../Constants/constants';
-import { Language } from '../../../Constants/LanguageChangeFunc';
+import {bold} from '../Constants/constants';
+import {Language} from '../../../Constants/LanguageChangeFunc';
 
 const MenuSetting = ({navigation, route}) => {
   const [addItem, setAddItem] = React.useState(false);
@@ -51,7 +51,8 @@ const MenuSetting = ({navigation, route}) => {
     Error: false,
     ErrorText: null,
   });
-  const [categoryArray,setCategoryArray] = React.useState([]);
+  const [categoryArray, setCategoryArray] = React.useState([]);
+  const [addModalAnimation, setAddMenuAnimation] = useState(false);
   const changeCategory = e => {
     if (e === '') {
       setCategory(null);
@@ -78,7 +79,7 @@ const MenuSetting = ({navigation, route}) => {
       TwitterID: route.params.TwitterID,
       ServingCusine: route.params.ServingCusine,
       Menu: Data.length > 0 ? Data : [],
-      categoryArray:categoryArray,
+      categoryArray: categoryArray,
     });
   };
   const AddToList = () => {
@@ -104,8 +105,7 @@ const MenuSetting = ({navigation, route}) => {
         category: SelectedValue,
       });
 
-
-      let copy = [ ...categoryArray, SelectedValue]; // --> [1,2,3,4]
+      let copy = [...categoryArray, SelectedValue]; // --> [1,2,3,4]
       setCategoryArray(copy);
       setData(newArray);
       setAddItem(false);
@@ -131,7 +131,7 @@ const MenuSetting = ({navigation, route}) => {
     <TouchableOpacity activeOpacity={0.8} style={styles.MainView}>
       <View style={styles.Left}>
         <Text
-        bold
+          bold
           style={{fontSize: responsiveFontSize(2)}}
           value={item.name}
         />
@@ -167,6 +167,12 @@ const MenuSetting = ({navigation, route}) => {
         onPressButton={Navigate}>
         <View style={styles.InputMainView}>
           <AddItemModal
+            onModalHide={() => {
+              if (addModalAnimation) {
+                setShowModal(true);
+                // setAddMenuAnimation(false);
+              }
+            }}
             ModalContainer={{
               paddingVertical: responsiveHeight(2),
               paddingHorizontal: responsiveWidth(2),
@@ -196,7 +202,10 @@ const MenuSetting = ({navigation, route}) => {
                 style={[styles.Input, {width: '100%'}]}
               />
               <TouchableOpacity
-                onPress={() => setShowModal(true)}
+                onPress={() => {
+                  setAddItem(false);
+                  setAddMenuAnimation(true);
+                }}
                 style={{left: responsiveWidth(7)}}>
                 <AntDesign
                   name={'pluscircle'}
@@ -355,7 +364,7 @@ const styles = StyleSheet.create({
   },
   TextStyle: {
     fontSize: responsiveFontSize(2.4),
-fontFamily:bold,
+    fontFamily: bold,
     width: '60%',
   },
   TextView: {
@@ -399,7 +408,7 @@ fontFamily:bold,
     alignItems: 'center',
   },
   BoldText: {
- fontFamily:bold,
+    fontFamily: bold,
     fontSize: responsiveFontSize(3),
   },
   CrossView: {

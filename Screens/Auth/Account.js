@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {View, StyleSheet, Image, Alert,SafeAreaView} from 'react-native';
+import {View, StyleSheet, Image, Alert, SafeAreaView} from 'react-native';
 import Input from '../../Component/Input';
 import Text from '../../Component/Text';
 import {
@@ -89,8 +89,8 @@ const Account = ({navigation, route}) => {
           var formdata = new FormData();
           formdata.append('file', {
             uri: img.uri,
-            type: 'image/jpeg',
-            name: img.fileName,
+            type: img.type,
+            name: new Date().getTime(),
           });
           formdata.append('upload_preset', 'tyftBackend');
           var requestOptions = {
@@ -99,12 +99,11 @@ const Account = ({navigation, route}) => {
             body: formdata,
             redirect: 'follow',
           };
-          fetch(
-            'https://api.cloudinary.com/v1_1/hmrzthc6f/image/upload',
-            requestOptions,
-          )
+          console.log('URL',url+'/api/general/uploadImage',requestOptions)
+          fetch(url + '/api/general/uploadImage', requestOptions)
             .then(response => response.json())
             .then(async result => {
+              console.log('RESULT OF IMAGE UPLOAD', result);
               let userId = await AsyncStorage.getItem('userID');
               axios
                 .post(url + '/api/users/updateprofileimage', {

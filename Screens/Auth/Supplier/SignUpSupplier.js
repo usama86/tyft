@@ -1,10 +1,11 @@
 import React from 'react';
-import {View, StyleSheet,SafeAreaView} from 'react-native';
+import {View, StyleSheet, SafeAreaView} from 'react-native';
 import Input from '../../../Component/Input';
 import Text from '../../../Component/Text';
 import {
   responsiveHeight,
   responsiveWidth,
+  responsiveFontSize,
 } from 'react-native-responsive-dimensions';
 import Checkbox from '../../../Component/Checkbox';
 import Ui from '../../../Component/Ui';
@@ -12,7 +13,8 @@ import * as RouteName from './../../../Constants/RouteName';
 import Header from '../../../Component/Header';
 import ErrorView from '../../../Component/ErrorField';
 import axios from 'axios';
-import { Language } from '../../../Constants/LanguageChangeFunc';
+import {Language} from '../../../Constants/LanguageChangeFunc';
+import Texts from '../../../Component/Text';
 const SignUpSupplier = ({navigation}) => {
   const [isLoading, setisLoading] = React.useState(false);
   const [check, SetCheck] = React.useState(false);
@@ -131,7 +133,7 @@ const SignUpSupplier = ({navigation}) => {
         confirmPassErrorText:
           'Your should agree to terms and conditions to Join!',
       });
-    } else 
+    }
     // if (
     //   name.name &&
     //   email.email &&
@@ -142,8 +144,8 @@ const SignUpSupplier = ({navigation}) => {
     //   confirmpass.confirmpass &&
     //   !confirmpass.confirmPassError &&
     //   check
-    // ) 
-    {
+    // )
+    else {
       axios
         .post(url + '/api/users/getuser', {
           email: email.email,
@@ -167,6 +169,7 @@ const SignUpSupplier = ({navigation}) => {
     <SafeAreaView style={{height: '100%', width: '100%'}}>
       <Header onPress={() => navigation.goBack()}>{'Sign Up'}</Header>
       <Ui
+        ContentStyle={{height: undefined}}
         isLoading={isLoading}
         TextValue={Language['Let’s Create your Customer Account']}
         ButtonText={'Next'}
@@ -188,11 +191,13 @@ const SignUpSupplier = ({navigation}) => {
             value={email.email}
             //
             onChangeText={e => changeEmail(e)}
-            onBlur ={()=>    setEmail({
-              email: email.email.toLowerCase(),
-              emailError: true,
-              emailErrorText: null,
-            })}
+            onBlur={() =>
+              setEmail({
+                email: email.email.toLowerCase(),
+                emailError: true,
+                emailErrorText: null,
+              })
+            }
             placeholder={Language['Email Address']}
             style={styles.Input}
           />
@@ -243,10 +248,37 @@ const SignUpSupplier = ({navigation}) => {
         </View>
 
         <View style={styles.radioView}>
-          <Checkbox
-            checked={check}
-            onPress={() => SetCheck(!check)}
-            TextVal={'By signing up, I agree to'}
+          <View>
+            <Checkbox
+              checkboxView={{
+                // backgroundColor: 'red',
+                width: responsiveWidth(8),
+              }}
+              checked={check}
+              onPress={() => SetCheck(!check)}
+            />
+          </View>
+
+          <Texts value={'By signing up, I agree to'} style={styles.TextStyle} />
+          <Texts
+            value={'TYFT Terms &'}
+            onPress={() =>
+              Linking.openURL(
+                'http://www.trackyourfoodtruck.com/Terms-and-conditions.html',
+              )
+            }
+            style={styles.TextStyle1}
+          />
+          <Texts value={'\n Conditions '} style={styles.TextStyle2} />
+          <Texts value={'and'} style={styles.TextStyle4} />
+          <Texts
+            value={'privacy policy'}
+            onPress={() =>
+              Linking.openURL(
+                'http://www.trackyourfoodtruck.com/privacy%20policy.html',
+              )
+            }
+            style={styles.TextStyle3}
           />
         </View>
         {confirmPasswordErrors ? (
@@ -269,6 +301,39 @@ const styles = StyleSheet.create({
   radioView: {
     marginTop: responsiveHeight(3),
     flexDirection: 'row',
+  },
+  TextStyle: {
+    marginTop: responsiveHeight(-0.6),
+    marginLeft: responsiveWidth(6),
+    fontWeight: '500',
+    fontSize: responsiveFontSize(1.7),
+  },
+  TextStyle1: {
+    fontWeight: '500',
+    fontSize: responsiveFontSize(1.7),
+    marginLeft: responsiveWidth(1),
+    marginTop: responsiveHeight(-0.6),
+    color: 'rgb(193, 32, 38)',
+  },
+  TextStyle2: {
+    fontWeight: '500',
+    fontSize: responsiveFontSize(1.7),
+    marginLeft: responsiveWidth(-62),
+    marginTop: responsiveHeight(-0.6),
+    color: 'rgb(193, 32, 38)',
+  },
+  TextStyle3: {
+    fontWeight: '500',
+    fontSize: responsiveFontSize(1.7),
+    marginLeft: responsiveWidth(1),
+    marginTop: responsiveHeight(1.9),
+    color: 'rgb(193, 32, 38)',
+  },
+  TextStyle4: {
+    fontWeight: '500',
+    fontSize: responsiveFontSize(1.7),
+    marginLeft: responsiveWidth(1),
+    marginTop: responsiveHeight(1.9),
   },
 });
 export default SignUpSupplier;

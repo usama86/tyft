@@ -8,6 +8,7 @@ import {
   Alert,
   Image,
   ActivityIndicator,
+  SafeAreaView,
 } from 'react-native';
 import Input from '../../../Component/Input';
 import Text from '../../../Component/Text';
@@ -30,7 +31,7 @@ import url, {bold, normal} from './../Constants/constants';
 import axios from 'axios';
 import AddItemModal from '../../../Component/Modal';
 import Entypo from 'react-native-vector-icons/Entypo';
-import { Language } from '../../../Constants/LanguageChangeFunc';
+import {Language} from '../../../Constants/LanguageChangeFunc';
 const MenuSetting = ({navigation, route}) => {
   const [addItem, setAddItem] = React.useState(false);
   const [Categories, setCategories] = React.useState([]);
@@ -61,6 +62,7 @@ const MenuSetting = ({navigation, route}) => {
     Error: false,
     ErrorText: null,
   });
+  const [addModalAnimation, setAddMenuAnimation] = useState(false);
   useEffect(() => {
     getMenuOfSupplier();
   }, []);
@@ -344,8 +346,8 @@ const MenuSetting = ({navigation, route}) => {
                   fontSize: responsiveFontSize(1.9),
                   color: 'black',
                   marginTop: responsiveHeight(2),
-				  width: responsiveWidth(60),
-				  fontFamily:bold
+                  width: responsiveWidth(60),
+                  fontFamily: bold,
                 }}
                 value={item.name}
               />
@@ -355,8 +357,8 @@ const MenuSetting = ({navigation, route}) => {
 
                   color: '#A6A6A6',
                   marginTop: responsiveHeight(2.2),
-				  width: responsiveWidth(60),
-				  fontFamily:normal
+                  width: responsiveWidth(60),
+                  fontFamily: normal,
                 }}
                 value={item.description}
               />
@@ -422,13 +424,14 @@ const MenuSetting = ({navigation, route}) => {
   };
 
   return (
-    <View style={{height: '100%', width: '100%'}}>
+    <SafeAreaView style={{height: '100%', width: '100%'}}>
       <Header
         Add
         isHome
         onAddPress={() => {
           setEdit(true);
           setAddItem(true);
+          setAddMenuAnimation(false);
           setName({value: null, Error: false, ErrorText: null});
           setDescription({value: null, Error: false, ErrorText: null});
           setPrice({value: null, Error: false, ErrorText: null});
@@ -451,6 +454,12 @@ const MenuSetting = ({navigation, route}) => {
         }}>
         <View>
           <AddItemModal
+            onModalHide={() => {
+              if (addModalAnimation) {
+                setShowModal(true);
+                // setAddMenuAnimation(false);
+              }
+            }}
             ModalContainer={{
               paddingVertical: responsiveHeight(2),
               paddingHorizontal: responsiveWidth(2),
@@ -482,7 +491,10 @@ const MenuSetting = ({navigation, route}) => {
                 style={[styles.Input, {width: '100%'}]}
               />
               <TouchableOpacity
-                onPress={() => setShowModal(true)}
+                onPress={() => {
+                  setAddItem(false);
+                  setAddMenuAnimation(true);
+                }}
                 style={{left: responsiveWidth(7)}}>
                 <AntDesign
                   name={'pluscircle'}
@@ -608,7 +620,7 @@ const MenuSetting = ({navigation, route}) => {
                 keyExtractor={item => item.id}
                 contentContainerStyle={{
                   paddingVertical: responsiveHeight(1),
-                  paddingBottom:responsiveHeight(5)
+                  paddingBottom: responsiveHeight(5),
                 }}
                 renderItem={({item, index}) => PrintCard(item, index)}
               />
@@ -759,7 +771,7 @@ const MenuSetting = ({navigation, route}) => {
         </View>
         <Text style={styles.UpdatedText} value={'Cannot add duplicate Menu'} />
       </Modal>
-    </View>
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({

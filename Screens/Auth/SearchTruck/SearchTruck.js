@@ -43,6 +43,7 @@ const SearchTruck = ({navigation}) => {
       .then(async Response => {
         let ERROR = Response.data.code;
         let Trucks = Response.data.TruckInfo;
+        console.log('TRUCKS',Trucks)
         if ( ERROR===undefined && ERROR !== 'ABT0001') {
           // let filtered = Trucks.filter(item => item.status === 'Open');
           // if (filtered.length > 0) {
@@ -166,7 +167,6 @@ const styles = StyleSheet.create({
 
 export default  React.memo(SearchTruck,(prevProps,nextProps)=>{
   if(prevProps.Truck!== nextProps.Truck){
-    Alert.alert('hi')
-       return true;
+       return false;
   }
 });

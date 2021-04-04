@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet,SafeAreaView} from 'react-native';
+import {View, StyleSheet, SafeAreaView, Linking} from 'react-native';
 import Input from '../../Component/Input';
 import Text from '../../Component/Text';
 import {
@@ -15,8 +15,9 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 import ErrorView from '../../Component/ErrorField';
 import * as Route from '../../Constants/RouteName';
-import { Language } from '../../Constants/LanguageChangeFunc';
+import {Language} from '../../Constants/LanguageChangeFunc';
 import Checkbox from './../../Component/Checkbox';
+import Texts from '../../Component/Text';
 const SignUp = ({navigation}) => {
   const [name, SetName] = React.useState(null);
   const [nameError, SetNameError] = React.useState(false);
@@ -38,9 +39,11 @@ const SignUp = ({navigation}) => {
     confirmPasswordErrorText,
     setConfirmPasswordErrorText,
   ] = React.useState(null);
-  const [confirmPasswordErrors,setConfirmPasswordErrors] = React.useState(null);
+  const [confirmPasswordErrors, setConfirmPasswordErrors] = React.useState(
+    null,
+  );
   const [languge, setLanguage] = React.useState('English');
-  const [errorTerm,setErrorTerm] = React.useState(false);
+  const [errorTerm, setErrorTerm] = React.useState(false);
   const changeEmail = val => {
     let EmailRegix = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (EmailRegix.test(val)) {
@@ -49,7 +52,7 @@ const SignUp = ({navigation}) => {
       setEmailErrorText(null);
     } else if (val === '') {
       setEmail(val);
-      setEmailError(false); 
+      setEmailError(false);
       setEmailErrorText(null);
     } else if (!EmailRegix.test(val)) {
       setEmail(val);
@@ -58,8 +61,7 @@ const SignUp = ({navigation}) => {
     }
     setEmail(val);
     setEmailError(false);
-    setEmailErrorText(null); 
-    
+    setEmailErrorText(null);
   };
   const changePassword = val => {
     let PasswordRegix = /^(?=.*\d).{8,100}$/;
@@ -99,7 +101,9 @@ const SignUp = ({navigation}) => {
     }
     if (confirmPassword === null) {
       setConfirmPasswordError(true);
-      setConfirmPasswordErrorText(Language['Please enter your Confirm Password']);
+      setConfirmPasswordErrorText(
+        Language['Please enter your Confirm Password'],
+      );
     }
     if (confirmPassword !== password) {
       setConfirmPasswordError(true);
@@ -107,11 +111,9 @@ const SignUp = ({navigation}) => {
         'Password Does not matches with Confirm Password',
       );
     }
-    if(!check)
-    {
+    if (!check) {
       setErrorTerm(true);
-    } 
-    else if (
+    } else if (
       name &&
       !nameError &&
       email &&
@@ -121,8 +123,8 @@ const SignUp = ({navigation}) => {
       password &&
       !passwordError &&
       confirmPassword &&
-      !confirmPasswordError
-      && check
+      !confirmPasswordError &&
+      check
     ) {
       setisLoading(true);
       // console.log(languge)
@@ -141,7 +143,7 @@ const SignUp = ({navigation}) => {
           profileName: name,
           phoneNumber: phone,
           userType: 'Customer',
-          Language: "English",
+          Language: 'English',
         })
         .then(async Response => {
           console.log('Responsessss', Response.data.code);
@@ -150,12 +152,10 @@ const SignUp = ({navigation}) => {
             setisLoading(false);
             console.log('Customer Added');
             navigation.navigate(Route.SIGNIN);
-          } 
-          else if(Code === 'Email Address already exist') {
+          } else if (Code === 'Email Address already exist') {
             setConfirmPasswordErrors(true);
             setisLoading(false);
-          }      
-          else {
+          } else {
             console.log('NOT ADDEED');
             setisLoading(false);
           }
@@ -170,6 +170,7 @@ const SignUp = ({navigation}) => {
       <Header onPress={() => navigation.goBack()}>{'Sign Up'}</Header>
 
       <Ui
+        ContentStyle={{height:undefined}}
         isLoading={isLoading}
         onPressButton={AddCustomer}
         TextValue={Language['Let’s Create your Customer Account']}
@@ -194,7 +195,7 @@ const SignUp = ({navigation}) => {
             rounded
             placeholder={Language['Email Address']}
             onChangeText={val => changeEmail(val)}
-            onBlur={()=>setEmail(e=>e.toLowerCase())}
+            onBlur={() => setEmail(e => e.toLowerCase())}
             value={email}
             style={styles.Input}
           />
@@ -252,19 +253,48 @@ const SignUp = ({navigation}) => {
           <Text value={'Spanish'} style={{marginLeft: responsiveWidth(2)}} />
         </View> */}
         {confirmPasswordErrors ? (
-            <ErrorView>{'Email Address already exist'}</ErrorView>
-          ) : null}
-         
+          <ErrorView>{'Email Address already exist'}</ErrorView>
+        ) : null}
+
         <View style={styles.radioView1}>
-          <Checkbox
-            checked={check}
-            onPress={() => SetCheck(!check)}
-            TextVal={'By signing up, I agree to'}
+          <View>
+            <Checkbox
+              checkboxView={{
+                // backgroundColor: 'red',
+                width: responsiveWidth(8),
+              }}
+              checked={check}
+              onPress={() => SetCheck(!check)}
+              // TextVal={'By signing up, I agree to'}
+            />
+          </View>
+
+          <Texts value={'By signing up, I agree to'} style={styles.TextStyle} />
+          <Texts
+            value={'TYFT Terms &'}
+            onPress={() =>
+              Linking.openURL(
+                'http://www.trackyourfoodtruck.com/Terms-and-conditions.html',
+              )
+            }
+            style={styles.TextStyle1}
+          />
+          <Texts value={'\n Conditions '} style={styles.TextStyle2} />
+          <Texts value={'and'} style={styles.TextStyle4} />
+          <Texts
+            value={'privacy policy'}
+            onPress={() =>
+              Linking.openURL(
+                'http://www.trackyourfoodtruck.com/privacy%20policy.html',
+              )
+            }
+            style={styles.TextStyle3}
           />
         </View>
+
         {errorTerm ? (
-            <ErrorView>{'Please accept the term and policy.'}</ErrorView>
-          ) : null} 
+          <ErrorView>{'Please accept the term and policy.'}</ErrorView>
+        ) : null}
       </Ui>
     </SafeAreaView>
   );
@@ -291,6 +321,39 @@ const styles = StyleSheet.create({
   },
   TextSpace: {
     // paddingLeft:responsiveWidth(18)
+  },
+  TextStyle: {
+    marginTop: responsiveHeight(-0.6),
+    marginLeft: responsiveWidth(6),
+    fontWeight: '500',
+    fontSize: responsiveFontSize(1.7),
+  },
+  TextStyle1: {
+    fontWeight: '500',
+    fontSize: responsiveFontSize(1.7),
+    marginLeft: responsiveWidth(1),
+    marginTop: responsiveHeight(-0.6),
+    color: 'rgb(193, 32, 38)',
+  },
+  TextStyle2: {
+    fontWeight: '500',
+    fontSize: responsiveFontSize(1.7),
+    marginLeft: responsiveWidth(-62),
+    marginTop: responsiveHeight(-0.6),
+    color: 'rgb(193, 32, 38)',
+  },
+  TextStyle3: {
+    fontWeight: '500',
+    fontSize: responsiveFontSize(1.7),
+    marginLeft: responsiveWidth(1),
+    marginTop: responsiveHeight(1.9),
+    color: 'rgb(193, 32, 38)',
+  },
+  TextStyle4: {
+    fontWeight: '500',
+    fontSize: responsiveFontSize(1.7),
+    marginLeft: responsiveWidth(1),
+    marginTop: responsiveHeight(1.9),
   },
 });
 export default SignUp;

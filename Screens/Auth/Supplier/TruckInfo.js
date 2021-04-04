@@ -1,5 +1,11 @@
 import React from 'react';
-import {View, StyleSheet,SafeAreaView} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  SafeAreaView,
+  ScrollView,
+  KeyboardAvoidingView,
+} from 'react-native';
 import Input from '../../../Component/Input';
 import Text from '../../../Component/Text';
 import {
@@ -11,7 +17,8 @@ import Ui from '../../../Component/Ui';
 import * as RouteName from './../../../Constants/RouteName';
 import Header from '../../../Component/Header';
 import ErrorView from '../../../Component/ErrorField';
-import { normal } from '../Constants/constants';
+import {normal} from '../Constants/constants';
+import {Platform} from 'react-native';
 const TruckInfo = ({navigation, route}) => {
   const [check, SetCheck] = React.useState(false);
   const [truckName, SetTruckName] = React.useState({
@@ -99,14 +106,14 @@ const TruckInfo = ({navigation, route}) => {
     //     Error: true,
     //     ErrorText: 'Website must not be empty',
     //   });
-    // } 
+    // }
     else if (
       truckName.name &&
       businessDesc.description &&
       contact.contact &&
       email.email &&
       !email.Error &&
-      city.city 
+      city.city
       // &&
       // website.website
     ) {
@@ -128,88 +135,101 @@ const TruckInfo = ({navigation, route}) => {
   return (
     <SafeAreaView style={{height: '100%', width: '100%'}}>
       <Header onPress={() => navigation.goBack()}>{'Truck Info'}</Header>
-      <Ui
-        TextViewStyle={styles.TextViewStyle}
-        TextValue={"Your food truck's info"}
-        ButtonText={'Next'}
-        ContentStyle={{height: null,paddingBottom:responsiveHeight(3)}}
-        buttonStyle={{marginBottom:responsiveHeight(2)}}
-        onPressButton={Navigate}>
-        <View style={styles.InputMainView}>
-          <Input
-            rounded
-            placeholder="Truck Name"
-            onChangeText={e =>
-              SetTruckName({name: e, Error: false, ErrorText: null})
-            }
-            value={truckName.name}
-            style={styles.Input}
-          />
-          {truckName.Error ? (
-            <ErrorView>{truckName.ErrorText}</ErrorView>
-          ) : null}
 
-          <Input
-            rounded
-            placeholder="Business Description"
-            multiline={true}
-            value={businessDesc.description}
-            onChangeText={e =>
-              setBusinessDesc({description: e, Error: false, ErrorText: null})
-            }
-            style={
-              // styles.Input,
-              {
-                height: responsiveHeight(19),
-                marginTop: responsiveHeight(2),
-                width: '90%',
-              }
-            }
-          />
+      <KeyboardAvoidingView behavior={'padding'}>
+        <ScrollView>
+          <Ui
+            TextViewStyle={styles.TextViewStyle}
+            TextValue={"Your food truck's info"}
+            ButtonText={'Next'}
+            ContentStyle={{height: null, paddingBottom: responsiveHeight(3)}}
+            buttonStyle={{marginBottom: responsiveHeight(2)}}
+            onPressButton={Navigate}>
+            <View style={styles.InputMainView}>
+              <Input
+                rounded
+                placeholder="Truck Name"
+                onChangeText={e =>
+                  SetTruckName({name: e, Error: false, ErrorText: null})
+                }
+                value={truckName.name}
+                style={styles.Input}
+              />
+              {truckName.Error ? (
+                <ErrorView>{truckName.ErrorText}</ErrorView>
+              ) : null}
 
-          {businessDesc.Error ? (
-            <ErrorView>{businessDesc.ErrorText}</ErrorView>
-          ) : null}
-          <Input
-            rounded
-            placeholder="Contact"
-            style={styles.Input}
-            value={contact.contact}
-            onChangeText={e =>
-              setContact({contact: e, Error: false, ErrorText: null})
-            }
-          />
-          {contact.Error ? <ErrorView>{contact.ErrorText}</ErrorView> : null}
-          <Input
-            rounded
-            placeholder="Email"
-            onChangeText={e => changeEmail(e)}
-            value={email.email}
-            style={styles.Input}
-          />
-          {email.Error ? <ErrorView>{email.ErrorText}</ErrorView> : null}
-          <Input
-            rounded
-            placeholder="City"
-            onChangeText={e =>
-              setCity({city: e, Error: false, ErrorText: null})
-            }
-            value={city.city}
-            style={styles.Input}
-          />
-          {city.Error ? <ErrorView>{city.ErrorText}</ErrorView> : null}
-          <Input
-            rounded
-            placeholder="Website"
-            onChangeText={e =>
-              setWebsite({website: e, Error: false, ErrorText: null})
-            }
-            value={website.website}
-            style={styles.Input}
-          />
-          {website.Error ? <ErrorView>{website.ErrorText}</ErrorView> : null}
-        </View>
-      </Ui>
+              <Input
+                rounded
+                placeholder="Business Description"
+                multiline={true}
+                value={businessDesc.description}
+                onChangeText={e =>
+                  setBusinessDesc({
+                    description: e,
+                    Error: false,
+                    ErrorText: null,
+                  })
+                }
+                style={
+                  // styles.Input,
+                  {
+                    height: responsiveHeight(19),
+                    marginTop: responsiveHeight(2),
+                    width: '90%',
+                  }
+                }
+              />
+
+              {businessDesc.Error ? (
+                <ErrorView>{businessDesc.ErrorText}</ErrorView>
+              ) : null}
+              <Input
+                rounded
+                placeholder="Contact"
+                style={styles.Input}
+                value={contact.contact}
+                onChangeText={e =>
+                  setContact({contact: e, Error: false, ErrorText: null})
+                }
+              />
+              {contact.Error ? (
+                <ErrorView>{contact.ErrorText}</ErrorView>
+              ) : null}
+              <Input
+                rounded
+                placeholder="Email"
+                onChangeText={e => changeEmail(e)}
+                value={email.email}
+                style={styles.Input}
+              />
+              {email.Error ? <ErrorView>{email.ErrorText}</ErrorView> : null}
+              <Input
+                rounded
+                placeholder="City"
+                onChangeText={e =>
+                  setCity({city: e, Error: false, ErrorText: null})
+                }
+                value={city.city}
+                style={styles.Input}
+              />
+              {city.Error ? <ErrorView>{city.ErrorText}</ErrorView> : null}
+              <Input
+                rounded
+                placeholder="Website"
+                onChangeText={e =>
+                  setWebsite({website: e, Error: false, ErrorText: null})
+                }
+                value={website.website}
+                style={styles.Input}
+              />
+              {website.Error ? (
+                <ErrorView>{website.ErrorText}</ErrorView>
+              ) : null}
+            </View>
+          </Ui>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
@@ -219,7 +239,7 @@ const styles = StyleSheet.create({
   },
   Input: {
     marginTop: responsiveHeight(3),
-    fontFamily:normal
+    fontFamily: normal,
   },
   TextViewStyle: {
     //  width: responsiveWidth(60),
