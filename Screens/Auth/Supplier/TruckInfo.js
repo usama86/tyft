@@ -55,13 +55,14 @@ const TruckInfo = ({navigation, route}) => {
     SetCheck(!check);
   };
   const changeEmail = e => {
+    let val = e.replace(/\s+$/, '');
     let EmailRegix = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (EmailRegix.test(e)) {
-      setEmail({email: e, Error: false, ErrorText: null});
-    } else if (e === '') {
-      setEmail({email: e, Error: false, ErrorText: null});
-    } else if (!EmailRegix.test(e)) {
-      setEmail({email: e, Error: true, ErrorText: 'Please Enter Valid Email'});
+    if (EmailRegix.test(val)) {
+      setEmail({email: val, Error: false, ErrorText: null});
+    } else if (val === '') {
+      setEmail({email: val, Error: false, ErrorText: null});
+    } else if (!EmailRegix.test(val)) {
+      setEmail({email: val, Error: true, ErrorText: 'Please Enter Valid Email'});
     }
   };
   const Navigate = () => {
