@@ -299,6 +299,7 @@ const styles = StyleSheet.create({
     marginTop: responsiveHeight(3),
   },
   radioView: {
+    paddingTop:responsiveHeight(1),
     marginTop: responsiveHeight(3),
     flexDirection: 'row',
   },
