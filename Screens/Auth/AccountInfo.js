@@ -41,7 +41,7 @@ const AccountInfo = ({navigation, route}) => {
   const [showModal, setShowModal] = useState(false);
   const [profileName, setProfileName] = React.useState('');
   const [Language, setLanguage] = React.useState('');
-  const [urls, setUrl] = React.useState('');
+  const [urls, setUrl] = React.useState(null);
   const [photo, setPhoto] = React.useState('');
   const [password, setPassword] = React.useState({
     value: null,
@@ -84,89 +84,14 @@ const AccountInfo = ({navigation, route}) => {
     });
     return _unsubscribe;
   }, []);
-  // useEffect(() => {
-  //   navigation.addListener('focus', () => {
-  //     checkUserStatus();
-  //     getData();
-  //   });
-  // }, [route.name]);
-
-  const SelectImage = () => {
-    const options = {
-      title: 'Select or Capture Your Image',
-      storageOptions: {
-        skipBackup: true,
-        path: 'images',
-      },
-    };
-    ImagePicker.showImagePicker(options, response => {
-      if (response.didCancel) {
-      } else if (response.error) {
-      } else {
-        setImage(response);
-        const img = response;
-        // TruckID: route.params.ID,
-        try {
-          // setIsLoading(true);
-          var myHeaders = new Headers();
-          myHeaders.append('Content-Type', 'multipart/form-data');
-          myHeaders.append('Accept', 'application/json');
-          // let file = await uriToBlob(val.uri)
-          var formdata = new FormData();
-          formdata.append('file', {
-            uri: img.uri,
-            type: 'image/jpeg',
-            name: img.fileName,
-          });
-          formdata.append('upload_preset', 'tyftBackend');
-          var requestOptions = {
-            method: 'POST',
-            headers: myHeaders,
-            body: formdata,
-            redirect: 'follow',
-          };
-          fetch(
-            'https://api.cloudinary.com/v1_1/hmrzthc6f/image/upload',
-            requestOptions,
-          )
-            .then(response => response.json())
-            .then(async result => {
-              let userId = await AsyncStorage.getItem('userID');
-              axios
-                .post(url + '/api/users/updateprofileimage', {
-                  _id: userId,
-                  imgUrl: result.url,
-                })
-                .then(async Response => {
-                  let Code = Response.data.code;
-                  if (Code === 'ABT0000') {
-                    setUrl(img); //
-                    // navigation.navigate(Route.SIGNIN);
-                  }
-                })
-                .catch(error => {
-                  console.log(error);
-                });
-              // setImageUrl(result.url); updatetruckimage
-              // setIsLoading(false);
-            })
-            .catch(error => {
-              console.log('error', error);
-              // setIsLoading(false);
-            });
-        } catch (e) {
-          console.log('error => ', e);
-        }
-      }
-    });
-  };
   const getData = async () => {
     let names = await AsyncStorage.getItem('profileName');
     let emails = await AsyncStorage.getItem('email');
     //  await AsyncStorage.setItem('profileName' + '', usertoken.profileName);
     let phones = await AsyncStorage.getItem('phoneNumber');
-    // let photos = await AsyncStorage.getItem('profilePhoto');
+    let photos = await AsyncStorage.getItem('profilePhoto');
     let language = await AsyncStorage.getItem('language');
+    setUrl(photos)
     // console.log(photos);
     // setPhoto(photos);
     // setImage(photos);
@@ -215,7 +140,7 @@ const AccountInfo = ({navigation, route}) => {
               <View style={styles.rowView}>
              
                   <Avatar
-                    source={ img ? {uri:img.uri}:require('../../images/2.jpg')}
+                    source={ urls? {uri:urls}:require('../../images/2.jpg')}
                     // style={{marginLeft:2}}
                     // icon={{name: 'user', type: 'font-awesome'}}
                     // showEditButton

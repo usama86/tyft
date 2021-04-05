@@ -52,7 +52,7 @@ const MenuSetting = ({navigation, route}) => {
     ErrorText: null,
   });
   const [categoryArray, setCategoryArray] = React.useState([]);
-  const [addModalAnimation, setAddMenuAnimation] = useState(false);
+  const [addModalAnimation, setAddMenuAnimation] = React.useState(false);
   const changeCategory = e => {
     if (e === '') {
       setCategory(null);

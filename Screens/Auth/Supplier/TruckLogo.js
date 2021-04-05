@@ -1,5 +1,11 @@
 import React, {useEffect} from 'react';
-import {View, StyleSheet, ActivityIndicator,SafeAreaView} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  ActivityIndicator,
+  SafeAreaView,
+  Platform,
+} from 'react-native';
 import Input from '../../../Component/Input';
 import Text from '../../../Component/Text';
 import {
@@ -13,7 +19,7 @@ import ImagePicker from '../../../Component/ImagePicker';
 import Header from '../../../Component/Header';
 // import ImgToBase64 from 'react-native-image-base64';
 import ImageResizer from 'react-native-image-resizer';
-
+import axios from 'axios';
 const TruckLogo = ({navigation, route}) => {
   const [check, SetCheck] = React.useState(false);
   const [name, SetName] = React.useState('');
@@ -24,52 +30,58 @@ const TruckLogo = ({navigation, route}) => {
     SetCheck(!check);
   };
   const SendUri = async val => {
-    setImg(val);
     try {
       setIsLoading(true);
       ImageResizer.createResizedImage(val.uri, val.height, val.width, 'JPEG', 0)
-      .then(async(responses) => {
-        let getResponse = await responses;
-        myHeaders.append('Content-Type', 'multipart/form-data');
-        myHeaders.append('Accept', 'application/json');
-        // let file = await uriToBlob(val.uri)
-        var formdata = new FormData();
-        formdata.append('file', {
-          uri: getResponse.uri,
-          type: 'image/jpeg',
-          name: val.fileName,
-        });
-        formdata.append('upload_preset', 'tyftBackend');
-        var requestOptions = {
-          method: 'POST',
-          headers: myHeaders,
-          body: formdata,
-          redirect: 'follow',
-        };
-        fetch(
-          'https://api.cloudinary.com/v1_1/hmrzthc6f/image/upload',
-          requestOptions,
-        )
-          .then(response => response.json())
-          .then(result => {
-            setImageUrl(result.url);
-            setIsLoading(false);
-          })
-          .catch(error => {
-            setIsLoading(false);
-          });
-        // response.uri is the URI of the new image that can now be displayed, uploaded...
-        // response.path is the path of the new image
-        // response.name is the name of the new image with the extension
-        // response.size is the size of the new image
-      })
-      .catch(err => {
+        .then(async response => {
+          setIsLoading(true);
+          const img = response;
+          try {
+            console.log('IMAGES OBJECT', img);
+            var formdata = new FormData();
+            let path = img.uri;
+            if (Platform.OS === 'ios') {
+              path = '~' + path.substring(path.indexOf('/Documents'));
+            }
+            if (!img.fileName) {
+              img.fileName = path.split('/').pop();
+            }
+            formdata.append('file', {
+              uri: img.uri,
+              type: img.type,
+              name: img.fileName,
+            });
+            console.log('form dat', formdata);
+            formdata.append('upload_preset', 'tyftBackend');
+            axios
+              .post(url + '/api/general/uploadImage', formdata)
+              .then(async Response => {
+                console.log('FORM DARA', formdata);
+                let Code = Response.data.code;
+                let urls = Response.data.url;
+                console.log('IMAGE URLS', urls);
+                if (Code === 'ABT0000') {
+                  setIsLoading(false);
+                  setImageUrl(urls);
+                } else {
+                  setisLoading(false);
+                }
+              })
+              .catch(error => {
+                setIsLoading(false);
+                console.log('FORM DATA ERROR', error);
+              });
+          } catch (e) {
+             setIsLoading(false);
+            console.log('error => ', e);
+          }
+        })
+        .catch(err => {
           console.log(err);
-        // Oops, something went wrong. Check that the filename is correct and
-        // inspect err to get more details.
-      });
+          // Oops, something went wrong. Check that the filename is correct and
+          // inspect err to get more details.
+        });
       var myHeaders = new Headers();
-     
     } catch (e) {
       console.log('error => ', e);
     }

@@ -1,5 +1,13 @@
 import React, {useEffect} from 'react';
-import {View, StyleSheet, Image, Alert, SafeAreaView} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Image,
+  Alert,
+  SafeAreaView,
+  Platform,
+  ActivityIndicator,
+} from 'react-native';
 import Input from '../../Component/Input';
 import Text from '../../Component/Text';
 import {
@@ -40,7 +48,8 @@ const Account = ({navigation, route}) => {
   const [islogout, setisLogout] = React.useState(null);
   const [img, setImage] = React.useState(null);
   const [photo, setPhoto] = React.useState('');
-  const [urls, setUrl] = React.useState('');
+  const [urls, setUrl] = React.useState(null);
+  const [loading, setLoading] = React.useState(false);
   const Logout = async () => {
     await AsyncStorage.clear();
     navigation.dispatch(
@@ -54,7 +63,9 @@ const Account = ({navigation, route}) => {
   const checkUserStatus = async () => {
     let userType = await AsyncStorage.getItem('userType');
     let photo = await AsyncStorage.getItem('profilePhoto');
-    setPhoto(photo);
+    console.log('PHOTO HEREEE ALREADY', photo);
+    setUrl(photo);
+    // setPhoto(photo);
     if (userType !== null) {
       setLoggedin(true);
       SetName({value: route.params.name, errorText: null});
@@ -77,56 +88,61 @@ const Account = ({navigation, route}) => {
       if (response.didCancel) {
       } else if (response.error) {
       } else {
-        setImage(response);
+        setUrl(response.uri);
+        setLoading(true);
         const img = response;
-        // TruckID: route.params.ID,
         try {
-          // setIsLoading(true);
-          var myHeaders = new Headers();
-          myHeaders.append('Content-Type', 'multipart/form-data');
-          myHeaders.append('Accept', 'application/json');
-          // let file = await uriToBlob(val.uri)
+          console.log('IMAGES OBJECT', img);
           var formdata = new FormData();
+          let path = img.uri;
+          if (Platform.OS === 'ios') {
+            path = '~' + path.substring(path.indexOf('/Documents'));
+          }
+          if (!img.fileName) {
+            img.fileName = path.split('/').pop();
+          }
           formdata.append('file', {
             uri: img.uri,
             type: img.type,
-            name: new Date().getTime(),
+            name: img.fileName,
           });
+          console.log('form dat', formdata);
           formdata.append('upload_preset', 'tyftBackend');
-          var requestOptions = {
-            method: 'POST',
-            headers: myHeaders,
-            body: formdata,
-            redirect: 'follow',
-          };
-          console.log('URL',url+'/api/general/uploadImage',requestOptions)
-          fetch(url + '/api/general/uploadImage', requestOptions)
-            .then(response => response.json())
-            .then(async result => {
-              console.log('RESULT OF IMAGE UPLOAD', result);
-              let userId = await AsyncStorage.getItem('userID');
-              axios
-                .post(url + '/api/users/updateprofileimage', {
-                  _id: userId,
-                  imgUrl: result.url,
-                })
-                .then(async Response => {
-                  let Code = Response.data.code;
-                  if (Code === 'ABT0000') {
-                    setUrl(img); //
-                    await AsyncStorage.setItem('profilePhoto' + '', result.url);
-                    // navigation.navigate(Route.SIGNIN);
-                  }
-                })
-                .catch(error => {
-                  console.log(error);
-                });
-              // setImageUrl(result.url); updatetruckimage
-              // setIsLoading(false);
+          axios
+            .post(url + '/api/general/uploadImage', formdata)
+            .then(async Response => {
+              console.log('FORM DARA', formdata);
+              let Code = Response.data.code;
+              let urls = Response.data.url;
+              console.log('IMAGE URLS', urls);
+              if (Code === 'ABT0000') {
+                let userId = await AsyncStorage.getItem('userID');
+                axios
+                  .post(url + '/api/users/updateprofileimage', {
+                    _id: userId,
+                    imgUrl: urls,
+                  })
+                  .then(async Response => {
+                    let Code = Response.data.code;
+                    if (Code === 'ABT0000') {
+                      setLoading(false);
+                      setUrl(urls); //
+                      await AsyncStorage.setItem('profilePhoto' + '', urls);
+                      // navigation.navigate(Route.SIGNIN);
+                    }
+                  })
+                  .catch(error => {
+                    setLoading(false);
+                    console.log(error);
+                  });
+              } else {
+                setLoading(false);
+                // setisLoading(false);
+              }
             })
             .catch(error => {
-              console.log('error', error);
-              // setIsLoading(false);
+              setLoading(false);
+              console.log('FORM DATA ERROR', error);
             });
         } catch (e) {
           console.log('error => ', e);
@@ -147,12 +163,6 @@ const Account = ({navigation, route}) => {
     if (!phone.value) {
       setPhone({value: null, errorText: 'Please Enter Phone Number'});
     }
-    // if (password.value !== confirmPassword.value) {
-    //   setConfirmPassword({
-    //     value: confirmPassword.value,
-    //     errorText: 'Confirm Password Does not matched with current Password',
-    //   });
-    // }
     else if (name.value && email.value && phone.value) {
       await setisLoading(true);
       let userID = await AsyncStorage.getItem('userID');
@@ -240,9 +250,9 @@ const Account = ({navigation, route}) => {
           TextSpace={styles.TextSpace}
           TextViewStyle={styles.TextViewStyle}>
           <View style={styles.InputMainView}>
-            <View style={styles.rowView}>
+            <View style={[styles.rowView]}>
               <Avatar
-                source={img ? {uri: img.uri} : require('../../images/2.jpg')}
+                source={urls ? {uri: urls} : require('../../images/2.jpg')}
                 // style={{marginLeft:2}}
                 icon={{name: 'user', type: 'font-awesome'}}
                 showEditButton
@@ -250,10 +260,7 @@ const Account = ({navigation, route}) => {
                 onPress={SelectImage}
                 size={responsiveFontSize(13)}
               />
-              {/* imageProps={{uri:truckData.truckLogo}} */}
-              {/* <View style={{marginLeft: 20}}>
-                  <Text style={styles.whiteText1} bold value={name} />
-                </View> */}
+              {loading && <ActivityIndicator color={'#000'} />}
             </View>
             <Input
               rounded

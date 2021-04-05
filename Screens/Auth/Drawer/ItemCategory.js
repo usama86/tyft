@@ -17,7 +17,7 @@ import {
 } from 'react-native-responsive-dimensions';
 import Header from '../../../Component/Header';
 import AsyncStorage from '@react-native-community/async-storage';
-import url, { bold as bolds } from './../Constants/constants';
+import url, {bold as bolds} from './../Constants/constants';
 import axios from 'axios';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Modal from '../../../Component/Modal';
@@ -26,7 +26,7 @@ import Button from '../../../Component/Button';
 import AddItemModal from '../../../Component/Modal';
 import Select from '../../../Component/Select';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { Language } from '../../../Constants/LanguageChangeFunc';
+import {Language} from '../../../Constants/LanguageChangeFunc';
 const ItemCategory = ({navigation}) => {
   const [menuItem, setMenuItem] = useState();
   const [showModal, setShowModal] = React.useState(false);
@@ -40,7 +40,7 @@ const ItemCategory = ({navigation}) => {
   const [category, setCategory] = React.useState(null);
   const [EditCategory, setEditCategory] = useState(null);
   const [Categories, setCategories] = React.useState([]);
-  const [addingItem,setAddingItem] = useState(null);
+  const [addingItem, setAddingItem] = useState(null);
   const [name, setName] = React.useState({
     value: null,
     Error: false,
@@ -57,7 +57,7 @@ const ItemCategory = ({navigation}) => {
     ErrorText: null,
   });
 
-  const [index,setIndex] = React.useState(0);
+  const [index, setIndex] = React.useState(0);
   useEffect(() => {
     getCategoryOfSupplier();
   }, []);
@@ -88,7 +88,7 @@ const ItemCategory = ({navigation}) => {
 
   const UpdateCategory = async val => {
     let indexCategory = index;
-    let CopyData =[...Data];
+    let CopyData = [...Data];
     CopyData[indexCategory] = EditCategory;
 
     setIndicator(true);
@@ -102,11 +102,11 @@ const ItemCategory = ({navigation}) => {
         const ERROR = Response.data.code;
         if (ERROR === 'ABT0000') {
           console.log('Updated');
-          setShowModal(false)
+          setShowModal(false);
           setIndicator(false);
           getCategoryOfSupplier();
           setTimeout(() => {
-            setShowModal(false)
+            setShowModal(false);
           }, 500);
         } else {
           setIndicator(false);
@@ -117,8 +117,8 @@ const ItemCategory = ({navigation}) => {
       });
     if (val) setShowModal2(false);
   };
-  const AddCategory = async(array)=>{
-    console.log('ADDD A')
+  const AddCategory = async array => {
+    console.log('ADDD A');
     setIndicator(true);
     setAddingItem(true);
     let TruckId = await AsyncStorage.getItem('TruckID');
@@ -131,30 +131,31 @@ const ItemCategory = ({navigation}) => {
         const ERROR = Response.data.code;
         if (ERROR === 'ABT0000') {
           console.log('Updated');
-          setShowModal(false)
+          setShowModal(false);
           setIndicator(false);
           let dupData = [...Data];
-          dupData.push(name.value);
-          setData(dupData);
+          if (!data.find(a => a === name.value)) {
+            dupData.push(name.value);
+            setData(dupData);
+          }
           setTimeout(() => {
-            setShowModal(false)
+            setShowModal(false);
             setAddingItem(false);
-            setAddItem(false)
-            
+            setAddItem(false);
           }, 500);
         } else {
           setIndicator(false);
-          setAddingItem(false)
-          setAddItem(false)
+          setAddingItem(false);
+          setAddItem(false);
         }
       })
       .catch(error => {
-        setAddingItem(false)
-        setAddItem(false)
+        setAddingItem(false);
+        setAddItem(false);
         console.log(error);
       });
     // if (val) setShowModal2(false);
-  }
+  };
   const getCategoryOfSupplier = async () => {
     setIndicator(true);
     let TruckId = await AsyncStorage.getItem('TruckID');
@@ -164,7 +165,7 @@ const ItemCategory = ({navigation}) => {
       })
       .then(async Response => {
         const ERROR = Response.data.code;
-        console.log('Category',Response.data)
+        console.log('Category', Response.data);
         if (ERROR !== 'ABT0001') {
           setIndicator(false);
           setData(Response.data);
@@ -180,7 +181,7 @@ const ItemCategory = ({navigation}) => {
     <TouchableOpacity activeOpacity={0.8} style={styles.MainView}>
       <View style={styles.Left}>
         <Text
-          style={{ fontWeight:'bold',fontSize: responsiveFontSize(1.6)}}
+          style={{fontWeight: 'bold', fontSize: responsiveFontSize(1.6)}}
           value={item}
         />
       </View>
@@ -211,7 +212,7 @@ const ItemCategory = ({navigation}) => {
     </TouchableOpacity>
   );
   const AddToList = () => {
-    console.log('hjhjb')
+    console.log('hjhjb');
     let newId = 0;
     let newArray = [...Data];
     if (!name.value) {
@@ -227,9 +228,9 @@ const ItemCategory = ({navigation}) => {
     // if (!price.value) {
     //   setPrice({value: null, Error: true, ErrorText: 'Price is required.'});
     // } else
-    
+
     if (name.value) {
-      newArray.push( name.value);
+      newArray.push(name.value);
       // setData(newArray);
       AddCategory(newArray);
     }
@@ -249,7 +250,7 @@ const ItemCategory = ({navigation}) => {
         onAddPress={() => setAddItem(true)}
         isHome
         onPress={() => navigation.openDrawer()}>
-        {'Menu Categorys'}
+        {'Menu Category'}
       </Header>
       {/* <View style={styles.HeadingContainer}>
         <TextInput
@@ -306,12 +307,15 @@ const ItemCategory = ({navigation}) => {
               setName({value: e, Error: false, ErrorText: null})
             }
             value={name.value}
-            style={{width:'100%'}}
+            style={{width: '100%'}}
           />
           {name.Error ? <ErrorView>{name.ErrorText}</ErrorView> : null}
         </View>
         <View style={styles.TextView}>
-          <Button loading={addingItem} style={styles.buttonStyle2} onPress={AddToList}>
+          <Button
+            loading={addingItem}
+            style={styles.buttonStyle2}
+            onPress={AddToList}>
             <Text
               uppercase={true}
               value={'Add to List'}
@@ -366,7 +370,7 @@ const ItemCategory = ({navigation}) => {
             }}
             rounded>
             <Text
-            bold
+              bold
               uppercase={false}
               value={'Add'}
               style={{color: '#fff'}}
@@ -391,7 +395,14 @@ const ItemCategory = ({navigation}) => {
               onPress={() => setShowModal(false)}
             />
           </View>
-          <Text style={{textAlign: 'center',fontWeight:'bold',fontSize:responsiveFontSize(2.5)}} value={'Edit Category'}  />
+          <Text
+            style={{
+              textAlign: 'center',
+              fontWeight: 'bold',
+              fontSize: responsiveFontSize(2.5),
+            }}
+            value={'Edit Category'}
+          />
           <Input
             rounded
             value={EditCategory}
@@ -401,7 +412,7 @@ const ItemCategory = ({navigation}) => {
               width: '90%',
               alignSelf: 'center',
               marginTop: responsiveHeight(2),
-              fontWeight:'bold'
+              fontWeight: 'bold',
             }}
           />
           <Button
@@ -419,7 +430,7 @@ const ItemCategory = ({navigation}) => {
             <Text
               uppercase={false}
               value={'Update'}
-              style={{color: '#fff',fontWeight:'bold'}}
+              style={{color: '#fff', fontWeight: 'bold'}}
             />
           </Button>
         </View>
@@ -461,7 +472,7 @@ const ItemCategory = ({navigation}) => {
               <Text
                 uppercase={false}
                 value={'Yes'}
-                style={{color: '#fff',fontFamily:bolds}}
+                style={{color: '#fff', fontFamily: bolds}}
               />
             </Button>
             <Button
@@ -479,7 +490,7 @@ const ItemCategory = ({navigation}) => {
               <Text
                 uppercase={false}
                 value={Language['No']}
-                style={{color: '#fff',fontFamily:bolds}}
+                style={{color: '#fff', fontFamily: bolds}}
               />
             </Button>
           </View>

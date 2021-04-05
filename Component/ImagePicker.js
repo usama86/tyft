@@ -30,9 +30,7 @@ const ImagePickers = ({SendUri, style, text}) => {
       if (response.didCancel) {
       } else if (response.error) {
       } else {
-        // console.log(response)
-        const img = response.uri;
-        setImage(img);
+        setImage(response.uri);
         setReceivedImage(true);
         SendUri(response);
       }

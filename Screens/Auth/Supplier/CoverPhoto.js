@@ -28,41 +28,84 @@ const CoverPhoto = ({navigation, route}) => {
     try {
       setisLoading(true);
       ImageResizer.createResizedImage(val.uri, val.height, val.width, 'JPEG', 0)
-      .then(async(responses) => {
-        let getResponse = await responses;
-        var myHeaders = new Headers();
-        myHeaders.append('Content-Type', 'multipart/form-data');
-        myHeaders.append('Accept', 'application/json');
-        // let file = await uriToBlob(val.uri)
-        var formdata = new FormData();
-        formdata.append('file', {
-          uri: getResponse.uri,
-          type: 'image/jpeg',
-          name: val.fileName,
-        });
-        formdata.append('upload_preset', 'tyftBackend');
+      .then(async(response) => {
 
-        var requestOptions = {
-          method: 'POST',
-          headers: myHeaders,
-          body: formdata,
-          redirect: 'follow',
-        };
-
-        fetch(
-          'https://api.cloudinary.com/v1_1/hmrzthc6f/image/upload',
-          requestOptions,
-        )
-          .then(response => response.json())
-          .then(result => {
-            setImageUrl(result.url);
-            // setImg(val);
-            setisLoading(false);
-          })
-          .catch(error => {
-            console.log('error', error);
-            // setIsLoading(false);
+        setisLoading(true);
+        const img = response;
+        try {
+          console.log('IMAGES OBJECT', img);
+          var formdata = new FormData();
+          let path = img.uri;
+          if (Platform.OS === 'ios') {
+            path = '~' + path.substring(path.indexOf('/Documents'));
+          }
+          if (!img.fileName) {
+            img.fileName = path.split('/').pop();
+          }
+          formdata.append('file', {
+            uri: img.uri,
+            type: img.type,
+            name: img.fileName,
           });
+          console.log('form dat', formdata);
+          formdata.append('upload_preset', 'tyftBackend');
+          axios
+            .post(url + '/api/general/uploadImage', formdata)
+            .then(async Response => {
+              console.log('FORM DARA', formdata);
+              let Code = Response.data.code;
+              let urls = Response.data.url;
+              console.log('IMAGE URLS', urls);
+              if (Code === 'ABT0000') {
+                setisLoading(false);
+                setImageUrl(urls);
+              } else {
+                setisLoading(false);
+              }
+            })
+            .catch(error => {
+              setisLoading(false);
+              console.log('FORM DATA ERROR', error);
+            });
+        } catch (e) {
+           setisLoading(false);
+          console.log('error => ', e);
+        }
+
+        // let getResponse = await responses;
+        // var myHeaders = new Headers();
+        // myHeaders.append('Content-Type', 'multipart/form-data');
+        // myHeaders.append('Accept', 'application/json');
+        // // let file = await uriToBlob(val.uri)
+        // var formdata = new FormData();
+        // formdata.append('file', {
+        //   uri: getResponse.uri,
+        //   type: 'image/jpeg',
+        //   name: val.fileName,
+        // });
+        // formdata.append('upload_preset', 'tyftBackend');
+
+        // var requestOptions = {
+        //   method: 'POST',
+        //   headers: myHeaders,
+        //   body: formdata,
+        //   redirect: 'follow',
+        // };
+
+        // fetch(
+        //   'https://api.cloudinary.com/v1_1/hmrzthc6f/image/upload',
+        //   requestOptions,
+        // )
+        //   .then(response => response.json())
+        //   .then(result => {
+        //     setImageUrl(result.url);
+        //     // setImg(val);
+        //     setisLoading(false);
+        //   })
+        //   .catch(error => {
+        //     console.log('error', error);
+        //     // setIsLoading(false);
+        //   });
       })  
     } catch (e) {
       console.log('error => ', e);

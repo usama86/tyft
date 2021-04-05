@@ -36,11 +36,31 @@ const SplashScreen = ({navigation}) => {
       StatusBar.setBackgroundColor('#fff');
       let userType = await AsyncStorage.getItem('userType');
       if (userType === 'Supplier') {
-          navigation.replace('App');
+          // navigation.replace('App');
+          navigation.dispatch(
+            CommonActions.navigate({
+              name: 'App',
+            })
+          );
       } else if (userType === 'Customer') {
-          navigation.replace('Auth', {screen: 'Tabs'});
+          // navigation.replace('Auth', {screen: 'Tabs'});
+
+          navigation.dispatch(
+            CommonActions.navigate({
+              name: 'Auth',
+              params:{
+                screen:'Tabs'
+              }
+            })
+          );
+
       } else if (userType === null) {
           navigation.replace('Auth');
+          // navigation.dispatch(
+          //   CommonActions.navigate({
+          //     name: 'Auth',
+          //   })
+          // );
       }
     }, 3000);
   },[])

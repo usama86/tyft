@@ -111,9 +111,11 @@ const SignUp = ({navigation}) => {
         'Password Does not matches with Confirm Password',
       );
     }
-    if (!check) {
-      setErrorTerm(true);
-    } else if (
+    // if (!check) {
+    //   setErrorTerm(true);
+    // } 
+    
+    else if (
       name &&
       !nameError &&
       email &&
@@ -123,8 +125,8 @@ const SignUp = ({navigation}) => {
       password &&
       !passwordError &&
       confirmPassword &&
-      !confirmPasswordError &&
-      check
+      !confirmPasswordError 
+      // check
     ) {
       setisLoading(true);
       // console.log(languge)
@@ -257,7 +259,7 @@ const SignUp = ({navigation}) => {
         ) : null}
 
         <View style={styles.radioView1}>
-          <View>
+          {/* <View>
             <Checkbox
               checkboxView={{
                 // backgroundColor: 'red',
@@ -267,7 +269,7 @@ const SignUp = ({navigation}) => {
               onPress={() => SetCheck(!check)}
               // TextVal={'By signing up, I agree to'}
             />
-          </View>
+          </View> */}
 
           <Texts value={'By signing up, I agree to'} style={styles.TextStyle} />
           <Texts

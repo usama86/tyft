@@ -126,14 +126,14 @@ const SignUpSupplier = ({navigation}) => {
         confirmPassErrorText: 'Confirm Password does not matches with password',
       });
     }
-    if (!check) {
-      setConfirmPass({
-        confirmpass: null,
-        confirmPassError: true,
-        confirmPassErrorText:
-          'Your should agree to terms and conditions to Join!',
-      });
-    }
+    // if (!check) {
+    //   setConfirmPass({
+    //     confirmpass: null,
+    //     confirmPassError: true,
+    //     confirmPassErrorText:
+    //       'Your should agree to terms and conditions to Join!',
+    //   });
+    // }
     // if (
     //   name.name &&
     //   email.email &&
@@ -145,7 +145,7 @@ const SignUpSupplier = ({navigation}) => {
     //   !confirmpass.confirmPassError &&
     //   check
     // )
-    else {
+    else if(name.name && email.email && phone.phone && password.password && confirmpass.confirmpass && password.password === confirmpass.confirmpass && email.email) {
       axios
         .post(url + '/api/users/getuser', {
           email: email.email,
@@ -248,7 +248,7 @@ const SignUpSupplier = ({navigation}) => {
         </View>
 
         <View style={styles.radioView}>
-          <View>
+          {/* <View>
             <Checkbox
               checkboxView={{
                 // backgroundColor: 'red',
@@ -257,7 +257,7 @@ const SignUpSupplier = ({navigation}) => {
               checked={check}
               onPress={() => SetCheck(!check)}
             />
-          </View>
+          </View> */}
 
           <Texts value={'By signing up, I agree to'} style={styles.TextStyle} />
           <Texts

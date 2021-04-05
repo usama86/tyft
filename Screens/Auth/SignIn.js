@@ -17,7 +17,7 @@ import theme from './../theme';
 import RoundButton from '../../Component/Button';
 import Divider from './../../Component/Divider';
 import Texts from './../../Component/Text';
-import url, { bold } from './Constants/constants';
+import url, {bold} from './Constants/constants';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -87,11 +87,9 @@ const SignIn = ({navigation}) => {
 
             await setLoading(false);
             if (usertoken.userType === 'Supplier') {
-              console.log('inn Supplier');
-              navigation.navigate('App', {screen: RouteName.VEGGIEWISPER});
+              navigation.navigate('App',{screen:RouteName.VEGGIEWISPER});
             } else if (usertoken.userType === 'Customer') {
-              console.log('inn Customer');
-              navigation.navigate('Auth', {screen: 'Tabs'});
+              navigation.navigate('Auth',{screen:'Tabs'});
             }
           } else {
             setPasswordErrorMessage('Your Email or Password is incorrect');
@@ -119,7 +117,7 @@ const SignIn = ({navigation}) => {
           setEmail(text);
           setEmailErrorMessage(null);
         }}
-        onBlur={()=>setEmail(e=>e.toLowerCase())}
+        onBlur={() => email && setEmail(e => e.toLowerCase())}
         returnKeyType={'next'}
         errorMessage={emailErrorMessage}
       />
@@ -150,14 +148,16 @@ const SignIn = ({navigation}) => {
         )}
       </View>
       <Divider />
-      <TouchableOpacity style={{height:responsiveHeight(5)}} onPress={()=>navigation.navigate('Forgotpassword')} >
+      <TouchableOpacity
+        style={{height: responsiveHeight(5)}}
+        onPress={() => navigation.navigate('Forgotpassword')}>
         <Text
           style={styles.forgotPasswordText}
           onPress={() => {
-            navigation.navigate('Forgotpassword')
+            navigation.navigate('Forgotpassword');
           }}>
           Don't remember your password?
-          <Text style={{fontFamily:bold}}>{'  Forgot password?'}</Text>
+          <Text style={{fontFamily: bold}}>{'  Forgot password?'}</Text>
         </Text>
       </TouchableOpacity>
       <Divider />
