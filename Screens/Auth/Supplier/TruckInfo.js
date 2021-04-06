@@ -137,7 +137,9 @@ const TruckInfo = ({navigation, route}) => {
     <SafeAreaView style={{height: '100%', width: '100%'}}>
       <Header onPress={() => navigation.goBack()}>{'Truck Info'}</Header>
 
-      <KeyboardAvoidingView behavior={'padding'}>
+      <KeyboardAvoidingView behavior={ Platform.OS ==='ios'? 'padding':'position'}
+      keyboardVerticalOffset={Platform.OS === 'android' && responsiveHeight(-38) }
+      >
         <ScrollView>
           <Ui
             TextViewStyle={styles.TextViewStyle}

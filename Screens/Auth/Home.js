@@ -439,7 +439,7 @@ const Home = ({navigation}) => {
           <Text
             style={Underline}
             onPress={() => {
-              navigation.replace(RouteName.SIGNIN);
+              navigation.navigate(RouteName.SIGNIN);
             }}
             value={'Log in'}
           />

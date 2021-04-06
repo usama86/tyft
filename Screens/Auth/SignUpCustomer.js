@@ -172,6 +172,7 @@ const SignUp = ({navigation}) => {
       <Header onPress={() => navigation.goBack()}>{'Sign Up'}</Header>
 
       <Ui
+      buttonStyle={{marginTop:responsiveHeight(2)}}
         ContentStyle={{height:undefined}}
         isLoading={isLoading}
         onPressButton={AddCustomer}
@@ -196,7 +197,7 @@ const SignUp = ({navigation}) => {
             // lower
             rounded
             placeholder={Language['Email Address']}
-            onChangeText={val => changeEmail(val)}
+            onChangeText={val => changeEmail(val.trim())}
             onBlur={() => setEmail(e => e.toLowerCase())}
             value={email}
             style={styles.Input}
@@ -318,7 +319,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   radioView1: {
-      paddingTop:responsiveHeight(1),
     marginTop: responsiveHeight(3),
     flexDirection: 'row',
   },

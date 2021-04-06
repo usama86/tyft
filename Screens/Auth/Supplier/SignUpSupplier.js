@@ -169,6 +169,7 @@ const SignUpSupplier = ({navigation}) => {
     <SafeAreaView style={{height: '100%', width: '100%'}}>
       <Header onPress={() => navigation.goBack()}>{'Sign Up'}</Header>
       <Ui
+        buttonStyle={{marginTop:responsiveHeight(2)}}
         ContentStyle={{height: undefined}}
         isLoading={isLoading}
         TextValue={Language['Let’s Create your Customer Account']}
@@ -190,7 +191,7 @@ const SignUpSupplier = ({navigation}) => {
             rounded
             value={email.email}
             //
-            onChangeText={e => changeEmail(e)}
+            onChangeText={e => changeEmail(e.trim())}
             onBlur={() =>
               setEmail({
                 email: email.email.toLowerCase(),
@@ -299,7 +300,6 @@ const styles = StyleSheet.create({
     marginTop: responsiveHeight(3),
   },
   radioView: {
-    paddingTop:responsiveHeight(1),
     marginTop: responsiveHeight(3),
     flexDirection: 'row',
   },
