@@ -174,21 +174,18 @@ const VeggieWisper = ({navigation, route, ...props}) => {
     }
     if (openingTime !== '') {
       let openHour = Number(openingTime.split(':')[0]);
-      // let openMinute = Number(openingTime.split(':')[1].split(' ')[0])
       if (openingTime.split(' ')[1] === 'PM') {
         openHour += 12;
       }
-
       let closeHour = Number(closingTime.split(':')[0]);
-      // let closeMinute = Number(closingTime.split(':')[1].split(' ')[0])
       if (closingTime.split(' ')[1] === 'PM') {
         closeHour += 12;
       }
-
       var d = new Date(); // for now
       if (d.getHours() >= openHour && d.getHours() <= closeHour) {
         updateStatus(val, truckID);
       } else {
+        console.log(val);
         Alert.alert('Please set schedule first.');
       }
     } else {
