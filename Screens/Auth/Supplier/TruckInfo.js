@@ -62,7 +62,11 @@ const TruckInfo = ({navigation, route}) => {
     } else if (val === '') {
       setEmail({email: val, Error: false, ErrorText: null});
     } else if (!EmailRegix.test(val)) {
-      setEmail({email: val, Error: true, ErrorText: 'Please Enter Valid Email'});
+      setEmail({
+        email: val,
+        Error: true,
+        ErrorText: 'Please Enter Valid Email',
+      });
     }
   };
   const Navigate = () => {
@@ -137,9 +141,12 @@ const TruckInfo = ({navigation, route}) => {
     <SafeAreaView style={{height: '100%', width: '100%'}}>
       <Header onPress={() => navigation.goBack()}>{'Truck Info'}</Header>
 
-      <KeyboardAvoidingView behavior={ Platform.OS ==='ios'? 'padding':'position'}
-      keyboardVerticalOffset={Platform.OS === 'android' && responsiveHeight(-38) }
-      >
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'position'}
+        keyboardVerticalOffset={
+          Platform.OS === 'android' && responsiveHeight(-38)
+        }
+        >
         <ScrollView>
           <Ui
             TextViewStyle={styles.TextViewStyle}
@@ -201,7 +208,7 @@ const TruckInfo = ({navigation, route}) => {
               ) : null}
               <Input
                 rounded
-                placeholder="Email"
+                placeholder="Truck Email"
                 onChangeText={e => changeEmail(e)}
                 value={email.email}
                 style={styles.Input}

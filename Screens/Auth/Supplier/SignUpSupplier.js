@@ -1,7 +1,6 @@
 import React from 'react';
-import {View, StyleSheet, SafeAreaView} from 'react-native';
+import {View, StyleSheet, SafeAreaView,Text} from 'react-native';
 import Input from '../../../Component/Input';
-import Text from '../../../Component/Text';
 import {
   responsiveHeight,
   responsiveWidth,
@@ -249,38 +248,30 @@ const SignUpSupplier = ({navigation}) => {
         </View>
 
         <View style={styles.radioView}>
-          {/* <View>
-            <Checkbox
-              checkboxView={{
-                // backgroundColor: 'red',
-                width: responsiveWidth(8),
-              }}
-              checked={check}
-              onPress={() => SetCheck(!check)}
-            />
-          </View> */}
-
-          <Texts value={'By signing up, I agree to'} style={styles.TextStyle} />
-          <Texts
-            value={'TYFT Terms &'}
-            onPress={() =>
-              Linking.openURL(
-                'http://www.trackyourfoodtruck.com/Terms-and-conditions.html',
-              )
-            }
-            style={styles.TextStyle1}
-          />
-          <Texts value={'\n Conditions '} style={styles.TextStyle2} />
-          <Texts value={'and'} style={styles.TextStyle4} />
-          <Texts
-            value={'privacy policy'}
-            onPress={() =>
-              Linking.openURL(
-                'http://www.trackyourfoodtruck.com/privacy%20policy.html',
-              )
-            }
-            style={styles.TextStyle3}
-          />
+        <View style={styles.radioView1}>
+          <Text style={styles.TextStyle}>
+            {'By signing up, I agree to'}
+            <Text
+              onPress={() =>
+                Linking.openURL(
+                  'http://www.trackyourfoodtruck.com/privacy%20policy.html',
+                )
+              }
+              style={styles.TextStyle1}>
+              {' TYFT Terms & Conditions'}
+            </Text>
+            {' and '}
+            <Text
+              onPress={() =>
+                Linking.openURL(
+                  'http://www.trackyourfoodtruck.com/privacy%20policy.html',
+                )
+              }
+              style={styles.TextStyle3}>
+              {' privacy policy'}
+            </Text>
+          </Text>
+        </View>
         </View>
         {confirmPasswordErrors ? (
           <ErrorView>{'Email Address already exist'}</ErrorView>

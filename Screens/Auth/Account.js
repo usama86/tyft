@@ -364,17 +364,8 @@ const Account = ({navigation, route}) => {
                 fontFamily: normal,
               }}
               value={
-                'A TYFT Account allows you to bookmark truck, review about them and make'
+                'A TYFT Account allows you to bookmark truck, review about them.'
               }
-            />
-            <Text
-              style={{
-                color: '#696969',
-                fontSize: responsiveFontSize(2),
-                fontFamily: bold,
-                marginLeft: responsiveWidth(22),
-              }}
-              value={'payment faster'}
             />
           </View>
           <View style={{marginTop: responsiveHeight(10)}}>

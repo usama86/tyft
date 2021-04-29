@@ -7,6 +7,7 @@ import {
   FlatList,
   TextInput,
   SafeAreaView,
+  ActivityIndicator,
 } from 'react-native';
 import Text from '../../Component/Text';
 import {
@@ -18,8 +19,8 @@ import Header from '../../Component/Header';
 import axios from 'axios';
 import Modal from '../../Component/Modal';
 import FuzzySearch from 'fuzzy-search';
-import { bold, normal } from './Constants/constants';
-import { Language } from '../../Constants/LanguageChangeFunc';
+import {bold, normal} from './Constants/constants';
+import {Language} from '../../Constants/LanguageChangeFunc';
 const Menu = ({navigation, route}) => {
   const [menuItem, setMenuItem] = useState();
   const [isMsg, setIsMsg] = useState(false);
@@ -121,10 +122,7 @@ const Menu = ({navigation, route}) => {
         activeOpacity={0.8}
         style={{
           width: '95%',
-          paddingVertical: responsiveHeight(2),
-          borderBottomColor: '#A6A6A6',
-          borderBottomWidth:
-            indexAfter && indexAfter !== item.category ? 0 : 0.3,
+          paddingVertical: responsiveHeight(0.5),
           justifyContent: 'center',
           marginLeft: responsiveWidth(2),
         }}>
@@ -154,8 +152,8 @@ const Menu = ({navigation, route}) => {
           ) : null}
           <Text
             style={{
-			  fontSize: responsiveFontSize(1.9),
-			  fontFamily:bold,
+              fontSize: responsiveFontSize(1.9),
+              fontFamily: bold,
               color: 'black',
               marginTop: responsiveHeight(2),
             }}
@@ -163,8 +161,8 @@ const Menu = ({navigation, route}) => {
           />
           <Text
             style={{
-			  fontSize: responsiveFontSize(1.6),
-			  fontFamily:normal,
+              fontSize: responsiveFontSize(1.6),
+              fontFamily: normal,
               color: '#A6A6A6',
               marginTop: responsiveHeight(2),
             }}
@@ -190,16 +188,7 @@ const Menu = ({navigation, route}) => {
           style={styles.input}
         />
       </View>
-      {isLoading ? (
-        <Text
-          value={'No Menu To Show'}
-          bold
-          style={{
-            marginTop: responsiveHeight(25),
-            marginLeft: responsiveWidth(25),
-          }}
-        />
-      ) : isMsg ? (
+      {isMsg ? (
         <Text
           value={'No Menu Found'}
           bold
@@ -227,6 +216,15 @@ const Menu = ({navigation, route}) => {
         </View>
         <Text style={styles.UpdatedText} value={'Updated'} />
       </Modal>
+      {isLoading && (
+        <ActivityIndicator
+          style={{
+            position: 'absolute',
+            top: responsiveHeight(50),
+            left: responsiveWidth(50),
+          }}
+        />
+      )}
     </SafeAreaView>
   );
 };

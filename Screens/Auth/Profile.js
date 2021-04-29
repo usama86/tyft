@@ -45,7 +45,7 @@ const Profile = ({navigation}) => {
                 }}
               />
               <Input rounded placeholder="Contact" style={styles.Input} />
-              <Input rounded placeholder="Email" style={styles.Input} />
+              <Input rounded placeholder="Email"  style={styles.Input} />
               <Input rounded placeholder="City" style={styles.Input} />
               <Input rounded placeholder="Website" style={styles.Input} />
             </View>

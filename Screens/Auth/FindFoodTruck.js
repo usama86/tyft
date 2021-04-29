@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   ScrollView,
   ActivityIndicator,
+  Text as TextReact,
 } from 'react-native';
 import Button from '../../Component/Button';
 import Text from '../../Component/Text';
@@ -46,6 +47,7 @@ const FindFoodTruck = ({navigation, route}) => {
   const [Lat, setLat] = React.useState(0.0);
   const [Long, setLong] = React.useState(0.0);
   const [uniqueProps, setuniqueProps] = useState([]);
+  const [empty, setEmpty] = useState(true);
   const calculateDistance = (markerLat, markerLon) => {
     let distance = getDistance(
       {latitude: Lat, longitude: Long},
@@ -270,10 +272,10 @@ const FindFoodTruck = ({navigation, route}) => {
     }
   };
   const PrintCard = (item, index) => {
-    console.log('Item is here', item);
     if (
       calculateDistance(parseFloat(item.latitude), parseFloat(item.longitude))
     ) {
+      setEmpty(false);
       return (
         <TouchableOpacity
           activeOpacity={0.8}
@@ -381,12 +383,13 @@ const FindFoodTruck = ({navigation, route}) => {
                   }}
                 />
               </TouchableOpacity>
-
-              <Rating
-                readonly={true}
-                startingValue={getRating(item.customerReview)}
-                imageSize={responsiveFontSize(2.8)}
-              />
+              {item.customerReview.length > 0 && (
+                <Rating
+                  readonly={true}
+                  startingValue={getRating(item.customerReview)}
+                  imageSize={responsiveFontSize(2.8)}
+                />
+              )}
             </View>
           </View>
         </TouchableOpacity>
@@ -484,6 +487,18 @@ const FindFoodTruck = ({navigation, route}) => {
         />
       ) : Data.length > 0 && Data !== [undefined] ? (
         <View style={{flex: 1}}>
+          {empty && (
+            <TextReact
+              style={{
+                alignSelf: 'center',
+                textAlign: 'center',
+                top: '40%',
+                fontWeight: 'bold',
+                fontSize: responsiveFontSize(2.5),
+              }}>
+              {'No Nearby Trucks Found'}
+            </TextReact>
+          )}
           <FlatList
             data={Data !== [undefined] && Data !== undefined ? Data : []}
             keyExtractor={item => item._id}

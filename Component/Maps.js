@@ -121,7 +121,10 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
   };
   const getDistanceFromPlace = item => {
     let getData = calcCrow(Lat, Long, item.latitude, item.longitude);
-    return Math.round(getData * 10) / 10 + ' km away';
+    return (
+      parseFloat(Math.round(getData * 10) / 10 / 1.609).toFixed(2) +
+      ' miles away'
+    );
   };
   const setRegionInMap = region => {
     if (mapReady) {
@@ -265,7 +268,9 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
                                 ]}>
                                 {getStatus(item, index)}
                               </Text>
-                              <Text>{getDistanceFromPlace(item)}</Text>
+                              <Text style={{marginLeft: responsiveWidth(0.5)}}>
+                                {getDistanceFromPlace(item)}
+                              </Text>
                             </View>
                           </View>
                         </View>

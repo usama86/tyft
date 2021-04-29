@@ -26,7 +26,7 @@ import Modal from '../../../Component/Modal';
 import AddItemModal from '../../../Component/Modal';
 import ErrorView from '../../../Component/ErrorField';
 import Entypo from 'react-native-vector-icons/Entypo';
-import {bold} from '../Constants/constants';
+import {bold,normal} from '../Constants/constants';
 import {Language} from '../../../Constants/LanguageChangeFunc';
 
 const MenuSetting = ({navigation, route}) => {
@@ -127,33 +127,89 @@ const MenuSetting = ({navigation, route}) => {
     setCategories(newArr);
     setShowModal(false);
   };
-  const PrintCard = (item, index) => (
-    <TouchableOpacity activeOpacity={0.8} style={styles.MainView}>
-      <View style={styles.Left}>
-        <Text
-          bold
-          style={{fontSize: responsiveFontSize(2)}}
-          value={item.name}
-        />
-        <Text
-          style={{
-            fontSize: responsiveFontSize(1.6),
-            color: '#A6A6A6',
-            marginTop: responsiveHeight(1),
-          }}
-          value={item.description}
-        />
-      </View>
-      <View style={styles.Right}>
-        <Text value={'$ ' + item.price} />
-      </View>
-    </TouchableOpacity>
-  );
+  const PrintCard = (item, index) => {
+    let isRepeatCat = false;
+    let lastIndexCat;
+    let indexAfter;
+    if (index > 0) {
+      lastIndexCat = Data[index - 1].category;
+      if (index < Data.length - 1) indexAfter = Data[index + 1].category;
+    }
+
+    return (
+      <TouchableOpacity
+        activeOpacity={0.8}
+        style={{
+          width: '95%',
+          paddingVertical: responsiveHeight(0.5),
+          justifyContent: 'center',
+          marginLeft: responsiveWidth(2),
+        }}>
+        <View style={styles.Left}>
+          {index == 0 || lastIndexCat !== item.category ? (
+            <React.Fragment>
+              <Text
+                style={{
+                  fontSize: responsiveFontSize(2),
+                  marginLeft: responsiveWidth(-2),
+                }}
+                value={item.category}
+              />
+              <View
+                style={{
+                  width: '120%',
+                  // paddingVertical: responsiveHeight(2),
+                  borderBottomColor: '#A6A6A6',
+                  borderBottomWidth: 0.3,
+                  justifyContent: 'center',
+                  marginTop: responsiveHeight(2),
+                  marginLeft: responsiveWidth(-6),
+                }}
+              />
+            </React.Fragment>
+          ) : null}
+          <View style={{flexDirection: 'row', width: '100%'}}>
+            <View style={{width: '40%'}}>
+              <Text
+                style={{
+                  fontSize: responsiveFontSize(1.9),
+                  color: 'black',
+                  marginTop: responsiveHeight(2),
+                  width: responsiveWidth(60),
+                  fontFamily: bold,
+                }}
+                value={item.name}
+              />
+              <Text
+                style={{
+                  fontSize: responsiveFontSize(1.6),
+
+                  color: '#A6A6A6',
+                  marginTop: responsiveHeight(2.2),
+                  width: responsiveWidth(60),
+                  fontFamily: normal,
+                }}
+                value={item.description}
+              />
+
+              <View style={styles.Right}>
+                <Text value={'$ ' + item.price} />
+              </View>
+            </View>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <SafeAreaView style={{height: '100%', width: '100%'}}>
       <Header
         Add
-        onAddPress={() => setAddItem(true)}
+        onAddPress={() => {
+          setAddItem(true);
+          setAddMenuAnimation(false);
+        }}
         onPress={() => navigation.goBack()}>
         {Language['Menu']}
       </Header>
@@ -324,14 +380,6 @@ const MenuSetting = ({navigation, route}) => {
               <FlatList
                 showsVerticalScrollIndicator={false}
                 data={Data}
-                ItemSeparatorComponent={() => (
-                  <View
-                    style={{
-                      borderBottomColor: 'grey',
-                      borderBottomWidth: 1,
-                    }}
-                  />
-                )}
                 keyExtractor={item => item.id}
                 contentContainerStyle={{
                   paddingVertical: responsiveHeight(0),

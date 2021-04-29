@@ -101,7 +101,16 @@ const MenuSetting = ({navigation, route}) => {
         if (ERROR === 'ABT0000') {
           let Menu = Response.data.MenuData;
           console.log('MENU', Menu);
-          setData(Menu);
+          let dupMenu = [];
+          Menu.forEach(element => {
+            Menu.forEach(element2 => {
+              if (element.category === element2.category) {
+                dupMenu.push(element2);
+              }
+            });
+          });
+          let x =[... new Set(dupMenu)]
+          setData(x);
 
           let TruckId = await AsyncStorage.getItem('TruckID');
           axios
@@ -265,7 +274,7 @@ const MenuSetting = ({navigation, route}) => {
   };
   const closeModal = async () => {
     let newArr = [...Categories];
-    if (category) {
+    if (category && !newArr.find(a => a.label === category)) {
       newArr.unshift({label: category, value: category});
       setSelectedValue(category);
       let categoryArray = [];
@@ -309,10 +318,7 @@ const MenuSetting = ({navigation, route}) => {
         activeOpacity={0.8}
         style={{
           width: '95%',
-          paddingVertical: responsiveHeight(2),
-          borderBottomColor: '#A6A6A6',
-          borderBottomWidth:
-            indexAfter && indexAfter !== item.category ? 0 : 0.3,
+          paddingVertical: responsiveHeight(0.5),
           justifyContent: 'center',
           marginLeft: responsiveWidth(2),
         }}>
@@ -609,14 +615,6 @@ const MenuSetting = ({navigation, route}) => {
               <FlatList
                 showsVerticalScrollIndicator={false}
                 data={Data}
-                ItemSeparatorComponent={() => (
-                  <View
-                    style={{
-                      borderBottomColor: 'grey',
-                      borderBottomWidth: 1,
-                    }}
-                  />
-                )}
                 keyExtractor={item => item.id}
                 contentContainerStyle={{
                   paddingVertical: responsiveHeight(1),

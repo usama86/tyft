@@ -134,10 +134,10 @@ const ItemCategory = ({navigation}) => {
           setShowModal(false);
           setIndicator(false);
           let dupData = [...Data];
-          if (!data.find(a => a === name.value)) {
-            dupData.push(name.value);
-            setData(dupData);
-          }
+          // if (!data.find(a => a === name.value)) {
+          dupData.push(name.value);
+          setData(dupData);
+          // }
           setTimeout(() => {
             setShowModal(false);
             setAddingItem(false);
@@ -218,20 +218,8 @@ const ItemCategory = ({navigation}) => {
     if (!name.value) {
       setName({value: null, Error: true, ErrorText: 'Name is required.'});
     }
-    // if (!description.value) {
-    //   setDescription({
-    //     value: null,
-    //     Error: true,
-    //     ErrorText: 'Description is required.',
-    //   });
-    // }
-    // if (!price.value) {
-    //   setPrice({value: null, Error: true, ErrorText: 'Price is required.'});
-    // } else
-
-    if (name.value) {
+    if (name.value && !newArray.find(a => a === name.value)) {
       newArray.push(name.value);
-      // setData(newArray);
       AddCategory(newArray);
     }
   };

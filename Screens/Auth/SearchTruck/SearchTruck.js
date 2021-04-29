@@ -51,6 +51,7 @@ const SearchTruck = ({navigation}) => {
             let day = currentDate.format('dddd');
             setDay(day);
             setTruck(Trucks);
+            console.log('TRUCKS',Trucks)
           // } else {
           //   console.log('in else of filter ');
           //   setTruck(null);

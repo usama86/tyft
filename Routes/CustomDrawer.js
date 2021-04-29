@@ -272,7 +272,7 @@ const CustomDrawer = ({navigation, route}) => {
               onPress={() => navigation.navigate(Screens.MENUSETTINGDRAWER)}
             />
             <ListItem
-              title={'Item Categories'}
+              title={'Menu Categories'}
               leftAvatar={<MC name={'food-fork-drink'} size={25} />}
               onPress={() => navigation.navigate(Screens.ITEMCATEGORYD)}
             />

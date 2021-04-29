@@ -1,7 +1,7 @@
 import React from 'react';
-import {View, StyleSheet, SafeAreaView, Linking} from 'react-native';
+import {View, StyleSheet, SafeAreaView, Linking, Text} from 'react-native';
 import Input from '../../Component/Input';
-import Text from '../../Component/Text';
+// import Text from '../../Component/Text';
 import {
   responsiveHeight,
   responsiveWidth,
@@ -113,8 +113,7 @@ const SignUp = ({navigation}) => {
     }
     // if (!check) {
     //   setErrorTerm(true);
-    // } 
-    
+    // }
     else if (
       name &&
       !nameError &&
@@ -125,7 +124,7 @@ const SignUp = ({navigation}) => {
       password &&
       !passwordError &&
       confirmPassword &&
-      !confirmPasswordError 
+      !confirmPasswordError
       // check
     ) {
       setisLoading(true);
@@ -172,8 +171,8 @@ const SignUp = ({navigation}) => {
       <Header onPress={() => navigation.goBack()}>{'Sign Up'}</Header>
 
       <Ui
-      buttonStyle={{marginTop:responsiveHeight(2)}}
-        ContentStyle={{height:undefined}}
+        buttonStyle={{marginTop: responsiveHeight(2)}}
+        ContentStyle={{height: undefined}}
         isLoading={isLoading}
         onPressButton={AddCustomer}
         TextValue={Language['Let’s Create your Customer Account']}
@@ -206,6 +205,7 @@ const SignUp = ({navigation}) => {
           <Input
             rounded
             placeholder={Language['Cell Phone']}
+            keyboardType ={'number-pad'}
             onChangeText={val => {
               setPhone(val);
               setPhoneError(false);
@@ -260,39 +260,28 @@ const SignUp = ({navigation}) => {
         ) : null}
 
         <View style={styles.radioView1}>
-          {/* <View>
-            <Checkbox
-              checkboxView={{
-                // backgroundColor: 'red',
-                width: responsiveWidth(8),
-              }}
-              checked={check}
-              onPress={() => SetCheck(!check)}
-              // TextVal={'By signing up, I agree to'}
-            />
-          </View> */}
-
-          <Texts value={'By signing up, I agree to'} style={styles.TextStyle} />
-          <Texts
-            value={'TYFT Terms &'}
-            onPress={() =>
-              Linking.openURL(
-                'http://www.trackyourfoodtruck.com/Terms-and-conditions.html',
-              )
-            }
-            style={styles.TextStyle1}
-          />
-          <Texts value={'\n Conditions '} style={styles.TextStyle2} />
-          <Texts value={'and'} style={styles.TextStyle4} />
-          <Texts
-            value={'privacy policy'}
-            onPress={() =>
-              Linking.openURL(
-                'http://www.trackyourfoodtruck.com/privacy%20policy.html',
-              )
-            }
-            style={styles.TextStyle3}
-          />
+          <Text style={styles.TextStyle}>
+            {'By signing up, I agree to'}
+            <Text
+              onPress={() =>
+                Linking.openURL(
+                  'http://www.trackyourfoodtruck.com/privacy%20policy.html',
+                )
+              }
+              style={styles.TextStyle1}>
+              {' TYFT Terms & Conditions'}
+            </Text>
+            {' and '}
+            <Text
+              onPress={() =>
+                Linking.openURL(
+                  'http://www.trackyourfoodtruck.com/privacy%20policy.html',
+                )
+              }
+              style={styles.TextStyle3}>
+              {' privacy policy'}
+            </Text>
+          </Text>
         </View>
 
         {errorTerm ? (
