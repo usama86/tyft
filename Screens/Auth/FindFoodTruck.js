@@ -71,8 +71,8 @@ const FindFoodTruck = ({navigation, route}) => {
       );
       const result = searcher.search(val);
       const sortedResult = [];
-      result.filter(item => item.status.toLowerCase() === "open").forEach(item => result.push(item));
       result.filter(item => item.status.toLowerCase() === "close").forEach(item => result.push(item));
+      result.filter(item => item.status.toLowerCase() === "open").forEach(item => result.push(item));
       setData(sortedResult);
       if (result.length == 0 || result === undefined) {
         setIsMsg(true);
