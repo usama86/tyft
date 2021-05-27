@@ -31,7 +31,11 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 import moment from 'moment';
 import FuzzySearch from 'fuzzy-search';
-import { Language } from '../../Constants/LanguageChangeFunc';
+import {Language} from '../../Constants/LanguageChangeFunc';
+import {getDistance} from 'geolib';
+import Geolocation from '@react-native-community/geolocation';
+import {showLocation} from 'react-native-map-link';
+import FA5 from 'react-native-vector-icons/FontAwesome5';
 const Favorite = ({navigation}) => {
   const [Data, setData] = useState([]);
   const [day, setDay] = useState(null);
@@ -39,6 +43,8 @@ const Favorite = ({navigation}) => {
   const [isMsg, setIsMsg] = useState(false);
   const [searchVal, setSearchVal] = useState('');
   const [uniqueProps, setuniqueProps] = useState([]);
+  const [Lat, setLat] = React.useState(0.0);
+  const [Long, setLong] = React.useState(0.0);
   const onChangeSearch = val => {
     setSearchVal(val);
     if (val == '') {
@@ -58,15 +64,23 @@ const Favorite = ({navigation}) => {
       }
     }
   };
-  const getMargin=()=>{
-    let x = Language['No Truck Found']; 
+  const getMargin = () => {
+    let x = Language['No Truck Found'];
     console.log(x.length);
-    if(x.length>14)
-      return responsiveWidth(25);
-    else
-      return responsiveWidth(32);  
-  }
-
+    if (x.length > 14) return responsiveWidth(25);
+    else return responsiveWidth(32);
+  };
+  const getRatings = (item, index) => {
+    let rating = 0;
+    let count = 0;
+    item.customerReview.forEach(element => {
+      ++count;
+      rating = rating + element.Rating;
+    });
+    let finalRatings = rating / count;
+    console.log('Ratings Final', finalRatings);
+    return finalRatings;
+  };
   const getFavouriteRestaurants = async () => {
     let UserID = await AsyncStorage.getItem('userID');
     console.log(UserID);
@@ -90,9 +104,47 @@ const Favorite = ({navigation}) => {
         console.log(error);
       });
   };
+  const getCurrentLocation = async () => {
+    // console.log('hi in get Current in FindFoodTruck');
+    await Geolocation.getCurrentPosition(
+      async position => {
+        await setLat(position.coords.latitude);
+        await setLong(position.coords.longitude);
+      },
+      error => console.log('this is ERROR', error),
+      {
+        enableHighAccuracy: false,
+        timeout: 20000,
+        maximumAge: 2000,
+      },
+    );
+  };
+  const openMap = (sourceLat, sourceLong) => {
+    console.log('source lat', sourceLat);
+    console.log('sorce long', sourceLong);
+    console.log('Lat', Lat);
+    console.log('Long', Long);
+    showLocation({
+      latitude: Lat,
+      longitude: Long,
+      sourceLatitude: sourceLat, // optionally specify starting location for directions
+      sourceLongitude: sourceLong, // not optional if sourceLatitude is specified
+      title: 'The White House', // optional
+      googleForceLatLon: false, // optionally force GoogleMaps to use the latlon for the query instead of the title
+      googlePlaceId: 'ChIJGVtI4by3t4kRr51d_Qm_x58', // optionally specify the google-place-id
+      alwaysIncludeGoogle: true, // optional, true will always add Google Maps to iOS and open in Safari, even if app is not installed (default: false)
+      dialogTitle: 'This is the dialog Title', // optional (default: 'Open in Maps')
+      dialogMessage: 'This is the amazing dialog Message', // optional (default: 'What app would you like to use?')
+      cancelText: 'This is the cancel button text', // optional (default: 'Cancel')
+      appsWhiteList: ['google-maps'], // optionally you can set which apps to show (default: will show all supported apps installed on device)
+      // appTitles: { 'google-maps': 'My custom Google Maps title' } // optionally you can override default app titles
+      // app: 'uber'  // optionally specify specific app to use
+    });
+  };
   useEffect(() => {
-    navigation.addListener('focus', () => {
-      getFavouriteRestaurants();
+    navigation.addListener('focus', async() => {
+      await getCurrentLocation();
+      await getFavouriteRestaurants();
     });
   }, []);
   const getStatus = (item, index) => {
@@ -125,99 +177,119 @@ const Favorite = ({navigation}) => {
 
     // return currentTime.toString();
   };
-  const PrintCard = (item, index) => (
-    <TouchableOpacity
-      activeOpacity={0.8}
-      style={styles.MainView}
-      onPress={() =>
-        navigation.navigate(RouteName.CUSTOMERSUPPLIER, {
-          TruckInfo: item,
-          openMap: null,
-        })
-      }>
-      <View style={styles.LeftIcon}>
-        {
-          item.truckLogo &&
-          <Image style={styles.image} source={{uri: item.truckLogo}} />
-        }
-
-      </View>
-      <View style={styles.RightContent}>
-        <Text
-          style={{fontSize: responsiveFontSize(2), fontWeight: 'bold'}}
-          value={item.truckName}
-        />
-        <CountButton
-          button={item.selectedServingCusines}
-          buttonProp={{
-            width: '30%',
-            marginRight: responsiveWidth(2),
-            right: responsiveWidth(1),
-            paddingHorizontal: responsiveWidth(2),
-          }}
-          tabProp={{
-            marginTop: responsiveHeight(-18),
-            left: responsiveWidth(-2),
-          }}
-        />
-        <View style={[styles.flex, {marginTop: responsiveHeight(5)}]}>
-          <Entypo
-            name={'location-pin'}
-            color={'#212121'}
-            size={responsiveFontSize(2.3)}
+  const PrintCard = (item, index) => {
+    console.log('FAV ITEEEM ', item);
+    return (
+      <TouchableOpacity
+        activeOpacity={0.8}
+        style={styles.MainView}
+        onPress={() =>
+          navigation.navigate(RouteName.CUSTOMERSUPPLIER, {
+            TruckInfo: item,
+            openMap: null,
+          })
+        }>
+        <View style={styles.LeftIcon}>
+          {item.truckLogo && (
+            <Image style={styles.image} source={{uri: item.truckLogo}} />
+          )}
+        </View>
+        <View style={styles.RightContent}>
+          <Text
+            style={{fontSize: responsiveFontSize(2), fontWeight: 'bold'}}
+            value={item.truckName}
           />
-          <Text value={item.truckCity} />
-        </View>
-        {item.schedule
-          ? item.schedule.map(item2 =>
-              item2.day === day ? (
-                <View style={styles.flex}>
-                  <AntDesign
-                    style={{marginLeft: responsiveWidth(1)}}
-                    name={'clockcircleo'}
-                    color={'#212121'}
-                    size={responsiveFontSize(1.8)}
-                  />
-                  <Text
-                    style={{marginLeft: responsiveWidth(1)}}
-                    value={item2.opening}
-                  />
-
-                  <Text
-                    style={{marginLeft: responsiveWidth(1)}}
-                    value={item2.closing}
-                  />
-                </View>
-              ) : null,
-            )
-          : null}
-        <View
-          style={[
-            styles.flex,
-            {justifyContent: 'space-between', height: responsiveHeight(5)},
-          ]}>
-          <TouchableOpacity>
-            <Text
-              // bold
-              value={getStatus(item, index)}
-              style={{
-                color: 'green',
-                fontSize: responsiveFontSize(2),
-                fontWeight: 'bold',
-              }}
+          <CountButton
+            button={item.selectedServingCusines}
+            buttonProp={{
+              width: '30%',
+              marginRight: responsiveWidth(2),
+              right: responsiveWidth(1),
+              paddingHorizontal: responsiveWidth(2),
+            }}
+            tabProp={{
+              marginTop: responsiveHeight(-18),
+              left: responsiveWidth(-2),
+            }}
+          />
+          <View style={[styles.flex, {marginTop: responsiveHeight(5)}]}>
+            <Entypo
+              name={'location-pin'}
+              color={'#212121'}
+              size={responsiveFontSize(2.3)}
             />
-          </TouchableOpacity>
+            <Text value={item.truckCity} />
+            <TouchableOpacity
+                onPress={() => openMap(item.latitude, item.longitude)}
+                style={{
+                  flexDirection: 'row',
+                  width: '90%',
+                  height: responsiveHeight(5),
+                  alignItems: 'center',
+                  marginLeft: responsiveWidth(3),
+                }}>
+                <FA5
+                  name={'directions'}
+                  color={'green'}
+                  size={responsiveFontSize(3)}
+                />
+                <Text
+                  style={{marginLeft: responsiveWidth(2)}}
+                  value={Language['Get Directions']}
+                />
+              </TouchableOpacity>
+          </View>
+          {item.schedule
+            ? item.schedule.map(item2 =>
+                item2.day === day ? (
+                  <View style={styles.flex}>
+                    <AntDesign
+                      style={{marginLeft: responsiveWidth(1)}}
+                      name={'clockcircleo'}
+                      color={'#212121'}
+                      size={responsiveFontSize(1.8)}
+                    />
+                    <Text
+                      style={{marginLeft: responsiveWidth(1)}}
+                      value={item2.opening}
+                    />
 
-          {item.rating ? (
-            <Rating
-              startingValue={item.rating}
-              imageSize={responsiveFontSize(2.8)}
-            />
-          ) : null}
+                    <Text
+                      style={{marginLeft: responsiveWidth(1)}}
+                      value={item2.closing}
+                    />
+                  </View>
+                ) : null,
+              )
+            : null}
+          <View
+            style={[
+              styles.flex,
+              {justifyContent: 'space-between', height: responsiveHeight(5)},
+            ]}>
+            <TouchableOpacity>
+              <Text
+                // bold
+                value={getStatus(item, index)}
+                style={{
+                  color: getStatus(item, index) === 'Open' ? 'green' : 'red',
+                  fontSize: responsiveFontSize(2),
+                  fontWeight: 'bold',
+                }}
+              />
+            </TouchableOpacity>
+
+            {item.customerReview.length > 0 ? (
+              <Rating
+                startingValue={getRatings(item, index)}
+                imageSize={responsiveFontSize(2.8)}
+              />
+            ) : null}
+          </View>
         </View>
-      </View>
-    </TouchableOpacity>
-  );
+      </TouchableOpacity>
+    );
+  };
   const onFilterSearch = async (selectedItems, Trucks) => {
     // getAllTrucks();
     console.log('hheloooo', selectedItems);
@@ -360,8 +432,8 @@ const Favorite = ({navigation}) => {
           style={{
             marginTop: responsiveHeight(25),
             marginLeft: getMargin(),
-            fontSize:responsiveFontSize(2),
-            fontFamily:'NunitoSans-Bold' 
+            fontSize: responsiveFontSize(2),
+            fontFamily: 'NunitoSans-Bold',
           }}
         />
       ) : Data.length > 0 ? (
@@ -376,8 +448,8 @@ const Favorite = ({navigation}) => {
           style={{
             marginTop: responsiveHeight(25),
             marginLeft: getMargin(),
-            fontSize:responsiveFontSize(2),
-            fontFamily:'NunitoSans-Bold' 
+            fontSize: responsiveFontSize(2),
+            fontFamily: 'NunitoSans-Bold',
           }}
         />
       )}

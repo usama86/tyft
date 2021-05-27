@@ -165,14 +165,14 @@ const MenuSetting = ({navigation, route}) => {
     DataCopy[editIndex].description = description.value;
     DataCopy[editIndex].price = Number(price.value);
 
-    let index = Data.findIndex(a => a.name === name.value);
-    if (index !== -1) {
-      setDup(true);
-      setTimeout(() => {
-        setDup(false);
-      }, 1500);
-      return;
-    }
+    // let index = Data.findIndex(a => a.name === name.value);
+    // if (index !== -1) {
+    //   setDup(true);
+    //   setTimeout(() => {
+    //     setDup(false);
+    //   }, 1500);
+    //   return;
+    // }
     let MenuID = await AsyncStorage.getItem('MenuID');
     axios
       .post(url + '/api/menu/updatemenu', {
@@ -197,13 +197,6 @@ const MenuSetting = ({navigation, route}) => {
         console.log(error);
       });
     if (val) setShowModal2(false);
-  };
-  const Navigate = () => {
-    if (Data.length > 0) {
-      UpdateMenu();
-    } else {
-      Alert.alert('Please Add Menu First');
-    }
   };
   const AddToList = async () => {
     let newId = 0;

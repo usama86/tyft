@@ -47,7 +47,7 @@ const FindFoodTruck = ({navigation, route}) => {
   const [Lat, setLat] = React.useState(0.0);
   const [Long, setLong] = React.useState(0.0);
   const [uniqueProps, setuniqueProps] = useState([]);
-  const [empty, setEmpty] = useState(true);
+  const [empty, setEmpty] = useState(false);
   const calculateDistance = (markerLat, markerLon) => {
     let distance = getDistance(
       {latitude: Lat, longitude: Long},
@@ -275,7 +275,6 @@ const FindFoodTruck = ({navigation, route}) => {
     if (
       calculateDistance(parseFloat(item.latitude), parseFloat(item.longitude))
     ) {
-      setEmpty(false);
       return (
         <TouchableOpacity
           activeOpacity={0.8}
@@ -287,7 +286,7 @@ const FindFoodTruck = ({navigation, route}) => {
             });
           }}>
           <View style={styles.LeftIcon}>
-            {item.truckLogo && (
+            {(item.truckLogo !== undefined || item.truckLogo !== '') && (
               <Image style={styles.image} source={{uri: item.truckLogo}} />
             )}
           </View>
@@ -336,12 +335,6 @@ const FindFoodTruck = ({navigation, route}) => {
                   style={{marginLeft: responsiveWidth(2)}}
                   value={Language['Get Directions']}
                 />
-                {/* <Text
-                              style={[
-                                {marginLeft: responsiveWidth(1)},
-                              ]}>
-                              {'Get Directions'}
-                            </Text> */}
               </TouchableOpacity>
             </View>
             {item.schedule
@@ -377,7 +370,7 @@ const FindFoodTruck = ({navigation, route}) => {
                 <Text
                   value={getStatus(item, index)}
                   style={{
-                    color: 'green',
+                    color: getStatus(item, index) === 'Open' ? 'green' : 'red',
                     fontSize: responsiveFontSize(2),
                     fontWeight: 'bold',
                   }}
@@ -487,18 +480,6 @@ const FindFoodTruck = ({navigation, route}) => {
         />
       ) : Data.length > 0 && Data !== [undefined] ? (
         <View style={{flex: 1}}>
-          {empty && (
-            <TextReact
-              style={{
-                alignSelf: 'center',
-                textAlign: 'center',
-                top: '40%',
-                fontWeight: 'bold',
-                fontSize: responsiveFontSize(2.5),
-              }}>
-              {'No Nearby Trucks Found'}
-            </TextReact>
-          )}
           <FlatList
             data={Data !== [undefined] && Data !== undefined ? Data : []}
             keyExtractor={item => item._id}

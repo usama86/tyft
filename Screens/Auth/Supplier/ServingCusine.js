@@ -6,7 +6,7 @@ import {
   Image,
   FlatList,
   ActivityIndicator,
-  SafeAreaView
+  SafeAreaView,
 } from 'react-native';
 import Text from '../../../Component/Text';
 import {
@@ -132,6 +132,7 @@ const ServingCusine = ({navigation, route}) => {
         />
       ) : (
         <Ui
+          noScroll
           isLoading={isLoading}
           ContentStyle={styles.HeadingContainer}
           // TextViewStyle={styles.TextViewStyle}

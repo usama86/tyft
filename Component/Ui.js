@@ -24,13 +24,16 @@ const Ui = ({
   TextShow,
   buttonStyle,
   noShowButton,
+  noScroll,
   // HeaderValue
 }) => {
   return (
-    <Container ContentStyle={[styles.container, ContainerStyle]}>
+    <Container
+      noScroll={noScroll}
+      ContentStyle={[styles.container, ContainerStyle]}>
       {TextShow ? (
         <View style={[styles.TextView, TextViewStyle]}>
-          <Text bold value={TextValue} style={[styles.text,{TextStyle}]} />
+          <Text bold value={TextValue} style={[styles.text, {TextStyle}]} />
         </View>
       ) : null}
       <View style={[styles.Content, ContentStyle]}>{children}</View>
@@ -65,8 +68,8 @@ const styles = StyleSheet.create({
     width: '80%',
     alignSelf: 'center',
   },
-  text:{
-    textAlign:'center'
+  text: {
+    textAlign: 'center',
   },
   TextStyle1: {
     color: 'white',

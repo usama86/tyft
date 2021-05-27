@@ -10,20 +10,19 @@ import Modal from 'react-native-modal';
 const Modals = ({ModalContainer, showModal, children,...props}) => {
   return (
     <Modal
-    
       isVisible={showModal}
       backdropColor="rgba(0,0,0,0.8)"
       animationIn="zoomInDown"
-      animationOut="zoomOutUp"
       animationInTiming={600}
       animationOutTiming={600}
       backdropTransitionInTiming={600}
       backdropTransitionOutTiming={600}
+      style={{overflow:'scroll'}}
       {...props}
       >
-      <ScrollView>
+      {/* <ScrollView> */}
         <View style={[Styles.container, ModalContainer]}>{children}</View>
-      </ScrollView>
+      {/* </ScrollView> */}
     </Modal>
   );
 };

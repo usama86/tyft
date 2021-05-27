@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, Alert,SafeAreaView} from 'react-native';
+import {View, StyleSheet, Alert, SafeAreaView} from 'react-native';
 import Input from '../../../Component/Input';
 import Text from '../../../Component/Text';
 import {
@@ -15,98 +15,74 @@ import url from '../Constants/constants';
 import axios from 'axios';
 import {Snackbar} from 'react-native-paper';
 import ImageResizer from 'react-native-image-resizer';
+import AsyncStorage from '@react-native-community/async-storage';
 const CoverPhoto = ({navigation, route}) => {
   const [img, setImg] = React.useState(null);
   const [isLoading, setisLoading] = React.useState(false);
   const [imageUrl, setImageUrl] = React.useState('');
-  const [visible, setVisible] = React.useState({value: null, text: null});
+  const [visible, setVisible] = React.useState({value: false, text: null});
   const onDismissSnackBar = () => {
     setVisible({value: null, text: null});
   };
   const SendUri = val => {
     setImg(val);
+    setisLoading(true);
+    // // console.log(response)
+    const img = val;
     try {
-      setisLoading(true);
-      ImageResizer.createResizedImage(val.uri, val.height, val.width, 'JPEG', 0)
-      .then(async(response) => {
-
-        setisLoading(true);
-        const img = response;
-        try {
-          console.log('IMAGES OBJECT', img);
-          var formdata = new FormData();
-          let path = img.uri;
-          if (Platform.OS === 'ios') {
-            path = '~' + path.substring(path.indexOf('/Documents'));
-          }
-          if (!img.fileName) {
-            img.fileName = path.split('/').pop();
-          }
-          formdata.append('file', {
-            uri: img.uri,
-            type: img.type,
-            name: img.fileName,
-          });
-          console.log('form dat', formdata);
-          formdata.append('upload_preset', 'tyftBackend');
-          axios
-            .post(url + '/api/general/uploadImage', formdata)
-            .then(async Response => {
-              console.log('FORM DARA', formdata);
-              let Code = Response.data.code;
-              let urls = Response.data.url;
-              console.log('IMAGE URLS', urls);
-              if (Code === 'ABT0000') {
+      console.log('IMAGES OBJECT', img);
+      var formdata = new FormData();
+      let path = img.uri;
+      if (Platform.OS === 'ios') {
+        path = '~' + path.substring(path.indexOf('/Documents'));
+      }
+      if (!img.fileName) {
+        img.fileName = path.split('/').pop();
+      }
+      formdata.append('file', {
+        uri: img.uri,
+        type: img.type,
+        name: img.fileName,
+      });
+      console.log('form dat', formdata);
+      formdata.append('upload_preset', 'tyftBackend');
+      axios
+        .post(url + '/api/general/uploadImage', formdata)
+        .then(async Response => {
+          console.log('FORM DARA', formdata);
+          let Code = Response.data.code;
+          let urls = Response.data.url;
+          console.log('IMAGE URLS', urls);
+          if (Code === 'ABT0000') {
+            // setUrl(img); //
+            let TruckId = await AsyncStorage.getItem('TruckID');
+            axios
+              .post(url + '/api/supplier/updatetrucklogo', {
+                _id: TruckId,
+                imgUrl: urls,
+              })
+              .then(async Response => {
+                let Code = Response.data.code;
+                if (Code === 'ABT0000') {
+                  setisLoading(false);
+                  setImageUrl(urls);
+                  // setUrl(urls); //
+                } else {
+                  setisLoading(false);
+                }
+              })
+              .catch(error => {
                 setisLoading(false);
-                setImageUrl(urls);
-              } else {
-                setisLoading(false);
-              }
-            })
-            .catch(error => {
-              setisLoading(false);
-              console.log('FORM DATA ERROR', error);
-            });
-        } catch (e) {
-           setisLoading(false);
-          console.log('error => ', e);
-        }
-
-        // let getResponse = await responses;
-        // var myHeaders = new Headers();
-        // myHeaders.append('Content-Type', 'multipart/form-data');
-        // myHeaders.append('Accept', 'application/json');
-        // // let file = await uriToBlob(val.uri)
-        // var formdata = new FormData();
-        // formdata.append('file', {
-        //   uri: getResponse.uri,
-        //   type: 'image/jpeg',
-        //   name: val.fileName,
-        // });
-        // formdata.append('upload_preset', 'tyftBackend');
-
-        // var requestOptions = {
-        //   method: 'POST',
-        //   headers: myHeaders,
-        //   body: formdata,
-        //   redirect: 'follow',
-        // };
-
-        // fetch(
-        //   'https://api.cloudinary.com/v1_1/hmrzthc6f/image/upload',
-        //   requestOptions,
-        // )
-        //   .then(response => response.json())
-        //   .then(result => {
-        //     setImageUrl(result.url);
-        //     // setImg(val);
-        //     setisLoading(false);
-        //   })
-        //   .catch(error => {
-        //     console.log('error', error);
-        //     // setIsLoading(false);
-        //   });
-      })  
+                console.log(error);
+              });
+          } else {
+            setisLoading(false);
+          }
+        })
+        .catch(error => {
+          setisLoading(false);
+          console.log('FORM DATA ERROR', error);
+        });
     } catch (e) {
       console.log('error => ', e);
     }
@@ -137,24 +113,23 @@ const CoverPhoto = ({navigation, route}) => {
         categoryArray: route.params.categoryArray,
       };
       axios
-        .post(
-          url + '/api/users/signup',
-          data,
-        )
+        .post(url + '/api/users/signup', data)
         .then(async Response => {
           let Code = Response.data.code;
-          console.log('Response is here')
+          console.log('Response is here', Response.data);
           if (Code === 'ABT0000') {
             setVisible({
               value: true,
               text:
                 'Your TYFT Vendor account has been created successfully!You will not be able to login until TYFT team review your registration.\nYou will receive a confirmation email once everything is ready to go.Your TYFT Vendor account has been created successfully!You will not be able to login until TYFT team review your registration.\nYou will receive a confirmation email once everything is ready to go.',
             });
+            console.log('hi');
             setTimeout(() => {
               navigation.replace(RouteName.HOME);
               setisLoading(false);
             }, 3000);
           } else {
+            console.log('false');
             setisLoading(false);
           }
         })
@@ -189,12 +164,10 @@ const CoverPhoto = ({navigation, route}) => {
           style={styles.ImageContainer}
         />
       </Ui>
-      <Snackbar
-          style={{top: responsiveHeight(-70)}}
-          visible={visible.value}
-          onDismiss={onDismissSnackBar}>
-          {visible.text}
-        </Snackbar>
+
+      <Snackbar style={{top:responsiveHeight(-35)}} visible={visible.value} onDismiss={onDismissSnackBar}>
+        {visible.text}
+      </Snackbar>
     </SafeAreaView>
   );
 };

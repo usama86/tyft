@@ -154,6 +154,7 @@ const VeggieWisper = ({navigation, route, ...props}) => {
       });
   };
   const openMap = (val, truckID) => {
+    let day = new Date().getDay();
     let weekday = [
       'Sunday',
       'Monday',
@@ -162,37 +163,15 @@ const VeggieWisper = ({navigation, route, ...props}) => {
       'Thursday',
       'Friday',
       'Saturday',
-    ][new Date().getDay()];
-    let sched = TruckInfo.schedule;
-    let openingTime = '';
-    let closingTime = '';
-    for (let i = 0; i < sched.length; i++) {
-      if (sched[i].day === weekday) {
-        openingTime = sched[i].opening;
-        closingTime = sched[i].closing;
-      }
-    }
-    if (openingTime !== '') {
-      let openHour = Number(openingTime.split(':')[0]);
-      if (openingTime.split(' ')[1] === 'PM') {
-        openHour += 12;
-      }
-      let closeHour = Number(closingTime.split(':')[0]);
-      if (closingTime.split(' ')[1] === 'PM') {
-        closeHour += 12;
-      }
-      var d = new Date(); // for now
-      if (d.getHours() >= openHour && d.getHours() <= closeHour) {
-        updateStatus(val, truckID);
-      } else {
-        console.log(val);
-        Alert.alert('Please set schedule first.');
-      }
+    ];
+    let Schedule = TruckInfo.schedule;
+    let dayFound = Schedule.find(item => item.day === weekday[day]);
+    if (dayFound) {
+      updateStatus(val, truckID);
     } else {
-      console.log(val);
-      Alert.alert('Please set schedule first.');
+      Alert.alert('Please set schedule first');
     }
-    // console.log(TruckInfo.schedule);
+    console.log('Found', dayFound);
   };
   const updateStatus = async (val, truckID) => {
     let Status = null;
@@ -247,7 +226,6 @@ const VeggieWisper = ({navigation, route, ...props}) => {
     navigation.replace('Auth', {screen: 'Auth'});
   };
   const SelectImage = () => {
-    console.log('hi');
     const options = {
       title: Language['Select or Capture Your Image'],
       storageOptions: {
@@ -265,11 +243,6 @@ const VeggieWisper = ({navigation, route, ...props}) => {
         const img = response;
         try {
           console.log('IMAGES OBJECT', img);
-          // setIsLoading(true);
-          //   var myHeaders = new Headers();
-          //   myHeaders.append('Content-Type', 'multipart/form-data');
-          //   myHeaders.append('Accept', 'application/json');
-          // let file = await uriToBlob(val.uri)
           var formdata = new FormData();
           let path = img.uri;
           if (Platform.OS === 'ios') {
@@ -281,17 +254,10 @@ const VeggieWisper = ({navigation, route, ...props}) => {
           formdata.append('file', {
             uri: img.uri,
             type: img.type,
-            // name: new Date().getTime().toString()+'.jpg',
             name: img.fileName,
           });
           console.log('form dat', formdata);
           formdata.append('upload_preset', 'tyftBackend');
-          //   var requestOptions = {
-          //     method: 'POST',
-          //     headers: myHeaders,
-          //     body: formdata,
-          //     redirect: 'follow',
-          //   };
           axios
             .post(url + '/api/general/uploadImage', formdata)
             .then(async Response => {

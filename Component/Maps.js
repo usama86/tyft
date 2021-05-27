@@ -138,16 +138,21 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
   };
   const getStatus = (item, index) => {
     let day = moment(new Date()).format('dddd');
-    let matchedDay = item.schedule.filter(data => day === data.day);
-    if (matchedDay.length > 0) {
+    console.log('DAY', day);
+    console.log('shdule', item.schedule);
+    let matchedDay = item.schedule.find(data => day === data.day);
+    if (matchedDay) {
       let startTime = new Date(
-        'Mon 03-Jul-2017, ' + matchedDay[0].opening.toString(),
+        'Mon 03-Jul-2017, ' + matchedDay.opening.toString(),
       ).getHours();
 
       let endTime = new Date(
-        'Mon 03-Jul-2017, ' + matchedDay[0].closing.toString(),
+        'Mon 03-Jul-2017, ' + matchedDay.closing.toString(),
       ).getHours();
       var currentTime = new Date().getHours();
+      console.log('START TIME', startTime);
+      console.log('END TIME', endTime);
+      console.log('Current TIME', currentTime);
       if (startTime <= currentTime && currentTime <= endTime) {
         return 'Open';
       } else {
@@ -262,7 +267,7 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
                               }}>
                               <Text
                                 style={[
-                                  item.status === 'Close'
+                                  getStatus(item, index) === 'Close'
                                     ? {color: 'red'}
                                     : {color: 'green'},
                                 ]}>
