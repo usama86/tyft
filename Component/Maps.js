@@ -254,29 +254,24 @@ const Maps = ({MapContainerStyle, Trucks, navigation}) => {
                           <View
                             style={{
                               width: responsiveWidth(40),
-                              paddingLeft: responsiveWidth(2),
+                              
+
                             }}>
                             <Text style={styles.TruckName}>
                               {item.truckName}
                             </Text>
                             <Text>{getTimings(item)}</Text>
-                            <View
-                              style={{
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                              }}>
-                              <Text
+                            <Text >
+                                {getDistanceFromPlace(item)}
+                            </Text>
+                            <Text
                                 style={[
                                   getStatus(item, index) === 'Close'
                                     ? {color: 'red'}
                                     : {color: 'green'},
                                 ]}>
                                 {getStatus(item, index)}
-                              </Text>
-                              <Text style={{marginLeft: responsiveWidth(0.5)}}>
-                                {getDistanceFromPlace(item)}
-                              </Text>
-                            </View>
+                            </Text>
                           </View>
                         </View>
                       </Callout>

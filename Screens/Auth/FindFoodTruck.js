@@ -70,8 +70,10 @@ const FindFoodTruck = ({navigation, route}) => {
         },
       );
       const result = searcher.search(val);
-      // console.log(result);
-      setData(result);
+      const sortedResult = [];
+      result.filter(item => item.status.toLowerCase() === "open").forEach(item => result.push(item));
+      result.filter(item => item.status.toLowerCase() === "close").forEach(item => result.push(item));
+      setData(sortedResult);
       if (result.length == 0 || result === undefined) {
         setIsMsg(true);
       } else {
@@ -481,6 +483,12 @@ const FindFoodTruck = ({navigation, route}) => {
       ) : Data.length > 0 && Data !== [undefined] ? (
         <View style={{flex: 1}}>
           <FlatList
+            onRefresh={()=>{
+                setisLoading(true);
+                getCurrentLocation();
+                getAllTrucks();
+            }}
+            refreshing={isLoading}
             data={Data !== [undefined] && Data !== undefined ? Data : []}
             keyExtractor={item => item._id}
             contentContainerStyle={{paddingBottom: responsiveHeight(8)}}

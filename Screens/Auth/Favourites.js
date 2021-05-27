@@ -439,6 +439,11 @@ const Favorite = ({navigation}) => {
       ) : Data.length > 0 ? (
         <FlatList
           data={Data}
+          onRefresh={() => {
+            setisLoading(true);
+            getFavouriteRestaurants();
+          }}
+          refreshing={isLoading}
           keyExtractor={item => item.id}
           renderItem={({item, index}) => PrintCard(item, index)}
         />
