@@ -71,8 +71,8 @@ const FindFoodTruck = ({navigation, route}) => {
       );
       const result = searcher.search(val);
       const sortedResult = [];
-      result.filter(item => item.status.toLowerCase() === "close").forEach(item => result.push(item));
-      result.filter(item => item.status.toLowerCase() === "open").forEach(item => result.push(item));
+      result.filter(item => item.status.toLowerCase() === "open").forEach(item => sortedResult.push(item));
+      result.filter(item => item.status.toLowerCase() === "close").forEach(item => sortedResult.push(item));
       setData(sortedResult);
       if (result.length == 0 || result === undefined) {
         setIsMsg(true);
@@ -172,7 +172,10 @@ const FindFoodTruck = ({navigation, route}) => {
           // let filtered = Trucks.filter(item => item.status === 'Open');
           let day = currentDate.format('dddd');
           setDay(day);
-          setData(Trucks);
+          const sortedResult = [];
+          Trucks.filter(item => item.status.toLowerCase() === "open").forEach(item => sortedResult.push(item));
+          Trucks.filter(item => item.status.toLowerCase() === "close").forEach(item => sortedResult.push(item));
+          setData(sortedResult);
           setisLoading(false);
         } else {
           setisLoading(false);
@@ -408,7 +411,7 @@ const FindFoodTruck = ({navigation, route}) => {
       </Header>
       <View style={styles.seacrhbarContainter}>
         <SearchBar
-          placeholder={Language['Type something']}
+          placeholder={Language['Search by name, cuisine']}
           round
           value={searchVal}
           lightTheme
@@ -543,11 +546,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   MainView: {
-    width: '96%',
-    alignSelf: 'flex-end',
+    width: '95%',
+    alignSelf: "center",
     paddingVertical: responsiveHeight(0.5),
     borderBottomWidth: 0.7,
-    borderBottomColor: '#212121',
+    borderBottomColor: '#e5e7e9',
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: responsiveWidth(2),
