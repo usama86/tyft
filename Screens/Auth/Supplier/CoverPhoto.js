@@ -52,32 +52,36 @@ const CoverPhoto = ({navigation, route}) => {
           console.log('FORM DARA', formdata);
           let Code = Response.data.code;
           let urls = Response.data.url;
+          setImageUrl(urls)
+          setisLoading(false)
           console.log('IMAGE URLS', urls);
-          if (Code === 'ABT0000') {
-            // setUrl(img); //
-            let TruckId = await AsyncStorage.getItem('TruckID');
-            axios
-              .post(url + '/api/supplier/updatetrucklogo', {
-                _id: TruckId,
-                imgUrl: urls,
-              })
-              .then(async Response => {
-                let Code = Response.data.code;
-                if (Code === 'ABT0000') {
-                  setisLoading(false);
-                  setImageUrl(urls);
-                  // setUrl(urls); //
-                } else {
-                  setisLoading(false);
-                }
-              })
-              .catch(error => {
-                setisLoading(false);
-                console.log(error);
-              });
-          } else {
-            setisLoading(false);
-          }
+          // if (Code === 'ABT0000') {
+          //   // setUrl(img); //
+          //   let TruckId = await AsyncStorage.getItem('TruckID');
+          //   console.log('truck Logoo',TruckId)
+          //   axios
+          //     .post(url + '/api/supplier/updatetrucklogo', {
+          //       _id: TruckId,
+          //       imgUrl: urls,
+          //     })
+          //     .then(async Response => {
+          //       console.log('updatdeddd',Response.data)
+          //       let Code = Response.data.code;
+          //       if (Code === 'ABT0000') {
+          //         setisLoading(false);
+          //         console.log('INSIDEEE',urls)
+          //         // setUrl(urls); //
+          //       } else {
+          //         setisLoading(false);
+          //       }
+          //     })
+          //     .catch(error => {
+          //       setisLoading(false);
+          //       console.log(error);
+          //     });
+          // } else {
+          //   setisLoading(false);
+          // }
         })
         .catch(error => {
           setisLoading(false);
@@ -90,6 +94,7 @@ const CoverPhoto = ({navigation, route}) => {
   const Navigate = async () => {
     if (img) {
       setisLoading(true);
+      console.log('LASTT IMAGE COVER',imageUrl)
       let data = {
         email: route.params.Email,
         password: route.params.Password,
@@ -112,6 +117,7 @@ const CoverPhoto = ({navigation, route}) => {
         Menu: route.params.Menu,
         categoryArray: route.params.categoryArray,
       };
+      console.log('dataaaaaa donee',data)
       axios
         .post(url + '/api/users/signup', data)
         .then(async Response => {
