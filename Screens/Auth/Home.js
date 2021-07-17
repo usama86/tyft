@@ -188,7 +188,7 @@ const Home = ({navigation}) => {
     await LoginManager.logInWithPermissions(['public_profile', 'email']).then(
       function(result) {
         if (result.isCancelled) {
-          alert('Login cancelled');
+          // alert('Login cancelled');
         } else {
           AccessToken.getCurrentAccessToken().then(data => {
             let accessToken = data.accessToken;
